@@ -32,15 +32,8 @@ import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_MEMBER__M
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME;
 
 import java.text.MessageFormat;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
@@ -50,14 +43,15 @@ import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendInterface;
-import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.xbase.validation.JvmGenericTypeValidator;
 
-import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
@@ -79,10 +73,10 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 
 	@Inject
 	private SARLGrammarKeywordAccess grammarAccess;
-
-	@Inject
-	private IDefaultVisibilityProvider defaultVisibilityProvider;
 	
+	@Inject
+	private Injector injector;
+
 	private SARLModifierValidator constructorModifierValidatorForSpecialContainer;
 
 	private SARLModifierValidator staticConstructorModifierValidator;
@@ -430,13 +424,24 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 		}
 	}
 
+	/** Create a new validator.
+	 *
+	 * @return the validator.
+	 * @since 0.15
+	 */
+	protected SARLModifierValidator newSARLModifierValidator(List<String> modifiers) {
+		final var validator = new SARLModifierValidator(modifiers, getVisibilityModifiers(), this::error, this::addIssue);
+		this.injector.injectMembers(validator);
+		return validator;
+	}
+
 	/** Replies the modifier validator for the constructors in special containers.
 	 *
 	 * @return the validator.
 	 */
 	protected SARLModifierValidator getConstructorModifierValidatorForSpecialContainer() {
 		if (this.constructorModifierValidatorForSpecialContainer == null) {
-			this.constructorModifierValidatorForSpecialContainer = new SARLModifierValidator(getVisibilityModifiers());
+			this.constructorModifierValidatorForSpecialContainer = newSARLModifierValidator(getVisibilityModifiers());
 		}
 		return this.constructorModifierValidatorForSpecialContainer;
 	}
@@ -447,7 +452,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getStaticConstructorModifierValidator() {
 		if (this.staticConstructorModifierValidator == null) {
-			this.staticConstructorModifierValidator = new SARLModifierValidator(Lists.newArrayList(this.grammarAccess.getStaticStaticKeyword()));
+			this.staticConstructorModifierValidator = newSARLModifierValidator(Lists.newArrayList(this.grammarAccess.getStaticStaticKeyword()));
 		}
 		return this.staticConstructorModifierValidator;
 	}
@@ -458,7 +463,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getAgentModifierValidator() {
 		if (this.agentModifierValidator == null) {
-			this.agentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.agentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getAbstractKeyword(),
@@ -473,7 +478,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMethodInAgentModifierValidator() {
 		if (this.methodInAgentModifierValidator == null) {
-			this.methodInAgentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.methodInAgentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
@@ -494,7 +499,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getFieldInAgentModifierValidator() {
 		if (this.fieldInAgentModifierValidator == null) {
-			this.fieldInAgentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.fieldInAgentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
@@ -513,7 +518,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getBehaviorModifierValidator() {
 		if (this.behaviorModifierValidator == null) {
-			this.behaviorModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.behaviorModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getAbstractKeyword(),
@@ -528,7 +533,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMethodInBehaviorModifierValidator() {
 		if (this.methodInBehaviorModifierValidator == null) {
-			this.methodInBehaviorModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.methodInBehaviorModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -550,7 +555,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getFieldInBehaviorModifierValidator() {
 		if (this.fieldInBehaviorModifierValidator == null) {
-			this.fieldInBehaviorModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.fieldInBehaviorModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -570,7 +575,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getCapacityModifierValidator() {
 		if (this.capacityModifierValidator == null) {
-			this.capacityModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.capacityModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword()));
 		}
@@ -583,7 +588,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMethodInCapacityModifierValidator() {
 		if (this.methodInCapacityModifierValidator == null) {
-			this.methodInCapacityModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.methodInCapacityModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getDefKeyword(),
 					this.grammarAccess.getOverrideKeyword()));
@@ -597,7 +602,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getEventModifierValidator() {
 		if (this.eventModifierValidator == null) {
-			this.eventModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.eventModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getFinalKeyword(),
@@ -612,7 +617,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getFieldInEventModifierValidator() {
 		if (this.fieldInEventModifierValidator == null) {
-			this.fieldInEventModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.fieldInEventModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getFinalKeyword(),
 					this.grammarAccess.getWriteableVarKeyword(),
@@ -627,7 +632,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getSkillModifierValidator() {
 		if (this.skillModifierValidator == null) {
-			this.skillModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.skillModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getFinalKeyword(),
@@ -642,7 +647,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMethodInSkillModifierValidator() {
 		if (this.methodInSkillModifierValidator == null) {
-			this.methodInSkillModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.methodInSkillModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -664,7 +669,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getFieldInSkillModifierValidator() {
 		if (this.fieldInSkillModifierValidator == null) {
-			this.fieldInSkillModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.fieldInSkillModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -684,7 +689,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getClassModifierValidator() {
 		if (this.classModifierValidator == null) {
-			this.classModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.classModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getAbstractKeyword(),
@@ -700,7 +705,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getInterfaceModifierValidator() {
 		if (this.interfaceModifierValidator == null) {
-			this.interfaceModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.interfaceModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getAbstractKeyword()));
@@ -714,7 +719,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getEnumModifierValidator() {
 		if (this.enumModifierValidator == null) {
-			this.enumModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.enumModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword()));
 		}
@@ -727,7 +732,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getAnnotationTypeModifierValidator() {
 		if (this.annotationTypeModifierValidator == null) {
-			this.annotationTypeModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.annotationTypeModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getAbstractKeyword()));
@@ -741,7 +746,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedClassModifierValidator() {
 		if (this.nestedClassModifierValidator == null) {
-			this.nestedClassModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedClassModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -760,7 +765,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedInterfaceModifierValidator() {
 		if (this.nestedInterfaceModifierValidator == null) {
-			this.nestedInterfaceModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedInterfaceModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -778,7 +783,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedEnumModifierValidator() {
 		if (this.nestedEnumModifierValidator == null) {
-			this.nestedEnumModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedEnumModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -794,7 +799,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedAnnotationTypeModifierValidator() {
 		if (this.nestedAnnotationTypeModifierValidator == null) {
-			this.nestedAnnotationTypeModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedAnnotationTypeModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -811,7 +816,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getFieldModifierValidator() {
 		if (this.fieldModifierValidator == null) {
-			this.fieldModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.fieldModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -833,7 +838,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getFieldInInterfaceModifierValidator() {
 		if (this.fieldInInterfaceModifierValidator == null) {
-			this.fieldInInterfaceModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.fieldInInterfaceModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getStaticStaticKeyword(),
 					this.grammarAccess.getFinalKeyword(),
@@ -848,7 +853,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getConstructorModifierValidator() {
 		if (this.constructorModifierValidator == null) {
-			this.constructorModifierValidator = new SARLModifierValidator(getVisibilityModifiers());
+			this.constructorModifierValidator = newSARLModifierValidator(getVisibilityModifiers());
 		}
 		return this.constructorModifierValidator;
 	}
@@ -859,7 +864,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMethodModifierValidator() {
 		if (this.methodModifierValidator == null) {
-			this.methodModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.methodModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
@@ -883,7 +888,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMethodInInterfaceModifierValidator() {
 		if (this.methodInInterfaceModifierValidator == null) {
-			this.methodInInterfaceModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.methodInInterfaceModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getAbstractKeyword(),
 					this.grammarAccess.getStaticStaticKeyword(),
@@ -899,7 +904,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedClassInAgentModifierValidator() {
 		if (this.nestedClassInAgentModifierValidator == null) {
-			this.nestedClassInAgentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedClassInAgentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
@@ -916,7 +921,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedInterfaceInAgentModifierValidator() {
 		if (this.nestedInterfaceInAgentModifierValidator == null) {
-			this.nestedInterfaceInAgentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedInterfaceInAgentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
@@ -932,7 +937,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedEnumerationInAgentModifierValidator() {
 		if (this.annotationTypeModifierValidator == null) {
-			this.nestedEnumerationInAgentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedEnumerationInAgentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
@@ -947,7 +952,7 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getNestedAnnotationTypeInAgentModifierValidator() {
 		if (this.nestedAnnotationTypeInAgentModifierValidator == null) {
-			this.nestedAnnotationTypeInAgentModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.nestedAnnotationTypeInAgentModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPackageKeyword(),
 					this.grammarAccess.getProtectedKeyword(),
 					this.grammarAccess.getPrivateKeyword(),
@@ -965,268 +970,12 @@ public class SARLFeatureModifierValidator extends AbstractSARLSubValidator {
 	 */
 	protected SARLModifierValidator getMainFunctionModifierValidator() {
 		if (this.mainFunctionModifierValidator == null) {
-			this.mainFunctionModifierValidator = new SARLModifierValidator(Lists.newArrayList(
+			this.mainFunctionModifierValidator = newSARLModifierValidator(Lists.newArrayList(
 					this.grammarAccess.getPublicKeyword(),
 					this.grammarAccess.getStaticStaticKeyword(),
 					this.grammarAccess.getDefKeyword()));
 		}
 		return this.mainFunctionModifierValidator;
-	}
-
-	/** The modifier validator for constructors.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	protected class SARLModifierValidator {
-
-		private final Set<String> allowedModifiers;
-
-		private final String allowedModifiersAsStringWithAnd;
-		
-		private final String allowedModifiersAsStringWithOr;
-
-		/** Constructor.
-		 *
-		 * @param modifiers the list of the supported modifiers.
-		 */
-		SARLModifierValidator(List<String> modifiers) {
-			assert modifiers != null && !modifiers.isEmpty();
-			this.allowedModifiers = new HashSet<>(modifiers);
-			final var andBuffer = new StringBuffer();
-			final var orBuffer = new StringBuffer();
-			var modifier = modifiers.get(0);
-			andBuffer.append(modifier);
-			orBuffer.append(modifier);
-			final var endSize = modifiers.size() - 1;
-			if (endSize > 0) {
-				for (var i = 1; i < endSize; ++i) {
-					modifier = modifiers.get(i);
-					andBuffer.append(", ").append(modifier); //$NON-NLS-1$
-					orBuffer.append(", ").append(modifier); //$NON-NLS-1$
-				}
-				modifier = modifiers.get(endSize);
-				andBuffer.append(' ').append(Messages.SARLModifierValidator_4).append(' ').append(modifier);
-				orBuffer.append(' ').append(Messages.SARLModifierValidator_5).append(' ').append(modifier);
-			}
-			this.allowedModifiersAsStringWithAnd = andBuffer.toString();
-			this.allowedModifiersAsStringWithOr = orBuffer.toString();
-		}
-		
-		/** Check the modifiers for the given member.
-		 *
-		 * @param member the member to check.
-		 * @param memberName the name of the member.
-		 */
-		@Check
-		protected void checkModifiers(XtendMember member, String memberName) {
-			final var seenModifiers = new HashSet<String>();
-			var visibilitySeen = false;
-			var abstractSeen = false;
-			var defSeen = false;
-			var staticSeen = false;
-			var finalSeen = false;
-			var varSeen = false;
-			var defKeywordIndex = -1;
-			var finalKeywordIndex = -1;
-
-			final var privateKeyword = SARLFeatureModifierValidator.this.grammarAccess.getPrivateKeyword();
-			final var protectedKeyword = SARLFeatureModifierValidator.this.grammarAccess.getProtectedKeyword();
-			final var packageKeyword = SARLFeatureModifierValidator.this.grammarAccess.getPackageKeyword();
-			final var publicKeyword = SARLFeatureModifierValidator.this.grammarAccess.getPublicKeyword();
-			final var abstractKeyword = SARLFeatureModifierValidator.this.grammarAccess.getAbstractKeyword();
-			final var staticKeyword = SARLFeatureModifierValidator.this.grammarAccess.getStaticStaticKeyword();
-			final var finalKeyword = SARLFeatureModifierValidator.this.grammarAccess.getFinalKeyword();
-			final var varKeyword = SARLFeatureModifierValidator.this.grammarAccess.getWriteableVarKeyword();
-			final var valKeyword = SARLFeatureModifierValidator.this.grammarAccess.getValKeyword();
-			final var defKeyword = SARLFeatureModifierValidator.this.grammarAccess.getDefKeyword();
-			final var overrideKeyword = SARLFeatureModifierValidator.this.grammarAccess.getOverrideKeyword();
-
-			var i = 0;
-			for (final var modifier : member.getModifiers()) {
-				if (!this.allowedModifiers.contains(modifier)) { 
-					error(MessageFormat.format(Messages.SARLModifierValidator_2, memberName, this.allowedModifiersAsStringWithAnd),
-							member, i);
-				}
-				if (seenModifiers.contains(modifier)) { 
-					error(MessageFormat.format(Messages.SARLModifierValidator_3, memberName), 
-							member, i);
-				} else {
-					seenModifiers.add(modifier);
-					if (getVisibilityModifiers().contains(modifier)) {
-						if (visibilitySeen) { 
-							error(MessageFormat.format(Messages.SARLModifierValidator_6, memberName, this.allowedModifiersAsStringWithOr),
-									member, i);
-						}
-						visibilitySeen = true;
-						if (privateKeyword.equals(modifier) && isPrivateByDefault(member)) {
-							unnecessaryModifierIssue(privateKeyword, memberName, member, i);
-						}
-						if (protectedKeyword.equals(modifier) && isProtectedByDefault(member)) {
-							unnecessaryModifierIssue(protectedKeyword, memberName, member, i);
-						}
-						if (packageKeyword.equals(modifier) && isPackageByDefault(member)) {
-							unnecessaryModifierIssue(packageKeyword, memberName, member, i);
-						}
-						if (publicKeyword.equals(modifier) && isPublicByDefault(member)) {
-							unnecessaryModifierIssue(publicKeyword, memberName, member, i);
-						}
-					}
-				} 
-				if (Objects.equals(modifier, abstractKeyword)) {
-					if (finalSeen) {
-						error(MessageFormat.format(Messages.SARLModifierValidator_7, memberName),
-								member, i);
-					}
-					if (staticSeen && !(member instanceof XtendTypeDeclaration)) {
-						error(MessageFormat.format(Messages.SARLModifierValidator_8, memberName),
-								member, i);
-					}
-					abstractSeen = true;
-				} else if (Objects.equals(modifier, staticKeyword)) {
-					if (abstractSeen && !(member instanceof XtendTypeDeclaration)) {
-						error(MessageFormat.format(Messages.SARLModifierValidator_9, memberName),
-								member, i);
-					}
-					staticSeen = true;
-				} else if (Objects.equals(modifier, finalKeyword) || Objects.equals(modifier, valKeyword)) {
-					if (abstractSeen) {
-						error(MessageFormat.format(Messages.SARLModifierValidator_10, memberName),
-								member, i);
-					}
-					if (varSeen) {
-						error(MessageFormat.format(Messages.SARLModifierValidator_11, memberName),
-								member, i);
-					}
-					if (Objects.equals(modifier, finalKeyword)) {
-						finalKeywordIndex = i;
-					}
-					if (finalSeen) {
-						// Independent of the order of the keywords (such as 'final val' or 'val final'), 
-						// the 'final' keyword should be marked with the issue marker
-						unnecessaryModifierIssue(finalKeyword, memberName, member, finalKeywordIndex);
-					}
-					finalSeen = true;
-				} else if (Objects.equals(modifier, varKeyword)) {
-					if (finalSeen) {
-						error(MessageFormat.format(Messages.SARLModifierValidator_11, memberName),
-								member, i);
-					}
-					varSeen = true;
-				} else if ((Objects.equals(modifier, defKeyword) || Objects.equals(modifier, overrideKeyword))
-						&& member instanceof XtendFunction) {
-					if (Objects.equals(modifier, defKeyword)) {
-						defKeywordIndex = i;					
-					}
-					if(defSeen) {
-						// Independent of the order of the keywords (such as 'override def' or 'def override'), 
-						// the 'def' keyword should be marked with the issue marker
-						unnecessaryModifierIssue(defKeyword, memberName, member, defKeywordIndex);
-					}
-					defSeen = true;
-				}
-
-				++i;
-			}
-		}
-
-		/** Report an issue for unnecessary modifier
-		 * 
-		 * @param modifier the unnecessary modifier.
-		 * @param memberName the name of the member to which the unnecessary modifier is attached.
-		 * @param source the source of the issue.
-		 * @param index the index of the element to which the issue is attached.
-		 */
-		protected void unnecessaryModifierIssue(String modifier, String memberName, EObject source, int index) {
-			issue(MessageFormat.format(Messages.SARLModifierValidator_1, modifier, memberName),
-					source, index, IssueCodes.UNNECESSARY_MODIFIER, modifier);
-		}
-	
-		/** Report an issue through the associated validator.
-		 * 
-		 * @param message the issue message.
-		 * @param source the source of the issue.
-		 * @param index the index of the element to which the issue is attached.
-		 * @param code the code of the issue.
-		 * @param issueData data associated to the issue.
-		 */
-		@SuppressWarnings("synthetic-access")
-		protected void issue(String message, EObject source, int index, String code, String... issueData) {
-			SARLFeatureModifierValidator.this.addIssue(message, source, XTEND_MEMBER__MODIFIERS, index, code, issueData);
-		}
-
-		/** Report an "invalid modifier" error through the associated validator.
-		 * 
-		 * @param message the error message.
-		 * @param source the source of the error.
-		 * @param index the index of the element to which the error is attached.
-		 */
-		protected void error(String message, EObject source, int index) {
-			SARLFeatureModifierValidator.this.acceptError(message, source, XTEND_MEMBER__MODIFIERS, index, IssueCodes.INVALID_MODIFIER);
-		}
-
-		/** Replies if the default visibility modifier for the given member is "private".
-		 * If this function replies {@code true}, the "private" modifier is assumed to be the default one for the given member.
-		 * This function may be used for printing out an "unnecessary modifier" warning when the "private" modifier is explicitly
-		 * attached to the given member.
-		 *
-		 * <p>This function is defined for being overridden by subclasses.
-		 *
-		 * @param member the member to test.
-		 * @return {@code true} if the "private" modifier is the modifier by default for the given member.
-		 */
-		protected boolean isPrivateByDefault(XtendMember member) {
-			final var defaultVisibility = SARLFeatureModifierValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
-			return defaultVisibility == JvmVisibility.PRIVATE;
-		}
-
-		/** Replies if the default visibility modifier for the given member is "protected".
-		 * If this function replies {@code true}, the "protected" modifier is assumed to be the default one for the given member.
-		 * This function may be used for printing out an "unnecessary modifier" warning when the "protected" modifier is explicitly
-		 * attached to the given member.
-		 *
-		 * <p>This function is defined for being overridden by subclasses.
-		 *
-		 * @param member the member to test.
-		 * @return {@code true} if the "protected" modifier is the modifier by default for the given member.
-		 */
-		protected boolean isProtectedByDefault(XtendMember member) {
-			final var defaultVisibility = SARLFeatureModifierValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
-			return defaultVisibility == JvmVisibility.PROTECTED;
-		}
-
-		/** Replies if the default visibility modifier for the given member is "package".
-		 * If this function replies {@code true}, the "package" modifier is assumed to be the default one for the given member.
-		 * This function may be used for printing out an "unnecessary modifier" warning when the "package" modifier is explicitly
-		 * attached to the given member.
-		 *
-		 * <p>This function is defined for being overridden by subclasses.
-		 *
-		 * @param member the member to test.
-		 * @return {@code true} if the "package" modifier is the modifier by default for the given member.
-		 */
-		protected boolean isPackageByDefault(XtendMember member) {
-			final var defaultVisibility = SARLFeatureModifierValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
-			return defaultVisibility == JvmVisibility.DEFAULT;
-		}
-
-		/** Replies if the default visibility modifier for the given member is "public".
-		 * If this function replies {@code true}, the "public" modifier is assumed to be the default one for the given member.
-		 * This function may be used for printing out an "unnecessary modifier" warning when the "public" modifier is explicitly
-		 * attached to the given member.
-		 *
-		 * <p>This function is defined for being overridden by subclasses.
-		 *
-		 * @param member the member to test.
-		 * @return {@code true} if the "public" modifier is the modifier by default for the given member.
-		 */
-		protected boolean isPublicByDefault(XtendMember member) {
-			final var defaultVisibility = SARLFeatureModifierValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
-			return defaultVisibility == JvmVisibility.PUBLIC;
-		}
-
 	}
 
 }

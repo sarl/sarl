@@ -146,6 +146,10 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				IssueCodes.UNUSED_TYPE_PARAMETER,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.PROTOCOL_EMPTY,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

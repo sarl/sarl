@@ -36,6 +36,10 @@ public final class IssueCodes {
 	 */
 	protected static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
 
+	/** Prefix related to SARL for the issue codes related to protocols specifically.
+	 */
+	protected static final String PROTOCOL_ISSUE_CODE_PREFIX = ISSUE_CODE_PREFIX + "protocol."; //$NON-NLS-1$
+
 	/**
 	 * An interface is implemented, but it is already implemented by the super type,
 	 * or inherited by another interface.
@@ -317,6 +321,55 @@ public final class IssueCodes {
 	public static final String UNEXPECTED_TYPE_PARAMETER =
 			ISSUE_CODE_PREFIX + "unexpected_type_parameter"; //$NON-NLS-1$
 	
+	/** A name is missed in a BSPL construct.
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_MISSING_NAME =
+			PROTOCOL_ISSUE_CODE_PREFIX + "missing_name"; //$NON-NLS-1$
+
+	/** A role is specified multiple times in a protocol.
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_DUPLICATE_ROLE =
+			PROTOCOL_ISSUE_CODE_PREFIX + "duplicate_role"; //$NON-NLS-1$
+
+	/** A parameter is specified multiple times in a protocol.
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_DUPLICATE_PARAMETER =
+			PROTOCOL_ISSUE_CODE_PREFIX + "duplicate_parameter"; //$NON-NLS-1$
+
+	/** A message from the same source and destination is specified multiple times in a protocol.
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_DUPLICATE_MESSAGE =
+			PROTOCOL_ISSUE_CODE_PREFIX + "duplicate_message"; //$NON-NLS-1$
+
+	/** A role is referenced but not defined in the protocol.
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_UNDEFINED_ROLE =
+			PROTOCOL_ISSUE_CODE_PREFIX + "undefined_role"; //$NON-NLS-1$
+
+	/** A parameter is referenced but not defined in the protocol.
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_UNDEFINED_PARAMETER =
+			PROTOCOL_ISSUE_CODE_PREFIX + "undefined_parameter"; //$NON-NLS-1$
+
+	/** Empty protocol
+	 *
+	 * @since 0.15
+	 */
+	public static final String PROTOCOL_EMPTY =
+			PROTOCOL_ISSUE_CODE_PREFIX + "empty"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

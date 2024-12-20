@@ -20,15 +20,15 @@
  */
 package io.sarl.tests.api.tools;
 
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -37,6 +37,9 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.validation.Issue;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 /** Set of additional utilities for created testing EObject, except those related to SARL concepts.
  *
@@ -106,9 +109,31 @@ public class TestEObjects {
 					return input.getSeverity() == Severity.ERROR;
 				}
 			});
-			assertTrue(issues.isEmpty(), () -> "Resource contained errors : " + issues.toString()); //$NON-NLS-1$
+			if (!issues.isEmpty()) {
+				fail("Expected no errors, but got :" + getIssuesAsString(resource, issues, new StringBuilder()).toString()); //$NON-NLS-1$
+			}
 		}
 		return script;
+	}
+
+	private static StringBuilder getIssuesAsString(Resource resource, Iterable<Issue> issues, StringBuilder result) {
+		for (Issue issue : issues) {
+			URI uri = issue.getUriToProblem();
+			result.append(issue.getSeverity());
+			result.append(" ("); //$NON-NLS-1$
+			result.append(issue.getCode());
+			result.append(") '"); //$NON-NLS-1$
+			result.append(issue.getMessage());
+			result.append("'"); //$NON-NLS-1$
+			if (uri != null) {
+				EObject eObject = resource.getResourceSet().getEObject(uri, true);
+				result.append(" on "); //$NON-NLS-1$
+				result.append(eObject.eClass().getName());
+			}
+			result.append(", offset " + issue.getOffset() + ", length " + issue.getLength()); //$NON-NLS-1$ //$NON-NLS-2$
+			result.append("\n"); //$NON-NLS-1$
+		}
+		return result;
 	}
 
 	/** Create an instance of class.

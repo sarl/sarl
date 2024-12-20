@@ -75,18 +75,6 @@ public class Bug1156Test extends AbstractSarlTest {
 			"");
 
 	@Test
-	@Tag("sarlValidation")
-	@DisplayName("parse: not yet supported")
-	public void parsing_0() throws Exception {
-		SarlScript mas = file(getParseHelper(), SARL_CODE_01);
-		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator
-			.assertErrorWithoutCode(
-				SarlPackage.eINSTANCE.getSarlProtocol(),
-				"The statement", "is not yet supported");
-	}
-
-	@Test
 	@Tag("compileToJava")
 	@DisplayName("compile: interface Prt")
 	public void compiling_interface_prj_0() throws Exception {

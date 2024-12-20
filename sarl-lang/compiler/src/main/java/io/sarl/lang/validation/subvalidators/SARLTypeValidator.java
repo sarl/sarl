@@ -46,10 +46,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Multimap;
-import com.google.inject.Inject;
 import org.eclipse.xtend.core.jvmmodel.DispatchHelper;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -67,12 +63,16 @@ import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
+import com.google.inject.Inject;
+
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.validation.IssueCodes;
@@ -119,20 +119,6 @@ public class SARLTypeValidator extends AbstractSARLSubValidatorWithParentLink {
 				Messages.SARLTypeValidator_1,
 				getGrammarAccess().getSpaceKeyword()),
 				artifact,
-				null);
-	}
-
-	/** Protocol keyword is reserved.
-	 *
-	 * @param protocol the protocol to check.
-	 * @since 0.14
-	 */
-	@Check(CheckType.FAST)
-	public void checkProtocolUse(SarlProtocol protocol) {
-		error(MessageFormat.format(
-				Messages.SARLTypeValidator_1,
-				getGrammarAccess().getProtocolKeyword()),
-				protocol,
 				null);
 	}
 
