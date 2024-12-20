@@ -57,6 +57,7 @@ public class SARLImages extends XtendImages {
 		IMAGE_NAMES[SarlElementType.SKILL.ordinal()] = "sarl-skill"; //$NON-NLS-1$
 		IMAGE_NAMES[SarlElementType.EVENT.ordinal()] = "sarl-event"; //$NON-NLS-1$
 		IMAGE_NAMES[SarlElementType.BEHAVIOR_UNIT.ordinal()] = "sarl-behavior-unit"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.PROTOCOL.ordinal()] = "sarl-protocol"; //$NON-NLS-1$
 	}
 
 	@Inject
@@ -188,6 +189,19 @@ public class SARLImages extends XtendImages {
 				toFlags(JvmVisibility.PUBLIC), USE_LIGHT_ICONS), 0);
 	}
 
+	/** Replies the image descriptor for the "protocols".
+	 *
+	 * @param visibility the visibility of the protocol.
+	 * @param flags the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
+	 *                a description of the available flags.
+	 * @return the image descriptor for the protocols.
+	 * @since 0.15
+	 */
+	public ImageDescriptor forProtocol(JvmVisibility visibility, int flags) {
+		return getDecorated(getTypeImageDescriptor(
+				SarlElementType.PROTOCOL, false, false, toFlags(visibility), USE_LIGHT_ICONS), flags);
+	}
+
 	/** Replies the image descriptor for the "SARL script".
 	 *
 	 * @return the image descriptor for the SARL script.
@@ -266,7 +280,11 @@ public class SARLImages extends XtendImages {
 		SKILL,
 		/** Behavior unit.
 		 */
-		BEHAVIOR_UNIT;
+		BEHAVIOR_UNIT,
+		/** Protocol.
+		 * @since 0.15
+		 */
+		PROTOCOL;
 	}
 
 }

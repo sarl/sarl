@@ -69,6 +69,7 @@ import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
@@ -282,6 +283,22 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	protected ImageDescriptor imageDescriptor(SarlEvent element) {
 		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forEvent(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
+	}
+
+	/** Replies the image for the given element.
+	 *
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 *
+	 * @param element the element.
+	 * @return the image descriptor.
+	 * @see #imageDescriptor(Object)
+	 * @since 0.15
+	 */
+	protected ImageDescriptor imageDescriptor(SarlProtocol element) {
+		final var jvmElement = this.jvmModelAssociations.getInferredType(element);
+		return this.images.forProtocol(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
 	}
@@ -593,6 +610,8 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 					return this.images.forEvent(visibility, this.adornments.get(gtype));
 				case SarlPackage.SARL_SKILL:
 					return this.images.forSkill(visibility, this.adornments.get(gtype));
+				case SarlPackage.SARL_PROTOCOL:
+					return this.images.forProtocol(visibility, this.adornments.get(gtype));
 				default:
 					if (gtype.isInterface()) {
 						return this.images.forInterface(visibility, this.adornments.get(gtype));
