@@ -79,5 +79,6 @@ public class Messages extends NLS {
 	public static String SARLValidatorConfigurationBlock_28;
 	public static String SARLValidatorConfigurationBlock_29;
 	public static String SARLValidatorConfigurationBlock_30;
+	public static String SARLValidatorConfigurationBlock_31;
 
 }

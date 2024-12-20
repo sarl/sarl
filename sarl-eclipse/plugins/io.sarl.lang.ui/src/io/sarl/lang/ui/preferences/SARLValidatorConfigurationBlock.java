@@ -120,6 +120,7 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	protected void fillUnusedCodeSection(ComboBoxBuilder builder) {
 		super.fillUnusedCodeSection(builder);
 		builder.addComboBox(DISCOURAGED_CAPACITY_DEFINITION, Messages.SARLValidatorConfigurationBlock_4);
+		builder.addComboBox(PROTOCOL_EMPTY, Messages.SARLValidatorConfigurationBlock_31);
 		builder.addComboBox(UNREACHABLE_BEHAVIOR_UNIT, Messages.SARLValidatorConfigurationBlock_5);
 		builder.addComboBox(UNUSED_TYPE_PARAMETER, Messages.SARLValidatorConfigurationBlock_24);
 		builder.addComboBox(UNNECESSARY_FIRED_EVENT, Messages.SARLValidatorConfigurationBlock_23);
