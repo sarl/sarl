@@ -78,5 +78,13 @@ public class DefaultJvmGenericTypeProvider implements JvmGenericTypeFactory, Jvm
 	public Stream<JvmGenericType> stream() {
 		return this.createdTypes.values().stream();
 	}
+
+	/** Replies if the provider contains generated types.
+	 *
+	 * @return {@code true} if at least one type is generated.
+	 */
+	public boolean hasGeneratedType() {
+		return !this.createdTypes.isEmpty();
+	}
 	
 }

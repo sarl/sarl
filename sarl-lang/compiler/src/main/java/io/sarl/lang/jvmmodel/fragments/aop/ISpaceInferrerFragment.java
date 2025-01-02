@@ -23,9 +23,7 @@ package io.sarl.lang.jvmmodel.fragments.aop;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
-import io.sarl.lang.jvmmodel.fragments.JvmGenericTypeFactory;
-import io.sarl.lang.jvmmodel.fragments.JvmGenericTypeProvider;
+import io.sarl.lang.jvmmodel.fragments.IBiStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.SpaceInferrerFragment;
 import io.sarl.lang.sarl.SarlSpace;
 
@@ -38,28 +36,11 @@ import io.sarl.lang.sarl.SarlSpace;
  * @since 0.15
  */
 @ImplementedBy(SpaceInferrerFragment.class)
-public interface ISpaceInferrerFragment {
+public interface ISpaceInferrerFragment extends IBiStageInferrerFragment<SarlSpace> {
 
-	/** Transform the source space to its equivalent JVM elements during the second step of
-	 * the creation process of multiple output files.
-	 *
-	 * @param source the source space.
-	 * @param inferredJvmTypes the provider of the generated JVM types.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @see #transform(SarlSpace, JvmGenericTypeFactory, IBaseJvmModelInferrer)
-	 */
-	void transform(SarlSpace source, JvmGenericTypeProvider inferredJvmTypes,
-			IBaseJvmModelInferrer baseInferrer);
-
-	/** Transform the source space to its equivalent JVM elements during the first step of
-	 * the creation process of multiple output files.
-	 *
-	 * @param source the source space.
-	 * @param inferredJvmTypes the provider of the generated JVM types.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @see #transform(SarlSpace, JvmGenericTypeProvider, IBaseJvmModelInferrer)
-	 */
-	void prepareTransform(SarlSpace source, JvmGenericTypeFactory inferredJvmTypes,
-			IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlSpace> getSupportedType() {
+		return SarlSpace.class;
+	}
 
 }

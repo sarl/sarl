@@ -25,7 +25,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.EventInferrerFragment;
 import io.sarl.lang.sarl.SarlEvent;
 
@@ -38,14 +38,11 @@ import io.sarl.lang.sarl.SarlEvent;
  * @since 0.15
  */
 @ImplementedBy(EventInferrerFragment.class)
-public interface IEventInferrerFragment {
+public interface IEventInferrerFragment extends ISingleStageInferrerFragment<SarlEvent, JvmGenericType> {
 
-	/** Transform the source event to its equivalent JVM elements.
-	 *
-	 * @param source the source event.
-	 * @param inferredJvmType the receiver of JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 */
-	void transform(SarlEvent source, JvmGenericType inferredJvmType, IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlEvent> getSupportedType() {
+		return SarlEvent.class;
+	}
 
 }

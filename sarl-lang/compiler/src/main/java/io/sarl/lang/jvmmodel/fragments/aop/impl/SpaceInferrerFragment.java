@@ -39,7 +39,7 @@ import io.sarl.lang.sarl.SarlSpace;
  * @since 0.15
  */
 public class SpaceInferrerFragment extends AbstractJvmModelInferrerFragment implements ISpaceInferrerFragment {
-
+	
 	@Override
 	public void transform(SarlSpace source, JvmGenericTypeProvider inferredJvmTypes,
 			IBaseJvmModelInferrer baseInferrer) {

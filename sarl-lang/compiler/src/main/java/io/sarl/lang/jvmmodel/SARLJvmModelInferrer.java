@@ -72,6 +72,7 @@ import com.google.inject.Singleton;
 
 import io.sarl.lang.jvmmodel.fragments.AbstractJvmModelInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.DefaultJvmGenericTypeProvider;
+import io.sarl.lang.jvmmodel.fragments.IInferrerFragmentContributions;
 import io.sarl.lang.jvmmodel.fragments.aop.IAgentInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.IArtifactInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.IBehaviorInferrerFragment;
@@ -82,7 +83,6 @@ import io.sarl.lang.jvmmodel.fragments.aop.IEventInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.IRequireCapacityInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.ISkillInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.ISpaceInferrerFragment;
-import io.sarl.lang.jvmmodel.fragments.bspl.IProtocolInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.IActionInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.IAnnotationTypeInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.IClassInferrerFragment;
@@ -97,7 +97,6 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -171,9 +170,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 	private IEventInferrerFragment eventInferrerFragment;
 
 	@Inject
-	private IProtocolInferrerFragment protocolInferrerFragment;
-
-	@Inject
 	private IBehaviorInferrerFragment behaviorInferrerFragment;
 
 	@Inject
@@ -185,6 +181,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 	@Inject
 	private MembersInjector<GenerationContext> contextInjector;
 
+	@Inject
+	private IInferrerFragmentContributions fragmentContributions;
+	
 	@Inject
 	private Logger log;
 
@@ -418,6 +417,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 	 * @return the list of created JVM types.
 	 * @since 0.14
 	 */
+	@SuppressWarnings("unchecked")
 	private Stream<? extends JvmDeclaredType> doInferTypeSkeletons(
 			XtendTypeDeclaration declaration,
 			IJvmDeclaredTypeAcceptor acceptor, boolean preIndexingPhase,
@@ -430,15 +430,19 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 		// to stop the JVM generation too early.
 		final var doLaterExceptionSafe = wrapDoLaterList(doLater);
 
-		if (declaration instanceof SarlProtocol sarlProtocol) {
+		// Run the additional contributions for generating the JVM Ecore elements
+		for (final var fragment : this.fragmentContributions.getBiStageFragmentContributions(declaration.getClass())) {
 			final var javaTypes = new DefaultJvmGenericTypeProvider(this.typesFactory);
-			this.protocolInferrerFragment.prepareTransform(sarlProtocol, javaTypes, this);
+			fragment.prepareTransform(declaration, javaTypes, this);
 			if (!preIndexingPhase) {
-				doLaterExceptionSafe.add(() -> this.protocolInferrerFragment.transform(sarlProtocol, javaTypes, this));
+				doLaterExceptionSafe.add(() -> fragment.transform(declaration, javaTypes, this));
 			}
-			return javaTypes.stream();
+			if (javaTypes.hasGeneratedType()) {
+				return javaTypes.stream();
+			}
 		}
 
+		// Run the hard-coded 
 		if (declaration instanceof SarlSpace sarlSpace) {
 			final var javaTypes = new DefaultJvmGenericTypeProvider(this.typesFactory);
 			this.spaceInferrerFragment.prepareTransform(sarlSpace, javaTypes, this);
@@ -451,6 +455,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected final JvmDeclaredType doInferTypeSceleton(
 			XtendTypeDeclaration declaration,
@@ -463,6 +468,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 			// Autowrap the provided runnable elements in order to avoid the internal exceptions
 			// to stop the JVM generation too early.
 			final var doLaterExceptionSafe = wrapDoLaterList(doLater);
+
+			// Run additional contributions to the generation of the JVM model
+			for (final var fragment : this.fragmentContributions.getSingleStageFragmentContributions(declaration.getClass())) {
+				final var javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> fragment.transform(declaration, javaType, this));
+				}
+				return javaType;
+			}
+
+			// Run the hard-coded transformers 
 			if (declaration instanceof SarlAgent sarlAgent) {
 				final var javaType = this.typesFactory.createJvmGenericType();
 				if (!preIndexingPhase) {
@@ -507,8 +523,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 				return javaType;
 			}
 
-			return super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
-					xtendFile, doLaterExceptionSafe);
+			return super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase, xtendFile, doLaterExceptionSafe);
 		} catch (InternalError internalError) {
 			throw internalError;
 		} catch (Exception exception) {

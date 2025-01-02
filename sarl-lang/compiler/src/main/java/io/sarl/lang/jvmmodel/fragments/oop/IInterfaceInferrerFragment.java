@@ -21,14 +21,12 @@
 
 package io.sarl.lang.jvmmodel.fragments.oop;
 
-import java.util.function.BiConsumer;
-
 import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.IInheritedStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.impl.InterfaceInferrerFragment;
 
 /** Fragment for inferred the interfaces to the JVM model.
@@ -40,16 +38,11 @@ import io.sarl.lang.jvmmodel.fragments.oop.impl.InterfaceInferrerFragment;
  * @since 0.15
  */
 @ImplementedBy(InterfaceInferrerFragment.class)
-public interface IInterfaceInferrerFragment {
+public interface IInterfaceInferrerFragment extends IInheritedStageInferrerFragment<XtendInterface, JvmGenericType> {
 
-	/** Transform the source interface to its equivalent JVM elements.
-	 *
-	 * @param source the source interface.
-	 * @param inferredJvmType the receiver of the JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @param inheritedTransformer the transformer that is inherited from the Xtext/Xtend API.
-	 */
-	void transform(XtendInterface source, JvmGenericType inferredJvmType, IBaseJvmModelInferrer baseInferrer,
-			BiConsumer<XtendInterface, JvmGenericType> inheritedTransformer);
+	@Override
+	default Class<XtendInterface> getSupportedType() {
+		return XtendInterface.class;
+	}
 
 }

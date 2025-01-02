@@ -25,7 +25,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.AgentInferrerFragment;
 import io.sarl.lang.sarl.SarlAgent;
 
@@ -38,14 +38,11 @@ import io.sarl.lang.sarl.SarlAgent;
  * @since 0.15
  */
 @ImplementedBy(AgentInferrerFragment.class)
-public interface IAgentInferrerFragment {
+public interface IAgentInferrerFragment extends ISingleStageInferrerFragment<SarlAgent, JvmGenericType> {
 
-	/** Transform the source agent to its equivalent JVM elements.
-	 *
-	 * @param source the source agent.
-	 * @param inferredJvmType the receiver of JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 */
-	void transform(SarlAgent source, JvmGenericType inferredJvmType, IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlAgent> getSupportedType() {
+		return SarlAgent.class;
+	}
 
 }

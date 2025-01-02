@@ -21,14 +21,12 @@
 
 package io.sarl.lang.jvmmodel.fragments.oop;
 
-import java.util.function.BiConsumer;
-
 import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtext.common.types.JvmEnumerationType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.IInheritedStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.impl.EnumInferrerFragment;
 
 /** Fragment for inferred the enumerations to the JVM model.
@@ -40,16 +38,11 @@ import io.sarl.lang.jvmmodel.fragments.oop.impl.EnumInferrerFragment;
  * @since 0.15
  */
 @ImplementedBy(EnumInferrerFragment.class)
-public interface IEnumInferrerFragment {
+public interface IEnumInferrerFragment extends IInheritedStageInferrerFragment<XtendEnum, JvmEnumerationType> {
 
-	/** Transform the source enumeration to its equivalent JVM elements.
-	 *
-	 * @param source the source enumeration.
-	 * @param inferredJvmType the receiver of the JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @param inheritedTransformer the transformer that is inherited from the Xtext/Xtend API.
-	 */
-	void transform(XtendEnum source, JvmEnumerationType inferredJvmType, IBaseJvmModelInferrer baseInferrer,
-			BiConsumer<XtendEnum, JvmEnumerationType> inheritedTransformer);
+	@Override
+	default Class<XtendEnum> getSupportedType() {
+		return XtendEnum.class;
+	}
 
 }

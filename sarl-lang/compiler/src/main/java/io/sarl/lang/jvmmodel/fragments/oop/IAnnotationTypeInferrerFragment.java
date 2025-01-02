@@ -21,14 +21,12 @@
 
 package io.sarl.lang.jvmmodel.fragments.oop;
 
-import java.util.function.BiConsumer;
-
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.IInheritedStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.impl.AnnotationTypeInferrerFragment;
 
 /** Fragment for inferred the annotation types to the JVM model.
@@ -40,16 +38,11 @@ import io.sarl.lang.jvmmodel.fragments.oop.impl.AnnotationTypeInferrerFragment;
  * @since 0.15
  */
 @ImplementedBy(AnnotationTypeInferrerFragment.class)
-public interface IAnnotationTypeInferrerFragment {
+public interface IAnnotationTypeInferrerFragment extends IInheritedStageInferrerFragment<XtendAnnotationType, JvmAnnotationType> {
 
-	/** Transform the source enumeration to its equivalent JVM elements.
-	 *
-	 * @param source the source enumeration.
-	 * @param inferredJvmType the receiver of the JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @param inheritedTransformer the transformer that is inherited from the Xtext/Xtend API.
-	 */
-	void transform(XtendAnnotationType source, JvmAnnotationType inferredJvmType, IBaseJvmModelInferrer baseInferrer,
-			BiConsumer<XtendAnnotationType, JvmAnnotationType> inheritedTransformer);
+	@Override
+	default Class<XtendAnnotationType> getSupportedType() {
+		return XtendAnnotationType.class;
+	}
 
 }

@@ -23,9 +23,7 @@ package io.sarl.lang.jvmmodel.fragments.bspl;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
-import io.sarl.lang.jvmmodel.fragments.JvmGenericTypeFactory;
-import io.sarl.lang.jvmmodel.fragments.JvmGenericTypeProvider;
+import io.sarl.lang.jvmmodel.fragments.IBiStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.bspl.impl.ProtocolInferrerFragment;
 import io.sarl.lang.sarl.SarlProtocol;
 
@@ -42,26 +40,11 @@ import io.sarl.lang.sarl.SarlProtocol;
  * @since 0.15
  */
 @ImplementedBy(ProtocolInferrerFragment.class)
-public interface IProtocolInferrerFragment {
+public interface IProtocolInferrerFragment extends IBiStageInferrerFragment<SarlProtocol> {
 
-	/** Transform the source protocol to its equivalent JVM elements during the second step of
-	 * the creation process of multiple output files.
-	 *
-	 * @param source the source protocol.
-	 * @param inferredJvmTypes the provider of the generated JVM types.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @see #transform(SarlProtocol, JvmGenericTypeFactory, IBaseJvmModelInferrer)
-	 */
-	void transform(SarlProtocol source, JvmGenericTypeProvider inferredJvmTypes, IBaseJvmModelInferrer baseInferrer);
-
-	/** Transform the source protocol to its equivalent JVM elements during the first step of
-	 * the creation process of multiple output files.
-	 *
-	 * @param source the source protocol.
-	 * @param inferredJvmTypes the provider of the generated JVM types.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @see #transform(SarlProtocol, JvmGenericTypeProvider, IBaseJvmModelInferrer)
-	 */
-	void prepareTransform(SarlProtocol source, JvmGenericTypeFactory inferredJvmTypes, IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlProtocol> getSupportedType() {
+		return SarlProtocol.class;
+	}
 
 }

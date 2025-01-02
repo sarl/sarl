@@ -32,7 +32,6 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH
 import java.text.MessageFormat;
 import java.util.List;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -52,6 +51,8 @@ import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.core.util.OutParameter;
+import com.google.inject.Inject;
+
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.typesystem.SARLOperationHelper;
 import io.sarl.lang.util.Utils;

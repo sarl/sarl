@@ -25,7 +25,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.BehaviorInferrerFragment;
 import io.sarl.lang.sarl.SarlBehavior;
 
@@ -38,14 +38,11 @@ import io.sarl.lang.sarl.SarlBehavior;
  * @since 0.15
  */
 @ImplementedBy(BehaviorInferrerFragment.class)
-public interface IBehaviorInferrerFragment {
+public interface IBehaviorInferrerFragment extends ISingleStageInferrerFragment<SarlBehavior, JvmGenericType> {
 
-	/** Transform the source behavior to its equivalent JVM elements.
-	 *
-	 * @param source the source behavior.
-	 * @param inferredJvmType the receiver of JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 */
-	void transform(SarlBehavior source, JvmGenericType inferredJvmType, IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlBehavior> getSupportedType() {
+		return SarlBehavior.class;
+	}
 
 }

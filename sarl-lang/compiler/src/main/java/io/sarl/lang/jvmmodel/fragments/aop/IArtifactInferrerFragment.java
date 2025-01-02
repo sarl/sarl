@@ -25,7 +25,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.ArtifactInferrerFragment;
 import io.sarl.lang.sarl.SarlArtifact;
 
@@ -38,14 +38,11 @@ import io.sarl.lang.sarl.SarlArtifact;
  * @since 0.15
  */
 @ImplementedBy(ArtifactInferrerFragment.class)
-public interface IArtifactInferrerFragment {
+public interface IArtifactInferrerFragment extends ISingleStageInferrerFragment<SarlArtifact, JvmGenericType> {
 
-	/** Transform the source artifact to its equivalent JVM elements.
-	 *
-	 * @param source the source artifact.
-	 * @param inferredJvmType the generated JVM types.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 */
-	void transform(SarlArtifact source, JvmGenericType inferredJvmType, IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlArtifact> getSupportedType() {
+		return SarlArtifact.class;
+	}
 
 }

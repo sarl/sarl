@@ -19,40 +19,37 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.jvmmodel.fragments.oop;
+package io.sarl.lang.jvmmodel.fragments;
 
-import org.eclipse.xtend.core.xtend.XtendConstructor;
-import org.eclipse.xtext.common.types.JvmGenericType;
-
-import com.google.inject.ImplementedBy;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 
 import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
-import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
-import io.sarl.lang.jvmmodel.fragments.oop.impl.ConstructorInferrerFragment;
 
-/** Fragment for inferred the constructors to the JVM model.
+/** Fragment for inferred to the JVM model based on a single stage process.
  *
+ * @param <S> the type of the SARL's Ecore element.
+ * @param <T> the type of the JVM's Ecore element.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-@ImplementedBy(ConstructorInferrerFragment.class)
-public interface IConstructorInferrerFragment extends ISingleStageInferrerFragment<XtendConstructor, JvmGenericType> {
+public interface ISingleStageInferrerFragment<S extends EObject, T extends JvmDeclaredType> {
 
-	@Override
-	default Class<XtendConstructor> getSupportedType() {
-		return XtendConstructor.class;
-	}
-
-	/** Transform the source static constructor to its equivalent JVM elements.
+	/** Transform the source element to its equivalent JVM elements.
 	 *
-	 * @param source the source static constructor.
-	 * @param container the receiver of the JVM elements.
+	 * @param source the source element.
+	 * @param inferredJvmType the generated JVM types.
 	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
 	 */
-	void transformStatic(XtendConstructor source, JvmGenericType container,
-			IBaseJvmModelInferrer baseInferrer);
+	void transform(S source, T inferredJvmType, IBaseJvmModelInferrer baseInferrer);
+
+	/** Replies the type of the source Ecore element that is supported by this fragment.
+	 *
+	 * @return the type.
+	 */
+	Class<S> getSupportedType();
 
 }

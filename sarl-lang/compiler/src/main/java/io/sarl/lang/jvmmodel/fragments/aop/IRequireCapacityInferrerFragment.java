@@ -25,7 +25,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.RequireCapacityInferrerFragment;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 
@@ -38,15 +38,11 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
  * @since 0.15
  */
 @ImplementedBy(RequireCapacityInferrerFragment.class)
-public interface IRequireCapacityInferrerFragment {
+public interface IRequireCapacityInferrerFragment extends ISingleStageInferrerFragment<SarlRequiredCapacity, JvmGenericType> {
 
-	/** Transform the source capacity requirement to its equivalent JVM elements.
-	 *
-	 * @param source the source capacity requirement.
-	 * @param container the receiver of the JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 */
-	void transform(SarlRequiredCapacity source, JvmGenericType container,
-			IBaseJvmModelInferrer baseInferrer);
+	@Override
+	default Class<SarlRequiredCapacity> getSupportedType() {
+		return SarlRequiredCapacity.class;
+	}
 
 }

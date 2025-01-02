@@ -25,7 +25,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.aop.impl.SkillInferrerFragment;
 import io.sarl.lang.sarl.SarlSkill;
 
@@ -38,14 +38,10 @@ import io.sarl.lang.sarl.SarlSkill;
  * @since 0.15
  */
 @ImplementedBy(SkillInferrerFragment.class)
-public interface ISkillInferrerFragment {
+public interface ISkillInferrerFragment extends ISingleStageInferrerFragment<SarlSkill, JvmGenericType> {
 
-	/** Transform the source skill to its equivalent JVM elements.
-	 *
-	 * @param source the source skill.
-	 * @param inferredJvmType the receiver of JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 */
-	void transform(SarlSkill source, JvmGenericType inferredJvmType, IBaseJvmModelInferrer baseInferrer);
-
+	@Override
+	default Class<SarlSkill> getSupportedType() {
+		return SarlSkill.class;
+	}
 }

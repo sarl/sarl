@@ -21,14 +21,12 @@
 
 package io.sarl.lang.jvmmodel.fragments.oop;
 
-import java.util.function.BiConsumer;
-
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.IInheritedStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.impl.FieldInferrerFragment;
 
 /** Fragment for inferred the fields to the JVM model.
@@ -40,16 +38,11 @@ import io.sarl.lang.jvmmodel.fragments.oop.impl.FieldInferrerFragment;
  * @since 0.15
  */
 @ImplementedBy(FieldInferrerFragment.class)
-public interface IFieldInferrerFragment {
+public interface IFieldInferrerFragment extends IInheritedStageInferrerFragment<XtendField, JvmGenericType> {
 
-	/** Transform the source field to its equivalent JVM elements.
-	 *
-	 * @param source the source field.
-	 * @param container the receiver of the JVM elements.
-	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
-	 * @param inheritedTransformer the transformer that is inherited from the standard Xtext/Xtend API.
-	 */
-	void transform(XtendField source, JvmGenericType container,
-			IBaseJvmModelInferrer baseInferrer,
-			BiConsumer<XtendField, JvmGenericType> inheritedTransformer);
+	@Override
+	default Class<XtendField> getSupportedType() {
+		return XtendField.class;
+	}
+
 }

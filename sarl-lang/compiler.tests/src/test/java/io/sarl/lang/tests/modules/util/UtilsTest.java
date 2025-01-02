@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
@@ -62,6 +61,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
 import org.osgi.framework.Version;
+
+import com.google.inject.Inject;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.core.annotation.DefaultValue;

@@ -27,6 +27,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import com.google.inject.ImplementedBy;
 
 import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
+import io.sarl.lang.jvmmodel.fragments.ISingleStageInferrerFragment;
 import io.sarl.lang.jvmmodel.fragments.oop.impl.ActionInferrerFragment;
 
 /** Fragment for inferred the actions (functions) to the JVM model.
@@ -38,7 +39,12 @@ import io.sarl.lang.jvmmodel.fragments.oop.impl.ActionInferrerFragment;
  * @since 0.15
  */
 @ImplementedBy(ActionInferrerFragment.class)
-public interface IActionInferrerFragment {
+public interface IActionInferrerFragment extends ISingleStageInferrerFragment<XtendFunction, JvmGenericType> {
+
+	@Override
+	default Class<XtendFunction> getSupportedType() {
+		return XtendFunction.class;
+	}
 
 	/** Transform the source action to its equivalent JVM elements.
 	 *
@@ -49,5 +55,10 @@ public interface IActionInferrerFragment {
 	 */
 	void transform(XtendFunction source, JvmGenericType container, boolean allowDispatch,
 			IBaseJvmModelInferrer baseInferrer);
+
+	@Override
+	default void transform(XtendFunction source, JvmGenericType container, IBaseJvmModelInferrer baseInferrer) {
+		transform(source, container, true, baseInferrer);
+	}
 
 }

@@ -28,7 +28,6 @@ import static org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH;
 
 import java.text.MessageFormat;
 
-import com.google.common.collect.HashMultimap;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -37,6 +36,8 @@ import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
+
+import com.google.common.collect.HashMultimap;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.core.util.OutParameter;
