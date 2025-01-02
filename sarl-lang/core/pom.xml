@@ -441,6 +441,17 @@
         <role>Maven Configuration</role>
       </roles>
     </contributor>
+    <contributor>
+      <name>Stefano Tedeschi</name>
+      <email>s.tedeschi@univda.it</email>
+      <url>https://github.com/stefanotedeschi</url>
+      <properties>
+      	<id>stedeschi</id>
+      </properties>
+      <roles>
+        <role>Implementation of MutableOptional</role>
+      </roles>
+    </contributor>
   </contributors>
   <licenses>
     <license>

@@ -27,24 +27,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Provider;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.diagnostics.Severity;
+
 import com.google.common.base.Strings;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.di.BQInject;
 import io.bootique.meta.application.CommandMetadata;
-import me.tongfei.progressbar.ProgressBar;
-import me.tongfei.progressbar.ProgressBarBuilder;
-import me.tongfei.progressbar.ProgressBarStyle;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xtext.diagnostics.Severity;
-
 import io.sarl.apputils.bootiqueapp.BootiqueMain;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.core.util.OutParameter;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
+import me.tongfei.progressbar.ProgressBar;
+import me.tongfei.progressbar.ProgressBarBuilder;
+import me.tongfei.progressbar.ProgressBarStyle;
 
 /**
  * Command for compiling with SARL.

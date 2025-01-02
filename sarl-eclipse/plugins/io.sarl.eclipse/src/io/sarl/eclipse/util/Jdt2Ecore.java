@@ -1312,9 +1312,6 @@ public class Jdt2Ecore {
 
 		@Override
 		public JvmParameterizedTypeReference findType(String typeName, LocalTypeResolver resolver) {
-			if ("T".equals(typeName)) {
-				System.out.println("DBG");
-			}
 			String tn;
 			try {
 				tn = resolver.resolve(typeName);

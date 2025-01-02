@@ -25,6 +25,8 @@ import java.util.Objects;
 
 /**
  * An out parameter for a function.
+ * This class is not thread-safe. See {@link MutableOptional} for a thread-safe
+ * implementation.
  *
  * @param <T> the type of the value.
  * @author $Author: sgalland$
@@ -32,6 +34,7 @@ import java.util.Objects;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.5
+ * @see {@link MutableOptional}
  */
 public class OutParameter<T> implements Cloneable {
 

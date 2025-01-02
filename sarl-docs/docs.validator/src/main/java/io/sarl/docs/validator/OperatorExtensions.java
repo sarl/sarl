@@ -29,8 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Injector;
-import com.google.inject.Provider;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
@@ -50,6 +48,9 @@ import org.eclipse.xtext.xbase.XUnaryOperation;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 
 import io.sarl.lang.core.util.OutParameter;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
+
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.util.Utils;

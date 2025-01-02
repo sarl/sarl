@@ -40,12 +40,15 @@ package javax.inject;
  *       ...
  *     }
  *   }</pre>
+ *
+ * @param <T> the type of provided data.
  */
 public interface Provider<T> {
 
     /**
      * Provides a fully-constructed and injected instance of {@code T}.
      *
+     * @return the provided value.
      * @throws RuntimeException if the injector encounters an error while
      *  providing an instance. For example, if an injectable member on
      *  {@code T} throws an exception, the injector may wrap the exception
@@ -54,4 +57,5 @@ public interface Provider<T> {
      *  implementations and even different configurations of the same injector.
      */
     T get();
+
 }

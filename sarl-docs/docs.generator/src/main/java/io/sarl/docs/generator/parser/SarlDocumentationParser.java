@@ -42,16 +42,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.name.Named;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+
+import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 
 import io.sarl.docs.validator.NoXtextResourceException;
 import io.sarl.docs.validator.ReflectExtensions;
