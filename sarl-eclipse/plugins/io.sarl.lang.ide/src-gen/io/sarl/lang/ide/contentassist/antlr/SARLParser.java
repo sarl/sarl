@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getMemberAccess().getAlternatives_2_2_9(), "rule__Member__Alternatives_2_2_9");
 			builder.put(grammarAccess.getAnnotationFieldAccess().getAlternatives_2(), "rule__AnnotationField__Alternatives_2");
 			builder.put(grammarAccess.getParameterAccess().getAlternatives_6(), "rule__Parameter__Alternatives_6");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getAlternatives_2(), "rule__BsplProtocolMember__Alternatives_2");
 			builder.put(grammarAccess.getXPrimaryExpressionAccess().getAlternatives(), "rule__XPrimaryExpression__Alternatives");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1(), "rule__XVariableDeclaration__Alternatives_0_0_1");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1_0_0(), "rule__XVariableDeclaration__Alternatives_0_0_1_0_0");
@@ -163,21 +162,20 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_5(), "rule__Type__Group_2_5__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_6(), "rule__Type__Group_2_6__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_7(), "rule__Type__Group_2_7__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_7_4(), "rule__Type__Group_2_7_4__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_7_4_2(), "rule__Type__Group_2_7_4_2__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_7_5_0(), "rule__Type__Group_2_7_5_0__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_7_5_1(), "rule__Type__Group_2_7_5_1__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_7_5_1_2(), "rule__Type__Group_2_7_5_1_2__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_8(), "rule__Type__Group_2_8__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_4(), "rule__Type__Group_2_8_4__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_4_2(), "rule__Type__Group_2_8_4_2__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_5_0(), "rule__Type__Group_2_8_5_0__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_5_1(), "rule__Type__Group_2_8_5_1__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_5_1_2(), "rule__Type__Group_2_8_5_1_2__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_5(), "rule__Type__Group_2_8_5__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_8_5_2(), "rule__Type__Group_2_8_5_2__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_9(), "rule__Type__Group_2_9__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_9_4(), "rule__Type__Group_2_9_4__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_9_4_2(), "rule__Type__Group_2_9_4_2__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_9_5(), "rule__Type__Group_2_9_5__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_9_5_2(), "rule__Type__Group_2_9_5_2__0");
+			builder.put(grammarAccess.getTypeAccess().getGroup_2_9_5_1(), "rule__Type__Group_2_9_5_1__0");
 			builder.put(grammarAccess.getTypeAccess().getGroup_2_10(), "rule__Type__Group_2_10__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_10_5(), "rule__Type__Group_2_10_5__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_10_5_1(), "rule__Type__Group_2_10_5_1__0");
-			builder.put(grammarAccess.getTypeAccess().getGroup_2_11(), "rule__Type__Group_2_11__0");
 			builder.put(grammarAccess.getEventMemberAccess().getGroup(), "rule__EventMember__Group__0");
 			builder.put(grammarAccess.getEventMemberAccess().getGroup_2_0(), "rule__EventMember__Group_2_0__0");
 			builder.put(grammarAccess.getEventMemberAccess().getGroup_2_0_2_0(), "rule__EventMember__Group_2_0_2_0__0");
@@ -341,20 +339,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1(), "rule__XCastedExpression__Group_1__0");
 			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1_0(), "rule__XCastedExpression__Group_1_0__0");
 			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1_0_0(), "rule__XCastedExpression__Group_1_0_0__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup(), "rule__BsplProtocolMember__Group__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_0(), "rule__BsplProtocolMember__Group_2_0__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_0_3(), "rule__BsplProtocolMember__Group_2_0_3__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_1(), "rule__BsplProtocolMember__Group_2_1__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_1_4(), "rule__BsplProtocolMember__Group_2_1_4__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_1_4_1(), "rule__BsplProtocolMember__Group_2_1_4_1__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_1_6(), "rule__BsplProtocolMember__Group_2_1_6__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_1_6_1(), "rule__BsplProtocolMember__Group_2_1_6_1__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_2(), "rule__BsplProtocolMember__Group_2_2__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_2_3(), "rule__BsplProtocolMember__Group_2_2_3__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_3(), "rule__BsplProtocolMember__Group_2_3__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_3_6(), "rule__BsplProtocolMember__Group_2_3_6__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_3_6_1(), "rule__BsplProtocolMember__Group_2_3_6_1__0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getGroup_2_3_6_1_1(), "rule__BsplProtocolMember__Group_2_3_6_1_1__0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getGroup(), "rule__XVariableDeclaration__Group__0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getGroup_0(), "rule__XVariableDeclaration__Group_0__0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getGroup_0_0(), "rule__XVariableDeclaration__Group_0_0__0");
@@ -658,29 +642,26 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getTypeAccess().getNameAssignment_2_6_3(), "rule__Type__NameAssignment_2_6_3");
 			builder.put(grammarAccess.getTypeAccess().getModifiersAssignment_2_7_1(), "rule__Type__ModifiersAssignment_2_7_1");
 			builder.put(grammarAccess.getTypeAccess().getNameAssignment_2_7_3(), "rule__Type__NameAssignment_2_7_3");
-			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_7_5(), "rule__Type__MembersAssignment_2_7_5");
+			builder.put(grammarAccess.getTypeAccess().getTypeParametersAssignment_2_7_4_1(), "rule__Type__TypeParametersAssignment_2_7_4_1");
+			builder.put(grammarAccess.getTypeAccess().getTypeParametersAssignment_2_7_4_2_1(), "rule__Type__TypeParametersAssignment_2_7_4_2_1");
+			builder.put(grammarAccess.getTypeAccess().getExtendsAssignment_2_7_5_0_1(), "rule__Type__ExtendsAssignment_2_7_5_0_1");
+			builder.put(grammarAccess.getTypeAccess().getImplementsAssignment_2_7_5_1_1(), "rule__Type__ImplementsAssignment_2_7_5_1_1");
+			builder.put(grammarAccess.getTypeAccess().getImplementsAssignment_2_7_5_1_2_1(), "rule__Type__ImplementsAssignment_2_7_5_1_2_1");
+			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_7_7(), "rule__Type__MembersAssignment_2_7_7");
 			builder.put(grammarAccess.getTypeAccess().getModifiersAssignment_2_8_1(), "rule__Type__ModifiersAssignment_2_8_1");
 			builder.put(grammarAccess.getTypeAccess().getNameAssignment_2_8_3(), "rule__Type__NameAssignment_2_8_3");
 			builder.put(grammarAccess.getTypeAccess().getTypeParametersAssignment_2_8_4_1(), "rule__Type__TypeParametersAssignment_2_8_4_1");
 			builder.put(grammarAccess.getTypeAccess().getTypeParametersAssignment_2_8_4_2_1(), "rule__Type__TypeParametersAssignment_2_8_4_2_1");
-			builder.put(grammarAccess.getTypeAccess().getExtendsAssignment_2_8_5_0_1(), "rule__Type__ExtendsAssignment_2_8_5_0_1");
-			builder.put(grammarAccess.getTypeAccess().getImplementsAssignment_2_8_5_1_1(), "rule__Type__ImplementsAssignment_2_8_5_1_1");
-			builder.put(grammarAccess.getTypeAccess().getImplementsAssignment_2_8_5_1_2_1(), "rule__Type__ImplementsAssignment_2_8_5_1_2_1");
+			builder.put(grammarAccess.getTypeAccess().getExtendsAssignment_2_8_5_1(), "rule__Type__ExtendsAssignment_2_8_5_1");
+			builder.put(grammarAccess.getTypeAccess().getExtendsAssignment_2_8_5_2_1(), "rule__Type__ExtendsAssignment_2_8_5_2_1");
 			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_8_7(), "rule__Type__MembersAssignment_2_8_7");
 			builder.put(grammarAccess.getTypeAccess().getModifiersAssignment_2_9_1(), "rule__Type__ModifiersAssignment_2_9_1");
 			builder.put(grammarAccess.getTypeAccess().getNameAssignment_2_9_3(), "rule__Type__NameAssignment_2_9_3");
-			builder.put(grammarAccess.getTypeAccess().getTypeParametersAssignment_2_9_4_1(), "rule__Type__TypeParametersAssignment_2_9_4_1");
-			builder.put(grammarAccess.getTypeAccess().getTypeParametersAssignment_2_9_4_2_1(), "rule__Type__TypeParametersAssignment_2_9_4_2_1");
-			builder.put(grammarAccess.getTypeAccess().getExtendsAssignment_2_9_5_1(), "rule__Type__ExtendsAssignment_2_9_5_1");
-			builder.put(grammarAccess.getTypeAccess().getExtendsAssignment_2_9_5_2_1(), "rule__Type__ExtendsAssignment_2_9_5_2_1");
-			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_9_7(), "rule__Type__MembersAssignment_2_9_7");
+			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_9_5_0(), "rule__Type__MembersAssignment_2_9_5_0");
+			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_9_5_1_1(), "rule__Type__MembersAssignment_2_9_5_1_1");
 			builder.put(grammarAccess.getTypeAccess().getModifiersAssignment_2_10_1(), "rule__Type__ModifiersAssignment_2_10_1");
 			builder.put(grammarAccess.getTypeAccess().getNameAssignment_2_10_3(), "rule__Type__NameAssignment_2_10_3");
-			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_10_5_0(), "rule__Type__MembersAssignment_2_10_5_0");
-			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_10_5_1_1(), "rule__Type__MembersAssignment_2_10_5_1_1");
-			builder.put(grammarAccess.getTypeAccess().getModifiersAssignment_2_11_1(), "rule__Type__ModifiersAssignment_2_11_1");
-			builder.put(grammarAccess.getTypeAccess().getNameAssignment_2_11_3(), "rule__Type__NameAssignment_2_11_3");
-			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_11_5(), "rule__Type__MembersAssignment_2_11_5");
+			builder.put(grammarAccess.getTypeAccess().getMembersAssignment_2_10_5(), "rule__Type__MembersAssignment_2_10_5");
 			builder.put(grammarAccess.getEventMemberAccess().getAnnotationsAssignment_1(), "rule__EventMember__AnnotationsAssignment_1");
 			builder.put(grammarAccess.getEventMemberAccess().getModifiersAssignment_2_0_1(), "rule__EventMember__ModifiersAssignment_2_0_1");
 			builder.put(grammarAccess.getEventMemberAccess().getModifiersAssignment_2_0_2_0_0(), "rule__EventMember__ModifiersAssignment_2_0_2_0_0");
@@ -905,22 +886,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getAssumeExpressionAccess().getMessageAssignment_3_1(), "rule__AssumeExpression__MessageAssignment_3_1");
 			builder.put(grammarAccess.getSarlCastedExpressionAccess().getFeatureAssignment_1(), "rule__SarlCastedExpression__FeatureAssignment_1");
 			builder.put(grammarAccess.getXCastedExpressionAccess().getTypeAssignment_1_1(), "rule__XCastedExpression__TypeAssignment_1_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getAnnotationsAssignment_1(), "rule__BsplProtocolMember__AnnotationsAssignment_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getNamesAssignment_2_0_2(), "rule__BsplProtocolMember__NamesAssignment_2_0_2");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getNamesAssignment_2_0_3_1(), "rule__BsplProtocolMember__NamesAssignment_2_0_3_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getNameAssignment_2_1_2(), "rule__BsplProtocolMember__NameAssignment_2_1_2");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getRolesAssignment_2_1_4_0(), "rule__BsplProtocolMember__RolesAssignment_2_1_4_0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getRolesAssignment_2_1_4_1_1(), "rule__BsplProtocolMember__RolesAssignment_2_1_4_1_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getParametersAssignment_2_1_6_0(), "rule__BsplProtocolMember__ParametersAssignment_2_1_6_0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getParametersAssignment_2_1_6_1_1(), "rule__BsplProtocolMember__ParametersAssignment_2_1_6_1_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getRawArgumentsAssignment_2_2_2(), "rule__BsplProtocolMember__RawArgumentsAssignment_2_2_2");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getTypeAssignment_2_2_3_1(), "rule__BsplProtocolMember__TypeAssignment_2_2_3_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getFromAssignment_2_3_1(), "rule__BsplProtocolMember__FromAssignment_2_3_1");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getRawTargetAssignment_2_3_3(), "rule__BsplProtocolMember__RawTargetAssignment_2_3_3");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getNameAssignment_2_3_5(), "rule__BsplProtocolMember__NameAssignment_2_3_5");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getParametersAssignment_2_3_6_1_0(), "rule__BsplProtocolMember__ParametersAssignment_2_3_6_1_0");
-			builder.put(grammarAccess.getBsplProtocolMemberAccess().getParametersAssignment_2_3_6_1_1_1(), "rule__BsplProtocolMember__ParametersAssignment_2_3_6_1_1_1");
-			builder.put(grammarAccess.getBsplMessageParameterAccess().getRawArgumentsAssignment(), "rule__BsplMessageParameter__RawArgumentsAssignment");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_0_0_1_0_0_0(), "rule__XVariableDeclaration__WriteableAssignment_0_0_1_0_0_0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_0_1(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_0_1");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_1_0(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_1_0");
@@ -1147,7 +1112,7 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXImportDeclarationAccess().getImportedTypeAssignment_1_1(), "rule__XImportDeclaration__ImportedTypeAssignment_1_1");
 			builder.put(grammarAccess.getXImportDeclarationAccess().getImportedNamespaceAssignment_1_2(), "rule__XImportDeclaration__ImportedNamespaceAssignment_1_2");
 			builder.put(grammarAccess.getTypeAccess().getUnorderedGroup_2_4_4(), "rule__Type__UnorderedGroup_2_4_4");
-			builder.put(grammarAccess.getTypeAccess().getUnorderedGroup_2_8_5(), "rule__Type__UnorderedGroup_2_8_5");
+			builder.put(grammarAccess.getTypeAccess().getUnorderedGroup_2_7_5(), "rule__Type__UnorderedGroup_2_7_5");
 			builder.put(grammarAccess.getEventMemberAccess().getUnorderedGroup_2_1_5(), "rule__EventMember__UnorderedGroup_2_1_5");
 			builder.put(grammarAccess.getCapacityMemberAccess().getUnorderedGroup_10(), "rule__CapacityMember__UnorderedGroup_10");
 			builder.put(grammarAccess.getAOPMemberAccess().getUnorderedGroup_2_4_5(), "rule__AOPMember__UnorderedGroup_2_4_5");
