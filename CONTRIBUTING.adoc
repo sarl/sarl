@@ -66,6 +66,7 @@ The SARL project is splitted into different sub-projects that may be compiled in
 * link:./sarl-sre[sarl-sre]: SARL runtime environment (or SARL virtual machine);
 * link:./sarl-docs[sarl-docs]: Tools and Doclet for the generation of the documentation, including the API documentation pages;
 * link:./sarl-cli[sarl-cli]: Set of command-line tools (sarlc, sarldoc, janus...);
+* link:./sarl-bspl[sarl-bspl]: SARL implementation of the BSPL protocol language;
 * link:./sarl-eclipse[sarl-eclipse]: Eclipse-based editor for SARL;
 * link:./sarl-officialdoc[sarl-officialdoc]: Markdown files of the official documentation of SARL.
 

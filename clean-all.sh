@@ -27,6 +27,10 @@ mvn clean "$@"
 cd "$CDIR/sarl-cli"
 mvn clean "$@"
 
+# SARL implementation of BSPL
+cd "$CDIR/sarl-bspl"
+mvn clean "$@"
+
 # Build Eclipse tools
 cd "$CDIR/sarl-eclipse"
 mvn clean "$@"
