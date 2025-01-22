@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -19,21 +19,23 @@
  * limitations under the License.
  */
 
-package io.sarl.api.core
+package io.sarl.api.core.tests.spaces.mocks;
+
+import io.sarl.api.core.spaces.Participant;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.EventListener;
 
 /**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
- *
- * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+@SuppressWarnings("all")
+public final class ParticipantMock extends Participant {
 
+	public ParticipantMock(Address address, EventListener eventListener) {
+		super(address, eventListener);
+	}
+
+}

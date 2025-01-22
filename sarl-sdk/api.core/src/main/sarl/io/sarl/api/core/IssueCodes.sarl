@@ -21,19 +21,29 @@
 
 package io.sarl.api.core
 
-/**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
+import java.util.Collection
+
+/** List of all the issue codes that are related to the SARL core SDK.
  *
- * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
+ * @since 3.0.12.0 in Janus SRE
+ * @since 0.15 in SARL SDK
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+class IssueCodes {
 
+	protected static val PREFIX = "io.sarl.api.core.IssueCodes."
+
+	public static val CANNOT_EMIT_IN_SPACE = PREFIX + "cannot_emit_in_space"
+
+	/** Replies all the classes that are containing issue codes related to SARL core SDK.
+	 *
+	 * @return the collection of containers of issue codes.
+	 */
+	static def getIssueCodeContainers : Collection<Class<?>> {
+		#[typeof(IssueCodes)]
+	}
+
+}

@@ -19,21 +19,27 @@
  * limitations under the License.
  */
 
-package io.sarl.api.core
+package io.sarl.api.core.spaces
 
-/**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
- *
- * @author $Author: srodriguez$
+import io.sarl.lang.core.Space
+import java.util.EventListener
+
+/** 
+ * Listener on events related to the space.
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
+ * @since 0.15
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+interface SpaceListener extends EventListener {
 
+	/** 
+	 * Invoked when the space could be destroyed.
+	 * 
+	 * @param space reference to the created space.
+	 */
+	def destroyableSpace(^space : Space)
+
+}

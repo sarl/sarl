@@ -19,21 +19,34 @@
  * limitations under the License.
  */
 
-package io.sarl.api.core
+package io.sarl.api.core.spaces
 
-/**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
- *
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.EventListener
+
+/** 
+ * Default implementation of an event space which has a local repository.
+ * 
  * @author $Author: srodriguez$
+ * @author $Author: ngaud$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
+ * @since 0.15
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
+	def registerStrongParticipant(entity : EventListener) : Address {
+		entity.registerToSpace(false)
+	}
+
+	def registerWeakParticipant(entity : EventListener) : Address {
+		entity.registerToSpace(true)
+	}
+
+	def unregister(entity : EventListener) : Address {
+		entity.unregisterFromSpace
+	}
+
+}

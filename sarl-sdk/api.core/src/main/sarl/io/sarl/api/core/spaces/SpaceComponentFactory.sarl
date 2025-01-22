@@ -1,0 +1,68 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.core.spaces
+
+import io.sarl.lang.core.util.ConcurrentList
+import io.sarl.lang.core.util.ConcurrentSet
+import java.util.Comparator
+import java.util.concurrent.ConcurrentMap
+
+
+/**
+ * Factory provided by the SRE for creating the components of a space.
+ *
+ * <p>SRE could provide a specific implementation of data structures
+ * with or without computer network support.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.15
+ */
+interface SpaceComponentFactory {
+
+	/** Create a list that could be used by the SRE.
+	 *
+	 * @param <E> the type of the elements in the list.
+	 * @return the created list; never {@code null}.
+	 */
+	def createList : ConcurrentList<E> with E 
+
+	/** Create a map that could be used by the SRE.
+	 *
+	 * @param <K> the type of the keys in the map.
+	 * @param <V> the type of the values in the map.
+	 * @param comparator the comparator to be used for comparing the keys. 
+	 * @return the created map; never {@code null}.
+	 */
+	def createMap(comparator : Comparator<? super K> = null) : ConcurrentMap<K, V> with K, V 
+
+	/** Create a set that could be used by the SRE.
+	 *
+	 * @param <E> the type of the elements in the set.
+	 * @param comparator the comparator to be used for comparing the set elements. 
+	 * @return the created set; never {@code null}.
+	 */
+	def createSet(comparator : Comparator<? super E> = null) : ConcurrentSet<E> with E
+	
+}

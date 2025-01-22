@@ -19,21 +19,33 @@
  * limitations under the License.
  */
 
-package io.sarl.api.core
+package io.sarl.api.core.spaces
 
-/**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
+import org.eclipse.osgi.util.NLS
+
+/** Messages.
  *
- * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
+ * @ExcludeFromApidoc
+ * @since 0.15
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+final class Messages extends NLS {
 
+	@SuppressWarnings("unused_private_member")
+	static val BUNDLE_NAME = {
+		val name = typeof(Messages).getPackage.name + ".messages"
+		// initialize resource bundle
+		NLS.initializeMessages(name, typeof(Messages))
+		name
+	}
+
+	public static var AbstractEventSpace_0 : String
+	public static var AbstractEventSpace_1 : String
+
+	private new {
+	}
+
+}

@@ -22,8 +22,8 @@
 package io.sarl.api.javafx
 
 import io.sarl.api.core.AgentSpawned
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event

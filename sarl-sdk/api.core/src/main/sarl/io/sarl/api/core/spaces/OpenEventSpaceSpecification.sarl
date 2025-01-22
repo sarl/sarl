@@ -19,27 +19,21 @@
  * limitations under the License.
  */
 
-package io.sarl.api.core
+package io.sarl.api.core.spaces
+
+import io.sarl.lang.core.SpaceSpecification
 
 /**
- * Event driven interaction space where participants (agents, etc) are free register and unregister themselves.
- * A participant should only register once in this type of space.
- *
- * <p>A participant is a software entity that is registered in order to receive the events that are emitted into
- * the space. A participant is usually an agent, but not restricted to this type of software entity.
- * It could be also a user-interface module.
- *
- * <p>A weak participant is participant that could be considered as not a first-order member of the space.
- * When a participant is weak, it is not considered by functions such as {@link #isPseudoEmpty(java.lang.UUID)}.
+ * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
+ * No restrictions are enforced on the type of event.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpace}.
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpace extends io.sarl.api.core.spaces.OpenEventSpace {
+interface OpenEventSpaceSpecification extends SpaceSpecification<OpenEventSpace> {
 	//
 }
+

@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,21 +19,41 @@
  * limitations under the License.
  */
 
-package io.sarl.api.core
+package io.sarl.api.core.spaces
 
-/**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
- *
- * @author $Author: srodriguez$
+import io.sarl.lang.core.EventSpace
+import java.util.EventListener
+
+/** 
+ * A listener for the Java events on spaces.
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
+ * @since 0.15
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+interface SpaceParticipantListener extends EventListener {
 
+	/** 
+	 * Invoked when a participant has joined a space.
+	 * 
+	 * @param participant the participant.
+	 */
+	def participantJoined(participant : Participant)
+
+	/** 
+	 * Invoked when a participant has left a space.
+	 * 
+	 * @param participant the participant.
+	 */
+	def participantLeft(participant : Participant)
+
+	/** 
+	 * Set the default only useful for the first space to be created
+	 * 
+	 * @param space the default space of the default context
+	 */
+	def setDefaultSpace(^space : EventSpace)
+
+}

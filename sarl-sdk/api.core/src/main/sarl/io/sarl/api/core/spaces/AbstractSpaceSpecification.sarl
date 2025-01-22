@@ -1,0 +1,166 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.core.spaces
+
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.lang.core.Space
+import io.sarl.lang.core.SpaceID
+import io.sarl.lang.core.SpaceSpecification
+import java.util.function.Function;
+import java.util.logging.Logger
+import javax.inject.Inject
+import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.AccessorType
+import org.eclipse.xtext.xbase.lib.Pure
+
+/**
+ * Abstract implementation of a space specification that could provide
+ * a {@link SpaceComponentFactory space component factory} and
+ * a {@link SpaceParticipantListenerFactory participant listener factory}.
+ * These two factories usually depends on the SRE implementation. 
+ *
+ * @param <S> type of the spaces that may be created by this specification.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.15
+ */
+abstract class AbstractSpaceSpecification<S extends Space> implements SpaceSpecification<S> {
+
+	var spaceComponentFactoryProvider : Provider<SpaceComponentFactory>
+
+	/** Change the factory for building the space components.
+	 */
+	@Accessors(AccessorType::PUBLIC_SETTER)
+	var spaceComponentFactory : SpaceComponentFactory
+
+	var spaceParticipantListenerFactoryProvider : Provider<SpaceParticipantListenerFactory>
+
+	/** Change the factory for space participant listener.
+	 */
+	@Accessors(AccessorType::PUBLIC_SETTER)
+	var spaceParticipantListenerFactory : SpaceParticipantListenerFactory
+
+	var defaultSpaceProvider : Provider<OpenEventSpace>
+
+	/** Change the reference to the default space of the context in which
+	 * the created spaces will be created.
+	 *
+	 * @param defaultSpace the default space.
+	 */
+	@Accessors(AccessorType::PUBLIC_SETTER)
+	var defaultSpace : OpenEventSpace
+
+	/** A supplier of a logger for a space. The provider maps a space identifier to its logger. If there is no logger provider specified, an anonymous logger is provided.
+	 *
+	 * @param defaultSpace the default space.
+	 */
+	@Accessors(AccessorType::PUBLIC_SETTER)
+	var loggerProvider : Function<SpaceID, Logger>
+
+	/** Constructor.
+	 *
+	 * @param spaceComponentFactoryProvider the provider of space component factory. It may be {@code null}.
+	 * @param spaceParticipantListenerFactoryProvider the provider of listener on space participant changes. It may be {@code null}.
+	 */
+	@Inject
+	new (spaceComponentFactoryProvider : Provider<SpaceComponentFactory>, spaceParticipantListenerFactoryProvider : Provider<SpaceParticipantListenerFactory>) {
+		this.spaceComponentFactoryProvider = spaceComponentFactoryProvider
+		this.spaceParticipantListenerFactoryProvider = spaceParticipantListenerFactoryProvider
+	}
+
+	/** Replies the factory of the space components that are specific to the SRE implementation.
+	 *
+	 * @return the factory.
+	 */
+	@Pure
+	def getSpaceComponentFactory : SpaceComponentFactory {
+		if (this.spaceComponentFactory === null && this.spaceComponentFactoryProvider !== null) {
+			this.spaceComponentFactory = this.spaceComponentFactoryProvider.get
+		}
+		return this.spaceComponentFactory
+	}
+
+	/** Change the provider of a factory on space component.
+	 *
+	 * @param provider the new provider.
+	 */
+	def setSpaceComponentFactoryProvider(provider : Provider<SpaceComponentFactory>) : void {
+		this.spaceComponentFactoryProvider = provider
+	}
+
+	/** Replies the factory for building listeners on changes in the participants' list.
+	 *
+	 * @return the factory.
+	 */
+	@Pure
+	def getSpaceParticipantListenerFactory : SpaceParticipantListenerFactory {
+		if (this.spaceParticipantListenerFactory === null && this.spaceParticipantListenerFactoryProvider !== null) {
+			this.spaceParticipantListenerFactory = this.spaceParticipantListenerFactoryProvider.get
+		}
+		return this.spaceParticipantListenerFactory
+	}
+
+	/** Change the provider of a factory on space participant listener.
+	 *
+	 * @param provider the new provider.
+	 */
+	def setSpaceParticipantListenerFactoryProvider(provider : Provider<SpaceParticipantListenerFactory>) : void {
+		this.spaceParticipantListenerFactoryProvider = provider
+	}
+
+	/** Replies the reference to the default space of the context in which
+	 * the created spaces will be created.
+	 *
+	 * @return the default space.
+	 */
+	@Pure
+	def getDefaultSpace : OpenEventSpace {
+		if (this.defaultSpace === null && this.defaultSpaceProvider !== null) {
+			this.defaultSpace = this.defaultSpaceProvider.get
+		}
+		return this.defaultSpace
+	}
+
+	/** Change the provider of a default space.
+	 *
+	 * @param provider the new provider.
+	 */
+	def setDefaultSpaceProvider(provider : Provider<OpenEventSpace>) : void {
+		this.defaultSpaceProvider = provider
+	}
+
+	/** Replies the provider of logger for the create spaces.
+	 *
+	 * @return the provider that maps a space identifier to its logger. If there is no logger provider specified, an anonymous logger is provided.
+	 */
+	@Pure
+	def getLoggerProvider : Function<SpaceID, Logger> {
+		if (this.loggerProvider === null) {
+			this.loggerProvider = [ Logger::getAnonymousLogger ]
+		}
+		return this.loggerProvider
+	}
+
+}

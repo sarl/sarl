@@ -18,22 +18,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.api.core.spaces
 
-package io.sarl.api.core
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventSpace
+import io.sarl.lang.core.Scope
+import javax.inject.Singleton
 
-/**
- * Specification of an {@link OpenEventSpace} where agent can freely register and unregister.
- * No restrictions are enforced on the type of event.
- *
+/** 
+ * This service enables to route events on the local machine only.
+ * 
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Since 0.15, Replace by {@code io.sarl.api.core.spaces.OpenEventSpaceSpecification}.
+ * @since 0.15
  */
-@Deprecated(since = "0.15", forRemoval = true)
-interface OpenEventSpaceSpecification extends io.sarl.api.core.spaces.OpenEventSpaceSpecification {
-	//
-}
+@Singleton
+class LocalEventTransportService implements EventTransportService {
 
+	override routeEvent(^event : Event, ^space : EventSpace, scope : Scope<? super Address>) : boolean {
+		true
+	}
+
+}
