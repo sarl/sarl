@@ -28,8 +28,8 @@ import io.sarl.sre.janus.services.lifecycle.AbtractAgentCreatorProvider
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.InvalidMyAgent1
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.MyAgent1
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.MyAgent3
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.lang.reflect.Constructor
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach

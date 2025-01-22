@@ -34,9 +34,9 @@ import io.sarl.sre.janus.itests.internal.eventguard.performances.mocks.Agent5
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.exception.SreTimeoutException
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.io.StringWriter
 import java.util.Collection
 import java.util.concurrent.ConcurrentHashMap

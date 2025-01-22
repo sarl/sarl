@@ -26,8 +26,8 @@ import com.hazelcast.collection.ItemListener
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.topic.ITopic
 import com.hazelcast.topic.MessageListener
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope

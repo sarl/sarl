@@ -27,9 +27,9 @@ import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.LoggingConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.ServicesConfig
 import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import java.util.logging.Level
 import java.util.logging.Logger

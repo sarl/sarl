@@ -29,9 +29,9 @@ import io.sarl.sre.janus.itests.services.context.mocks.GetSpaceTestAgent
 import io.sarl.sre.janus.itests.services.context.mocks.GetSpacesClassTestAgent
 import io.sarl.sre.janus.itests.services.context.mocks.GetSpacesTestAgent
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 

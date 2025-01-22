@@ -21,11 +21,6 @@
 
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.core.Address
-import io.sarl.lang.core.EventListener
-import io.sarl.lang.core.SREutils
-import io.sarl.lang.core.annotation.PrivateAPI
-
 /** 
  * Description of a participant.
  * 
@@ -33,62 +28,10 @@ import io.sarl.lang.core.annotation.PrivateAPI
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6.0
+ * @since 3.0.6.0
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.Participant}.
  */
-class Participant {
-		
-	val participantAddress : Address
-
-	val participant : EventListener
-
-	/** Create a participant.
-	 * 
-	 * @param address the address of the participant.
-	 * @param eventListener the participant.
-	 */
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI(isCallerOnly = true)
-	package static def createAndInit(address : Address, eventListener : EventListener) : Participant {
-		var participant = new Participant(address, eventListener)
-		var links = new AddressLazyLinks
-		links.participant = participant
-		SREutils::setSreSpecificData(address, links)
-		return participant
-	}
-
-	/** Constructor.
-	 *
-	 * @param address the address of the participant.
-	 * @param eventListener the participant.
-	 */
-	private new (address : Address, eventListener : EventListener) {
-		this.participantAddress = address
-		this.participant = eventListener
-	}
-
-	/** Replies participant address. */
-	def getAddress : Address {
-		this.participantAddress
-	}
-
-	/** Replies the participant. */
-	def getParticipant : EventListener {
-		this.participant
-	}
-
-	override equals(obj : Object) : boolean {
-		if (obj instanceof Participant) {
-			return obj.address == address
-		}
-		return false
-	}
-
-	override hashCode : int {
-		address.hashCode
-	}
-
-	override toString : String {
-		this.participantAddress?.toString
-	}
-	
+@Deprecated(forRemoval = true, since = "3.0.15")
+class Participant extends io.sarl.api.core.spaces.Participant {
+	//	
 }

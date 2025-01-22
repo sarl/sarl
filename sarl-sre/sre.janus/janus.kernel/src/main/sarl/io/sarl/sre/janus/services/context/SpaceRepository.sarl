@@ -24,8 +24,10 @@ import io.bootique.di.BQModule
 import io.bootique.di.Binder
 import io.bootique.di.Injector
 import io.bootique.di.Key
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.AbstractSpace
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.SpaceListener
 import io.sarl.api.util.DefaultSpace
 import io.sarl.api.util.SmartListenerCollection
 import io.sarl.lang.core.EventSpace
@@ -42,8 +44,6 @@ import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.SubInjector
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.logging.LoggingService
-import io.sarl.sre.janus.spaces.AbstractSpace
-import io.sarl.sre.janus.spaces.SpaceListener
 import io.sarl.sre.janus.spaces.SreSpaceSpecificationFactory
 import java.io.Serializable
 import java.lang.ref.WeakReference

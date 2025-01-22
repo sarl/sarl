@@ -20,19 +20,16 @@
  */
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.core.EventSpace
-import java.util.logging.Logger
-
 /** Factory for a space participant event emitter.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 3.0.10
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceParticipantListenerFactory}.
  */
-interface SpaceParticipantListenerFactory {
-
-	def create(defaultSpace : EventSpace, logger : Logger) : SpaceParticipantListener
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+interface SpaceParticipantListenerFactory extends io.sarl.api.core.spaces.SpaceParticipantListenerFactory {
+	//
 }

@@ -26,9 +26,9 @@ import io.sarl.sre.janus.itests.internal.mocks.ContextJoinedAgent0
 import io.sarl.sre.janus.itests.internal.mocks.ContextJoinedAgent1
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.events.Bye
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest

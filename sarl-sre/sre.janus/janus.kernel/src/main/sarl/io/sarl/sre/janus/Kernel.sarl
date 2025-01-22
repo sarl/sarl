@@ -20,12 +20,13 @@
  */
 package io.sarl.sre.janus
 
+import io.sarl.api.core.spaces.SpaceWithParticipants
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.InformedEventListener
 import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.sre.janus.boot.configs.SreConfig
-import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.PlatformTools
 import io.sarl.sre.janus.services.context.ContextService
@@ -34,7 +35,6 @@ import io.sarl.sre.janus.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.janus.services.lifecycle.LifecycleService
 import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.services.logging.LoggingService
-import io.sarl.sre.janus.spaces.SpaceWithParticipants
 import java.lang.Thread.UncaughtExceptionHandler
 import java.lang.ref.WeakReference
 import java.util.UUID

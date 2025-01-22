@@ -35,9 +35,9 @@ import io.sarl.sre.janus.tests.skills.bic.mocks.MyAgent1
 import io.sarl.sre.janus.tests.skills.bic.mocks.MyBehavior
 import io.sarl.sre.janus.tests.skills.bic.mocks.MyLoggingSkill
 import io.sarl.sre.janus.tests.skills.bic.mocks.MyTimeSkill
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture

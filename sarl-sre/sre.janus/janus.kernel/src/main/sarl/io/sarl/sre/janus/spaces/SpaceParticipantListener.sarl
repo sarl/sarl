@@ -20,9 +20,6 @@
  */
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.core.EventSpace
-import java.util.EventListener
-
 /** 
  * A listener for the Java events on spaces.
  * 
@@ -30,29 +27,10 @@ import java.util.EventListener
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 3.0.10
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceParticipantListener}.
  */
-interface SpaceParticipantListener extends EventListener {
-
-	/** 
-	 * Invoked when a participant has joined a space.
-	 * 
-	 * @param participant the participant.
-	 */
-	def participantJoined(participant : Participant)
-
-	/** 
-	 * Invoked when a participant has left a space.
-	 * 
-	 * @param participant the participant.
-	 */
-	def participantLeft(participant : Participant)
-
-	/** 
-	 * Set the default only useful for the first space to be created
-	 * 
-	 * @param space - the default space of the default context
-	 */
-	def setDefaultSpace(^space : EventSpace)
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+interface SpaceParticipantListener extends io.sarl.api.core.spaces.SpaceParticipantListener {
+	//
 }

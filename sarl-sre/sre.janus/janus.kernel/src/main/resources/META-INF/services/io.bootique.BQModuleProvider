@@ -33,3 +33,5 @@ io.sarl.sre.janus.boot.internal.services.ProbeServiceModuleProvider
 
 io.sarl.sre.janus.boot.internal.skills.BuiltinCapacityModuleProvider
 io.sarl.sre.janus.boot.internal.skills.EventBusModuleProvider
+
+io.sarl.sre.janus.boot.internal.spaces.SpaceComponentFactoryModuleProvider

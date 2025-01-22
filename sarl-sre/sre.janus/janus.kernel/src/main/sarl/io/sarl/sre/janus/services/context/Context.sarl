@@ -21,8 +21,9 @@
 
 package io.sarl.sre.janus.services.context
 
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.sre.janus.KernelScope
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.AgentTrait
@@ -31,7 +32,6 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.lang.core.util.OutParameter
-import io.sarl.sre.janus.KernelScope
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.logging.LoggingService
 import java.text.MessageFormat

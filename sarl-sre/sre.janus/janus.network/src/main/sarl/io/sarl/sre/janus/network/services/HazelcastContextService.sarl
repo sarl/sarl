@@ -27,8 +27,8 @@ import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import com.hazelcast.map.MapEvent
 import io.bootique.di.Injector
-import io.sarl.lang.core.Agent
 import io.sarl.sre.janus.KernelScope
+import io.sarl.lang.core.Agent
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.context.Context

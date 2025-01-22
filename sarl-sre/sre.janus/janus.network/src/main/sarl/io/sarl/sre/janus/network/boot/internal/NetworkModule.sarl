@@ -31,6 +31,8 @@ import io.bootique.di.Binder;
 import io.bootique.di.BQModule;
 import io.bootique.di.Injector
 import io.bootique.di.Provides
+import io.sarl.api.core.spaces.EventTransportService
+import io.sarl.api.core.spaces.LocalEventTransportService
 import io.sarl.apputils.bootiqueapp.config.LogConfig
 import io.sarl.sre.janus.boot.internal.services.ContextServiceModule
 import io.sarl.sre.janus.network.boot.configs.JoinMethod
@@ -43,8 +45,6 @@ import io.sarl.sre.janus.services.context.LocalSpaceRepository
 import io.sarl.sre.janus.services.context.MemoryBasedContextService
 import io.sarl.sre.janus.services.context.SpaceRepository
 import io.sarl.sre.janus.services.logging.LoggingService
-import io.sarl.sre.janus.spaces.EventTransportService
-import io.sarl.sre.janus.spaces.LocalEventTransportService
 import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Arrays

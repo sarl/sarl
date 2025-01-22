@@ -26,9 +26,9 @@ import io.sarl.sre.janus.services.executor.jreservice.JreExecutorService
 import io.sarl.sre.janus.services.executor.tasks.SreCallable
 import io.sarl.sre.janus.services.executor.tasks.SreRunnable
 import io.sarl.sre.janus.tests.services.executor.AbstractExecutorServiceTest
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.lang.Thread.UncaughtExceptionHandler
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService

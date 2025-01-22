@@ -25,8 +25,8 @@ import io.sarl.api.core.AgentKillFailure
 import io.sarl.api.core.AgentKilled
 import io.sarl.api.core.AgentSpawnFailure
 import io.sarl.api.core.AgentSpawned
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
@@ -39,9 +39,9 @@ import io.sarl.sre.janus.services.lifecycle.AgentLife
 import io.sarl.sre.janus.services.lifecycle.ContextReference
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
 import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach

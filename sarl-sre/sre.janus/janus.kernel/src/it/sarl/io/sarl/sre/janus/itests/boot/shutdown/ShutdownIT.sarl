@@ -35,9 +35,9 @@ import io.sarl.sre.test.framework.agents.InfiniteLifeTestingAgent
 import io.sarl.sre.test.framework.context.LogTrackingMode
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.exception.SreTimeoutException
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag

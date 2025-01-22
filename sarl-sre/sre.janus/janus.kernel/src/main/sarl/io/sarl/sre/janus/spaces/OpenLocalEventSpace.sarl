@@ -21,7 +21,6 @@
 
 package io.sarl.sre.janus.spaces
 
-import io.sarl.api.core.OpenEventSpace
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
 
@@ -34,24 +33,14 @@ import io.sarl.lang.core.EventListener
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.OpenLocalEventSpace}.
  */
-class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
+@Deprecated(forRemoval = true, since = "3.0.15")
+class OpenLocalEventSpace extends io.sarl.api.core.spaces.OpenLocalEventSpace {
 
 	@Deprecated(since = "3.0.10", forRemoval = true)
 	def register(entity : EventListener, weakParticipant : boolean) : Address {
 		entity.registerToSpace(weakParticipant)
-	}
-
-	def registerStrongParticipant(entity : EventListener) : Address {
-		entity.registerToSpace(false)
-	}
-
-	def registerWeakParticipant(entity : EventListener) : Address {
-		entity.registerToSpace(true)
-	}
-
-	def unregister(entity : EventListener) : Address {
-		entity.unregisterFromSpace
 	}
 
 }

@@ -21,8 +21,6 @@
 
 package io.sarl.sre.janus.spaces
 
-import java.lang.ref.WeakReference
-
 /** 
  * Links from an address to another component of the SRE.
  * 
@@ -33,38 +31,10 @@ import java.lang.ref.WeakReference
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.7.0
+ * @since 3.0.7.0
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AddressLazyLinks}.
  */
-class AddressLazyLinks {
-
-	var participant : WeakReference<Participant>
-
-	/** Replies the link to the participant.
-	 *
-	 * @return the link to the participant, {@code null} if none.
-	 */
-	def getParticipant : Participant {
-		this.participant?.get
-	}
-
-	/** Change the link to the participant.
-	 * 
-	 * @param participant the link to the participant, {@code null} if none.
-	 */
-	def setParticipant(participant : Participant) {
-		if (participant === null) {
-			this.participant = null;
-		} else {
-			this.participant = new WeakReference(participant)
-		}
-	}
-
-	override toString : String {
-		var p = getParticipant
-		if (p !== null) {
-			return p. toString
-		}
-		return "<?>"
-	}
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+class AddressLazyLinks extends io.sarl.api.core.spaces.AddressLazyLinks {
+	//
 }

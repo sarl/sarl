@@ -40,8 +40,12 @@ final class Messages extends NLS {
 		name
 	}
 
+	@Deprecated(forRemoval = true, since = "3.0.15")
 	public static var AbstractEventSpace_0 : String
+
+	@Deprecated(forRemoval = true, since = "3.0.15")
 	public static var AbstractEventSpace_1 : String
+
 	public static var AbstractEventSpace_2 : String
 
 	private new {

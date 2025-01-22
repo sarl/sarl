@@ -20,10 +20,6 @@
  */
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.core.Address
-import io.sarl.lang.core.Event
-import io.sarl.lang.core.EventSpace
-import io.sarl.lang.core.Scope
 import javax.inject.Singleton
 
 /** 
@@ -34,25 +30,12 @@ import javax.inject.Singleton
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 3.0.8
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.EventTransportService}.
  */
-interface EventTransportService {
-
-	/** 
-	 * Manages events transmission, deciding when to forward it on the network or/and to route it locally
-	 * 
-	 * <p>Locally, this function emits the event <strong>only on the internal event bus</strong> of the listeners.
-	 * 
-	 * <p>Locally, this function launches a task for each matching listener.
-	 * 
-	 * @param event the event to emit.
-	 * @param space the local space in which the event should be routed.
-	 * @param scope description of the scope of the event, i.e. the receivers of the event.
-	 * @return {@code true} if the message should be also routed locally by the space instance itself.
-	 *     {@code false} if the space instance must not route the event.
-	 */
-	def routeEvent(^event : Event, ^space : EventSpace, scope : Scope<? super Address>) : boolean
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+interface EventTransportService extends io.sarl.api.core.spaces.EventTransportService {
+	//
 }
 
 /** 
@@ -63,13 +46,11 @@ interface EventTransportService {
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 3.0.8
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.LocalEventTransportService}.
  */
 @Singleton
-class LocalEventTransportService implements EventTransportService {
-
-	override routeEvent(^event : Event, ^space : EventSpace, scope : Scope<? super Address>) : boolean {
-		true
-	}
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+class LocalEventTransportService extends io.sarl.api.core.spaces.LocalEventTransportService {
+	//
 }

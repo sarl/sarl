@@ -25,8 +25,8 @@ import io.sarl.api.core.Behaviors
 import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.ExternalContextAccess
 import io.sarl.api.core.Initialize
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID

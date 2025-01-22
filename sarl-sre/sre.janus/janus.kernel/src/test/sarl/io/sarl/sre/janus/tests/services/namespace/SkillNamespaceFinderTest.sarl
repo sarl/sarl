@@ -21,22 +21,22 @@
 
 package io.sarl.sre.janus.tests.services.namespace
 
-import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.spaces.Participant
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.SpaceWithParticipants
 import io.sarl.api.naming.name.SkillName
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Capacity
+import io.sarl.lang.core.InformedEventListener
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.namespace.SkillNamespaceFinder
-import io.sarl.sre.janus.spaces.Participant
-import io.sarl.sre.janus.spaces.SpaceWithParticipants
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

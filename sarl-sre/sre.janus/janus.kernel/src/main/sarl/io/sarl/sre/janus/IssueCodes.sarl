@@ -35,6 +35,10 @@ class IssueCodes {
 
 	protected static val PREFIX = "io.sarl.sre.IssueCodes."
 
+	/**
+	 * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.IssueCodes#CANNOT_EMIT_IN_SPACE}.
+	 */
+	@Deprecated(forRemoval = true, since = "3.0.15")
 	public static val CANNOT_EMIT_IN_SPACE = PREFIX + "cannot_emit_in_space"
 
 	public static val NULL_AGENT_TASK = PREFIX + "null_agent_task"

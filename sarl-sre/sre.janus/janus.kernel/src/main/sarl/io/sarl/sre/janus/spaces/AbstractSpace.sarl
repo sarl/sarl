@@ -21,77 +21,30 @@
 
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.core.SRESpecificDataContainer
-import io.sarl.lang.core.Space
-import io.sarl.lang.core.SpaceID
-import java.lang.ref.WeakReference
-import java.util.EventListener
-
 /** 
  * Abstract implementation of a space.
- * 
+ *
  * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AbstractSpace}.
  */
-abstract class AbstractSpace extends SRESpecificDataContainer implements Space {
-
-	val id : SpaceID
-
-	var listener : WeakReference<SpaceListener>
-
-	/**
-	 * Constructs a space.
-	 *
-	 * @param id identifier of the space.
-	 */
-	new (id : SpaceID) {
-		this.id = id
-	}
-
-	/** Change the listener on the space events.
-	 */
-	def setSpaceListenerIfNone(listener : SpaceListener) {
-		if (listener === null) {
-			this.listener = null
-		} else if (this.listener === null) {
-			this.listener = new WeakReference(listener)
-		}
-	}
-	
-	/** Fire the event that indicates the space could be destroyed.
-	 */
-	protected def fireDestroyableSpace() {
-		var listen = this.listener?.get
-		if (listen !== null) {
-			listen.destroyableSpace(this)
-		}
-	}
-
-	def toString : String {
-		this.spaceID.toString
-	}
-
-	final def getSpaceID : SpaceID {
-        this.id
-    }
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+abstract class AbstractSpace extends io.sarl.api.core.spaces.AbstractSpace {
+	//
 }
 
 /** 
  * Listener on events related to the space.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceListener}.
  */
-interface SpaceListener extends EventListener {
-	/** 
-	 * Invoked when the space could be destroyed.
-	 * 
-	 * @param space reference to the created space.
-	 */
-	def destroyableSpace(^space : Space)
+@Deprecated(forRemoval = true, since = "3.0.15")
+interface SpaceListener extends io.sarl.api.core.spaces.SpaceListener {
+	//
 }

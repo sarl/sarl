@@ -22,16 +22,16 @@
 package io.sarl.sre.janus.tests.spaces
 
 import io.bootique.di.Injector
-import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.SpaceComponentFactory
+import io.sarl.api.core.spaces.SpaceParticipantListenerFactory
 import io.sarl.lang.core.EventSpaceSpecification
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.sre.janus.services.logging.LoggingService
-import io.sarl.sre.janus.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.janus.spaces.SreOpenEventSpaceSpecification
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -76,9 +76,8 @@ class SreOpenEventSpaceSpecificationTest {
 	def setUp : void {
 		this.spaceId = new SpaceID(UUID::randomUUID, UUID::randomUUID, typeof(EventSpaceSpecification))
 		this.openMocks
-		this.specification = new SreOpenEventSpaceSpecification(this.injector,
-			typeof(OpenEventSpace).mock, typeof(SpaceParticipantListenerFactory).mock,
-			typeof(LoggingService).mock)
+		this.specification = new SreOpenEventSpaceSpecification(this.injector, [typeof(SpaceComponentFactory).mock], [typeof(SpaceParticipantListenerFactory).mock])
+		this.specification.setDefaultSpaceProvider [typeof(OpenEventSpace).mock]
 	}
 
 	@Test

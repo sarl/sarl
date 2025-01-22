@@ -28,6 +28,8 @@ import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.topic.ITopic
 import com.hazelcast.topic.Message
 import com.hazelcast.topic.MessageListener
+import io.sarl.api.core.spaces.AbstractEventSpace
+import io.sarl.api.core.spaces.EventTransportService
 import io.sarl.api.naming.name.SpaceName
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Event
@@ -37,8 +39,6 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.logging.LoggingService
-import io.sarl.sre.janus.spaces.AbstractEventSpace
-import io.sarl.sre.janus.spaces.EventTransportService
 import java.io.Serializable
 import java.text.MessageFormat
 import java.util.UUID

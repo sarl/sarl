@@ -26,6 +26,7 @@ import io.bootique.di.BQModule
 import io.bootique.di.Binder
 import io.bootique.di.Provides
 import io.sarl.sre.janus.KernelScope
+import io.sarl.api.core.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.janus.internal.AgentEventEmitter
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.ContextMemberEventEmitter
@@ -40,7 +41,6 @@ import io.sarl.sre.janus.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.skills.bic.FailureListenerFactory
-import io.sarl.sre.janus.spaces.SpaceParticipantListenerFactory
 import javax.inject.Provider
 import javax.inject.Singleton
 

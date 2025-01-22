@@ -20,10 +20,7 @@
  */
 package io.sarl.sre.janus.spaces
 
-import io.sarl.lang.core.EventListener
-import io.sarl.lang.core.Space
 import io.sarl.lang.core.annotation.PrivateAPI
-import java.util.UUID
 
 /** 
  * Space with participants that exhibits the participants' list.
@@ -32,35 +29,12 @@ import java.util.UUID
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 3.0.10
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceWithParticipants}.
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
 @PrivateAPI
-interface SpaceWithParticipants extends Space {
-
-	/** Apply the given procedure to each of the strong participants.
-	 * This function ignores the weak participants.
-	 * 
-	 * @param callback the lambda to invoke.
-	 * @since 0.11
-	 */
-	def forEachStrongParticipant(callback : (UUID, Participant) => void);
-
-
-	/** Apply the given procedure to each of the weak participants.
-	 * This function ignores the strong participants.
-	 * 
-	 * @param callback the lambda to invoke.
-	 * @since 0.11
-	 */
-	def forEachWeakParticipant(callback : (UUID, Participant)=>void);
-
-	/** Replies the event listener with the given identifier into the registered strong participants.
-	 * 
-	 * @param target the identifier of the event listener to search for.
-	 * @return the event listener or {@code null} if there is no event listener found.
-	 * @since 0.11
-	 */
-	def getListenerFromStrongParticipant(target : UUID) : EventListener
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+interface SpaceWithParticipants extends io.sarl.api.core.spaces.SpaceWithParticipants {
+	//
 }

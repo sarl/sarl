@@ -23,8 +23,8 @@ package io.sarl.sre.test.framework.context
 
 import io.sarl.api.core.AgentKilled
 import io.sarl.api.core.AgentSpawned
-import io.sarl.api.core.OpenEventSpace
 import io.sarl.api.core.SpaceDestroyed
+import io.sarl.api.core.spaces.OpenEventSpace
 import io.sarl.apputils.bootiqueapp.config.Level
 import io.sarl.apputils.bootiqueapp.config.LogConfig
 import io.sarl.lang.core.Agent

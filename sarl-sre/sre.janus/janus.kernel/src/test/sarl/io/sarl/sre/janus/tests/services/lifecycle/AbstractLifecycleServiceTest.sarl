@@ -23,8 +23,8 @@ package io.sarl.sre.janus.tests.services.lifecycle
 
 import io.sarl.api.core.Destroy
 import io.sarl.api.core.Initialize
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.api.util.SarlSpecificationChecker
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
@@ -54,9 +54,9 @@ import io.sarl.sre.janus.tests.services.lifecycle.mocks.InvalidMyAgent1
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.InvalidMyAgent2
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.MyAgent0
 import io.sarl.sre.janus.tests.services.lifecycle.mocks.MyEventBus
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID

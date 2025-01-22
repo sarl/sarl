@@ -20,15 +20,15 @@
  */
 package io.sarl.sre.janus.services.namespace
 
+import io.sarl.api.core.spaces.SpaceWithParticipants
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.namespace.INamespaceFinder
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.InformedEventListener
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.annotation.PrivateAPI
-import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextService
-import io.sarl.sre.janus.spaces.SpaceWithParticipants
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 

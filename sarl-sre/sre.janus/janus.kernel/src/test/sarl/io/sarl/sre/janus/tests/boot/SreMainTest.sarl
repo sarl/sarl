@@ -40,10 +40,10 @@ import io.sarl.sre.janus.boot.configs.subconfigs.NoBootAgentNameException
 import io.sarl.sre.janus.services.lifecycle.LifecycleService
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.mockito.ModuleMock
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.logging.Level
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

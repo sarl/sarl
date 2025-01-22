@@ -26,9 +26,9 @@ import io.sarl.sre.janus.boot.configs.subconfigs.EventBusType
 import io.sarl.sre.janus.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.janus.itests.internal.eventguard.polymorphic.mocks.Agent1
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

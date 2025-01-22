@@ -21,8 +21,8 @@
 
 package io.sarl.sre.janus.tests.services.context
 
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
@@ -34,9 +34,9 @@ import io.sarl.sre.janus.services.context.SpaceRepositoryListener
 import io.sarl.sre.janus.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import java.util.logging.Logger
 import javax.inject.Provider

@@ -1,0 +1,85 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.janus.spaces
+
+import io.bootique.di.Injector
+import io.sarl.api.core.spaces.AbstractSpaceSpecification
+import io.sarl.api.core.spaces.OpenLocalEventSpace
+import io.sarl.api.core.spaces.SpaceComponentFactory
+import io.sarl.api.core.spaces.SpaceParticipantListenerFactory
+import io.sarl.lang.core.Space
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.janus.KernelScope
+import java.util.function.Supplier
+import java.util.logging.Logger
+import javax.inject.Inject
+import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * Abstract specification for standard event spaces into the SRE. 
+ *
+ * @param <S> the type of space that is created by this specification.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 3.0.10
+ */
+abstract class AbstractSreEventSpaceSpecification<S extends Space> extends AbstractSpaceSpecification<S> {
+
+	/** Replies the injector used by the SRE.
+	 *
+	 * @return the injector.
+	 */
+	@Accessors
+	val injector : Injector
+
+	/** Constructor.
+	 *
+	 * @param injector the injector to be used by this specification.
+	 * @param spaceComponentFactoryProvider the provider of space component factory.
+	 * @param spaceParticipantListenerFactoryProvider the provider of listener on space participant changes.
+	 */
+	@Inject
+	new (injector : Injector, spaceComponentFactoryProvider : Provider<SpaceComponentFactory>, @KernelScope spaceParticipantListenerFactoryProvider : Provider<SpaceParticipantListenerFactory>) {
+		super(spaceComponentFactoryProvider, spaceParticipantListenerFactoryProvider)
+		this.injector = injector
+	}
+
+	protected def createSpaceInstance(id : SpaceID, params : Object*) : OpenLocalEventSpace {
+		val logger = getLoggerProvider.apply(id)
+		val dftSpace = getDefaultSpace
+		val listener = this.spaceParticipantListenerFactory.create(dftSpace, logger)
+		val loggerProvider : Supplier<Logger> = [ logger ]
+		val factory = getSpaceComponentFactory
+		val strongParticipants = factory.createMap
+		val weakParticipants = factory.createMap
+		val ^space = new OpenLocalEventSpace(id, listener, loggerProvider, strongParticipants, weakParticipants) 
+		if (dftSpace === null) { //Only useful for the default space of the default context
+			listener.defaultSpace = ^space;
+		}
+		this.injector.injectMembers(^space)
+		return ^space
+	}
+
+}

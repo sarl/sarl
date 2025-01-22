@@ -24,7 +24,6 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
-import io.sarl.lang.core.annotation.PrivateAPI
 
 /** 
  * Entity capable listening to events inside an Interaction {@link Space}.
@@ -40,18 +39,10 @@ import io.sarl.lang.core.annotation.PrivateAPI
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 3.0.10
+ * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.lang.core.InformedEventListener}.
  */
-interface InformedEventListener extends EventListener {
-
-	/** Replies the owner of this listener.
-	 * <p>This function is part of the private API and should not be invoked
-	 * outside the implementation of the SRE.
-	 *
-	 * @return the agent instance.
-	 */
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI
-	def getOwnerInstance : Agent
-
+@Deprecated(forRemoval = true, since = "3.0.15")
+interface InformedEventListener extends io.sarl.lang.core.InformedEventListener {
+	//
 }

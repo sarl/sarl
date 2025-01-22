@@ -30,9 +30,9 @@ import io.sarl.sre.janus.itests.bugs.to1000.bug902.mocks.TopAgentStringDouble
 import io.sarl.sre.janus.itests.bugs.to1000.bug902.mocks.TopAgentStringFloat
 import io.sarl.sre.janus.itests.bugs.to1000.bug902.mocks.TopAgentUUIDInteger
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.Arrays
 import java.util.UUID
 import org.arakhne.afc.bootique.variables.VariableNames

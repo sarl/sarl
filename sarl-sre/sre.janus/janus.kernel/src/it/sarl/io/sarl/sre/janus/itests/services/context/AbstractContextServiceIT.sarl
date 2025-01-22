@@ -27,9 +27,9 @@ import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.janus.itests.services.context.mocks.GetContextTestAgent
 import io.sarl.sre.janus.itests.services.context.mocks.GetRootContextTestAgent
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith

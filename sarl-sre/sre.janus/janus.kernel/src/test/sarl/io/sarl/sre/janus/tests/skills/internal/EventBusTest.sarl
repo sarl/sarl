@@ -28,9 +28,9 @@ import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.janus.skills.internal.EventBus
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.Collection
 import java.util.logging.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1

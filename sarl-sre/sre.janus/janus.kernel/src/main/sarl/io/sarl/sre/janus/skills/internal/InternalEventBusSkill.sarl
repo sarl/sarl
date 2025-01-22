@@ -23,11 +23,11 @@ package io.sarl.sre.janus.skills.internal
 import io.sarl.api.core.Logging
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
+import io.sarl.lang.core.InformedEventListener
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.lang.core.util.OutParameter
-import io.sarl.sre.janus.capacities.InformedEventListener
 import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector

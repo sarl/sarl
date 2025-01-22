@@ -31,9 +31,9 @@ import io.sarl.sre.janus.tests.framework.SreTestUtilities
 import io.sarl.sre.janus.tests.internal.mocks.BehSkill
 import io.sarl.sre.janus.tests.internal.mocks.LogSkill
 import io.sarl.sre.janus.tests.internal.mocks.MyAgent0
-import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.PropertyRestoreExtension
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
