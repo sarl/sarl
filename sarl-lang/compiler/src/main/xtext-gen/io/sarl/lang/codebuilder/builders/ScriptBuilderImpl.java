@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -263,23 +263,6 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlArtifactBuilder addSarlArtifact(String name) {
 		ISarlArtifactBuilder builder = this.sarlArtifactProvider.get();
-		builder.eInit(getScript(), name, getTypeResolutionContext());
-		return builder;
-	}
-
-	/**
-	 * @see ScriptBuilderFragment.java : appendTo : 469
-	 */
-	@Inject
-	private Provider<ISarlProtocolBuilder> sarlProtocolProvider;
-
-	/** Create a SarlProtocol builder.
-	 * @param name the name of the SarlProtocol.
-	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
-	 */
-	public ISarlProtocolBuilder addSarlProtocol(String name) {
-		ISarlProtocolBuilder builder = this.sarlProtocolProvider.get();
 		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}

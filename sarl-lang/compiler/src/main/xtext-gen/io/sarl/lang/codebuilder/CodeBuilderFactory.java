@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,11 +47,6 @@ import io.sarl.lang.codebuilder.appenders.SarlEnumerationSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlEventSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlFieldSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlInterfaceSourceAppender;
-import io.sarl.lang.codebuilder.appenders.SarlProtocolCallSourceAppender;
-import io.sarl.lang.codebuilder.appenders.SarlProtocolMessageSourceAppender;
-import io.sarl.lang.codebuilder.appenders.SarlProtocolParameterSourceAppender;
-import io.sarl.lang.codebuilder.appenders.SarlProtocolRoleSourceAppender;
-import io.sarl.lang.codebuilder.appenders.SarlProtocolSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSkillSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSpaceSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
@@ -71,11 +66,6 @@ import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlProtocolBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlProtocolCallBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlProtocolMessageBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlProtocolParameterBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlProtocolRoleBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
@@ -878,59 +868,6 @@ public class CodeBuilderFactory {
 		return a;
 	}
 
-	/** Create the factory for a Sarl SarlProtocol.
-	 * @param name the name of the SarlProtocol
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 138
-	 */
-	@Pure
-	public ISarlProtocolBuilder createSarlProtocol(String name, ResourceSet resourceSet) {
-		 return createSarlProtocol(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlProtocol.
-	 * @param name the name of the SarlProtocol
-	 * @param resource the resource that must be used for
-	 *    containing the generated element, and resolving types from names.
-	 * @return the factory.
-	 * @see TopElementBuilderFragment.java : appendTo : 170
-	 */
-	@Pure
-	public ISarlProtocolBuilder createSarlProtocol(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addSarlProtocol(name);
-	}
-
-	/** Create the appender for a Sarl SarlProtocol.
-	 * @param name the name of the SarlProtocol
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 216
-	 */
-	@Pure
-	public SarlProtocolSourceAppender buildSarlProtocol(String name, ResourceSet resourceSet) {
-		SarlProtocolSourceAppender a = new SarlProtocolSourceAppender(createSarlProtocol(name, resourceSet));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the appender for a Sarl SarlProtocol.
-	 * @param name the name of the SarlProtocol
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see TopElementBuilderFragment.java : appendTo : 256
-	 */
-	@Pure
-	public SarlProtocolSourceAppender buildSarlProtocol(String name, Resource resource) {
-		SarlProtocolSourceAppender a = new SarlProtocolSourceAppender(createSarlProtocol(name, resource));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
 	/** Create the factory for a Sarl SarlClass.
 	 * @param name the name of the SarlClass
 	 * @param resourceSet the set of the resources that must be used for
@@ -1193,114 +1130,6 @@ public class CodeBuilderFactory {
 		return a;
 	}
 
-	/** Create the factory for a Sarl SarlProtocolMessage.
-	 * @param name the name of the SarlProtocolMessage
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 163
-	 */
-	@Pure
-	public ISarlProtocolMessageBuilder createSarlProtocolMessage(String name, ResourceSet resourceSet) {
-		return createSarlProtocolMessage(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlProtocolMessage.
-	 * @param name the name of the SarlProtocolMessage
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 196
-	 */
-	@Pure
-	public ISarlProtocolMessageBuilder createSarlProtocolMessage(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		ISarlProtocolBuilder containerBuilder = scriptBuilder.addSarlProtocol(getFooTypeName());
-		return containerBuilder.addSarlProtocolMessage(name);
-	}
-
-	/** Create the appender for a Sarl SarlProtocolMessage.
-	 * @param name the name of the SarlProtocolMessage
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 251
-	 */
-	@Pure
-	public SarlProtocolMessageSourceAppender buildSarlProtocolMessage(String name, ResourceSet resourceSet) {
-		SarlProtocolMessageSourceAppender a = new SarlProtocolMessageSourceAppender(createSarlProtocolMessage(name, resourceSet));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the appender for a Sarl SarlProtocolMessage.
-	 * @param name the name of the SarlProtocolMessage
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 292
-	 */
-	@Pure
-	public SarlProtocolMessageSourceAppender buildSarlProtocolMessage(String name, Resource resource) {
-		SarlProtocolMessageSourceAppender a = new SarlProtocolMessageSourceAppender(createSarlProtocolMessage(name, resource));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the factory for a Sarl SarlProtocolParameter.
-	 * @param name the name of the SarlProtocolParameter
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 163
-	 */
-	@Pure
-	public ISarlProtocolParameterBuilder createSarlProtocolParameter(String name, ResourceSet resourceSet) {
-		return createSarlProtocolParameter(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlProtocolParameter.
-	 * @param name the name of the SarlProtocolParameter
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 196
-	 */
-	@Pure
-	public ISarlProtocolParameterBuilder createSarlProtocolParameter(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		ISarlProtocolBuilder containerBuilder = scriptBuilder.addSarlProtocol(getFooTypeName());
-		return containerBuilder.addSarlProtocolParameter(name);
-	}
-
-	/** Create the appender for a Sarl SarlProtocolParameter.
-	 * @param name the name of the SarlProtocolParameter
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 251
-	 */
-	@Pure
-	public SarlProtocolParameterSourceAppender buildSarlProtocolParameter(String name, ResourceSet resourceSet) {
-		SarlProtocolParameterSourceAppender a = new SarlProtocolParameterSourceAppender(createSarlProtocolParameter(name, resourceSet));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the appender for a Sarl SarlProtocolParameter.
-	 * @param name the name of the SarlProtocolParameter
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 292
-	 */
-	@Pure
-	public SarlProtocolParameterSourceAppender buildSarlProtocolParameter(String name, Resource resource) {
-		SarlProtocolParameterSourceAppender a = new SarlProtocolParameterSourceAppender(createSarlProtocolParameter(name, resource));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
 	/** Create the factory for a Sarl SarlAction.
 	 * @param name the name of the SarlAction
 	 * @param resourceSet the set of the resources that must be used for
@@ -1409,60 +1238,6 @@ public class CodeBuilderFactory {
 		return a;
 	}
 
-	/** Create the factory for a Sarl SarlProtocolRole.
-	 * @param name the name of the SarlProtocolRole
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 163
-	 */
-	@Pure
-	public ISarlProtocolRoleBuilder createSarlProtocolRole(String name, ResourceSet resourceSet) {
-		return createSarlProtocolRole(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlProtocolRole.
-	 * @param name the name of the SarlProtocolRole
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 196
-	 */
-	@Pure
-	public ISarlProtocolRoleBuilder createSarlProtocolRole(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		ISarlProtocolBuilder containerBuilder = scriptBuilder.addSarlProtocol(getFooTypeName());
-		return containerBuilder.addSarlProtocolRole(name);
-	}
-
-	/** Create the appender for a Sarl SarlProtocolRole.
-	 * @param name the name of the SarlProtocolRole
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 251
-	 */
-	@Pure
-	public SarlProtocolRoleSourceAppender buildSarlProtocolRole(String name, ResourceSet resourceSet) {
-		SarlProtocolRoleSourceAppender a = new SarlProtocolRoleSourceAppender(createSarlProtocolRole(name, resourceSet));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the appender for a Sarl SarlProtocolRole.
-	 * @param name the name of the SarlProtocolRole
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 292
-	 */
-	@Pure
-	public SarlProtocolRoleSourceAppender buildSarlProtocolRole(String name, Resource resource) {
-		SarlProtocolRoleSourceAppender a = new SarlProtocolRoleSourceAppender(createSarlProtocolRole(name, resource));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
 	/** Create the factory for a Sarl SarlBehaviorUnit.
 	 * @param name the name of the SarlBehaviorUnit
 	 * @param resourceSet the set of the resources that must be used for
@@ -1513,60 +1288,6 @@ public class CodeBuilderFactory {
 	@Pure
 	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, Resource resource) {
 		SarlBehaviorUnitSourceAppender a = new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resource));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the factory for a Sarl SarlProtocolCall.
-	 * @param name the name of the SarlProtocolCall
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 163
-	 */
-	@Pure
-	public ISarlProtocolCallBuilder createSarlProtocolCall(String name, ResourceSet resourceSet) {
-		return createSarlProtocolCall(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlProtocolCall.
-	 * @param name the name of the SarlProtocolCall
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 196
-	 */
-	@Pure
-	public ISarlProtocolCallBuilder createSarlProtocolCall(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		ISarlProtocolBuilder containerBuilder = scriptBuilder.addSarlProtocol(getFooTypeName());
-		return containerBuilder.addSarlProtocolCall(name);
-	}
-
-	/** Create the appender for a Sarl SarlProtocolCall.
-	 * @param name the name of the SarlProtocolCall
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 251
-	 */
-	@Pure
-	public SarlProtocolCallSourceAppender buildSarlProtocolCall(String name, ResourceSet resourceSet) {
-		SarlProtocolCallSourceAppender a = new SarlProtocolCallSourceAppender(createSarlProtocolCall(name, resourceSet));
-		getInjector().injectMembers(a);
-		return a;
-	}
-
-	/** Create the appender for a Sarl SarlProtocolCall.
-	 * @param name the name of the SarlProtocolCall
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 * @see NamedMemberBuilderFragment.java : appendTo : 292
-	 */
-	@Pure
-	public SarlProtocolCallSourceAppender buildSarlProtocolCall(String name, Resource resource) {
-		SarlProtocolCallSourceAppender a = new SarlProtocolCallSourceAppender(createSarlProtocolCall(name, resource));
 		getInjector().injectMembers(a);
 		return a;
 	}

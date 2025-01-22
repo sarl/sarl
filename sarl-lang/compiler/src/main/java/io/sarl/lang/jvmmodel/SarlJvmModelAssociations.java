@@ -21,8 +21,6 @@
 
 package io.sarl.lang.jvmmodel;
 
-import com.google.inject.ImplementedBy;
-import com.google.inject.Singleton;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -32,6 +30,9 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmOperation;
+
+import com.google.inject.ImplementedBy;
+import com.google.inject.Singleton;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -46,7 +47,6 @@ import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlInterface;
-import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 
@@ -110,14 +110,6 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @since 0.6
 	 */
 	SarlArtifact getSarlArtifact(JvmGenericType jvmType);
-
-	/** Replies the SARL protocol associated to the given type.
-	 *
-	 * @param jvmType the JVM type.
-	 * @return the SARL element.
-	 * @since 0.14
-	 */
-	SarlProtocol getSarlProtocol(JvmGenericType jvmType);
 
 	/** Replies the SARL class associated to the given type.
 	 *
@@ -280,15 +272,6 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 		public SarlArtifact getSarlArtifact(JvmGenericType jvmType) {
 			final var primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlArtifact cvalue) {
-				return cvalue;
-			}
-			return null;
-		}
-
-		@Override
-		public SarlProtocol getSarlProtocol(JvmGenericType jvmType) {
-			final var primarySourceElement = getPrimarySourceElement(jvmType);
-			if (primarySourceElement instanceof SarlProtocol cvalue) {
 				return cvalue;
 			}
 			return null;

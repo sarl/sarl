@@ -19,32 +19,37 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.jvmmodel.fragments.bspl;
+package io.sarl.lang.core;
 
-import com.google.inject.ImplementedBy;
+import io.sarl.lang.core.annotation.PrivateAPI;
 
-import io.sarl.lang.jvmmodel.fragments.IBiStageInferrerFragment;
-import io.sarl.lang.jvmmodel.fragments.bspl.impl.ProtocolInferrerFragment;
-import io.sarl.lang.sarl.SarlProtocol;
-
-/** Fragment for inferred the protocols to the JVM model.
+/** 
+ * Entity capable listening to events inside an Interaction {@link Space}.
+ * 
+ * <p>{@link Space}s in SARL are event driven. Most of the time,
+ * {@link EventListener}s in a {@link Space} will be {@link Agent}s. However,
+ * any entity implementing the {@link EventListener} can interact inside an
+ * {@link EventSpace} (e.g. UI)
  *
+ * <p>This specific listening entity knows its owner and provides access to it.
+ * 
  * @author $Author: sgalland$
- * @author $Author: stedeschi$
- * @author $Author: mbaldoni$
- * @author $Author: cbaroglio$
- * @author $Author: rmicalizio$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.15
+ * @since 0.10 in Janus SRE
+ * @since 0.15 in SARL lang core
  */
-@ImplementedBy(ProtocolInferrerFragment.class)
-public interface IProtocolInferrerFragment extends IBiStageInferrerFragment<SarlProtocol> {
+public interface InformedEventListener extends EventListener {
 
-	@Override
-	default Class<SarlProtocol> getSupportedType() {
-		return SarlProtocol.class;
-	}
+	/** Replies the owner of this listener.
+	 *
+	 * <p>This function is part of the private API and should not be invoked
+	 * outside the implementation of the SRE.
+	 *
+	 * @return the agent instance.
+	 */
+	@PrivateAPI
+	Agent getOwnerInstance();
 
 }

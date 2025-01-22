@@ -23,6 +23,9 @@ package io.sarl.lang.core.util;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 /** Factory of collections that are not thread-safe.
  *
@@ -59,6 +62,27 @@ public class NoConcurrencyCollectionFactory implements ConcurrentCollectionFacto
 	@Override
 	public <T> ConcurrentSet<T> newSet(Comparator<? super T> comparator, Collection<T> toCopy) {
 		return new NoConcurrentTreeSet<>(toCopy);
+	}
+
+	@Override
+	public <T> ConcurrentList<T> newList() {
+		return new NoConcurrentCollectionLinkedDeque<>();
+	}
+
+	@Override
+	public <T> ConcurrentList<T> newList(List<T> toCopy) {
+		return new NoConcurrentCollectionLinkedDeque<>(toCopy);
+	}
+
+	@Override
+	public <K, V> ConcurrentMap<K, V> newMap(Comparator<? super K> comparator) {
+		return null;
+	}
+
+	@Override
+	public <K, V> ConcurrentMap<K, V> newMap(Comparator<? super K> comparator, Map<K, V> toCopy) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

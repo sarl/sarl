@@ -33,7 +33,7 @@ import java.util.LinkedList;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-class NoConcurrentCollectionLinkedDeque<T> extends LinkedList<T> implements ConcurrentCollection<T> {
+class NoConcurrentCollectionLinkedDeque<T> extends LinkedList<T> implements ConcurrentCollection<T>, ConcurrentList<T> {
 
 	private static final long serialVersionUID = -8579091213574817297L;
 

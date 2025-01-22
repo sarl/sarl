@@ -83,16 +83,11 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 			case SarlPackage.SARL_CASTED_EXPRESSION: return createSarlCastedExpression();
 			case SarlPackage.SARL_SPACE: return createSarlSpace();
 			case SarlPackage.SARL_ARTIFACT: return createSarlArtifact();
-			case SarlPackage.SARL_PROTOCOL: return createSarlProtocol();
 			case SarlPackage.SARL_AGENT: return createSarlAgent();
 			case SarlPackage.SARL_CAPACITY: return createSarlCapacity();
 			case SarlPackage.SARL_BEHAVIOR: return createSarlBehavior();
 			case SarlPackage.SARL_SKILL: return createSarlSkill();
 			case SarlPackage.SARL_FORMAL_PARAMETER: return createSarlFormalParameter();
-			case SarlPackage.SARL_PROTOCOL_ROLE: return createSarlProtocolRole();
-			case SarlPackage.SARL_PROTOCOL_MESSAGE: return createSarlProtocolMessage();
-			case SarlPackage.SARL_PROTOCOL_PARAMETER: return createSarlProtocolParameter();
-			case SarlPackage.SARL_PROTOCOL_CALL: return createSarlProtocolCall();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -336,18 +331,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @generated
 	 */
 	@Override
-	public SarlProtocol createSarlProtocol()
-	{
-		SarlProtocolImplCustom sarlProtocol = new SarlProtocolImplCustom();
-		return sarlProtocol;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public SarlAgent createSarlAgent()
 	{
 		SarlAgentImplCustom sarlAgent = new SarlAgentImplCustom();
@@ -400,54 +383,6 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	{
 		SarlFormalParameterImpl sarlFormalParameter = new SarlFormalParameterImpl();
 		return sarlFormalParameter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public SarlProtocolRole createSarlProtocolRole()
-	{
-		SarlProtocolRoleImplCustom sarlProtocolRole = new SarlProtocolRoleImplCustom();
-		return sarlProtocolRole;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public SarlProtocolMessage createSarlProtocolMessage()
-	{
-		SarlProtocolMessageImplCustom sarlProtocolMessage = new SarlProtocolMessageImplCustom();
-		return sarlProtocolMessage;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public SarlProtocolParameter createSarlProtocolParameter()
-	{
-		SarlProtocolParameterImplCustom sarlProtocolParameter = new SarlProtocolParameterImplCustom();
-		return sarlProtocolParameter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public SarlProtocolCall createSarlProtocolCall()
-	{
-		SarlProtocolCallImplCustom sarlProtocolCall = new SarlProtocolCallImplCustom();
-		return sarlProtocolCall;
 	}
 
 	/**

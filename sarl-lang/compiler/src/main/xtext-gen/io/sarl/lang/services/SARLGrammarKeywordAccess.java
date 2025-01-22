@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -516,13 +516,6 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getTypeAccess().getSpaceKeyword_2_5_2().getValue();
 	}
 
-	/** Keyword: {@code protocol}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getProtocolKeyword() {
-		return this.grammarAccess.getTypeAccess().getProtocolKeyword_2_7_2().getValue();
-	}
-
 	/** Keyword: {@code continue}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -814,7 +807,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getUsesKeyword() {
-		return this.grammarAccess.getBsplProtocolMemberAccess().getUsesKeyword_2_1_1().getValue();
+		return this.grammarAccess.getAOPMemberAccess().getUsesKeyword_2_1_1().getValue();
 	}
 
 	private static final String VOID = "void";
@@ -905,7 +898,6 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getEnumKeyword());
 			kws.add(getAbstractKeyword());
 			kws.add(getUsesKeyword());
-			kws.add(getProtocolKeyword());
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());
@@ -969,7 +961,6 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getAgentKeyword());
 			kws.add(getDispatchKeyword());
 			kws.add(getUsesKeyword());
-			kws.add(getProtocolKeyword());
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());

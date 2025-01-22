@@ -8,7 +8,7 @@
 # SARL is an general-purpose agent programming language.
 # More details on http://www.sarl.io
 #
-# Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+# Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,14 +55,14 @@ class SarlLexer(RegexLexer):
 			(r'//.*?\n', Comment.Single),
 			(r'/\*.*?\*/', Comment.Multiline),
 			(r'@[a-zA-Z_][\w.]*', Name.Decorator),
-			(r'(as|assert|assume|break|case|catch|continue|default|do|else|extends|finally|fires|for|if|implements|instanceof|new|on|requires|return|role|super|switch|throw|throws|try|typeof|uses|while|with)\b',
+			(r'(as|assert|assume|break|case|catch|continue|default|do|else|extends|finally|fires|for|if|implements|instanceof|new|on|requires|return|super|switch|throw|throws|try|typeof|uses|while|with)\b',
 			 Keyword),
 			(r'(abstract|def|dispatch|extension|final|native|override|private|protected|public|static|strictfp|synchronized|transient|val|var|volatile)\b', Keyword.Declaration),
 			 (r'(boolean|byte|char|double|float|int|long|short|void)\b',
 			  Keyword.Type),
 			 (r'(package)(\s+)', bygroups(Keyword.Namespace, Text)),
 			 (r'(false|it|null|occurrence|this|true|void)\b', Keyword.Constant),
-			 (r'(agent|annotation|artifact|behavior|capacity|class|enum|event|interface|protocol|skill|space)(\s+)', bygroups(Keyword.Declaration, Text),
+			 (r'(agent|annotation|artifact|behavior|capacity|class|enum|event|interface|skill|space)(\s+)', bygroups(Keyword.Declaration, Text),
 			  'class'),
 			 (r'(import)(\s+)', bygroups(Keyword.Namespace, Text), 'import'),
 			 (r'"(\\\\|\\"|[^"])*"', String),

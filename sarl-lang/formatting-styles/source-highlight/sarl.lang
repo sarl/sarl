@@ -7,7 +7,7 @@
 # SARL is an general-purpose agent programming language.
 # More details on http://www.sarl.io
 #
-# Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+# Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,9 +41,9 @@ label = '@[$[:alnum:]_.:^]+'
 normal = '\^[$[:alnum:]_]+'
 
 # Highlight the type declarations
-(keyword,normal,classname) = `(\<(?:agent|annotation|artifact|behavior|capacity|class|enum|event|interface|protocol|skill|space))([[:blank:]]+)([$[:alnum:]_]+)`
+(keyword,normal,classname) = `(\<(?:agent|annotation|artifact|behavior|capacity|class|enum|event|interface|skill|space))([[:blank:]]+)([$[:alnum:]_]+)`
 
-keyword = "abstract|agent|annotation|artifact|as|assert|assume|behavior|boolean|break|byte|capacity|case|catch|char|class|continue|def|default|dispatch|do|double|else|enum|event|extends|extension|final|finally|fires|float|for|if|implements|import|instanceof|int|interface|long|native|new|on|override|package|private|protected|protocol|public|requires|return|role|short|skill|space|static|strictfp|super|switch|synchronized|throw|throws|transient|try|typeof|uses|val|var|void|volatile|while|with"
+keyword = "abstract|agent|annotation|artifact|as|assert|assume|behavior|boolean|break|byte|capacity|case|catch|char|class|continue|def|default|dispatch|do|double|else|enum|event|extends|extension|final|finally|fires|float|for|if|implements|import|instanceof|int|interface|long|native|new|on|override|package|private|protected|public|requires|return|short|skill|space|static|strictfp|super|switch|synchronized|throw|throws|transient|try|typeof|uses|val|var|void|volatile|while|with"
 
 keyword = "false|it|null|occurrence|this|true|void"
 

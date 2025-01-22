@@ -112,12 +112,12 @@
       comment = 'Modifiers'
     },
     {
-      match = '\b(?:(?:agent)|(?:annotation)|(?:artifact)|(?:behavior)|(?:capacity)|(?:class)|(?:enum)|(?:event)|(?:interface)|(?:protocol)|(?:skill)|(?:space))\b';
+      match = '\b(?:(?:agent)|(?:annotation)|(?:artifact)|(?:behavior)|(?:capacity)|(?:class)|(?:enum)|(?:event)|(?:interface)|(?:skill)|(?:space))\b';
       name = 'keyword.other.declaration.sarl';
       comment = 'Type Declarations'
     },
     {
-      match = '\b(?:(?:as)|(?:assert)|(?:assume)|(?:break)|(?:case)|(?:catch)|(?:continue)|(?:default)|(?:do)|(?:else)|(?:extends)|(?:finally)|(?:fires)|(?:for)|(?:if)|(?:implements)|(?:instanceof)|(?:new)|(?:on)|(?:requires)|(?:return)|(?:role)|(?:super)|(?:switch)|(?:throw)|(?:throws)|(?:try)|(?:typeof)|(?:uses)|(?:while)|(?:with))\b';
+      match = '\b(?:(?:as)|(?:assert)|(?:assume)|(?:break)|(?:case)|(?:catch)|(?:continue)|(?:default)|(?:do)|(?:else)|(?:extends)|(?:finally)|(?:fires)|(?:for)|(?:if)|(?:implements)|(?:instanceof)|(?:new)|(?:on)|(?:requires)|(?:return)|(?:super)|(?:switch)|(?:throw)|(?:throws)|(?:try)|(?:typeof)|(?:uses)|(?:while)|(?:with))\b';
       name = 'keyword.control.sarl';
       comment = 'Standard Keywords'
     },

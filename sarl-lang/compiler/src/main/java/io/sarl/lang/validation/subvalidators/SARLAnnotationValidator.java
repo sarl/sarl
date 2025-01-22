@@ -35,11 +35,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
@@ -79,6 +74,12 @@ import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.inject.Inject;
+
 import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.annotation.EarlyExit;
 import io.sarl.lang.core.annotation.ErrorOnCall;
@@ -96,7 +97,6 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
-import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 
@@ -131,7 +131,6 @@ public class SARLAnnotationValidator extends AbstractSARLSubValidatorWithParentL
 		result.put(SarlBehavior.class, ElementType.TYPE);
 		result.put(SarlSpace.class, ElementType.TYPE);
 		result.put(SarlArtifact.class, ElementType.TYPE);
-		result.put(SarlProtocol.class, ElementType.TYPE);
 		result.put(SarlClass.class, ElementType.TYPE);
 		result.put(SarlInterface.class, ElementType.TYPE);
 		result.put(SarlEnumeration.class, ElementType.TYPE);

@@ -23,6 +23,9 @@ package io.sarl.lang.core.util;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 /** Factory of concurrent collections.
  *
@@ -49,6 +52,23 @@ public interface ConcurrentCollectionFactory {
 	 */
 	<T> ConcurrentCollection<T> newCollection(Collection<T> toCopy);
 
+	/** Create a concurrent list.
+	 *
+	 * @param <T> the type of the elements in the list.
+	 * @return a new instance of list.
+	 * @since 0.12
+	 */
+	<T> ConcurrentList<T> newList();
+
+	/** Create a concurrent list.
+	 *
+	 * @param <T> the type of the elements in the list.
+	 * @param toCopy the most to copy into the new instance.
+	 * @return a new instance of list.
+	 * @since 0.15
+	 */
+	<T> ConcurrentList<T> newList(List<T> toCopy);
+
 	/** Create a concurrent set.
 	 *
 	 * @param <T> the type of the elements in the set.
@@ -57,14 +77,35 @@ public interface ConcurrentCollectionFactory {
 	 */
 	<T> ConcurrentSet<T> newSet(Comparator<? super T> comparator);
 
-	/** Create a concurrent collection.
+	/** Create a concurrent set.
 	 *
-	 * @param <T> the type of the elements in the collection.
+	 * @param <T> the type of the elements in the set.
 	 * @param comparator the comparator of elements.
-	 * @param toCopy the collection to copy into the new instance.
-	 * @return a new instance of collection.
+	 * @param toCopy the set to copy into the new instance.
+	 * @return a new instance of set.
 	 */
 	<T> ConcurrentSet<T> newSet(Comparator<? super T> comparator, Collection<T> toCopy);
+
+	/** Create a concurrent map.
+	 *
+	 * @param <K> the type of the keys in the map.
+	 * @param <V> the type of the values in the map.
+	 * @param comparator the comparator of keys.
+	 * @return a new instance of map.
+	 * @since 0.15
+	 */
+	<K, V> ConcurrentMap<K, V> newMap(Comparator<? super K> comparator);
+
+	/** Create a concurrent map.
+	 *
+	 * @param <K> the type of the keys in the map.
+	 * @param <V> the type of the values in the map.
+	 * @param comparator the comparator of keys.
+	 * @param toCopy the map to copy into the new instance.
+	 * @return a new instance of map.
+	 * @since 0.15
+	 */
+	<K, V> ConcurrentMap<K, V> newMap(Comparator<? super K> comparator, Map<K, V> toCopy);
 
 }
 

@@ -30,9 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
@@ -72,6 +69,10 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.inject.Inject;
+
 import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.jvmmodel.SARLReadAndWriteTracking;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -80,7 +81,6 @@ import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -576,8 +576,6 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 					fullLabel.append(getGrammarAccess().getSpaceKeyword());
 				} else if (declaration instanceof SarlArtifact) {
 					fullLabel.append(getGrammarAccess().getArtifactKeyword());
-				} else if (declaration instanceof SarlProtocol) {
-					fullLabel.append(getGrammarAccess().getProtocolKeyword());
 				} else {
 					throw new IllegalStateException();
 				}

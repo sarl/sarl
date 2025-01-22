@@ -244,21 +244,4 @@ public class Messages extends NLS {
 	public static String SARLTypeValidator_18;
 	public static String SARLTypeValidator_19;
 
-	public static String BSPLValidator_1;
-	public static String BSPLValidator_2;
-	public static String BSPLValidator_3;
-	public static String BSPLValidator_4;
-	public static String BSPLValidator_5;
-	public static String BSPLValidator_6;
-	public static String BSPLValidator_7;
-	public static String BSPLValidator_8;
-	public static String BSPLValidator_9;
-	public static String BSPLValidator_10;
-	public static String BSPLValidator_11;
-	public static String BSPLValidator_12;
-	public static String BSPLValidator_13;
-	public static String BSPLValidator_14;
-	public static String BSPLValidator_15;
-	public static String BSPLValidator_16;
-
 }

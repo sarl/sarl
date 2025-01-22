@@ -23,6 +23,10 @@ package io.sarl.lang.core.util;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /** Factory of concurrent collections.
  *
@@ -59,6 +63,30 @@ public class DefaultConcurrentCollectionFactory implements ConcurrentCollectionF
 	@Override
 	public <T> ConcurrentSet<T> newSet(Comparator<? super T> comparator, Collection<T> toCopy) {
 		return new ConcurrentSetSkipListSet<>(toCopy);
+	}
+
+	@Override
+	public <T> ConcurrentList<T> newList() {
+		return new ConcurrentListCopyOnWriteList<>();
+	}
+
+	@Override
+	public <T> ConcurrentList<T> newList(List<T> toCopy) {
+		return new ConcurrentListCopyOnWriteList<>(toCopy);
+	}
+
+	@Override
+	public <K, V> ConcurrentMap<K, V> newMap(Comparator<? super K> comparator) {
+		return new ConcurrentSkipListMap<>(comparator);
+	}
+
+	@Override
+	public <K, V> ConcurrentMap<K, V> newMap(Comparator<? super K> comparator, Map<K, V> toCopy) {
+		final var map = new ConcurrentSkipListMap<K, V>(comparator);
+		if (toCopy != null) {
+			map.putAll(toCopy);
+		}
+		return map;
 	}
 
 }

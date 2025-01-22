@@ -198,15 +198,6 @@ public interface SarlFactory extends EFactory
 	SarlArtifact createSarlArtifact();
 
 	/**
-	 * Returns a new object of class '<em>Protocol</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Protocol</em>'.
-	 * @generated
-	 */
-	SarlProtocol createSarlProtocol();
-
-	/**
 	 * Returns a new object of class '<em>Agent</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -250,42 +241,6 @@ public interface SarlFactory extends EFactory
 	 * @generated
 	 */
 	SarlFormalParameter createSarlFormalParameter();
-
-	/**
-	 * Returns a new object of class '<em>Protocol Role</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Protocol Role</em>'.
-	 * @generated
-	 */
-	SarlProtocolRole createSarlProtocolRole();
-
-	/**
-	 * Returns a new object of class '<em>Protocol Message</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Protocol Message</em>'.
-	 * @generated
-	 */
-	SarlProtocolMessage createSarlProtocolMessage();
-
-	/**
-	 * Returns a new object of class '<em>Protocol Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Protocol Parameter</em>'.
-	 * @generated
-	 */
-	SarlProtocolParameter createSarlProtocolParameter();
-
-	/**
-	 * Returns a new object of class '<em>Protocol Call</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Protocol Call</em>'.
-	 * @generated
-	 */
-	SarlProtocolCall createSarlProtocolCall();
 
 	/**
 	 * Returns the package supported by this factory.

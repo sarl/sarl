@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlProtocolBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
@@ -247,15 +246,6 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 */
 	public ISarlArtifactBuilder addSarlArtifact(String name) {
 		 return this.builder.addSarlArtifact(name);
-	}
-
-	/** Create a SarlProtocol builder.
-	 * @param name the name of the SarlProtocol.
-	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
-	 */
-	public ISarlProtocolBuilder addSarlProtocol(String name) {
-		 return this.builder.addSarlProtocol(name);
 	}
 
 	/** Create a SarlClass builder.

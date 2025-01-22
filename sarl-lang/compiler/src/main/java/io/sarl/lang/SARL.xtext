@@ -84,11 +84,6 @@ Type returns xtend::XtendTypeDeclaration:
 		modifiers+=CommonModifier*
 		'artifact' name=ValidID '{' '}'
 	|
-		// Protocol
-		{SarlProtocol.annotationInfo = current}
-		modifiers+=CommonModifier*
-		'protocol' name=ValidID '{' members+=BsplProtocolMember* '}'
-	|
 		// Class
 		{SarlClass.annotationInfo = current}
 		modifiers+=CommonModifier*
@@ -459,35 +454,6 @@ SarlCastedExpression returns xbase::XCastedExpression:
 XCastedExpression returns xbase::XExpression:
 	// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
 	XExponentExpression (=>({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
-;
-
-BsplProtocolMember returns xtend::XtendMember:
-	{xtend::XtendMember} annotations+=XAnnotation*
-	(
-		{SarlProtocolRole.annotationInfo = current}
-		'role' names+=ValidID (',' names+=ValidID)* ';'?
-	|
-		{SarlProtocolCall.annotationInfo = current}
-		'uses' name=JvmTypeReference '(' ( roles+=ValidID (',' roles+=ValidID)* )? '|' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' ';'?
-	|
-		// Parameter's name and modifiers are not explicitly defined in the grammar for avoiding conflict with the
-		// regular keywords from the SARL grammar, i.e., BSPL keywords must not be considered as SARL keywords.
-		// Therefore, name and modifiers are stored in "rawArguments" and they are dynamically extracted in
-		// a custom implementation of the Ecore object.
-		{SarlProtocolParameter.annotationInfo = current}
-		'var' rawArguments+=ValidID+ (':' type=JvmTypeReference )? ';'?
-	|
-		// Message's name and modifiers are not explicitly defined in the grammar for avoiding conflict with the
-		// regular keywords from the SARL grammar, i.e., BSPL keywords must not be considered as SARL keywords.
-		// Therefore, name and modifiers are stored in "rawTarget" and they are dynamically extracted in
-		// a custom implementation of the Ecore object.
-		{SarlProtocolMessage.annotationInfo = current}
-		from=ValidID '->' rawTarget+=ValidID+ ':' name=ValidID  ( '(' ( parameters+=BsplMessageParameter (',' parameters+=BsplMessageParameter)* )?  ')' )? ';'? 
-	)
-;
-
-BsplMessageParameter returns SarlProtocolParameter:
-	rawArguments+=ValidID+
 ;
 
 //-----------------------------------------------

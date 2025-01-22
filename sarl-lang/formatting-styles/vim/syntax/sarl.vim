@@ -10,7 +10,7 @@
 "  SARL is an general-purpose agent programming language.
 "  More details on http://www.sarl.io
 " 
-"  Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+"  Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
 " 
 "  Licensed under the Apache License, Version 2.0 (the "License");
 "  you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ syn keyword sarlSpecial import package
 syn cluster sarlTop add=sarlSpecial
 
 " keywords for the 'sarlTypeDeclaration' family.
-syn keyword sarlTypeDeclaration agent annotation artifact behavior capacity class enum event interface protocol skill space
+syn keyword sarlTypeDeclaration agent annotation artifact behavior capacity class enum event interface skill space
 syn cluster sarlTop add=sarlTypeDeclaration
 
 " keywords for the 'sarlModifier' family.
@@ -98,7 +98,7 @@ syn keyword sarlModifier abstract def dispatch extension final native override p
 syn cluster sarlTop add=sarlModifier
 
 " keywords for the 'sarlKeyword' family.
-syn keyword sarlKeyword as assert assume break case catch continue default do else extends finally fires for if implements instanceof new on requires return role super switch throw throws try typeof uses while with
+syn keyword sarlKeyword as assert assume break case catch continue default do else extends finally fires for if implements instanceof new on requires return super switch throw throws try typeof uses while with
 syn cluster sarlTop add=sarlKeyword
 
 " catch errors caused by wrong parenthesis

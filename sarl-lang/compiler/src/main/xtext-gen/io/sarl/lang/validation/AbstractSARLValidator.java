@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@
 package io.sarl.lang.validation;
 
 import io.sarl.lang.extralanguage.validator.ExtraLanguageValidatorSupport;
-import io.sarl.lang.validation.subvalidators.BSPLValidator;
 import io.sarl.lang.validation.subvalidators.SARLAnnotationValidator;
 import io.sarl.lang.validation.subvalidators.SARLBehaviorUnitValidator;
 import io.sarl.lang.validation.subvalidators.SARLDocumentationValidator;
@@ -43,7 +42,7 @@ import org.eclipse.xtend.core.validation.AnnotationValidation;
 import org.eclipse.xtext.validation.ComposedChecks;
 import org.eclipse.xtext.xbase.annotations.validation.XbaseWithAnnotationsValidator;
 
-@ComposedChecks(validators = {SARLNamingValidator.class, SARLTypeValidator.class, SARLMemberValidator.class, SARLFeatureModifierValidator.class, SARLBehaviorUnitValidator.class, SARLFeatureCallsValidator.class, AnnotationValidation.class, SARLSynchronizationValidator.class, SARLInheritanceValidator.class, SARLAnnotationValidator.class, SARLScriptValidator.class, SARLDocumentationValidator.class, BSPLValidator.class, ExtraLanguageValidatorSupport.class})
+@ComposedChecks(validators = {SARLNamingValidator.class, SARLTypeValidator.class, SARLMemberValidator.class, SARLFeatureModifierValidator.class, SARLBehaviorUnitValidator.class, SARLFeatureCallsValidator.class, AnnotationValidation.class, SARLSynchronizationValidator.class, SARLInheritanceValidator.class, SARLAnnotationValidator.class, SARLScriptValidator.class, SARLDocumentationValidator.class, ExtraLanguageValidatorSupport.class})
 public abstract class AbstractSARLValidator extends XbaseWithAnnotationsValidator {
 	
 	@Override

@@ -274,16 +274,6 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case SarlPackage.SARL_PROTOCOL:
-			{
-				SarlProtocol sarlProtocol = (SarlProtocol)theEObject;
-				T result = caseSarlProtocol(sarlProtocol);
-				if (result == null) result = caseXtendTypeDeclaration(sarlProtocol);
-				if (result == null) result = caseXtendMember(sarlProtocol);
-				if (result == null) result = caseXtendAnnotationTarget(sarlProtocol);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case SarlPackage.SARL_AGENT:
 			{
 				SarlAgent sarlAgent = (SarlAgent)theEObject;
@@ -330,42 +320,6 @@ public class SarlSwitch<T> extends Switch<T>
 				T result = caseSarlFormalParameter(sarlFormalParameter);
 				if (result == null) result = caseXtendParameter(sarlFormalParameter);
 				if (result == null) result = caseXtendAnnotationTarget(sarlFormalParameter);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case SarlPackage.SARL_PROTOCOL_ROLE:
-			{
-				SarlProtocolRole sarlProtocolRole = (SarlProtocolRole)theEObject;
-				T result = caseSarlProtocolRole(sarlProtocolRole);
-				if (result == null) result = caseXtendMember(sarlProtocolRole);
-				if (result == null) result = caseXtendAnnotationTarget(sarlProtocolRole);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case SarlPackage.SARL_PROTOCOL_MESSAGE:
-			{
-				SarlProtocolMessage sarlProtocolMessage = (SarlProtocolMessage)theEObject;
-				T result = caseSarlProtocolMessage(sarlProtocolMessage);
-				if (result == null) result = caseXtendMember(sarlProtocolMessage);
-				if (result == null) result = caseXtendAnnotationTarget(sarlProtocolMessage);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case SarlPackage.SARL_PROTOCOL_PARAMETER:
-			{
-				SarlProtocolParameter sarlProtocolParameter = (SarlProtocolParameter)theEObject;
-				T result = caseSarlProtocolParameter(sarlProtocolParameter);
-				if (result == null) result = caseXtendMember(sarlProtocolParameter);
-				if (result == null) result = caseXtendAnnotationTarget(sarlProtocolParameter);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case SarlPackage.SARL_PROTOCOL_CALL:
-			{
-				SarlProtocolCall sarlProtocolCall = (SarlProtocolCall)theEObject;
-				T result = caseSarlProtocolCall(sarlProtocolCall);
-				if (result == null) result = caseXtendMember(sarlProtocolCall);
-				if (result == null) result = caseXtendAnnotationTarget(sarlProtocolCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -682,22 +636,6 @@ public class SarlSwitch<T> extends Switch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Protocol</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Protocol</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSarlProtocol(SarlProtocol object)
-	{
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Agent</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -773,70 +711,6 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseSarlFormalParameter(SarlFormalParameter object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Protocol Role</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Protocol Role</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSarlProtocolRole(SarlProtocolRole object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Protocol Message</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Protocol Message</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSarlProtocolMessage(SarlProtocolMessage object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Protocol Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Protocol Parameter</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSarlProtocolParameter(SarlProtocolParameter object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Protocol Call</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Protocol Call</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSarlProtocolCall(SarlProtocolCall object)
 	{
 		return null;
 	}

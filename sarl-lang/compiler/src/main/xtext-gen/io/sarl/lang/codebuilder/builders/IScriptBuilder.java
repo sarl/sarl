@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,13 +169,6 @@ public interface IScriptBuilder {
 	 * @see ScriptBuilderFragment.java : appendTo : 490
 	 */
 	ISarlArtifactBuilder addSarlArtifact(String name);
-
-	/** Create a SarlProtocol builder.
-	 * @param name the name of the SarlProtocol.
-	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
-	 */
-	ISarlProtocolBuilder addSarlProtocol(String name);
 
 	/** Create a SarlClass builder.
 	 * @param name the name of the SarlClass.
