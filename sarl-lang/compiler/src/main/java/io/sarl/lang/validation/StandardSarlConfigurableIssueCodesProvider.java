@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,10 +145,6 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 
 		acceptor.accept(create(
 				IssueCodes.UNUSED_TYPE_PARAMETER,
-				SeverityConverter.SEVERITY_WARNING));
-
-		acceptor.accept(create(
-				IssueCodes.PROTOCOL_EMPTY,
 				SeverityConverter.SEVERITY_WARNING));
 	}
 

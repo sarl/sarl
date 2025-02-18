@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2024 SARL.io, the Original Authors and Main Authors
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -320,55 +320,6 @@ public final class IssueCodes {
 	 */
 	public static final String UNEXPECTED_TYPE_PARAMETER =
 			ISSUE_CODE_PREFIX + "unexpected_type_parameter"; //$NON-NLS-1$
-	
-	/** A name is missed in a BSPL construct.
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_MISSING_NAME =
-			PROTOCOL_ISSUE_CODE_PREFIX + "missing_name"; //$NON-NLS-1$
-
-	/** A role is specified multiple times in a protocol.
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_DUPLICATE_ROLE =
-			PROTOCOL_ISSUE_CODE_PREFIX + "duplicate_role"; //$NON-NLS-1$
-
-	/** A parameter is specified multiple times in a protocol.
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_DUPLICATE_PARAMETER =
-			PROTOCOL_ISSUE_CODE_PREFIX + "duplicate_parameter"; //$NON-NLS-1$
-
-	/** A message from the same source and destination is specified multiple times in a protocol.
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_DUPLICATE_MESSAGE =
-			PROTOCOL_ISSUE_CODE_PREFIX + "duplicate_message"; //$NON-NLS-1$
-
-	/** A role is referenced but not defined in the protocol.
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_UNDEFINED_ROLE =
-			PROTOCOL_ISSUE_CODE_PREFIX + "undefined_role"; //$NON-NLS-1$
-
-	/** A parameter is referenced but not defined in the protocol.
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_UNDEFINED_PARAMETER =
-			PROTOCOL_ISSUE_CODE_PREFIX + "undefined_parameter"; //$NON-NLS-1$
-
-	/** Empty protocol
-	 *
-	 * @since 0.15
-	 */
-	public static final String PROTOCOL_EMPTY =
-			PROTOCOL_ISSUE_CODE_PREFIX + "empty"; //$NON-NLS-1$
 
 	private IssueCodes() {
 		//
