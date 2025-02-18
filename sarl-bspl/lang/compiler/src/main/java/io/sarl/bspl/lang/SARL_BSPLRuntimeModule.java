@@ -38,22 +38,13 @@ import io.sarl.bspl.lang.validation.StandardSarlConfigurableIssueCodesProvider;
  */
 public class SARL_BSPLRuntimeModule extends AbstractSARL_BSPLRuntimeModule {
 
-	/** Replies the type of the provider of configurable issue codes.
-	 * 
-	 * @return the type of provider.
-	 */
 	@Override
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		return StandardSarlConfigurableIssueCodesProvider.class;
 	}
 
-	/** Specify the generator of code.
-	 *
-	 * @return the type of the generator of code.
-	 */
 	@Override
 	public Class<? extends IGenerator> bindIGenerator() {
-		super.bindIGenerator();
 		return SarlBsplGenerator.class;
 	}
 

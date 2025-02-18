@@ -23,12 +23,20 @@ package io.sarl.bspl.lang.tests;
 import static io.sarl.tests.api.tools.TestEObjects.fileGen;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
+import java.io.IOException;
+import java.util.regex.Pattern;
+
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.util.ParseHelper;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
+import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
+import org.junit.Assert;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import io.sarl.bspl.lang.sarl_bspl.BsplProtocolSpecification;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -38,6 +46,7 @@ import io.sarl.tests.api.extensions.FieldResetExtension;
 import io.sarl.tests.api.extensions.IgnorableTestExtension;
 import io.sarl.tests.api.extensions.MockInitializerExtension;
 import io.sarl.tests.api.extensions.SarlInjectionExtension;
+import io.sarl.tests.api.tools.SarlValidationTestHelper;
 import io.sarl.tests.api.tools.TestValidator;
 import io.sarl.tests.api.tools.TestValidator.Validator;
 
@@ -53,13 +62,36 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
 	SarlInjectionExtension.class, MockInitializerExtension.class, 
 	IgnorableTestExtension.class, FieldResetExtension.class})
 @InjectWith(ExtendedSARL_BSPLInjectorProvider.class)
-public abstract class AbstractSarlBsplTest extends AbstractSarlTest {
+public abstract class AbstractSarlBsplTest {
+
+	@Inject
+	private Injector injector;
 
 	@Inject
 	private ParseHelper<BsplProtocolSpecification> specificationParser;
 
 	@Inject
-	private CompilationTestHelper compiler;
+	private ExtendedCompilationTestHelper compiler;
+
+	@Inject
+	private SarlValidationTestHelper validationHelper;
+
+	@Override
+	protected void finalize() throws Throwable {
+		this.injector = null;
+		this.compiler = null;
+		this.specificationParser = null;
+		this.validationHelper = null;
+	}
+
+	/** Replies the injector.
+	 *
+	 * @return the injector.
+	 * @since 0.10
+	 */
+	protected Injector getInjector() {
+		return this.injector;
+	}
 
 	/** Parse the code and replies the SARL BSPL specification. This function does not validate the code.
 	 *
@@ -99,8 +131,67 @@ public abstract class AbstractSarlBsplTest extends AbstractSarlTest {
 	 *
 	 * @return the compile helper.
 	 */
-	protected CompilationTestHelper getBsplCompileHelper() {
+	protected ExtendedCompilationTestHelper getCompileHelper() {
 		return this.compiler;
+	}
+
+	/** Replies the validation helper.
+	 *
+	 * @return the validation helper.
+	 */
+	protected SarlValidationTestHelper getValidationHelper() {
+		return this.validationHelper;
+	}
+	
+	/**
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class ExtendedCompilationTestHelper extends CompilationTestHelper {
+
+		/** Constructor.
+		 */
+		public ExtendedCompilationTestHelper() {
+			//
+		}
+		
+		/**
+		 * Asserts that the expected code in the given file is generated for the given source.
+		 * 
+		 * @param source some valid source code written in the language under test
+		 * @param typename the name of the generated type. 
+		 * @param expected the expected Java source code.
+		 * @throws IOException if the resource loading fails 
+		 */
+		public void assertCompilesTo(CharSequence source, String typename, CharSequence expected) throws IOException {
+			final boolean[] called = {false};
+			compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+				@Override
+				public void accept(Result r) {
+					var generatedCode = r.getGeneratedCode(typename);
+					if (generatedCode == null) {
+						// Check for generated code that is not Java-based
+						final var pattern = Pattern.compile(Pattern.quote(typename.replaceAll(Pattern.quote("."), "/")) + "(\\.[^.]+)?$");
+						final var allResources = r.getAllGeneratedResources().entrySet();
+						final var genResource = allResources.stream().filter(it -> pattern.matcher(it.getKey()).find()).findFirst();
+						if (genResource.isPresent()) {
+							final var value = genResource.get().getValue();
+							if (value != null) {
+								generatedCode = value.toString();
+							}
+						}
+					}
+					Assert.assertEquals(expected.toString(), generatedCode);
+					called[0] = true;
+				}
+			});
+			Assert.assertTrue("Nothing was generated but the expectation was :\n" + expected, called[0]);
+		}
+
+		
+
 	}
 
 }

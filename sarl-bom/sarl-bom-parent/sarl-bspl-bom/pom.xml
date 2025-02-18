@@ -42,6 +42,11 @@
         <artifactId>bspl.sdk</artifactId>
         <version>${sarl.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.sarl.bspl</groupId>
+        <artifactId>bspl.lang.compiler</artifactId>
+        <version>${sarl.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>

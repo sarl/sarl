@@ -34,7 +34,7 @@ import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.util.Modules;
 
-import io.sarl.lang.SARLStandaloneSetup;
+import io.sarl.bspl.lang.SARL_BSPLStandaloneSetup;
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.tests.SARLInjectorProvider;
 
@@ -53,7 +53,7 @@ public class ExtendedSARL_BSPLInjectorProvider extends SARL_BSPLInjectorProvider
 
 	@Override
 	protected Injector internalCreateInjector() {
-		return new SARLStandaloneSetup() {
+		return new SARL_BSPLStandaloneSetup() {
 			@Override
 			public Injector createInjector() {
 				return Guice.createInjector(Modules.override(createRuntimeModule()).with(createRuntimeTestModule()));

@@ -21,10 +21,15 @@
 
 package io.sarl.bspl.lang.compiler;
 
-import org.eclipse.xtext.generator.IFileSystemAccess;
+import java.io.IOException;
 
+import com.google.inject.Inject;
+
+import io.sarl.bspl.lang.compiler.fragments.BsplProtocolCapacityGeneratorFragment;
+import io.sarl.bspl.lang.compiler.fragments.BsplRoleEnumerationGeneratorFragment;
+import io.sarl.bspl.lang.compiler.generic.AbstractSarlTargetGenerator;
+import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
 import io.sarl.bspl.lang.sarl_bspl.BsplProtocol;
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
 import io.sarl.bspl.lang.sarl_bspl.BsplProtocolSpecification;
 
 /** The generator from SARL to the default target language and an extra target language.
@@ -35,37 +40,46 @@ import io.sarl.bspl.lang.sarl_bspl.BsplProtocolSpecification;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SarlBsplGenerator extends AbstractSarlTargetGenerator {
+public class SarlBsplGenerator extends AbstractSarlTargetGenerator<IProtocolNames> {
 
+	@Inject
+	private BsplRoleEnumerationGeneratorFragment roleEnumerationFragment; 
+
+	@Inject
+	private BsplProtocolCapacityGeneratorFragment protocolCapacityFragment;
+	
 	/** Generate the SARL code from a BSPL specification.
 	 *
 	 * @param specification the BSPL specification.
-	 * @param fsa the accessor to the file system for creating the SARL elements.
+	 * @param context the generation context.
 	 */
-	protected void _generate(BsplProtocolSpecification specification, IFileSystemAccess fsa) {
+	protected void _generate(BsplProtocolSpecification specification, ISarlTargetGeneratorContext<IProtocolNames> context) {
+		final var packageName = specification.getPackage();
+		final var names = context.getInjector().getInstance(IProtocolNames.class);
+		final var packagedContext = context.withNameProvider(names).withPackage(packageName);
 		for (final var member : specification.getBsplProtocols()) {
-			doGenerate(member, fsa);
+			doGenerate(member, packagedContext);
 		}
 	}
 
 	/** Generate the SARL code from a BSPL protocol.
 	 *
-	 * @param role the BSPL protocol.
-	 * @param fsa the accessor to the file system for creating the SARL elements.
+	 * @param protocol the BSPL protocol.
+	 * @param preStage indicates if the generation is for the pre-stage {@code true} or the final stage.
+	 * @param context the generation context.
+	 * @throws IOException if a file cannot be generated.
 	 */
-	protected void _generate(BsplProtocol protocol, IFileSystemAccess fsa) {
-		for (final var member : protocol.getMembers()) {
-			doGenerate(member, fsa);
-		}
-	}
+	protected void _generate(BsplProtocol protocol, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
+		final var protocolName = protocol.getName();
+		final var packagedNamedContext = context.withTypeName(protocolName);
 
-	/** Generate the SARL code from a BSPL role
-	 *
-	 * @param role the BSPL role.
-	 * @param fsa the accessor to the file system for creating the SARL elements.
-	 */
-	protected void _generate(BsplProtocolRole role, IFileSystemAccess fsa) {
-		
+		if (context.isPreStage()) {
+			this.roleEnumerationFragment.preGenerate(protocol.getRoles(), packagedNamedContext);
+			this.protocolCapacityFragment.preGenerate(protocol.getRoles(), packagedNamedContext);
+		} else {
+			this.roleEnumerationFragment.generate(protocol.getRoles(), packagedNamedContext);
+			this.protocolCapacityFragment.generate(protocol.getMessages(), protocol.getRoles(), packagedNamedContext);
+		}
 	}
 
 }

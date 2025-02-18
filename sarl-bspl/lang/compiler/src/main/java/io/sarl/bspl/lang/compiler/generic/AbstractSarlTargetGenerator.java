@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.bspl.lang.compiler;
+package io.sarl.bspl.lang.compiler.generic;
 
 import java.util.Collections;
 
@@ -32,16 +32,22 @@ import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 
+import com.google.inject.Inject;
+
 /** Abstract implementation of a generator that is generating SARL code.
  *
+ * @param <NP> the type of the name provider to be used.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractSarlTargetGenerator extends AbstractGenerator implements IGenerator {
-
+public abstract class AbstractSarlTargetGenerator<NP> extends AbstractGenerator implements IGenerator {
+	
 	private final PolymorphicDispatcher<Void> generateDispatcher;
+
+	@Inject
+	private ISarlTargetGeneratorContextFactory contextFactory;
 	
 	/** Constructor.
 	 */
@@ -53,23 +59,36 @@ public abstract class AbstractSarlTargetGenerator extends AbstractGenerator impl
 
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		doGenerate(input, fsa, null);
+		doGenerate(input, this.contextFactory.createContext(fsa, context, input.getResourceSet()));
 	}
 
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess fsa) {
+		doGenerate(input, this.contextFactory.createContext(fsa, input.getResourceSet()));
+	}
+
+	/** Do the generation with the given context.
+	 *
+	 * @param input the input resource.
+	 * @param context the generator context.
+	 */
+	public void doGenerate(Resource input, ISarlTargetGeneratorContext<NP> context) {
+		final var preStageContext = context.forPreStage();
 		for (final var obj : input.getContents()) {
-			doGenerate(obj, fsa);
+			doGenerate(obj, preStageContext);
+		}
+		for (final var obj : input.getContents()) {
+			doGenerate(obj, context);
 		}
 	}
 
 	/** Generate the SARL code from the given BSPL Ecore element.
 	 *
 	 * @param object the Ecore element of SARL BSPL
-	 * @param fsa the file system manager.
+	 * @param context the generator context.
 	 */
-	protected void doGenerate(EObject object, IFileSystemAccess fsa) {
-		this.generateDispatcher.invoke(object, fsa);
+	protected void doGenerate(EObject object, ISarlTargetGeneratorContext<NP> context) {
+		this.generateDispatcher.invoke(object, context);
 	}
 
 }
