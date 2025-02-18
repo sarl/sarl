@@ -161,6 +161,73 @@ public class TestEObjects {
 		return file(parser, null, string);
 	}
 
+	/** Create an instance of class.
+	 *
+	 * @param <T> the type of the script.
+	 * @param parser the SARL parser.
+	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
+	 * @param string the content of the file.
+	 * @param resourceSet the set of resources in which the file is created.
+	 * @return the SARL script extracted from the file content.
+	 * @throws Exception 
+	 * @since 0.15
+	 */
+	public static <T extends EObject> T fileGen(ParseHelper<T> parser, ValidationTestHelper validationHelper,
+			String string, ResourceSet resourceSet) throws Exception {
+		assert parser != null;
+		T script;
+		if (resourceSet == null) {
+			script = parser.parse(string);
+		} else {
+			script = parser.parse(string, resourceSet);
+		}
+		if (validationHelper != null) {
+			var resource = script.eResource();
+			var resourceSet0 = resource.getResourceSet();
+			if (resourceSet0 instanceof XtextResourceSet xrs) {
+				xrs.setClasspathURIContext(TestEObjects.class);
+			}
+			assertEquals(0, resource.getErrors().size(), () -> resource.getErrors().toString());
+			var issues = Collections2.filter(issues(validationHelper, resource), new Predicate<Issue>() {
+				@Override
+				public boolean apply(Issue input) {
+					return input.getSeverity() == Severity.ERROR;
+				}
+			});
+			if (!issues.isEmpty()) {
+				fail("Expected no errors, but got :" + getIssuesAsString(resource, issues, new StringBuilder()).toString()); //$NON-NLS-1$
+			}
+		}
+		return script;
+	}
+
+	/** Create an instance of class.
+	 *
+	 * @param <T> the type of the script.
+	 * @param parser the SARL parser.
+	 * @param validationHelper the validation test helper. If it is {@code null}, no validation.
+	 * @param string the content of the file.
+	 * @return the SARL script extracted from the file content.
+	 * @throws Exception
+	 * @since 0.15 
+	 */
+	public static <T extends EObject> T fileGen(ParseHelper<T> parser, ValidationTestHelper validationHelper, String string) throws Exception {
+		return fileGen(parser, validationHelper, string, null);
+	}
+
+	/** Create a script.
+	 *
+	 * @param <T> the type of the script.
+	 * @param parser the SARL parser.
+	 * @param string the content of the file.
+	 * @return the SARL script extracted from the file content.
+	 * @throws Exception
+	 * @since 0.15 
+	 */
+	public static <T extends EObject> T fileGen(ParseHelper<T> parser, String string) throws Exception {
+		return fileGen(parser, null, string);
+	}
+
 	/** Build a path.
 	 *
 	 * @param path path elements.
