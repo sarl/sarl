@@ -21,9 +21,34 @@
 
 package io.sarl.lang.ui.preferences;
 
-import static io.sarl.lang.validation.IssueCodes.*;
-import static org.eclipse.xtend.core.validation.IssueCodes.*;
-import static org.eclipse.xtext.xbase.validation.IssueCodes.*;
+import static io.sarl.lang.validation.IssueCodes.AMBIGUOUS_INTERPRETATION_BY_DEVELOPPER;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_FUNCTION_NAME;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE;
+import static io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.PARAMETER_DEFAULT_VALUE_REDFINITION;
+import static io.sarl.lang.validation.IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM;
+import static io.sarl.lang.validation.IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION;
+import static io.sarl.lang.validation.IssueCodes.POTENTIAL_MEMORY_SHARING_OUTSIDE_AGENT_CONTROL;
+import static io.sarl.lang.validation.IssueCodes.REDUNDANT_CAPACITY_USE;
+import static io.sarl.lang.validation.IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION;
+import static io.sarl.lang.validation.IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED;
+import static io.sarl.lang.validation.IssueCodes.UNNECESSARY_FIRED_EVENT;
+import static io.sarl.lang.validation.IssueCodes.UNREACHABLE_BEHAVIOR_UNIT;
+import static io.sarl.lang.validation.IssueCodes.UNUSED_AGENT_CAPACITY;
+import static io.sarl.lang.validation.IssueCodes.UNUSED_TYPE_PARAMETER;
+import static io.sarl.lang.validation.IssueCodes.USED_RESERVED_SARL_ANNOTATION;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
+import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.ABSTRACT_METHOD_INVOCATION;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.DUPLICATE_TYPE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.IMPORT_DUPLICATE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.IMPORT_UNRESOLVED;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.RAW_TYPE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Composite;
@@ -120,7 +145,6 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	protected void fillUnusedCodeSection(ComboBoxBuilder builder) {
 		super.fillUnusedCodeSection(builder);
 		builder.addComboBox(DISCOURAGED_CAPACITY_DEFINITION, Messages.SARLValidatorConfigurationBlock_4);
-		builder.addComboBox(PROTOCOL_EMPTY, Messages.SARLValidatorConfigurationBlock_31);
 		builder.addComboBox(UNREACHABLE_BEHAVIOR_UNIT, Messages.SARLValidatorConfigurationBlock_5);
 		builder.addComboBox(UNUSED_TYPE_PARAMETER, Messages.SARLValidatorConfigurationBlock_24);
 		builder.addComboBox(UNNECESSARY_FIRED_EVENT, Messages.SARLValidatorConfigurationBlock_23);

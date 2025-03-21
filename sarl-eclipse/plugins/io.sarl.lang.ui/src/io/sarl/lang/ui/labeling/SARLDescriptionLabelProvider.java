@@ -39,7 +39,6 @@ import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlProtocol;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
@@ -141,19 +140,6 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 		final var jvmElement = this.jvmModelAssociations.getInferredType(event);
 		return this.images.forEvent(
 				event.getVisibility(),
-				this.adornments.get(jvmElement));
-	}
-
-	/** Replies the image for a protocol.
-	 *
-	 * @param protocol describes the protocol.
-	 * @return the image descriptor.
-	 * @since 0.15
-	 */
-	public ImageDescriptor image(SarlProtocol protocol) {
-		final var jvmElement = this.jvmModelAssociations.getInferredType(protocol);
-		return this.images.forProtocol(
-				protocol.getVisibility(),
 				this.adornments.get(jvmElement));
 	}
 
