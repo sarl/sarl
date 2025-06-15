@@ -131,6 +131,9 @@
           <generateInlines>true</generateInlines>
           <generateStorageFiles>true</generateStorageFiles>
           <generateTraceFiles>true</generateTraceFiles>
+          <issueSeverities>
+            <org.eclipse.xtext.xbase.validation.IssueCodes.deprecated_member_reference>ignore</org.eclipse.xtext.xbase.validation.IssueCodes.deprecated_member_reference>
+          </issueSeverities>
         </configuration>
       </plugin>
       <plugin>

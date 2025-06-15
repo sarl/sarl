@@ -30,18 +30,15 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Provider;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -51,6 +48,12 @@ import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Provider;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
@@ -96,7 +99,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	@Parameter(defaultValue = "false")
 	private boolean warningsAsErrors;
-
+	
 	private List<File> bufferedClassPath;
 
 	private List<File> bufferedTestClassPath;
@@ -104,6 +107,63 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	private List<File> bufferedModulePath;
 
 	private List<File> bufferedTestModulePath;
+
+	/** Overriding of the issue severities.
+	 *
+	 * @since 0.15
+	 */
+	@Parameter
+    private Map<String, String> issueSeverities;
+
+    private Map<String, Severity> issueSeverityOverrides;
+
+    /** Convert the string representation of an issue severity to its enumeration instance.
+     *
+     * @param severity the string representation of the severity.
+     * @return the severity instance, or {@code null} if the given string representating cannot be converted to a severity instance.
+     * @since 0.15
+     */
+    @SuppressWarnings("static-method")
+	protected Severity toSeverity(String severity) {
+    	if (!Strings.isEmpty(severity)) {
+    		final var item = severity.toUpperCase();
+    		for (final var candidate : Severity.values()) {
+    			if (item.equals(candidate.name())) {
+    				return candidate;
+    			}
+    		}
+    	}
+    	return null;
+    }
+    
+	/** Replies the overrides of the issue severities that are provided in the POM file.
+	 *
+	 * @since 0.15
+	 * @throws MojoFailureException if a severity string is not correctly formatted.
+	 */
+	protected Map<String, Severity> getIssueSeverityOverrides() throws MojoFailureException {
+		if (this.issueSeverityOverrides == null) {
+			this.issueSeverityOverrides = new HashMap<>();
+			if (this.issueSeverities != null && !this.issueSeverities.isEmpty()) {
+				for (final var entry : this.issueSeverities.entrySet()) {
+					if (!Strings.isEmpty(entry.getKey())) {
+						final var severityStr = entry.getValue();
+						if (Strings.isEmpty(severityStr)) {
+							throw new MojoFailureException(
+									MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_14, entry.getKey()));
+						}
+						final var severity = toSeverity(severityStr);
+						if (severity == null) {
+							throw new MojoFailureException(
+									MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_15, entry.getKey(), severityStr));
+						}
+						this.issueSeverityOverrides.put(entry.getKey(), severity);
+					}
+				}
+			}
+		}
+		return Collections.unmodifiableMap(this.issueSeverityOverrides);
+	}
 
 	/** Replies if the classpath must be fixed.
 	 *
@@ -449,6 +509,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setLogger(logger);
 		
 		compiler.setJavaPostCompilationEnable(compilerType != JavaCompiler.NONE);
+		for (final var severityOverride : getIssueSeverityOverrides().entrySet()) {
+			compiler.setWarningSeverity(severityOverride.getKey(), severityOverride.getValue());
+		}
 		compiler.setReportWarningsAsErrors(this.warningsAsErrors);
 		compiler.setOptimizationLevel(getOptimization());
 		compiler.setClassOutputPath(classOutputPath);
@@ -489,7 +552,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			}
 			return MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_3,
 					filename, issue.getLineNumber(),
-					issue.getColumn(), issue.getMessage());
+					issue.getColumn(), issue.getMessage(), issue.getCode());
 		});
 		final var errorMessage = new String[] {null};
 		compiler.addIssueMessageListener((severity, issue, uri, message) -> {
