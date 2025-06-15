@@ -202,7 +202,7 @@
       <plugin>
         <groupId>com.akathist.maven.plugins.launch4j</groupId>
         <artifactId>launch4j-maven-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>2.6.0</version>
         <executions>
           <execution>
             <id>generate-janus-win</id>
@@ -244,7 +244,7 @@
       <plugin>
         <groupId>net.jsign</groupId>
         <artifactId>jsign-maven-plugin</artifactId>
-        <version>6.0</version>
+        <version>7.1</version>
         <executions>
           <execution>
             <id>janus-exe-sign</id>
@@ -266,7 +266,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <id>add-source</id>

@@ -62,7 +62,7 @@ public final class MavenBatchCompiler implements IJavaBatchCompiler {
 	 * It is automatically updated by the Maven compilation process. DO NOT CHANGE IT MANUALLY.
 	 */
 	@Generated(value = "maven")
-	private static final String DEFAULT_COMPILER_VERSION = "3.13.0"; //$NON-NLS-1$
+	private static final String DEFAULT_COMPILER_VERSION = "3.14.0"; //$NON-NLS-1$
 
 	private static final String MAVEN_COMPILER_PLUGIN_GROUPID = "org.apache.maven.plugins"; //$NON-NLS-1$
 

@@ -83,7 +83,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>4.0.1</version>
+        <version>4.2.0</version>
         <executions>
           <execution>
             <id>compute-sarl-properties</id>
@@ -124,7 +124,7 @@ if (project.dependencyManagement &amp;&amp; project.dependencyManagement.depende
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
         <executions>
           <execution>
             <id>flatten</id>

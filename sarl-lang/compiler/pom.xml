@@ -193,7 +193,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -317,7 +317,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.1</version>
+            <version>3.11.2</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -459,7 +459,7 @@
       <email>thomas.piotrowski@utbm.fr</email>
       <url>https://github.com/tpiotrow</url>
       <properties>
-      	<id>tpiotrowski</id>
+        <id>tpiotrowski</id>
       </properties>
       <roles>
         <role>Maven Configuration</role>
