@@ -325,7 +325,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 			floatBasicStyle = getEnableColors() ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
 		}
 		floatBasicStyle = Strings.emptyIfNull(floatBasicStyle);
-		it.appendNl("   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle); //$NON-NLS-1$
+		it.appendNl("   basicstyle=\sarl@basesize {0}, % the size of the fonts that are used for the code", floatBasicStyle); //$NON-NLS-1$
 
 		it.appendNl("   breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace"); //$NON-NLS-1$
 		it.appendNl("   breaklines=true, % sets automatic line breaking"); //$NON-NLS-1$
@@ -405,9 +405,9 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.append("\\ifmmode\\text'{'\\lstinline[basicstyle={0}]'{'#1'}}'", inlineBasicStyle); //$NON-NLS-1$
 		it.append("\\else\\lstinline[basicstyle={0}]'{'#1'}'", inlineBasicStyle); //$NON-NLS-1$
 		it.appendNl("\\fi}"); //$NON-NLS-1$
+		it.appendNl("\\lstnewenvironment{sarl-lst}[1][]{\\lstset{#1,language=SARL}}{}"); //$NON-NLS-1$
 		it.appendNl("\\newcommand{\\sarl}{\\mbox{SARL}\\xspace}"); //$NON-NLS-1$
 		it.appendNl("\\newcommand'{'\\sarlversion'}{'{0}'}'", getLanguageVersion()); //$NON-NLS-1$
-
 		generateExtension(it);
 
 		it.appendNl("\\endinput"); //$NON-NLS-1$
@@ -440,6 +440,8 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 			it.appendNl("\\DeclareOption{nosarlcolors}{\\global\\usesarlcolorsfalse}"); //$NON-NLS-1$
 			return true;
 		}
+		it.appendNl("\\gdef\\sarl@basesize{}"); //$NON-NLS-1$
+		it.appendNl("\\DeclareOption{smaller}{\\protected@xdef\\sarl@basesize{\\sarl@basesize\\protect\\smaller}}"); //$NON-NLS-1$
 		return false;
 	}
 
