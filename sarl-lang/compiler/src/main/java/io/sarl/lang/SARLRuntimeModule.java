@@ -21,19 +21,17 @@
 
 package io.sarl.lang;
 
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.name.Names;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 
+import com.google.inject.Binder;
+import com.google.inject.name.Names;
+
 import io.sarl.lang.bugfixes.pending.bug621.Bug621OverrideHelper;
 import io.sarl.lang.bugfixes.pending.bug621.Bug621Validator;
-import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.validation.ConfigurableIssueSeveritiesProviderProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.SARLValidator;
 
@@ -51,58 +49,17 @@ import io.sarl.lang.validation.SARLValidator;
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
-	/** Provider of {@link ConfigurableIssueSeveritiesProvider}.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.5
-	 */
-	public static class ConfigurableIssueSeveritiesProviderProvider implements Provider<ConfigurableIssueSeveritiesProvider> {
-
-		private ConfigurableIssueSeveritiesProvider severityProvider;
-
-		private Injector injector;
-
-		/** Constructor.
-		 */
-		public ConfigurableIssueSeveritiesProviderProvider() {
-			//
-		}
-
-		/** Constructor.
-		 *
-		 * @param injector the injector to use.
-		 */
-		@Inject
-		public void setInjector(Injector injector) {
-			this.injector = injector;
-		}
-
-		@Override
-		public ConfigurableIssueSeveritiesProvider get() {
-			if (this.severityProvider == null) {
-				this.severityProvider = new ConfigurableIssueSeveritiesProvider();
-				this.injector.injectMembers(this.severityProvider);
-			}
-			return this.severityProvider;
-		}
-
-	}
-
 	@Override
 	public void configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(boolean.class).annotatedWith(Names.named(CompositeEValidator.USE_EOBJECT_VALIDATOR))
 				.toInstance(Boolean.FALSE);
+
 		// Configure a system singleton for issue severities provider
-		binder.bind(ConfigurableIssueSeveritiesProvider.class)
-			.toProvider(ConfigurableIssueSeveritiesProviderProvider.class).asEagerSingleton();
 		binder.bind(IssueSeveritiesProvider.class)
-			.toProvider(ConfigurableIssueSeveritiesProviderProvider.class).asEagerSingleton();
+			.toProvider(ConfigurableIssueSeveritiesProviderProvider.XtextImplementationProvider.class);
 		binder.bind(IConfigurableIssueSeveritiesProvider.class)
-			.toProvider(ConfigurableIssueSeveritiesProviderProvider.class).asEagerSingleton();
+			.toProvider(ConfigurableIssueSeveritiesProviderProvider.SarlInterfaceProvider.class);
 	}
 
 	@Override
