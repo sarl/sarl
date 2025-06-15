@@ -94,11 +94,12 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocal00.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
@@ -130,7 +131,7 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileLocal00(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileLocal00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TYPE_SARL_00, TYPE_JAVA_00);
 	}
 
@@ -176,17 +177,19 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocal02.A1;",
+			"import io.sarl.lang.core.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
 			"  public double fct(final A1 x) {",
 			"    double y = this.fct(null);",
-			"    return (x == null ? 0 : ((x.toDouble()) == null ? 0 : (x.toDouble()).doubleValue()));",
+			"    return (x == null ? 0 : PrimitiveCastExtensions.doubleValue(x));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -212,7 +215,7 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileLocal02(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileLocal02(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TYPE_SARL_02, TYPE_JAVA_02);
 	}
 

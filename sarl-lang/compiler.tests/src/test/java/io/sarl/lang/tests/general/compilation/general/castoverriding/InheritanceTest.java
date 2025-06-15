@@ -74,12 +74,12 @@ public class InheritanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileToA3FromA1.A0;",
-			"import io.sarl.lang.core.tests.compileToA3FromA1.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
@@ -111,7 +111,7 @@ public class InheritanceTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileToA3FromA1(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileToA3FromA1(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TO_A3_FROM_A1_SARL, TO_A3_FROM_A1_JAVA);
 	}
 
@@ -138,12 +138,12 @@ public class InheritanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileToA3FromA4.A0;",
-			"import io.sarl.lang.core.tests.compileToA3FromA4.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
@@ -175,7 +175,7 @@ public class InheritanceTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileToA3FromA4(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileToA3FromA4(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TO_A3_FROM_A4_SARL, TO_A3_FROM_A4_JAVA);
 	}
 
@@ -200,13 +200,12 @@ public class InheritanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA1.A0;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA1.A1;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA1.A3;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
@@ -243,7 +242,7 @@ public class InheritanceTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileStaticToA3FromA1(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileStaticToA3FromA1(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STATIC_TO_A3_FROM_A1_SARL, STATIC_TO_A3_FROM_A1_JAVA);
 	}
 
@@ -270,14 +269,12 @@ public class InheritanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A0;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A1;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A3;",
-			"import io.sarl.lang.core.tests.compileStaticToA3FromA4.A4;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
@@ -314,7 +311,7 @@ public class InheritanceTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileStaticToA3FromA4(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileStaticToA3FromA4(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STATIC_TO_A3_FROM_A4_SARL, STATIC_TO_A3_FROM_A4_JAVA);
 	}
 

@@ -48,7 +48,7 @@ import io.sarl.lang.tests.api.globalcompilation.ResourceSetGlobalCompilationCont
 public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : boolean {",
@@ -60,9 +60,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -79,7 +81,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : boolean {",
@@ -91,9 +93,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -110,7 +114,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : boolean {",
@@ -122,9 +126,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -141,7 +147,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : boolean {",
@@ -153,9 +159,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -172,7 +180,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : boolean {",
@@ -184,9 +192,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -203,7 +213,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : boolean {",
@@ -215,9 +225,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -234,7 +246,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : boolean {",
@@ -246,9 +258,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -265,7 +279,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : boolean {",
@@ -277,9 +291,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -296,7 +312,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : boolean {",
@@ -308,9 +324,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -327,7 +345,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : boolean {",
@@ -339,9 +357,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -358,7 +378,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : boolean {",
@@ -370,9 +390,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -389,7 +411,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : boolean {",
@@ -401,9 +423,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -421,7 +445,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -435,9 +459,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -454,7 +480,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -468,9 +494,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -487,7 +515,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -501,9 +529,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -520,7 +550,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : boolean {",
@@ -532,9 +562,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -551,7 +583,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : boolean {",
@@ -563,9 +595,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -582,7 +616,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : boolean {",
@@ -594,9 +628,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -613,7 +649,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : boolean {",
@@ -625,9 +661,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -644,7 +682,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : boolean {",
@@ -656,9 +694,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -675,7 +715,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : boolean {",
@@ -687,9 +727,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -706,7 +748,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : boolean {",
@@ -718,9 +760,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -737,7 +781,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : boolean {",
@@ -749,9 +793,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -768,7 +814,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : boolean {",
@@ -780,9 +826,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -799,7 +847,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : boolean {",
@@ -811,9 +859,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -830,7 +880,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : boolean {",
@@ -842,9 +892,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -861,7 +913,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : boolean {",
@@ -873,9 +925,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -892,7 +946,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -906,9 +960,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -925,7 +981,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -939,9 +995,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -958,7 +1016,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_greaterEqualsThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_greaterEqualsThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -972,9 +1030,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -991,7 +1051,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : boolean {",
@@ -1003,9 +1063,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1022,7 +1084,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : boolean {",
@@ -1034,9 +1096,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1053,7 +1117,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : boolean {",
@@ -1065,9 +1129,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1084,7 +1150,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : boolean {",
@@ -1096,9 +1162,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1115,7 +1183,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : boolean {",
@@ -1127,9 +1195,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1146,7 +1216,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : boolean {",
@@ -1158,9 +1228,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1177,7 +1249,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : boolean {",
@@ -1189,9 +1261,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1208,7 +1282,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : boolean {",
@@ -1220,9 +1294,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1239,7 +1315,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : boolean {",
@@ -1251,9 +1327,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1270,7 +1348,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : boolean {",
@@ -1282,9 +1360,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1301,7 +1381,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : boolean {",
@@ -1313,9 +1393,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1332,7 +1414,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : boolean {",
@@ -1344,9 +1426,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1363,7 +1447,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1377,9 +1461,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1396,7 +1482,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1410,9 +1496,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1429,7 +1517,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1443,9 +1531,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1462,7 +1552,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : boolean {",
@@ -1474,9 +1564,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1493,7 +1585,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : boolean {",
@@ -1505,9 +1597,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1524,7 +1618,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : boolean {",
@@ -1536,9 +1630,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1555,7 +1651,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : boolean {",
@@ -1567,9 +1663,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1586,7 +1684,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : boolean {",
@@ -1598,9 +1696,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1617,7 +1717,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : boolean {",
@@ -1629,9 +1729,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1648,7 +1750,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : boolean {",
@@ -1660,9 +1762,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1679,7 +1783,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : boolean {",
@@ -1691,9 +1795,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1710,7 +1816,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : boolean {",
@@ -1722,9 +1828,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1741,7 +1849,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : boolean {",
@@ -1753,9 +1861,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1772,7 +1882,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : boolean {",
@@ -1784,9 +1894,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1803,7 +1915,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : boolean {",
@@ -1815,9 +1927,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1834,7 +1948,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1848,9 +1962,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1867,7 +1983,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1881,9 +1997,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1900,7 +2018,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_lowerEqualsThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_lowerEqualsThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1914,9 +2032,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1933,7 +2053,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : boolean {",
@@ -1945,9 +2065,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1964,7 +2086,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : boolean {",
@@ -1976,9 +2098,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -1995,7 +2119,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : boolean {",
@@ -2007,9 +2131,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2026,7 +2152,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : boolean {",
@@ -2038,9 +2164,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2057,7 +2185,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : boolean {",
@@ -2069,9 +2197,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2088,7 +2218,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : boolean {",
@@ -2100,9 +2230,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2119,7 +2251,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : boolean {",
@@ -2131,9 +2263,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2150,7 +2284,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : boolean {",
@@ -2162,9 +2296,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2181,7 +2317,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : boolean {",
@@ -2193,9 +2329,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2212,7 +2350,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : boolean {",
@@ -2224,9 +2362,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2243,7 +2383,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : boolean {",
@@ -2255,9 +2395,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2274,7 +2416,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : boolean {",
@@ -2286,9 +2428,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2305,7 +2449,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -2319,9 +2463,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2338,7 +2484,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -2352,9 +2498,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2371,7 +2519,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_equals_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_equals_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -2385,9 +2533,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2405,7 +2555,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : boolean {",
@@ -2417,9 +2567,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2436,7 +2588,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : boolean {",
@@ -2448,9 +2600,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2467,7 +2621,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : boolean {",
@@ -2479,9 +2633,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2498,7 +2654,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : boolean {",
@@ -2510,9 +2666,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2529,7 +2687,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : boolean {",
@@ -2541,9 +2699,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2560,7 +2720,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : boolean {",
@@ -2572,9 +2732,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2591,7 +2753,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : boolean {",
@@ -2603,9 +2765,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2622,7 +2786,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : boolean {",
@@ -2634,9 +2798,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2653,7 +2819,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : boolean {",
@@ -2665,9 +2831,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2684,7 +2852,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : boolean {",
@@ -2696,9 +2864,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2715,7 +2885,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : boolean {",
@@ -2727,9 +2897,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2746,7 +2918,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : boolean {",
@@ -2758,9 +2930,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2777,7 +2951,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -2791,9 +2965,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2810,7 +2986,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -2824,9 +3000,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2843,7 +3021,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_notEquals_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_notEquals_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -2857,9 +3035,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2876,7 +3056,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : byte) : int {",
@@ -2888,9 +3068,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2907,7 +3089,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : short) : int {",
@@ -2919,9 +3101,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2938,7 +3122,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : int) : int {",
@@ -2950,9 +3134,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -2969,7 +3155,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : long) : int {",
@@ -2981,9 +3167,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3000,7 +3188,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : float) : int {",
@@ -3012,9 +3200,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3031,7 +3221,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : double) : int {",
@@ -3043,9 +3233,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3062,7 +3254,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Byte) : int {",
@@ -3074,9 +3266,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3093,7 +3287,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Short) : int {",
@@ -3105,9 +3299,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3124,7 +3320,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Integer) : int {",
@@ -3136,9 +3332,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3155,7 +3353,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Long) : int {",
@@ -3167,9 +3365,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3186,7 +3386,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Float) : int {",
@@ -3198,9 +3398,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3217,7 +3419,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long, right : Double) : int {",
@@ -3229,9 +3431,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3248,7 +3452,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -3262,9 +3466,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicInteger;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3281,7 +3487,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -3295,9 +3501,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import java.util.concurrent.atomic.AtomicLong;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",
@@ -3314,7 +3522,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void operator_spaceship_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void operator_spaceship_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -3328,9 +3536,11 @@ public class CompilerTest extends AbstractSarlTest {
 						"import io.sarl.lang.core.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.annotation.SyntheticMember;",
 						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@XbaseGenerated",
 						"@SuppressWarnings(\"all\")",
 						"public class A {",
 						"  @Pure",

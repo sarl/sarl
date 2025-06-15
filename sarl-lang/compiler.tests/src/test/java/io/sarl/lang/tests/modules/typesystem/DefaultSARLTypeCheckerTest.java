@@ -524,8 +524,6 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 	}
 	
 	@SuppressWarnings("static-method")
-	@TestFactory
-	@DisplayName("isTypeArgumentConformant")
 	private List<DynamicTest> buildTypeArgumentConformanceTests(EObject context, JvmTypeParameter parameter, Function1<TypeArgumentConformanceSourceType, Boolean> argumentsAndResults) {
 		final List<DynamicTest> tests = new ArrayList<>();
 		final var postfixLabel = new StringBuilder("> to <").append(parameter.getName());

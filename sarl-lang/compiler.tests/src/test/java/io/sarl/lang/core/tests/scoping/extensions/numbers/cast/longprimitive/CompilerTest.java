@@ -65,9 +65,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -97,7 +99,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BYTE_SARL, AS_BYTE_JAVA);
 	}
 
@@ -113,9 +115,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -145,7 +149,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_SHORT_SARL, AS_SHORT_JAVA);
 	}
 
@@ -161,9 +165,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -193,7 +199,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_INT_SARL, AS_INT_JAVA);
 	}
 
@@ -209,9 +215,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -241,7 +249,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_LONG_SARL, AS_LONG_JAVA);
 	}
 
@@ -257,9 +265,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -289,7 +299,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_FLOAT_SARL, AS_FLOAT_JAVA);
 	}
 
@@ -305,9 +315,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -337,7 +349,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_DOUBLE_SARL, AS_DOUBLE_JAVA);
 	}
 
@@ -353,9 +365,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -386,7 +400,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BYTE_OBJECT_SARL, AS_BYTE_OBJECT_JAVA);
 	}
 
@@ -402,9 +416,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -435,7 +451,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_SHORT_OBJECT_SARL, AS_SHORT_OBJECT_JAVA);
 	}
 
@@ -451,9 +467,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -484,7 +502,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_INTEGER_OBJECT_SARL, AS_INTEGER_OBJECT_JAVA);
 	}
 
@@ -500,9 +518,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -534,7 +554,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_LONG_OBJECT_SARL, AS_LONG_OBJECT_JAVA);
 	}
 
@@ -550,9 +570,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -583,7 +605,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_FLOAT_OBJECT_SARL, AS_FLOAT_OBJECT_JAVA);
 	}
 
@@ -599,9 +621,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -632,7 +656,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_DOUBLE_OBJECT_SARL, AS_DOUBLE_OBJECT_JAVA);
 	}
 
@@ -650,9 +674,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.concurrent.atomic.AtomicInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -682,7 +708,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICINTEGER_OBJECT_SARL, AS_ATOMICINTEGER_OBJECT_JAVA);
 	}
 
@@ -700,9 +726,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.util.concurrent.atomic.AtomicLong;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -733,7 +761,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICLONG_OBJECT_SARL, AS_ATOMICLONG_OBJECT_JAVA);
 	}
 
@@ -751,9 +779,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -783,7 +813,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_AtomicDouble(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_AtomicDouble(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICDOUBLE_OBJECT_SARL, AS_ATOMICDOUBLE_OBJECT_JAVA);
 	}
 
@@ -801,9 +831,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -833,7 +865,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_BigInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_BigInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BIGINTEGER_OBJECT_SARL, AS_BIGINTEGER_OBJECT_JAVA);
 	}
 
@@ -851,9 +883,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import java.math.BigDecimal;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -883,7 +917,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_BigDecimal(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_BigDecimal(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BIGDECIMAL_OBJECT_SARL, AS_BIGDECIMAL_OBJECT_JAVA);
 	}
 
@@ -899,9 +933,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -932,7 +968,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_NUMBER_OBJECT_SARL, AS_NUMBER_OBJECT_JAVA);
 	}
 
@@ -948,9 +984,11 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
@@ -981,7 +1019,7 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void as_String(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void  as_String(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_STRING_OBJECT_SARL, AS_STRING_OBJECT_JAVA);
 	}
 

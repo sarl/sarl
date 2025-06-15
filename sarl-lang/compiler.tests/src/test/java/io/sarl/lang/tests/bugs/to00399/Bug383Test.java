@@ -62,7 +62,7 @@ public class Bug383Test {
 
 	@Nested
 	@Tag("sarlValidation")
-	public static class ParserTest extends AbstractSarlTest {
+	public class ParserTest extends AbstractSarlTest {
 
 		@Test
 		public void parsing() throws Exception {
@@ -74,7 +74,7 @@ public class Bug383Test {
 
 	@Nested
 	@Tag("compileToJava")
-	public static class CompilerTest extends AbstractSarlTest {
+	public class CompilerTest extends AbstractSarlTest {
 		
 		@Test
 		public void compilation() throws Exception {

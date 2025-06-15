@@ -65,9 +65,11 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A0 {",
 			"  @Pure",
@@ -90,7 +92,7 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compilePrimitivePrimitive00(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compilePrimitivePrimitive00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(PRIMITIVE_PRIMITIVE_SARL_00, PRIMITIVE_PRIMITIVE_JAVA_00);
 	}
 
@@ -107,9 +109,11 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A0 {",
 			"  @Pure",
@@ -136,7 +140,7 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compilePrimitivePrimitive01(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compilePrimitivePrimitive01(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(PRIMITIVE_PRIMITIVE_SARL_01, PRIMITIVE_PRIMITIVE_JAVA_01);
 	}
 
@@ -154,12 +158,12 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlElementType;",
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileSubtypeType00.A0;",
-			"import io.sarl.lang.core.tests.compileSubtypeType00.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A2 {",
 			"  @Pure",
@@ -186,7 +190,7 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileSubtypeType00(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileSubtypeType00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(SUBTYPE_TYPE_SARL_00, SUBTYPE_TYPE_JAVA_00);
 	}
 
@@ -203,9 +207,11 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A0 {",
 			"  @Pure",
@@ -232,7 +238,7 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compilePrimitiveWrapper00(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compilePrimitiveWrapper00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(PRIMITIVE_WRAPPER_SARL_00, PRIMITIVE_WRAPPER_JAVA_00);
 	}
 
@@ -249,9 +255,11 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@XbaseGenerated",
 			"@SuppressWarnings(\"all\")",
 			"public class A0 {",
 			"  @Pure",
@@ -278,7 +286,7 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	@GlobalCompilationTestContribution
-	public static void compileWrapperPrimitive00(ResourceSetGlobalCompilationContext ctx) throws Exception {
+	public void compileWrapperPrimitive00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(WRAPPER_PRIMITIVE_SARL_00, WRAPPER_PRIMITIVE_JAVA_00);
 	}
 
