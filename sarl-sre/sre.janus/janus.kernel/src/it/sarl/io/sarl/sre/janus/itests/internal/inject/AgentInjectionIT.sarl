@@ -50,7 +50,7 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 @DisplayName("run: agent injection test")
 @Tag("sre-run")
 @Tag("janus")
-class AgentInjectionTest {
+class AgentInjectionIT {
 
 	@Test
 	@DisplayName("not injectable agent")

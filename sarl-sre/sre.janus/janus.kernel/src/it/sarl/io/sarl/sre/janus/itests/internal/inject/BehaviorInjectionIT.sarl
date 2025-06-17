@@ -52,7 +52,7 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 @DisplayName("run: behavior injection test")
 @Tag("sre-run")
 @Tag("janus")
-class BehaviorInjectionTest {
+class BehaviorInjectionIT {
 
 	@Test
 	@DisplayName("not injectable registered behavior")
