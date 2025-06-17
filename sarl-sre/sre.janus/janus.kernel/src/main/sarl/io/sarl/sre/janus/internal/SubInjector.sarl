@@ -29,7 +29,7 @@ import io.bootique.di.spi.DefaultInjector
 import io.bootique.di.spi.InjectorPredicates
 import java.util.Collections
 import java.util.List
-import javax.inject.Provider
+import jakarta.inject.Provider
 
 /** 
  * An injector that is overriding bindings in a local run-time context.
@@ -70,7 +70,8 @@ class SubInjector extends DefaultInjector {
 		}
 	}
 
-	override getProvider(type : Class<T>) : Provider<T> with T throws DIRuntimeException {
+	@Deprecated(since = "0.15", forRemoval = true)
+	override getProvider(type : Class<T>) : javax.inject.Provider<T> with T throws DIRuntimeException {
 		try {
 			return super.getProvider(type)
 		} catch (ex : Throwable) {
@@ -78,11 +79,28 @@ class SubInjector extends DefaultInjector {
 		}
 	}
 
-	override getProvider(key : Key<T>) : Provider<T> with T throws DIRuntimeException {
+	override getJakartaProvider(type : Class<T>) : Provider<T> with T throws DIRuntimeException {
+		try {
+			return super.getJakartaProvider(type)
+		} catch (ex : Throwable) {
+			return this.injector.getJakartaProvider(type)
+		}
+	}
+
+	@Deprecated(since = "0.15", forRemoval = true)
+	override getProvider(key : Key<T>) : javax.inject.Provider<T> with T throws DIRuntimeException {
 		try {
 			return super.getProvider(key)
 		} catch (ex : Throwable) {
 			return this.injector.getProvider(key)
+		}
+	}
+
+	override getJakartaProvider(key : Key<T>) : Provider<T> with T throws DIRuntimeException {
+		try {
+			return super.getJakartaProvider(key)
+		} catch (ex : Throwable) {
+			return this.injector.getJakartaProvider(key)
 		}
 	}
 
