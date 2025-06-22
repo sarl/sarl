@@ -29,10 +29,10 @@ import io.sarl.api.core.spaces.SpaceParticipantListenerFactory
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.janus.KernelScope
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.function.Supplier
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 

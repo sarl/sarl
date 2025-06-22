@@ -1133,6 +1133,7 @@ public class Jdt2Ecore {
 		/** Replies the reference to the type parameter with the given name.
 		 * The type parameter must be declared in the conversion context.
 		 *
+		 * @param name the name of the type parameter to search for.
 		 * @return the reference to the type parameter, or {@code null} if there is
 		 *    no declared type parameter with the given name.
 		 */
@@ -1163,7 +1164,7 @@ public class Jdt2Ecore {
 
 		/** Resolve the given type.
 		 *
-		 * @param typeName the name of the type to resolve.
+		 * @param type the name of the type to resolve.
 		 * @return the resolved type.
 		 * @throws JavaModelException if the JDT element cannot be resolved.
 		 */

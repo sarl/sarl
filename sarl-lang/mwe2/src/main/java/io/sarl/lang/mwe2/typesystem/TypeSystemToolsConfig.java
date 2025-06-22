@@ -30,6 +30,8 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
+import io.sarl.lang.mwe2.inject.InjectionAPI;
+
 /**
  * The configuration for the type system tools.
  *
@@ -60,7 +62,7 @@ public class TypeSystemToolsConfig implements IGuiceAwareGeneratorComponent {
 
 	private boolean supportBigDecimal = true;
 
-	private boolean googleInjectionTypes = true;
+	private InjectionAPI injectionAPI = InjectionAPI.getDefault();
 
 	private boolean generateDefaultValueJavaObjects = true;
 
@@ -215,33 +217,59 @@ public class TypeSystemToolsConfig implements IGuiceAwareGeneratorComponent {
 		this.supportBigDecimal = same;
 	}
 
+	/** Replies the injection API to be considered in the generated code.
+	 *
+	 * @return the injection API.
+	 * @since 0.15
+	 */
+	public InjectionAPI getInjectionAPI() {
+		return this.injectionAPI;
+	}
+
+	/** Change the injection API to be considered in the generated code.
+	 *
+	 * @param api the injection API. If it is {@code null}, the value replied by {@link InjectionAPI#getDeclaringClass()} is assumed.
+	 * @since 0.15
+	 */
+	public void setInjectionAPI(InjectionAPI api) {
+		if (api == null) {
+			this.injectionAPI = InjectionAPI.getDefault();
+		} else {
+			this.injectionAPI = api;
+		}
+	}
+
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @return {@code true} if the injection types are from Google Guice, otherwise {@code false}.
+	 * @since 0.14
+	 * @deprecated Replaced by {@link #getInjectionAPI()}.
 	 */
-	@Pure
-	public boolean getGoolgeInjectionTypes() {
-		return this.googleInjectionTypes;
+	@Deprecated(since = "0.15", forRemoval = true)
+	public boolean getGoogleInjectionTypes() {
+		return this.injectionAPI == InjectionAPI.GOOGLE_GUICE;
 	}
 
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @param isGoogle {@code true} if the injection types are from Google Guice, otherwise {@code false}.
+	 * @since 0.14
+	 * @deprecated Replaced by {@link #setInjectionAPI(InjectionAPI)}.
 	 */
-	public void setGoolgeInjectionTypes(boolean isGoogle) {
-		this.googleInjectionTypes = isGoogle;
+	@Deprecated(since = "0.15", forRemoval = true)
+	public void setGoogleInjectionTypes(boolean isGoogle) {
+		this.injectionAPI = isGoogle ? InjectionAPI.GOOGLE_GUICE : InjectionAPI.getDefault();
 	}
 
 	/** Replies the type for {@code @Inject}.
 	 *
 	 * @return the inject annotation type.
+	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
-	@Pure
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getInjectType() {
-		if (getGoolgeInjectionTypes()) {
-			return Inject.class;
-		}
-		return javax.inject.Inject.class;
+		return getInjectionAPI().getInjectType();
 	}
 
 	/** Replies if the functions for obtaining the Java objects of the default values should be generated.

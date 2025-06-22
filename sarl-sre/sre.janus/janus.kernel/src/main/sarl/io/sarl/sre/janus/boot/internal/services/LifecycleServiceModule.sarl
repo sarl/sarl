@@ -32,8 +32,8 @@ import io.sarl.sre.janus.services.lifecycle.InjectionBasedLifecycleService
 import io.sarl.sre.janus.services.lifecycle.LifecycleService
 import io.sarl.sre.janus.services.lifecycle.SkillUninstaller
 import io.sarl.sre.janus.services.lifecycle.StandardLifecycleService
-import javax.inject.Provider
-import javax.inject.Singleton
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import org.arakhne.afc.services.IService
 
 /** 

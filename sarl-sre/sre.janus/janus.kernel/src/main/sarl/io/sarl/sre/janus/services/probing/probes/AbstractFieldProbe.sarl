@@ -33,10 +33,10 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.janus.internal.Factories
+import jakarta.inject.Provider
 import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Provider
 import org.arakhne.afc.services.IService
 import org.arakhne.afc.services.ServiceState
 import org.eclipse.xtend.lib.annotations.Accessors

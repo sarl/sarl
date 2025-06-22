@@ -35,6 +35,7 @@ import io.sarl.lang.sarlc.modules.general.SarlcApplicationModuleProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
+@SuppressWarnings("all")
 public final class Main {
 
 	private Main() {

@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.janus.services.executor.policies
 
+import jakarta.inject.Singleton
 import java.lang.Thread.UncaughtExceptionHandler
 import java.util.concurrent.RejectedExecutionHandler
 import java.util.concurrent.ThreadPoolExecutor
-import javax.inject.Singleton
 
 /** 
  * Abstract implementation of the thread executor policies for rejected tasks and

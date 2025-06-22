@@ -37,19 +37,18 @@ import static io.sarl.docs.sarldoc.configs.SarldocConfig.VISIBILITY_NAME;
 
 import java.text.MessageFormat;
 
-import javax.inject.Singleton;
+import org.arakhne.afc.bootique.variables.VariableDecls;
 
+import io.bootique.BQModule;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
-import org.arakhne.afc.bootique.variables.VariableDecls;
-
 import io.sarl.docs.sarldoc.Constants;
 import io.sarl.docs.sarldoc.configs.Placement;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.docs.sarldoc.configs.Visibility;
+import jakarta.inject.Singleton;
 
 /**
  * Module for creating and configuring the configuration that is specific to sarldoc.

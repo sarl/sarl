@@ -39,14 +39,14 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.io.Serializable
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 

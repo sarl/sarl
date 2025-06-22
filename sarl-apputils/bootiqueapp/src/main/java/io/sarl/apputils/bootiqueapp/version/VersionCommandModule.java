@@ -23,12 +23,11 @@ package io.sarl.apputils.bootiqueapp.version;
 
 import static io.bootique.BQCoreModule.extend;
 
-import javax.inject.Singleton;
-
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.log.BootLogger;
+import jakarta.inject.Singleton;
 
 /** Module for the command for printing out the version.
  *

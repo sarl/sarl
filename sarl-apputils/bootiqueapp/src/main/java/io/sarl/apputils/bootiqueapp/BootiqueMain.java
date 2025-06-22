@@ -46,6 +46,7 @@ import io.sarl.apputils.bootiqueapp.utils.JulPatternFormatter;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("removal")
 public class BootiqueMain {
 
 	/** Return code when failure.

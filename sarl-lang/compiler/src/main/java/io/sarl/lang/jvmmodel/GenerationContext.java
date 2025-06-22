@@ -640,10 +640,12 @@ public abstract class GenerationContext {
 					final var annotationType = it.getAnnotation();
 					if (annotationType != null) {
 						final var name = annotationType.getQualifiedName();
-						if ("com.google.inject.Inject".equals(name) //$NON-NLS-1$
-								|| "javax.inject.Inject".equals(name) //$NON-NLS-1$
-								|| "jakarta.inject.Inject".equals(name)) { //$NON-NLS-1$
-							return true;
+						if (name != null && name.endsWith(".Inject")) { //$NON-NLS-1$
+							if (name.startsWith("jakarta.inject.") //$NON-NLS-1$
+									|| name.startsWith("com.google.inject.") //$NON-NLS-1$
+									|| name.startsWith("javax.inject.")) { //$NON-NLS-1$
+								return true;
+							}
 						}
 					}
 					return false;

@@ -23,7 +23,6 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.sarl.SarlAgent;
@@ -31,6 +30,7 @@ import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
+import jakarta.inject.Inject;
 import java.util.Collection;
 import java.util.function.Predicate;
 import org.eclipse.emf.common.notify.Adapter;

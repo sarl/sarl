@@ -34,11 +34,11 @@ import io.bootique.meta.application.OptionMetadata
 import io.sarl.sre.janus.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.ContextsConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.ServicesConfig
+import jakarta.inject.Singleton
 import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Collections
 import java.util.Map
-import javax.inject.Singleton
 import org.arakhne.afc.bootique.variables.VariableDecls
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors

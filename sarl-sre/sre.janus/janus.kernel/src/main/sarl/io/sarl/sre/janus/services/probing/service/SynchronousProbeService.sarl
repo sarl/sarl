@@ -24,11 +24,11 @@ import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.probing.Probe
 import io.sarl.sre.janus.internal.Factories
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.net.URI
 import java.util.Map
 import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
-import javax.inject.Provider
 
 /** 
  * This class is the implementation of a probe service that is updating the values synchronously.

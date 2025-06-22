@@ -25,10 +25,10 @@ import io.sarl.api.core.spaces.OpenEventSpace
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.function.Function;
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtext.xbase.lib.Pure

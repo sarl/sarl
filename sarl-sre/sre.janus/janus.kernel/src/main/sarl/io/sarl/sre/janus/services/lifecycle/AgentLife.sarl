@@ -40,6 +40,7 @@ import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.context.Context
+import jakarta.inject.Provider
 import java.util.List
 import java.util.Map
 import java.util.UUID
@@ -48,7 +49,6 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Level
 import java.util.logging.Logger
-import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
 

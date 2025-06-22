@@ -20,12 +20,12 @@
 
 package org.arakhne.afc.bootique.printconfig;
 
-import io.bootique.BQModuleMetadata;
-import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
-
 import org.arakhne.afc.bootique.printconfig.modules.PrintConfigCommandModule;
 import org.arakhne.afc.vmutil.locale.Locale;
+
+import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
+import io.bootique.BQModuleProvider;
 
 /** Provider of a Bootique module for configuration printer.
  *
@@ -35,6 +35,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
+@SuppressWarnings({"removal", "deprecation"})
 public class PrintConfigModuleProvider implements BQModuleProvider {
 
 	@Override

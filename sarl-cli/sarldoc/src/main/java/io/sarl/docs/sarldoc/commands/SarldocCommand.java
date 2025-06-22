@@ -31,25 +31,26 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-import javax.inject.Provider;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.DocumentationTool;
 import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
 
+import org.arakhne.afc.vmutil.FileSystem;
+
 import com.google.common.base.Strings;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandOutcome;
 import io.bootique.di.BQInject;
-import org.arakhne.afc.vmutil.FileSystem;
-
 import io.sarl.apputils.bootiqueapp.BootiqueMain;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
+import jakarta.inject.Provider;
 
 /**
  * Command for launching sarldoc.

@@ -23,14 +23,13 @@ package io.sarl.lang.core;
 
 import java.util.UUID;
 
-import javax.inject.Inject;
-
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.sarl.lang.core.annotation.SarlSpecification;
+import jakarta.inject.Inject;
 
 
 /**

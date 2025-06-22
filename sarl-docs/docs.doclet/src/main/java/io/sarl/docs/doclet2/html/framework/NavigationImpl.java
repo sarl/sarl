@@ -65,10 +65,11 @@ import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
 
 import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.framework.TypeRepository;

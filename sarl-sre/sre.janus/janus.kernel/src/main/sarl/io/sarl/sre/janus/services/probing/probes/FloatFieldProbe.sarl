@@ -23,8 +23,8 @@ package io.sarl.sre.janus.services.probing.probes
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.sre.janus.internal.Factories
+import jakarta.inject.Provider
 import java.net.URI
-import javax.inject.Provider
 
 /** 
  * Probe implementation is linked to a primitive float field, or a field that

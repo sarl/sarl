@@ -39,6 +39,7 @@ import io.bootique.BQModuleProvider;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
+@SuppressWarnings({"removal", "deprecation"})
 public class SynopsisHelpModuleProvider implements BQModuleProvider {
 
 	@Override

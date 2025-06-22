@@ -22,10 +22,11 @@ package org.arakhne.afc.bootique;
 
 import java.util.Set;
 
-import javax.inject.Singleton;
+import org.arakhne.afc.bootique.applicationdata2.modules.ApplicationMetadata2Module;
+import org.arakhne.afc.bootique.synopsishelp.modules.SynopsisHelpGeneratorModule;
 
+import io.bootique.BQModule;
 import io.bootique.command.CommandManager;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
@@ -35,8 +36,7 @@ import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.module.ModulesMetadata;
 import io.bootique.terminal.Terminal;
-import org.arakhne.afc.bootique.applicationdata2.modules.ApplicationMetadata2Module;
-import org.arakhne.afc.bootique.synopsishelp.modules.SynopsisHelpGeneratorModule;
+import jakarta.inject.Singleton;
 
 /** Module for creating the help generator with synopsis.
  *
@@ -45,9 +45,7 @@ import org.arakhne.afc.bootique.synopsishelp.modules.SynopsisHelpGeneratorModule
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
- * @deprecated Should be removed when the AFC modules have been moved to the main stream of AFC.
  */
-@Deprecated
 public class FusionModule implements BQModule {
 
 	private final SynopsisHelpGeneratorModule module0 = new SynopsisHelpGeneratorModule();

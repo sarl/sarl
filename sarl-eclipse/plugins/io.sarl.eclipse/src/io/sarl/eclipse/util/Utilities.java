@@ -31,7 +31,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.ClasspathEntry;
-import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
@@ -163,9 +162,6 @@ public final class Utilities {
 	public static String getNameWithTypeParameters(IType type) {
 		assert type != null;
 		final var superName = type.getFullyQualifiedName('.');
-		if (!JavaModelUtil.is50OrHigher(type.getJavaProject())) {
-			return superName;
-		}
 		try {
 			final var typeParameters = type.getTypeParameters();
 			if (typeParameters != null && typeParameters.length > 0) {

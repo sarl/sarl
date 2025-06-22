@@ -26,10 +26,11 @@ import static io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig.ALL_ERRORS_N
 import static io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig.ALL_WARNINGS_NAME;
 import static io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig.IGNORE_WARNINGS_NAME;
 
-import io.bootique.di.BQModule;
+import org.arakhne.afc.bootique.variables.VariableDecls;
+
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.meta.application.OptionMetadata;
-import org.arakhne.afc.bootique.variables.VariableDecls;
 
 /** Module for creating and configuring the sarlc validator's configuration.
  *

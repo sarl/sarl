@@ -71,7 +71,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Without agent")
-	def shutdownWithoutAgent(extension rc : SreRunContext) {
+	def shutdownWithoutAgent(extension rc : SreRunContext) : void {
 		setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -85,7 +85,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("1 killing agent")
-	def shutdownWithKillingAgent(extension rc : SreRunContext) {
+	def shutdownWithKillingAgent(extension rc : SreRunContext) : void {
 		typeof(ShutdownAgent1Mock).setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -98,7 +98,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("infinite-loop agent")
-	def shutdownWithAliveAgent(extension rc : SreRunContext) {
+	def shutdownWithAliveAgent(extension rc : SreRunContext) : void {
 		typeof(InfiniteLifeTestingAgent).setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -112,7 +112,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("2 infinite-loop agents")
-	def shutdownWithAliveAgents(extension rc : SreRunContext) {
+	def shutdownWithAliveAgents(extension rc : SreRunContext) : void {
 		var sre = typeof(InfiniteLifeTestingAgent).setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -127,7 +127,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Failing agent during initialization")
-	def shutdownWithFailingAgentDuringInitialization(extension rc : SreRunContext) {
+	def shutdownWithFailingAgentDuringInitialization(extension rc : SreRunContext) : void {
 		typeof(ShutdownAgent3Mock).setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -140,7 +140,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Agent kill during initialization")
-	def shutdownWithKillingAgentDuringInitialization(extension rc : SreRunContext) {
+	def shutdownWithKillingAgentDuringInitialization(extension rc : SreRunContext) : void {
 		typeof(ShutdownAgent4Mock).setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -153,7 +153,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Failing agent and another short life agent")
-	def shutdownWithFailingAgentDuringInitializationAndShortLifeAgent(extension rc : SreRunContext) {
+	def shutdownWithFailingAgentDuringInitializationAndShortLifeAgent(extension rc : SreRunContext) : void {
 		typeof(ShutdownAgent5Mock).setupTheSreKernel(null, null)
 		val exec = rc.bootstrap.getService(typeof(ExecutorService))
 		exec.assertNotNull
@@ -166,7 +166,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Failing agent and another infinite life agent - no shutdown")
-	def shutdownWithFailingAgentDuringInitializationAndInfiniteLifeAgent_noShutdown(extension rc : SreRunContext) {
+	def shutdownWithFailingAgentDuringInitializationAndInfiniteLifeAgent_noShutdown(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).assertException [
 			typeof(ShutdownAgent6Mock).runSre(LogTrackingMode::SILENT, SHORT_TIMEOUT)
 		]
@@ -174,7 +174,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Killing agent and another infinite life agent - no shutdown")
-	def shutdownWithKillingAgentDuringInitializationAndInfiniteLifeAgent_noShutdown(extension rc : SreRunContext) {
+	def shutdownWithKillingAgentDuringInitializationAndInfiniteLifeAgent_noShutdown(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).assertException [
 			typeof(ShutdownAgent2Mock).runSre(VERY_SHORT_TIMEOUT)
 		]
@@ -182,7 +182,7 @@ class ShutdownIT {
 
 	@RepeatedTest(5)
 	@DisplayName("Killing agent and another failing agent - no shutdown")
-	def shutdownWithFailingAgentDuringInitializationAndInfiniteLifeAgent_shutdown(extension rc : SreRunContext) {
+	def shutdownWithFailingAgentDuringInitializationAndInfiniteLifeAgent_shutdown(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).assertException [
 			typeof(ShutdownAgent7Mock).runSre(LogTrackingMode::SILENT, SHORT_TIMEOUT)
 		]

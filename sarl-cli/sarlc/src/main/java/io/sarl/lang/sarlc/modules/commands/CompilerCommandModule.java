@@ -28,21 +28,19 @@ import java.text.MessageFormat;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
+import io.bootique.BQModule;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
-
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 /** Module for the compiler command.
  *

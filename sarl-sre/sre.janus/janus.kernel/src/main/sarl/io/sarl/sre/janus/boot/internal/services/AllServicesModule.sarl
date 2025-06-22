@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.janus.boot.internal.services
 
+import jakarta.inject.Qualifier
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
-import javax.inject.Qualifier
 
 /** 
  * Annotation to mark the set of SRE services.

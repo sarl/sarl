@@ -77,7 +77,7 @@ public final class DocletTester {
 			//System.setProperty("http.proxyPort", "3128"); //$NON-NLS-1$ //$NON-NLS-2$
 			final var params = new String[] {
 				"-private", //$NON-NLS-1$
-				"-source", "11", //$NON-NLS-1$ //$NON-NLS-2$
+				"-source", "21", //$NON-NLS-1$ //$NON-NLS-2$
 				"-doclet", Doclet.class.getName(), //$NON-NLS-1$
 				"-sourcepath", "~/git/sarl.dsl/main/coreplugins/io.sarl.lang.core/src", //$NON-NLS-1$ //$NON-NLS-2$
 				"-sourcepath", "~/git/sarl.dsl/main/coreplugins/io.sarl.lang/src", //$NON-NLS-1$ //$NON-NLS-2$

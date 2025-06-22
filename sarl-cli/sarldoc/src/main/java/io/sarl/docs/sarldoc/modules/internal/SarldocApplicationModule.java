@@ -28,18 +28,15 @@ import java.text.MessageFormat;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
-import io.bootique.di.Key;
-import io.bootique.di.Provides;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
 
+import io.bootique.BQModule;
+import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.Binder;
+import io.bootique.di.Key;
+import io.bootique.di.Provides;
 import io.sarl.apputils.bootiqueapp.utils.SystemProperties;
 import io.sarl.docs.sarldoc.Constants;
 import io.sarl.docs.sarldoc.commands.SarldocCommand;
@@ -52,6 +49,8 @@ import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 /** Module for configuring the sarldoc application information.
  *
@@ -75,7 +74,7 @@ public class SarldocApplicationModule implements BQModule {
 		// Short description of the application.
 		extend(binder).setApplicationDescription(Messages.SarldocApplicationModule_0);
 		// Long description of the application.
-		binder.bind(Key.get(String.class, ApplicationDetailedDescription.class)).toProvider(LongDescriptionProvider.class).inSingletonScope();
+		binder.bind(Key.get(String.class, ApplicationDetailedDescription.class)).toJakartaProvider(LongDescriptionProvider.class).inSingletonScope();
 		// Synopsis of the application's arguments.
 		binder.bind(Key.get(String.class, ApplicationArgumentSynopsis.class)).toInstance(Messages.SarldocApplicationModule_1);
 		// Default command

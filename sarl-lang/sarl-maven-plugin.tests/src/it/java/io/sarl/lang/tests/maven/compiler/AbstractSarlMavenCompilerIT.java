@@ -30,6 +30,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
@@ -37,6 +40,7 @@ import org.apache.maven.shared.invoker.InvokerLogger;
 import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.OperatingSystem;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -131,12 +135,15 @@ public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
 					.replaceAll("@USER_JAVA_VERSION@", SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT)
 					.getBytes(), pomFile);
 			// Compile
+			List<String> standardStream = new ArrayList<>();
 			List<String> errorStream = new ArrayList<>();
-			final int result = runMavenCompiler(tempDirectory, null, errorStream);
+			final int result = runMavenCompiler(tempDirectory, standardStream, errorStream);
 			if (expectedSuccess) {
-				assertEquals(0, result, "Unexpected return code for the batch compiler");
+				assertEquals(0, result, "Unexpected return code for the batch compiler.\nSTDOUT:\n" + Strings.concat("\n", standardStream)
+						+ "\nSTDERR:\n" + Strings.concat("\n", errorStream));
 			} else {
-				assertNotEquals(0, result, "Unexpected return code for the batch compiler");
+				assertNotEquals(0, result, "Unexpected return code for the batch compiler\nSTDOUT:\n" + Strings.concat("\n", standardStream)
+						+ "\nSTDERR:\n" + Strings.concat("\n", errorStream));
 			}
 			//
 			File sarlcOutputDirectory = makeFolder(tempDirectory, "src", "main", "generated-sources", "sarl");
@@ -152,14 +159,15 @@ public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
 		request.setPomFile(new File(basePath, "pom.xml"));
 		request.setGoals(Arrays.asList("clean", "compile"));
 		request.setBatchMode(true);
+		request.setQuiet(false);
 		var invoker = new DefaultInvoker();
 		invoker.setOutputHandler(line -> {
-			if (outputStream != null) {
+			if (outputStream != null && line != null) {
 				outputStream.add(line);
 			}
 		});
 		invoker.setErrorHandler(line -> {
-			if (errorStream != null) {
+			if (errorStream != null && line != null) {
 				errorStream.add(line);
 			}
 		});
@@ -182,17 +190,21 @@ public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
 
 			@Override
 			public void info(String message) {
-				//
+				if (outputStream != null) {
+					outputStream.add(message);
+				}
 			}
 
 			@Override
 			public void info(String message, Throwable throwable) {
-				//
+				if (outputStream != null) {
+					outputStream.add(message);
+				}
 			}
 
 			@Override
 			public boolean isInfoEnabled() {
-				return false;
+				return true;
 			}
 
 			@Override

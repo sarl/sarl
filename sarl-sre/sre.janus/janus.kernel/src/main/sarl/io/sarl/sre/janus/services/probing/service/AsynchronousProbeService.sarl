@@ -25,10 +25,10 @@ import io.sarl.api.naming.parser.INameParser
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.executor.tasks.Runnables
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 

@@ -45,6 +45,8 @@ import io.sarl.sre.janus.internal.SubInjector
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.spaces.SreSpaceSpecificationFactory
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.io.Serializable
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
@@ -56,8 +58,6 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 import org.arakhne.afc.vmutil.ClassComparator
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Data

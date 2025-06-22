@@ -52,6 +52,7 @@ package io.sarl.docs.doclet2.framework;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import jdk.javadoc.doclet.DocletEnvironment;
 
 /** Factory of Environment for the SARL doclet.

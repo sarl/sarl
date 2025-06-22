@@ -23,11 +23,12 @@ package io.sarl.docs.validator;
 
 import java.util.Arrays;
 
+import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
+
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
-import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
 import io.sarl.lang.SARLStandaloneSetup;
 

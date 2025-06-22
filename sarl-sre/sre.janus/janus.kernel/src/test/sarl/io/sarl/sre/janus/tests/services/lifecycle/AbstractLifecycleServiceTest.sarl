@@ -57,13 +57,13 @@ import io.sarl.sre.janus.tests.services.lifecycle.mocks.MyEventBus
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.PropertyRestoreExtension
+import jakarta.inject.Provider
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID
 import java.util.concurrent.Future
 import java.util.function.BooleanSupplier
 import java.util.logging.Logger
-import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure0
 import org.junit.jupiter.api.BeforeEach

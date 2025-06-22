@@ -24,8 +24,8 @@ import com.google.common.util.concurrent.AtomicDouble
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.sre.janus.internal.Factories
+import jakarta.inject.Provider
 import java.net.URI
-import javax.inject.Provider
 
 /** 
  * Probe implementation is linked to a primitive double field, or a field that

@@ -31,10 +31,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
-import com.google.inject.Inject;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+
+import com.google.inject.Inject;
 
 import io.sarl.docs.generator.Messages;
 import io.sarl.docs.generator.parser.SarlDocumentationParser.Tag;

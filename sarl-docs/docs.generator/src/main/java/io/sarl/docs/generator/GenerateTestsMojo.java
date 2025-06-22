@@ -42,9 +42,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
-import com.google.inject.Injector;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -66,6 +63,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import org.opentest4j.TestAbortedException;
+
+import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.inject.Injector;
 
 import io.sarl.docs.generator.markdown.MarkdownParser;
 import io.sarl.docs.generator.parser.AbstractMarkerLanguageParser;

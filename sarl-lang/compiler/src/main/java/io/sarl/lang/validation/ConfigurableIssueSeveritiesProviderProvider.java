@@ -25,9 +25,8 @@ import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
-
-import jakarta.inject.Provider;
 
 /** Provider of a configurable issue severity provider that is a singleton.
  *

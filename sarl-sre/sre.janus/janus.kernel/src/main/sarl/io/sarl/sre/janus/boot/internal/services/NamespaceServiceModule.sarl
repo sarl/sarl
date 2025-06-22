@@ -34,9 +34,9 @@ import io.sarl.api.naming.namespace.INamespaceFinder
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.namespace.OwnerTypeFieldAccessValidator
 import io.sarl.api.naming.parser.INameParser
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.util.Set
-import javax.inject.Inject
-import javax.inject.Singleton
 import org.arakhne.afc.services.IService
 
 /** 

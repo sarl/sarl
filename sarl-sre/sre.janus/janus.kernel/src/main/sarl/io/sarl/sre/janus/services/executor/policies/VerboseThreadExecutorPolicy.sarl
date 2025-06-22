@@ -21,11 +21,11 @@
 package io.sarl.sre.janus.services.executor.policies
 
 import io.sarl.sre.janus.IssueCodes
+import jakarta.inject.Singleton
 import java.text.MessageFormat
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.logging.Level
 import java.util.logging.LogRecord
-import javax.inject.Singleton
 
 /**
  * A handler for rejected tasks and uncaught exceptions that logs a warning on the platform logger

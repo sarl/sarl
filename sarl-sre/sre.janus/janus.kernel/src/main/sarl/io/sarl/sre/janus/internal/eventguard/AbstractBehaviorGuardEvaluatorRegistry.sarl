@@ -26,10 +26,10 @@ import io.sarl.lang.core.util.ConcurrentSet
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.MutableBoolean
 import io.sarl.sre.janus.internal.ObjectComparator
+import jakarta.inject.Provider
 import java.util.Set
 import java.util.TreeSet
 import java.util.concurrent.ConcurrentMap
-import javax.inject.Provider
 
 /** 
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a

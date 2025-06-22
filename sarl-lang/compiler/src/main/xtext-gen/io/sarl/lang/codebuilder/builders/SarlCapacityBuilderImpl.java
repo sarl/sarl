@@ -23,12 +23,12 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlScript;
+import jakarta.inject.Inject;
 import java.util.function.Predicate;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;

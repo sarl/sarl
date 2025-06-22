@@ -21,13 +21,13 @@
 
 package io.sarl.docs.sarldoc.modules.internal;
 
-import javax.inject.Singleton;
+import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
-import org.arakhne.afc.vmutil.DynamicURLClassLoader;
+import jakarta.inject.Singleton;
 
 /** Module for injecting the dynamic class loader.
  *

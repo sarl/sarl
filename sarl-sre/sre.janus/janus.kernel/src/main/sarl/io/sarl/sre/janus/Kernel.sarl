@@ -35,6 +35,9 @@ import io.sarl.sre.janus.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.janus.services.lifecycle.LifecycleService
 import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import java.lang.Thread.UncaughtExceptionHandler
 import java.lang.ref.WeakReference
 import java.util.UUID
@@ -43,9 +46,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.arakhne.afc.services.IServiceManager
 import org.arakhne.afc.services.IService

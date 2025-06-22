@@ -21,11 +21,10 @@
 
 package io.sarl.lang.pythongenerator.generator;
 
-import javax.inject.Singleton;
-
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
 
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageKeywordProvider;
+import jakarta.inject.Singleton;
 
 /** Provider of the Python keywords.
  *

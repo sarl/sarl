@@ -118,15 +118,16 @@ org.objenesis:
 org.eclipse.tycho:
   target-platform-configuration: $tycho.version
   tycho-compiler-plugin: $tycho.version
+  tycho-maven-plugin: $tycho.version
   tycho-p2-repository-plugin: $tycho.version
   tycho-p2-plugin: $tycho.version
   tycho-p2-director-plugin: $tycho.version
   tycho-packaging-plugin: $tycho.version
-  tycho-versions-plugin: $tycho.version
-  tycho-surefire-plugin: $tycho.version
-  tycho-maven-plugin: $tycho.version
   tycho-source-plugin: $tycho.version
+  tycho-surefire-plugin: $tycho.version
+  tycho-versions-plugin: $tycho.version
 
 org.eclipse.tycho.extras:
   tycho-eclipserun-plugin: $tycho.version
+  tycho-sourceref-jgit: $tycho.version
 

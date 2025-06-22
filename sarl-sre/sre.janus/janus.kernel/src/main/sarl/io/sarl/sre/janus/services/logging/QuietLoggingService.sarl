@@ -20,11 +20,11 @@
  */
 package io.sarl.sre.janus.services.logging
 
+import jakarta.inject.Singleton
 import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
-import javax.inject.Singleton
 import org.arakhne.afc.services.AbstractService
 import org.arakhne.afc.services.IService
 

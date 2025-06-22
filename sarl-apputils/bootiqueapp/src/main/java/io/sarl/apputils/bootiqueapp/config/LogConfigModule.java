@@ -20,20 +20,20 @@
  */
 package io.sarl.apputils.bootiqueapp.config;
 
+import static io.bootique.BQCoreModule.extend;
+
 import java.text.MessageFormat;
 
-import javax.inject.Singleton;
+import org.arakhne.afc.bootique.variables.VariableDecls;
+import org.arakhne.afc.bootique.variables.VariableNames;
 
+import io.bootique.BQModule;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
-import org.arakhne.afc.bootique.variables.VariableDecls;
-import org.arakhne.afc.bootique.variables.VariableNames;
-
-import static io.bootique.BQCoreModule.extend;
+import jakarta.inject.Singleton;
 
 /** 
  * Module for creating and configuring the loggers.

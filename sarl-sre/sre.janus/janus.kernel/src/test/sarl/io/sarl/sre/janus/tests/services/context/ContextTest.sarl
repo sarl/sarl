@@ -37,9 +37,9 @@ import io.sarl.sre.janus.tests.framework.SreTestUtilities
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.PropertyRestoreExtension
+import jakarta.inject.Provider
 import java.util.UUID
 import java.util.logging.Logger
-import javax.inject.Provider
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

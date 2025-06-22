@@ -21,9 +21,9 @@
 
 package io.sarl.apputils.bootiqueapp.version;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for the version command.
  *
@@ -33,6 +33,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("removal")
 public class VersionCommandModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -40,6 +41,7 @@ public class VersionCommandModuleProvider implements BQModuleProvider {
 		return new VersionCommandModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

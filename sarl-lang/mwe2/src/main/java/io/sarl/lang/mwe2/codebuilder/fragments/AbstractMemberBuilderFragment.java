@@ -384,7 +384,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					for (final var complexParameter : complexParameters) {
 						appendEmptyComment(it);
 						it.append("\t@"); //$NON-NLS-1$
-						it.append(getCodeBuilderConfig().getInjectType());
+						it.append(getCodeBuilderConfig().getInjectionAPI().getInjectType());
 						it.newLine();
 						it.append("\tprivate "); //$NON-NLS-1$
 						it.append(Provider.class);

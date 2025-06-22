@@ -23,12 +23,11 @@ package io.sarl.apputils.bootiqueapp.mdhelp;
 
 import static io.bootique.BQCoreModule.extend;
 
-import javax.inject.Singleton;
-
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
+import jakarta.inject.Singleton;
 
 /** Module for displaying the help on the standard output using a Markdown format.
  *

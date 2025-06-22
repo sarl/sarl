@@ -23,7 +23,7 @@
  */
 package io.sarl.lang.serializer;
 
-import com.google.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EObject;

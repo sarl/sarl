@@ -24,12 +24,12 @@ import com.google.common.base.Throwables
 import io.sarl.api.core.Logging
 import io.sarl.lang.core.Skill
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
 import java.text.MessageFormat
 import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
-import javax.inject.Inject
 
 /** 
  * SRE implementation of SARL's {@link Logging} built-in capacity.

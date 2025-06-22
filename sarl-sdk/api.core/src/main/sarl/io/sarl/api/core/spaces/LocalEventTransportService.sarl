@@ -24,7 +24,7 @@ import io.sarl.lang.core.Address
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 /** 
  * This service enables to route events on the local machine only.

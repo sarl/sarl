@@ -27,10 +27,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
+
+import io.sarl.lang.mwe2.inject.InjectionAPI;
 
 /**
  * A configuration for the accessor to the grammar keywords.
@@ -42,7 +40,7 @@ import com.google.inject.name.Named;
  */
 public class GrammarKeywordAccessConfig extends GrammarKeywordAccessKeywordConfig {
 
-	private boolean googleInjectionTypes = true;
+	private InjectionAPI injectionAPI = InjectionAPI.getDefault();
 
 	private String protectionSymbol = "^"; //$NON-NLS-1$
 
@@ -106,70 +104,92 @@ public class GrammarKeywordAccessConfig extends GrammarKeywordAccessKeywordConfi
 		return this.isDependencyGrammarInheritance;
 	}
 
+	/** Replies the injection API to be considered in the generated code.
+	 *
+	 * @return the injection API.
+	 * @since 0.15
+	 */
+	public InjectionAPI getInjectionAPI() {
+		return this.injectionAPI;
+	}
+
+	/** Change the injection API to be considered in the generated code.
+	 *
+	 * @param api the injection API. If it is {@code null}, the value replied by {@link InjectionAPI#getDeclaringClass()} is assumed.
+	 * @since 0.15
+	 */
+	public void setInjectionAPI(InjectionAPI api) {
+		if (api == null) {
+			this.injectionAPI = InjectionAPI.getDefault();
+		} else {
+			this.injectionAPI = api;
+		}
+	}
+
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @return {@code true} if the injection types are from Google Guice, otherwise {@code false}.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link #getInjectionAPI()}.
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public boolean getGoogleInjectionTypes() {
-		return this.googleInjectionTypes;
+		return this.injectionAPI == InjectionAPI.GOOGLE_GUICE;
 	}
 
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @param isGoogle {@code true} if the injection types are from Google Guice, otherwise {@code false}.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link #setInjectionAPI(InjectionAPI)}.
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public void setGoogleInjectionTypes(boolean isGoogle) {
-		this.googleInjectionTypes = isGoogle;
+		this.injectionAPI = isGoogle ? InjectionAPI.GOOGLE_GUICE : InjectionAPI.getDefault();
 	}
 
 	/** Replies the type for {@code @Inject}.
 	 *
 	 * @return the inject annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getInjectType() {
-		if (getGoogleInjectionTypes()) {
-			return Inject.class;
-		}
-		return javax.inject.Inject.class;
+		return getInjectionAPI().getInjectType();
 	}
 
 	/** Replies the type for {@code @Named}.
 	 *
 	 * @return the named annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getNamedType() {
-		if (getGoogleInjectionTypes()) {
-			return Named.class;
-		}
-		return javax.inject.Named.class;
+		return getInjectionAPI().getNamedType();
 	}
 
 	/** Replies the type for {@code @Provider}.
 	 *
 	 * @return the provider annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getProviderType() {
-		if (getGoogleInjectionTypes()) {
-			return Provider.class;
-		}
-		return javax.inject.Provider.class;
+		return getInjectionAPI().getProviderType();
 	}
 
 	/** Replies the type for {@code @Singleton}.
 	 *
 	 * @return the singleton annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getSingletonType() {
-		if (getGoogleInjectionTypes()) {
-			return Singleton.class;
-		}
-		return javax.inject.Singleton.class;
+		return getInjectionAPI().getSingletonType();
 	}
 
 	/** Replies if the keywords defined in a scope are removed from the root accessor.

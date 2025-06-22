@@ -20,7 +20,7 @@
  */
 package io.sarl.sre.janus.spaces
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 /** 
  * This service enables to route events

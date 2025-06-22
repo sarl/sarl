@@ -31,7 +31,7 @@ import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.services.lifecycle.SkillUninstaller
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
-import javax.inject.Provider
+import jakarta.inject.Provider
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 

@@ -24,10 +24,10 @@ import io.sarl.api.core.AgentTask
 import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.util.ConcurrentSet
 import io.sarl.sre.janus.internal.Factories
+import jakarta.inject.Provider
 import java.lang.ref.WeakReference
 import java.util.Comparator
 import java.util.Set
-import javax.inject.Provider
 
 /** 
  * Describes any information that is required by SRE for supporting the agent trait's life. 

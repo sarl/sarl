@@ -31,8 +31,8 @@ import io.sarl.sre.janus.internal.AgentLevelConfigurableAgentInjector
 import io.sarl.sre.janus.internal.AgentTraitLevelConfigurableAgentInjector
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.NopConfigurableAgentInjector
-import javax.inject.Provider
-import javax.inject.Singleton
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 
 /** 
  * Module for configuring the injector of agents and agent components.

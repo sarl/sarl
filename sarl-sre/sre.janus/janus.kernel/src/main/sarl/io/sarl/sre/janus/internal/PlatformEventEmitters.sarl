@@ -60,12 +60,12 @@ import io.sarl.sre.janus.services.lifecycle.ContextReference
 import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.skills.bic.FailureListener
 import io.sarl.sre.janus.skills.bic.FailureListenerFactory
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 

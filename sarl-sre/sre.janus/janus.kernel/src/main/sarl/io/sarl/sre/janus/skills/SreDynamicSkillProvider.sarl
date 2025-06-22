@@ -44,8 +44,8 @@ import io.sarl.sre.janus.skills.bic.LoggingSkill
 import io.sarl.sre.janus.skills.bic.SchedulesSkill
 import io.sarl.sre.janus.skills.bic.TimeSkill
 import io.sarl.sre.janus.skills.internal.InternalEventBusSkill
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
 /** 
  * Provider of the built-in capacities of the SRE platform.

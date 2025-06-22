@@ -23,16 +23,14 @@ package io.sarl.lang.sarlc.commands;
 
 import java.util.TreeSet;
 
-import javax.inject.Provider;
-
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.di.BQInject;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
-
 import io.sarl.lang.extralanguage.IExtraLanguageContributions;
+import jakarta.inject.Provider;
 
 /**
  * Command for showing up the list of extra languages that are available on the classpath.
@@ -62,6 +60,7 @@ public class ExtraLanguageListCommand extends CommandWithMetadata {
 	 * @param bootLogger the logger.
 	 * @param contributions the provider of the extra-language contributions.
 	 */
+	@SuppressWarnings("removal")
 	@BQInject
 	public ExtraLanguageListCommand(BootLogger bootLogger, Provider<IExtraLanguageContributions> contributions) {
 		super(CommandMetadata

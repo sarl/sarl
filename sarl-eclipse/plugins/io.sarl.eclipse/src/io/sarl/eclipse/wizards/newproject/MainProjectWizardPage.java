@@ -1259,9 +1259,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 				jvmCompliance = JavaModelUtil.getCompilerCompliance(cvalue,
 						SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 			}
-			if (!selectedCompliance.equals(jvmCompliance)
-					&& (JavaModelUtil.is50OrHigher(selectedCompliance)
-					|| JavaModelUtil.is50OrHigher(jvmCompliance))) {
+			if (!selectedCompliance.equals(jvmCompliance)) {
 				this.fHintText.setText(MessageFormat.format(
 						NewWizardMessages.NewJavaProjectWizardPageOne_DetectGroup_jre_message,
 						TextProcessor.process(selectedCompliance),

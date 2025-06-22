@@ -21,9 +21,9 @@
 
 package io.sarl.lang.sarlc.modules.commands;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for printing out the available extra-language generators.
  *
@@ -33,6 +33,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("removal")
 public class ExtraLanguageListCommandModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -40,6 +41,7 @@ public class ExtraLanguageListCommandModuleProvider implements BQModuleProvider 
 		return new ExtraLanguageListCommandModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

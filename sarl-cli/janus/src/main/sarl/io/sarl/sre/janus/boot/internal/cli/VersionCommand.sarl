@@ -21,16 +21,16 @@
 
 package io.sarl.sre.janus.boot.internal.cli
 
+import io.bootique.BQModule
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.BQModule
 import io.bootique.di.Binder
 import io.bootique.di.Provides
 import io.bootique.log.BootLogger
 import io.sarl.sre.janus.SreVersion
+import jakarta.inject.Singleton
 import java.text.MessageFormat
 import java.util.Collection
-import javax.inject.Singleton
 
 /**
  * Command for showing the SRE version.

@@ -127,7 +127,7 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 * @since 0.14
 	 */
 	public Class<?> getInjectType() {
-		return this.configuration.getInjectType();
+		return this.configuration.getInjectionAPI().getInjectType();
 	}
 
 	@Override

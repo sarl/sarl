@@ -13,8 +13,8 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>io.sarl.baseutils</groupId>
-      <artifactId>javax.inject</artifactId>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.xtext</groupId>
@@ -179,7 +179,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
@@ -446,7 +446,7 @@
       <email>s.tedeschi@univda.it</email>
       <url>https://github.com/stefanotedeschi</url>
       <properties>
-      	<id>stedeschi</id>
+        <id>stedeschi</id>
       </properties>
       <roles>
         <role>Implementation of MutableOptional</role>

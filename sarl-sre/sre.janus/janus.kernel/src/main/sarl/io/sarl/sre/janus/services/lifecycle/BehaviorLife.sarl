@@ -23,7 +23,7 @@ package io.sarl.sre.janus.services.lifecycle
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.internal.Factories
-import javax.inject.Provider
+import jakarta.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
 

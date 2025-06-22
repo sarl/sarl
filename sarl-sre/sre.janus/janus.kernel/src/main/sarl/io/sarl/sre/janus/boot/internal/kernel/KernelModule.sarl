@@ -33,12 +33,12 @@ import io.sarl.sre.janus.boot.internal.services.SreServices
 import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextFactory
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Named
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import java.text.MessageFormat
 import java.util.Set
 import java.util.UUID
-import javax.inject.Named
-import javax.inject.Provider
-import javax.inject.Singleton
 import org.arakhne.afc.services.IService
 import org.arakhne.afc.services.IServiceManager
 import org.arakhne.afc.services.SynchronousServiceManager

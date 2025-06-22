@@ -21,10 +21,12 @@
 package org.arakhne.afc.bootique.applicationdata2.modules;
 
 import java.util.Set;
-import javax.inject.Singleton;
 
+import org.arakhne.afc.bootique.applicationdata2.annotations.ApplicationDescription2;
+import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
+
+import io.bootique.BQModule;
 import io.bootique.command.CommandManager;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Key;
@@ -33,9 +35,7 @@ import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.module.ModulesMetadata;
-
-import org.arakhne.afc.bootique.applicationdata2.annotations.ApplicationDescription2;
-import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
+import jakarta.inject.Singleton;
 
 /** Module for the compiler application metadata version 2.
  *

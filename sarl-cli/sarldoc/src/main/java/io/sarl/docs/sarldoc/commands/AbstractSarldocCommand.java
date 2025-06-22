@@ -36,17 +36,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.xtext.mwe.PathTraverser;
 
 import com.google.common.base.Strings;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
-import org.arakhne.afc.vmutil.FileSystem;
-import org.eclipse.xtext.mwe.PathTraverser;
-
 import io.sarl.apputils.bootiqueapp.BootiqueMain;
 import io.sarl.apputils.bootiqueapp.utils.SystemPath;
 import io.sarl.docs.doclet2.Doclet;
@@ -55,6 +53,8 @@ import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 /**
  * Abstract command for launching sarldoc that is sharing all the code
@@ -134,6 +134,7 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	 * @param pathDetector the detector of paths.
 	 * @param name the name of the commande, or {@code null} if none.
 	 */
+	@SuppressWarnings("removal")
 	@Inject
 	public AbstractSarldocCommand(Provider<Logger> logger,
 			Provider<SarldocConfig> config, Provider<SarlcConfig> sarlcConfig,

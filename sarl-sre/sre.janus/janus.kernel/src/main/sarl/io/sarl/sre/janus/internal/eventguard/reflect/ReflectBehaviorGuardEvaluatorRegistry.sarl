@@ -30,13 +30,13 @@ import io.sarl.sre.janus.internal.MutableBoolean
 import io.sarl.sre.janus.internal.ObjectComparator
 import io.sarl.sre.janus.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
+import jakarta.inject.Provider
 import java.util.Collection
 import java.util.Iterator
 import java.util.Map.Entry
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.CopyOnWriteArraySet
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Data
 
 import static extension io.sarl.sre.janus.internal.eventguard.reflect.StaticReflectBehaviorGuardEvaluatorDictionary.*

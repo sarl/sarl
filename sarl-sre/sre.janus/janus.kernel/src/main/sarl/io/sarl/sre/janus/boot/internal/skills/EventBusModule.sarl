@@ -30,8 +30,8 @@ import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.skills.internal.EventBusFactory
 import io.sarl.sre.janus.skills.internal.PolymorphicEventBusFactory
 import io.sarl.sre.janus.skills.internal.ReflectEventBusFactory
-import javax.inject.Provider
-import javax.inject.Singleton
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 
 /** 
  * Module for configuring the agents' event buses.

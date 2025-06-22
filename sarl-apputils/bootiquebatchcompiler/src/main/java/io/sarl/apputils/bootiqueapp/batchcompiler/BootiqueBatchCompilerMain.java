@@ -39,6 +39,7 @@ import io.sarl.lang.SARLStandaloneSetup;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("removal")
 public class BootiqueBatchCompilerMain extends BootiqueMain {
 
 	/** Constructor.

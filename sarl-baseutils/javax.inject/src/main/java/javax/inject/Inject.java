@@ -178,10 +178,12 @@ import static java.lang.annotation.ElementType.FIELD;
  *
  * @see javax.inject.Qualifier @Qualifier
  * @see javax.inject.Provider
+ * @deprecated Replaced by the {@code jakarta.inject.Inject}.
  */
 @Target({ METHOD, CONSTRUCTOR, FIELD })
 @Retention(RUNTIME)
 @Documented
+@Deprecated(since = "0.15", forRemoval = true)
 public @interface Inject {
 	//
 }

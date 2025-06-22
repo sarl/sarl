@@ -23,8 +23,6 @@ package io.sarl.lang.core.annotations;
 
 import java.util.Objects;
 
-import javax.inject.Singleton;
-
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
@@ -35,6 +33,7 @@ import org.eclipse.xtend.lib.macro.declaration.Visibility;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 
 import io.sarl.lang.core.Agent;
+import jakarta.inject.Singleton;
 
 /** Processor for the {@code @Accessors} active annotations.
  *

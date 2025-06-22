@@ -38,6 +38,8 @@ import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.executor.tasks.SreRunnable
 import io.sarl.sre.janus.services.lifecycle.AgentState
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.lang.ref.WeakReference
 import java.util.Collection
 import java.util.EventListener
@@ -50,8 +52,6 @@ import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 import org.arakhne.afc.vmutil.json.JsonBuffer
 
 import static java.text.MessageFormat.*

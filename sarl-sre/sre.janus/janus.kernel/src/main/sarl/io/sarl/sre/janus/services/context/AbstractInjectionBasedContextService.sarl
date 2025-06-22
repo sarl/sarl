@@ -24,8 +24,8 @@ import io.bootique.di.Injector
 import io.sarl.lang.core.Agent
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Provider
 import java.util.UUID
-import javax.inject.Provider
 
 /** 
  * A service managing the root context and enabling the creation of contexts by injection.

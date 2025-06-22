@@ -23,9 +23,9 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import io.sarl.lang.documentation.InnerBlockDocumentationAdapter;
+import jakarta.inject.Inject;
 import java.util.function.Predicate;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;

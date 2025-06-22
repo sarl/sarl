@@ -84,6 +84,7 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 	 * @param commandType the type of the command.
 	 * @param description the description of the command.
 	 */
+	@SuppressWarnings("removal")
 	protected GenerateMarkdownConfigCommand(ModulesMetadata modulesMetadata, Class<? extends GenerateMarkdownConfigCommand> commandType, String description) {
 		super(CommandMetadata
 				.builder(commandType)

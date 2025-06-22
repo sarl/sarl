@@ -29,9 +29,9 @@ import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.lifecycle.AgentState
 import io.sarl.sre.janus.services.lifecycle.LifecycleService
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
 
 import static io.sarl.sre.janus.services.lifecycle.AgentLife.*
 

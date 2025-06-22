@@ -21,9 +21,9 @@
 package io.sarl.sre.janus.services.time
 
 import io.sarl.api.util.SmartListenerCollection
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Time service based on the JRE standard time.

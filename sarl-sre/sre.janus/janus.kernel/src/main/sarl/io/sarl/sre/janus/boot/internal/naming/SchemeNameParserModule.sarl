@@ -32,9 +32,9 @@ import io.sarl.api.naming.parser.ISchemeNameParser
 import io.sarl.api.naming.parser.ServiceSchemeNameParser
 import io.sarl.api.naming.parser.SkillSchemeNameParser
 import io.sarl.api.naming.parser.SpaceSchemeNameParser
+import jakarta.inject.Qualifier
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
-import javax.inject.Qualifier
 
 /**
  * Module for the scheme name parsers.

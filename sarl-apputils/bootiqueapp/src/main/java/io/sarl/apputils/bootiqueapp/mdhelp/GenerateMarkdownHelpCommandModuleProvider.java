@@ -21,9 +21,9 @@
 
 package io.sarl.apputils.bootiqueapp.mdhelp;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for displaying the help on the standard output using a Markdown format.
  *
@@ -33,6 +33,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("removal")
 public class GenerateMarkdownHelpCommandModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -40,6 +41,7 @@ public class GenerateMarkdownHelpCommandModuleProvider implements BQModuleProvid
 		return new GenerateMarkdownHelpCommandModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

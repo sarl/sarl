@@ -25,14 +25,12 @@ import static io.bootique.BQCoreModule.extend;
 
 import java.text.MessageFormat;
 
-import javax.inject.Provider;
-
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
 
+import io.bootique.BQModule;
+import io.bootique.di.Binder;
 import io.sarl.apputils.bootiqueapp.utils.SystemProperties;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.util.CliUtilities;
@@ -43,6 +41,7 @@ import io.sarl.lang.sarlc.tools.DefaultPathDetector;
 import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 import io.sarl.lang.sarlc.tools.SarlEmbededSdkClasspathProvider;
+import jakarta.inject.Provider;
 
 /** Module for configuring the sarlc application information.
  *
@@ -65,7 +64,7 @@ public class SarlcApplicationModule implements BQModule {
 		// Short description of the application.
 		extend(binder).setApplicationDescription(Messages.SarlcApplicationModule_0);
 		// Long description of the application.
-		binder.bind(String.class, ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class).inSingletonScope();
+		binder.bind(String.class, ApplicationDetailedDescription.class).toJakartaProvider(LongDescriptionProvider.class).inSingletonScope();
 		// Synopsis of the application's arguments.
 		binder.bind(String.class, ApplicationArgumentSynopsis.class).toInstance(Messages.SarlcApplicationModule_1);
 		// Default command

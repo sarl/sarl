@@ -34,12 +34,12 @@ import io.sarl.lang.core.util.ConcurrentCollection
 import io.sarl.lang.core.util.OutParameter
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 /** 

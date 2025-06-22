@@ -28,12 +28,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.common.collect.Iterables;
-import com.google.inject.Inject;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
 
+import com.google.common.collect.Iterables;
+
 import io.sarl.lang.SARLConfig;
+import jakarta.inject.Inject;
 
 /**
  * Default implementation of a path detector.

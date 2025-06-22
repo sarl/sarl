@@ -24,17 +24,16 @@ package io.sarl.lang.sarlc.modules.commands;
 import static io.bootique.BQCoreModule.extend;
 import static io.sarl.apputils.bootiqueapp.batchcompiler.lang.SARLRuntimeModule.SARL_INJECTOR_NAME;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import com.google.inject.Injector;
-import io.bootique.di.BQModule;
+
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.log.BootLogger;
-
 import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 import io.sarl.lang.sarlc.commands.ExtraLanguageListCommand;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 /** Module for the command for printing out the available extra-language generators.
  *

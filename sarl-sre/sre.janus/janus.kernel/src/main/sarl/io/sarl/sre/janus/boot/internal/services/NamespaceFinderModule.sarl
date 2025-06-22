@@ -31,9 +31,9 @@ import io.sarl.sre.janus.services.namespace.ContextNamespaceFinder
 import io.sarl.sre.janus.services.namespace.ServiceNamespaceFinder
 import io.sarl.sre.janus.services.namespace.SkillNamespaceFinder
 import io.sarl.sre.janus.services.namespace.SpaceNamespaceFinder
+import jakarta.inject.Qualifier
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
-import javax.inject.Qualifier
 
 /**
  * Module for the namespace finders.

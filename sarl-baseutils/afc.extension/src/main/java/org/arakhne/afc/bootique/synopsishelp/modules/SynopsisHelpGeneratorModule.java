@@ -20,9 +20,11 @@
 
 package org.arakhne.afc.bootique.synopsishelp.modules;
 
-import javax.inject.Singleton;
+import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
+import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
+import org.arakhne.afc.bootique.synopsishelp.help.SynopsisHelpGenerator;
 
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Key;
@@ -30,10 +32,7 @@ import io.bootique.di.Provides;
 import io.bootique.help.HelpGenerator;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.terminal.Terminal;
-
-import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
-import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
-import org.arakhne.afc.bootique.synopsishelp.help.SynopsisHelpGenerator;
+import jakarta.inject.Singleton;
 
 /** Module for creating the help generator with synopsis.
  *

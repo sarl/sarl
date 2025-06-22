@@ -21,9 +21,9 @@
 
 package io.sarl.apputils.bootiqueapp.mdconfig;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for displaying the configuration parameter documentation
  * on the standard output using a Markdown format.
@@ -34,6 +34,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("removal")
 public class GenerateMarkdownConfigCommandModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -41,6 +42,7 @@ public class GenerateMarkdownConfigCommandModuleProvider implements BQModuleProv
 		return new GenerateMarkdownConfigCommandModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

@@ -27,16 +27,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-import javax.inject.Provider;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.di.BQInject;
-import org.arakhne.afc.vmutil.json.JsonBuffer;
-
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
+import jakarta.inject.Provider;
 
 /**
  * Fake command for launching sarldoc.

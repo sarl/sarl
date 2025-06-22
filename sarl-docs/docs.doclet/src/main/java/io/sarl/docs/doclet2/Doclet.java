@@ -57,13 +57,13 @@ import java.util.Set;
 import javax.lang.model.SourceVersion;
 
 import com.google.inject.Injector;
-import jdk.javadoc.doclet.DocletEnvironment;
-import jdk.javadoc.doclet.Reporter;
 
 import io.sarl.docs.doclet2.framework.DelegateErrorReporter;
 import io.sarl.docs.doclet2.framework.DocletEnvironmentFactory;
 import io.sarl.docs.doclet2.guice.SarlJavadocModule;
 import io.sarl.lang.SARLStandaloneSetup;
+import jdk.javadoc.doclet.DocletEnvironment;
+import jdk.javadoc.doclet.Reporter;
 
 /** SARL Doclet that is generated the API documentation.
  *

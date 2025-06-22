@@ -27,8 +27,8 @@ import io.bootique.di.Binder
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
 import io.sarl.api.naming.parser.UriBasedNameParser
+import jakarta.inject.Inject
 import java.util.Set
-import javax.inject.Inject
 
 /** 
  * Injectable implementation of the name parser.

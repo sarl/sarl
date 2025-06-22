@@ -32,9 +32,9 @@ import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.context.ExternalContextMemberListener
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
 
 /** 
  * Implementation of a spawning service that is using injection mechanism

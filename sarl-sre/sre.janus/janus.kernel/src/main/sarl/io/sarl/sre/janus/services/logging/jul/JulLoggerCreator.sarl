@@ -22,11 +22,11 @@ package io.sarl.sre.janus.services.logging.jul
 
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.boot.configs.subconfigs.LoggingConfig
+import jakarta.inject.Provider
 import java.util.logging.Formatter
 import java.util.logging.Level
 import java.util.logging.LogManager
 import java.util.logging.Logger
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 

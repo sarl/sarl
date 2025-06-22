@@ -20,7 +20,7 @@
  */
 package io.sarl.sre.janus.services.infrastructure
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 import org.arakhne.afc.services.AbstractService
 import org.arakhne.afc.services.IService
 

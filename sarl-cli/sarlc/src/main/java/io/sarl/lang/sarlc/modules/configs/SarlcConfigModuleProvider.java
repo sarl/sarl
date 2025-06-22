@@ -25,10 +25,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
-
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 
 /** Provider of the module for the sarlc configuration.
@@ -39,6 +38,7 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("removal")
 public class SarlcConfigModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -51,6 +51,7 @@ public class SarlcConfigModuleProvider implements BQModuleProvider {
 		return Collections.singletonMap(SarlcConfig.PREFIX, SarlcConfig.class);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

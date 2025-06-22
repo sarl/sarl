@@ -24,7 +24,7 @@ import io.sarl.api.core.spaces.OpenEventSpace
 import io.sarl.api.util.DefaultSpace
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 class MySpaceSpecificationWithDefaultSpaceAnnotation implements SpaceSpecification<MySpace> {
 

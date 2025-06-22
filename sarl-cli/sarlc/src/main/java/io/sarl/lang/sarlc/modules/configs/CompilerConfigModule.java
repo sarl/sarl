@@ -38,11 +38,11 @@ import static io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig.OUTPUT_TRACES
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
-import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
 
+import io.bootique.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.meta.application.OptionMetadata;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;

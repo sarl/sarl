@@ -40,6 +40,7 @@ import io.sarl.sre.janus.services.probing.probes.IntegerFieldProbe
 import io.sarl.sre.janus.services.probing.probes.LongFieldProbe
 import io.sarl.sre.janus.services.probing.probes.ReferenceFieldProbe
 import io.sarl.sre.janus.services.probing.probes.ShortFieldProbe
+import jakarta.inject.Provider
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URI
@@ -50,7 +51,6 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
-import javax.inject.Provider
 import org.arakhne.afc.services.AbstractService
 import org.arakhne.afc.services.IService
 

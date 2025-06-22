@@ -58,10 +58,11 @@ import java.util.Set;
 
 import javax.lang.model.element.Element;
 
+import org.jsoup.nodes.Node;
+
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.sun.source.doctree.DocTree;
-import org.jsoup.nodes.Node;
 
 import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.html.framework.CssStyles;

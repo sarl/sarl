@@ -36,8 +36,8 @@ import io.sarl.sre.janus.capacities.InternalEventBusCapacity
 import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories
-import javax.inject.Inject
-import javax.inject.Provider
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 import static extension io.sarl.sre.janus.services.lifecycle.BehaviorLife.*

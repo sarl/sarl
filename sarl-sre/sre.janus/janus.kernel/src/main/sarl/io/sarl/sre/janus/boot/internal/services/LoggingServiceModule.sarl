@@ -30,9 +30,9 @@ import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.services.logging.QuietLoggingService
 import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
 import io.sarl.sre.janus.services.logging.jul.JulLoggingService
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import java.util.logging.Level
-import javax.inject.Provider
-import javax.inject.Singleton
 import org.arakhne.afc.services.IService
 
 /** 

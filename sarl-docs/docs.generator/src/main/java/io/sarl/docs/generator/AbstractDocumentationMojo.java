@@ -44,14 +44,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.inject.Inject;
-
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.name.Names;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -70,6 +62,14 @@ import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
+
+import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 
 import io.sarl.docs.generator.markdown.MarkdownParser;
 import io.sarl.docs.generator.parser.AbstractMarkerLanguageParser;

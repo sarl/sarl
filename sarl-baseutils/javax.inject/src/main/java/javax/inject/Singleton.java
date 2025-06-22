@@ -24,10 +24,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Identifies a type that the injector only instantiates once. Not inherited.
  *
  * @see javax.inject.Scope @Scope
+ * @deprecated Replaced by the {@code jakarta.inject.Singleton}.
  */
 @Scope
 @Documented
 @Retention(RUNTIME)
+@Deprecated(since = "0.15", forRemoval = true)
 public @interface Singleton {
 	//
 }

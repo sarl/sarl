@@ -90,12 +90,12 @@ public class Bug819Test extends AbstractSarlTest {
 			"import io.sarl.lang.core.annotation.SarlSpecification;",
 			"import io.sarl.lang.core.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.util.SerializableProxy;",
+			"import jakarta.inject.Inject;",
 			"import java.io.ObjectStreamException;",
 			"import java.util.Collection;",
 			"import java.util.Objects;",
 			"import java.util.Set;",
 			"import java.util.UUID;",
-			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Extension;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"import org.eclipse.xtext.xbase.lib.XbaseGenerated;", //$NON-NLS-1$

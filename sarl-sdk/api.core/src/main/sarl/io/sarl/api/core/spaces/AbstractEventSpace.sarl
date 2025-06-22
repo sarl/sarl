@@ -29,6 +29,7 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.annotation.PrivateAPI
+import jakarta.inject.Inject
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -37,7 +38,6 @@ import java.util.concurrent.ConcurrentMap
 import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.Logger
-import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 

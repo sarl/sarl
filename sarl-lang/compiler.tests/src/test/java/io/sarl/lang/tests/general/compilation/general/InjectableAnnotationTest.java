@@ -48,7 +48,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 	@DisplayName("@Inject to field (javax)")
 	public void field_javax() throws Exception {
 		String source = multilineString(
-				"import javax.inject.Inject",
+				"import jakarta.inject.Inject",
 				"class C1 {",
 				"  @Inject",
 				"  var theField : Object",
@@ -59,7 +59,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 				"import io.sarl.lang.core.annotation.SarlElementType;",
 				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.annotation.SyntheticMember;",
-				"import javax.inject.Inject;",
+				"import jakarta.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
@@ -152,7 +152,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 	@DisplayName("@Inject to contructor (javax)")
 	public void contructor_javax() throws Exception {
 		String source = multilineString(
-				"import javax.inject.Inject",
+				"import jakarta.inject.Inject",
 				"class C1 {",
 				"  @Inject",
 				"  new { }",
@@ -162,7 +162,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 				"import io.sarl.lang.core.annotation.Injectable;",
 				"import io.sarl.lang.core.annotation.SarlElementType;",
 				"import io.sarl.lang.core.annotation.SarlSpecification;",
-				"import javax.inject.Inject;",
+				"import jakarta.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -214,7 +214,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 	@DisplayName("@Inject to method (javax)")
 	public void method_javax() throws Exception {
 		String source = multilineString(
-				"import javax.inject.Inject",
+				"import jakarta.inject.Inject",
 				"class C1 {",
 				"  @Inject",
 				"  def mth { }",
@@ -225,7 +225,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 				"import io.sarl.lang.core.annotation.SarlElementType;",
 				"import io.sarl.lang.core.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.annotation.SyntheticMember;",
-				"import javax.inject.Inject;",
+				"import jakarta.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.XbaseGenerated;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -288,7 +288,7 @@ public class InjectableAnnotationTest extends AbstractSarlTest {
 	@DisplayName("@Injectable to super type")
 	public void supertype() throws Exception {
 		String source = multilineString(
-				"import javax.inject.Inject",
+				"import jakarta.inject.Inject",
 				"class C0 {",
 				"  @Inject",
 				"  def mth { }",

@@ -21,17 +21,17 @@
 
 package io.sarl.sre.janus.network.boot.internal.cli
 
+import io.bootique.BQModule
 import io.bootique.BQModuleMetadata
 import io.bootique.BQModuleProvider
-import io.bootique.di.BQModule
 import io.bootique.di.Binder
 import io.sarl.apputils.bootiqueapp.utils.SystemProperties
 import io.sarl.lang.core.SARLVersion
 import io.sarl.sre.janus.boot.commands.RunSingleAgentCommand
 import io.sarl.sre.janus.network.boot.configs.SreNetworkConfig
+import jakarta.inject.Provider
 import java.text.MessageFormat
 import java.util.Collection
-import javax.inject.Provider
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription
@@ -56,7 +56,7 @@ class JanusnodeApplicationModule implements BQModule {
 		// Short description of the application.
 		binder.extend.applicationDescription = Messages::JanusnodeApplicationModule_0
 		// Long description of the application.
-		typeof(String).bind(typeof(ApplicationDetailedDescription)).toProvider(typeof(LongDescriptionProvider)).inSingletonScope
+		typeof(String).bind(typeof(ApplicationDetailedDescription)).toJakartaProvider(typeof(LongDescriptionProvider)).inSingletonScope
 		// Synopsis of the application's arguments.
 		typeof(String).bind(typeof(ApplicationArgumentSynopsis)).toInstance(Messages.JanusnodeApplicationModule_1)
 		// Default command

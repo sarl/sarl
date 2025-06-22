@@ -245,7 +245,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	{
 		super(eNS_URI, SarlFactory.eINSTANCE);
 	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

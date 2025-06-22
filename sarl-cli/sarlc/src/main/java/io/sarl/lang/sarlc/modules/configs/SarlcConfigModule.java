@@ -33,22 +33,21 @@ import static io.sarl.lang.sarlc.configs.SarlcConfig.TEMP_DIRECTORY_NAME;
 import java.io.File;
 import java.text.MessageFormat;
 
-import javax.inject.Singleton;
-
-import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
-import io.bootique.di.Injector;
-import io.bootique.di.Provides;
-import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
 import org.arakhne.afc.bootique.variables.VariableNames;
 import org.eclipse.core.runtime.Path;
 
+import io.bootique.BQModule;
+import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
+import io.bootique.meta.application.OptionMetadata;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.commands.ExtraLanguageListCommand;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
+import jakarta.inject.Singleton;
 
 /**
  * Module for creating and configuring the general/root sarlc configuration.

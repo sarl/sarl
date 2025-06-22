@@ -25,10 +25,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
-
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 
 /** Provider of the module for the general sarldoc specific configuration.
@@ -39,6 +38,7 @@ import io.sarl.docs.sarldoc.configs.SarldocConfig;
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
+@SuppressWarnings("removal")
 public class SarldocConfigModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -51,6 +51,7 @@ public class SarldocConfigModuleProvider implements BQModuleProvider {
 		return Collections.singletonMap(SarldocConfig.PREFIX, SarldocConfig.class);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

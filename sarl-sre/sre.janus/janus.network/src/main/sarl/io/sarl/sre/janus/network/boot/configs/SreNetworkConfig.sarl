@@ -22,25 +22,25 @@
 
 package io.sarl.sre.janus.network.boot.configs
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
 import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty
 import io.bootique.config.ConfigurationFactory
 import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
 import io.bootique.di.Injector
 import io.bootique.di.Provides
 import io.bootique.meta.application.OptionMetadata
 import io.sarl.sre.janus.boot.configs.SreConfig
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Collections
 import java.util.Map
 import java.util.UUID
 import java.util.regex.Pattern
-import javax.inject.Inject
-import javax.inject.Singleton
 import org.arakhne.afc.bootique.variables.VariableDecls
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors

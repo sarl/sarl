@@ -35,11 +35,11 @@ import io.sarl.sre.janus.services.context.Context
 import io.sarl.sre.janus.services.context.ContextFactory
 import io.sarl.sre.janus.services.context.MemoryBasedContextService
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** Implementation of a context-space service that is connected to remote SRE with the Hazelcast framework.

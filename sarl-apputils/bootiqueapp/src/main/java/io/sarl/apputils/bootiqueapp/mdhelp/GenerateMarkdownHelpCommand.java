@@ -45,6 +45,7 @@ import io.sarl.lang.core.util.CliUtilities;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings({ "removal", "deprecation" })
 public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 
 	private static final String CLI_NAME = "generatemarkdownhelp"; //$NON-NLS-1$

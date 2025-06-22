@@ -84,7 +84,7 @@ public class TypeSystemToolsFragment2 extends AbstractXtextGeneratorFragment {
 	 * @return the inject annotation type.
 	 */
 	protected Class<?> getInjectType() {
-		return this.configuration.getInjectType();
+		return this.configuration.getInjectionAPI().getInjectType();
 	}
 
 	/** Replies the language name.

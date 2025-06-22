@@ -61,6 +61,7 @@ public class VersionCommand extends CommandWithMetadata {
 	 * @param description the description of the command.
 	 * @since 0.11
 	 */
+	@SuppressWarnings("removal")
 	protected VersionCommand(BootLogger bootLogger, Class<? extends VersionCommand> commandType,
 			String description) {
 		super(CommandMetadata

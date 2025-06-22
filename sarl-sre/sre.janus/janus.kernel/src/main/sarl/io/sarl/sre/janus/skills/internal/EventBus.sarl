@@ -31,12 +31,12 @@ import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluator
 import io.sarl.sre.janus.internal.eventguard.IBehaviorGuardEvaluatorRegistry
 import io.sarl.sre.janus.services.executor.tasks.Runnables
 import io.sarl.sre.janus.services.executor.tasks.SreRunnable
+import jakarta.inject.Provider
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ExecutionException
 import java.util.function.Supplier
 import java.util.logging.Logger
-import javax.inject.Provider
 
 /** 
  * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an

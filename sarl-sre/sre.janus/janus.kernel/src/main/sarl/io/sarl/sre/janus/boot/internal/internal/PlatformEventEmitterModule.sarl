@@ -41,8 +41,8 @@ import io.sarl.sre.janus.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.janus.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.skills.bic.FailureListenerFactory
-import javax.inject.Provider
-import javax.inject.Singleton
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.

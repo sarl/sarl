@@ -21,9 +21,9 @@
 
 package io.sarl.docs.sarldoc.modules.commands;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for the sarldoc command.
  *
@@ -33,6 +33,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
+@SuppressWarnings("removal")
 public class SarldocFakeCommandModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -40,6 +41,7 @@ public class SarldocFakeCommandModuleProvider implements BQModuleProvider {
 		return new SarldocFakeCommandModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

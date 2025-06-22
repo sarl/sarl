@@ -33,6 +33,8 @@ import io.sarl.sre.janus.services.executor.policies.QuietThreadExecutorPolicy
 import io.sarl.sre.janus.services.executor.policies.VerboseThreadExecutorPolicy
 import io.sarl.sre.janus.services.logging.LoggingService
 import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import java.lang.Thread.UncaughtExceptionHandler
 import java.text.MessageFormat
 import java.util.concurrent.ExecutorService
@@ -43,8 +45,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
-import javax.inject.Provider
-import javax.inject.Singleton
 import org.arakhne.afc.services.IService
 
 /** 
@@ -76,9 +76,9 @@ class ExecutorServiceModule implements BQModule {
 		new VerboseThreadExecutorPolicy(logService.get.getKernelModuleLogger(Messages::ExecutorServiceModule_0))
 	}
 
-	/** 
+	/**
 	 * Construct a {@code QuietThreadExecutorPolicy}.
-	 * 
+	 *
 	 * @return the policy.
 	 */
 	@Provides
@@ -103,9 +103,9 @@ class ExecutorServiceModule implements BQModule {
 		var ielevel = configuration.get.services.executors.internalErrorVerboseLevel
 		var provider : Provider<? extends RejectedExecutionHandler>
 		if (level.intValue <= ielevel.toJul.intValue) {
-			provider = injector.getProvider(typeof(VerboseThreadExecutorPolicy))
+			provider = injector.getJakartaProvider(typeof(VerboseThreadExecutorPolicy))
 		} else {
-			provider = injector.getProvider(typeof(QuietThreadExecutorPolicy))
+			provider = injector.getJakartaProvider(typeof(QuietThreadExecutorPolicy))
 		}
 		return provider.get
 	}
@@ -125,9 +125,9 @@ class ExecutorServiceModule implements BQModule {
 		var level = loggerCreator.get.defaultLevel
 		var ielevel = configuration.get.services.executors.internalErrorVerboseLevel
 		if (level.intValue <= ielevel.toJul.intValue) {
-			injector.getProvider(typeof(VerboseThreadExecutorPolicy)).get
+			injector.getJakartaProvider(typeof(VerboseThreadExecutorPolicy)).get
 		} else {
-			injector.getProvider(typeof(QuietThreadExecutorPolicy)).get
+			injector.getJakartaProvider(typeof(QuietThreadExecutorPolicy)).get
 		}
 	}
 

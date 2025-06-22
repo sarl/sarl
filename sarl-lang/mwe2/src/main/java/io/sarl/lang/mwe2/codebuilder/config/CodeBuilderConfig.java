@@ -41,11 +41,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
 import org.eclipse.xtext.xtext.generator.util.BooleanGeneratorOption;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
+
+import io.sarl.lang.mwe2.inject.InjectionAPI;
 
 /**
  * A component for configuring the CodeBuilderFragment2.
@@ -170,7 +168,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final EClass FORMAL_PARAMETER_SUPER_TYPE = XtendPackage.eINSTANCE.getXtendParameter();
 
-	private boolean googleInjectionTypes = true;
+	private InjectionAPI injectionAPI = InjectionAPI.getDefault();
 
 	private String scriptRuleName;
 
@@ -1030,70 +1028,92 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		return this.expression;
 	}
 
+	/** Replies the injection API to be considered in the generated code.
+	 *
+	 * @return the injection API.
+	 * @since 0.15
+	 */
+	public InjectionAPI getInjectionAPI() {
+		return this.injectionAPI;
+	}
+
+	/** Change the injection API to be considered in the generated code.
+	 *
+	 * @param api the injection API. If it is {@code null}, the value replied by {@link InjectionAPI#getDeclaringClass()} is assumed.
+	 * @since 0.15
+	 */
+	public void setInjectionAPI(InjectionAPI api) {
+		if (api == null) {
+			this.injectionAPI = InjectionAPI.getDefault();
+		} else {
+			this.injectionAPI = api;
+		}
+	}
+
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @return {@code true} if the injection types are from Google Guice, otherwise {@code false}.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link #getInjectionAPI()}.
 	 */
-	public boolean getGoolgeInjectionTypes() {
-		return this.googleInjectionTypes;
+	@Deprecated(since = "0.15", forRemoval = true)
+	public boolean getGoogleInjectionTypes() {
+		return this.injectionAPI == InjectionAPI.GOOGLE_GUICE;
 	}
 
 	/** Replies if the types for injection must be from the Google Guice.
 	 *
 	 * @param isGoogle {@code true} if the injection types are from Google Guice, otherwise {@code false}.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link #setInjectionAPI(InjectionAPI)}.
 	 */
-	public void setGoolgeInjectionTypes(boolean isGoogle) {
-		this.googleInjectionTypes = isGoogle;
+	@Deprecated(since = "0.15", forRemoval = true)
+	public void setGoogleInjectionTypes(boolean isGoogle) {
+		this.injectionAPI = isGoogle ? InjectionAPI.GOOGLE_GUICE : InjectionAPI.getDefault();
 	}
 
 	/** Replies the type for {@code @Inject}.
 	 *
 	 * @return the inject annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getInjectType() {
-		if (getGoolgeInjectionTypes()) {
-			return Inject.class;
-		}
-		return javax.inject.Inject.class;
+		return getInjectionAPI().getInjectType();
 	}
 
 	/** Replies the type for {@code @Named}.
 	 *
 	 * @return the named annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getNamedType() {
-		if (getGoolgeInjectionTypes()) {
-			return Named.class;
-		}
-		return javax.inject.Named.class;
+		return getInjectionAPI().getNamedType();
 	}
 
 	/** Replies the type for {@code @Provider}.
 	 *
 	 * @return the provider annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getProviderType() {
-		if (getGoolgeInjectionTypes()) {
-			return Provider.class;
-		}
-		return javax.inject.Provider.class;
+		return getInjectionAPI().getProviderType();
 	}
 
 	/** Replies the type for {@code @Singleton}.
 	 *
 	 * @return the singleton annotation type.
 	 * @since 0.14
+	 * @deprecated Replaced by {@link InjectionAPI#getInjectType()}
 	 */
+	@Deprecated(since = "0.15", forRemoval = true)
 	public Class<?> getSingletonType() {
-		if (getGoolgeInjectionTypes()) {
-			return Singleton.class;
-		}
-		return javax.inject.Singleton.class;
+		return getInjectionAPI().getSingletonType();
 	}
 
 	/** Replies the type of the super type for the type-parameter scope.

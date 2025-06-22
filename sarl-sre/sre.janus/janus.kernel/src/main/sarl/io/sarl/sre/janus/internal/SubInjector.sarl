@@ -27,9 +27,9 @@ import io.bootique.di.Injector
 import io.bootique.di.Key
 import io.bootique.di.spi.DefaultInjector
 import io.bootique.di.spi.InjectorPredicates
+import jakarta.inject.Provider
 import java.util.Collections
 import java.util.List
-import jakarta.inject.Provider
 
 /** 
  * An injector that is overriding bindings in a local run-time context.

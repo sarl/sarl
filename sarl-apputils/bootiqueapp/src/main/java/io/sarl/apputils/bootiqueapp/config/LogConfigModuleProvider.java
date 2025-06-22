@@ -24,9 +24,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for creating and configuring loggers.
  * 
@@ -36,6 +36,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("removal")
 public class LogConfigModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -48,10 +49,15 @@ public class LogConfigModuleProvider implements BQModuleProvider {
 		return Collections.singletonMap(LogConfig.PREFIX, LogConfig.class);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public BQModuleMetadata.Builder moduleBuilder() {
-		return BQModuleMetadata.builder(module()).overrides(overrides()).providerName(name()).configs(configs()).description(
-			Messages.LogConfigModuleProvider_0);
+		return BQModuleMetadata
+				.builder(module())
+				.overrides(overrides())
+				.providerName(name())
+				.configs(configs())
+				.description(Messages.LogConfigModuleProvider_0);
 	}
 
 }

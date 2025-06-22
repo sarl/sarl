@@ -21,9 +21,9 @@
 
 package io.sarl.apputils.bootiqueapp.batchcompiler.lang;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for the SARL compiler runtime.
  *
@@ -33,6 +33,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("removal")
 public class SARLRuntimeModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -40,6 +41,7 @@ public class SARLRuntimeModuleProvider implements BQModuleProvider {
 		return new SARLRuntimeModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

@@ -40,6 +40,15 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.URISchemeType;
+import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
+import org.eclipse.xtext.xbase.lib.IntegerRange;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.vladsch.flexmark.ast.Heading;
@@ -52,14 +61,6 @@ import com.vladsch.flexmark.util.ast.NodeVisitor;
 import com.vladsch.flexmark.util.ast.VisitHandler;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-import org.arakhne.afc.vmutil.FileSystem;
-import org.arakhne.afc.vmutil.URISchemeType;
-import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
-import org.eclipse.xtext.xbase.lib.Functions.Function2;
-import org.eclipse.xtext.xbase.lib.IntegerRange;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 
 import io.sarl.docs.generator.bugfixes.FileSystemAddons;
 import io.sarl.docs.generator.parser.AbstractMarkerLanguageParser;

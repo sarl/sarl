@@ -32,8 +32,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
-import jdk.javadoc.doclet.Doclet;
-import jdk.javadoc.doclet.Taglet;
 
 import io.sarl.docs.doclet2.framework.ApidocExcluder;
 import io.sarl.docs.doclet2.framework.CustomTagParser;
@@ -147,6 +145,8 @@ import io.sarl.docs.doclet2.html.types.oop.InterfaceDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.InterfaceDocumentationGeneratorImpl;
 import io.sarl.docs.doclet2.html.types.oop.RecordDocumentationGenerator;
 import io.sarl.docs.doclet2.html.types.oop.RecordDocumentationGeneratorImpl;
+import jdk.javadoc.doclet.Doclet;
+import jdk.javadoc.doclet.Taglet;
 
 /** Guice module for SARL Java Doclet.
  *

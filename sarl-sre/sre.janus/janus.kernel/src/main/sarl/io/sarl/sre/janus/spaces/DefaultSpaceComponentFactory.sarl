@@ -25,10 +25,10 @@ import io.sarl.api.core.spaces.SpaceComponentFactory
 import io.sarl.lang.core.util.ConcurrentCollectionFactory
 import io.sarl.lang.core.util.ConcurrentList
 import io.sarl.lang.core.util.ConcurrentSet
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.Comparator
 import java.util.concurrent.ConcurrentMap
-import javax.inject.Inject
-import javax.inject.Provider
 
 /**
  * Default implementation of a factory provided by the SRE for creating the components of a space.

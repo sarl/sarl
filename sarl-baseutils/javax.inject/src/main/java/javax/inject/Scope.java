@@ -72,10 +72,12 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
  * would generate an error rather than not apply a scope.
  *
  * @see javax.inject.Singleton @Singleton
+ * @deprecated Replaced by the {@code jakarta.inject.Scope}.
  */
 @Target(ANNOTATION_TYPE)
 @Retention(RUNTIME)
 @Documented
+@Deprecated(since = "0.15", forRemoval = true)
 public @interface Scope {
 	//
 }

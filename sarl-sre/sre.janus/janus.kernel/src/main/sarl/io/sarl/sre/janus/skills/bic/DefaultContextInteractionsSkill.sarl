@@ -32,9 +32,9 @@ import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
 
 import static io.sarl.sre.janus.services.lifecycle.AgentLife.*
 

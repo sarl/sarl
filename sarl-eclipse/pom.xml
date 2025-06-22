@@ -13,7 +13,6 @@
     <module>tests</module>
   </modules>
   <properties>
-    <tycho.version>4.0.9</tycho.version>
     <tycho.scmUrl>${sarl.scm.url}</tycho.scmUrl>
     <timestamp-pattern>'v'yyyyMMdd-HHmm</timestamp-pattern>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +30,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>3.14.0</version>
           <configuration>
             <source>${sarl-dsl.min.jdk.version}</source>
             <target>${sarl-dsl.min.jdk.version}</target>
@@ -45,12 +44,12 @@
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>target-platform-configuration</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-compiler-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
           <configuration>
             <useProjectSettings>false</useProjectSettings>
             <excludeResources>
@@ -66,32 +65,32 @@
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-repository-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-director-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-packaging-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-versions-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-surefire-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
           <configuration>
             <excludes>
               <exclude />
@@ -102,7 +101,7 @@
         <plugin>
           <groupId>org.eclipse.tycho.extras</groupId>
           <artifactId>tycho-eclipserun-plugin</artifactId>
-          <version>${tycho.version}</version>
+          <version>4.0.13</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -110,7 +109,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>4.0.13</version>
         <extensions>true</extensions>
       </plugin>
       <plugin>
@@ -130,7 +129,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>4.0.13</version>
         <executions>
           <execution>
             <id>plugin-source</id>
@@ -193,7 +192,7 @@
               <type>eclipse-plugin</type>
               <id>org.eclipse.equinox.registry</id>
               <restrictTo>
-<!--                <version>3.11.300.v20230801-1826</version>-->
+
               </restrictTo>
             </filter>
           </filters>
@@ -220,7 +219,7 @@
           <dependency>
             <groupId>org.eclipse.tycho.extras</groupId>
             <artifactId>tycho-sourceref-jgit</artifactId>
-            <version>${tycho.version}</version>
+            <version>4.0.13</version>
           </dependency>
         </dependencies>
         <configuration>

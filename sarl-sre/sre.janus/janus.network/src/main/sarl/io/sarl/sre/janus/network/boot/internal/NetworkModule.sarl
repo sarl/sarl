@@ -25,10 +25,10 @@ import com.hazelcast.core.Hazelcast
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.logging.LogEvent
 import com.hazelcast.logging.LogListener
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider
 import io.bootique.di.Binder;
-import io.bootique.di.BQModule;
 import io.bootique.di.Injector
 import io.bootique.di.Provides
 import io.sarl.api.core.spaces.EventTransportService
@@ -45,6 +45,8 @@ import io.sarl.sre.janus.services.context.LocalSpaceRepository
 import io.sarl.sre.janus.services.context.MemoryBasedContextService
 import io.sarl.sre.janus.services.context.SpaceRepository
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Arrays
@@ -53,8 +55,6 @@ import java.util.Collections
 import java.util.Map
 import java.util.logging.Level
 import java.util.logging.Logger
-import javax.inject.Inject
-import javax.inject.Singleton
 
 import static io.sarl.sre.janus.network.boot.configs.SreNetworkConfig.PREFIX
 
@@ -216,7 +216,11 @@ class NetworkModuleProvider implements BQModuleProvider {
 	}
 
 	override moduleBuilder : BQModuleMetadata.Builder {
-		return BQModuleMetadata::builder(module).overrides(overrides).providerName(name).configs(configs).description(Messages::NetworkModuleProvider_0)
+		return BQModuleMetadata::builder(module)
+			.overrides(overrides)
+			.providerName(name)
+			.configs(configs)
+			.description(Messages::NetworkModuleProvider_0)
 	}
 	
 	override overrides : Collection<Class<? extends BQModule>> {

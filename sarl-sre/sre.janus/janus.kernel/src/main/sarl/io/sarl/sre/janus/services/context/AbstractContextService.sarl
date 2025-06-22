@@ -23,13 +23,13 @@ package io.sarl.sre.janus.services.context
 import io.sarl.lang.core.Agent
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import java.text.MessageFormat
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
-import javax.inject.Provider
-import javax.inject.Singleton
 import org.arakhne.afc.services.AbstractService
 import org.arakhne.afc.services.IService
 import org.eclipse.xtend.lib.annotations.Accessors

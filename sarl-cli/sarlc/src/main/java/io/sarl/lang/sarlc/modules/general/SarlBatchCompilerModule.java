@@ -25,17 +25,14 @@ import static io.sarl.apputils.bootiqueapp.batchcompiler.lang.SARLRuntimeModule.
 
 import java.util.logging.Logger;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import com.google.inject.Injector;
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
-import io.bootique.di.Provides;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 
+import com.google.inject.Injector;
+
+import io.bootique.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.IssueMessageFormatter;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
@@ -44,6 +41,9 @@ import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 import io.sarl.lang.sarlc.tools.ClassPathUtils;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 /** Module for creating the SARL batch compiler with the configuration provided by bootique modules.
  *

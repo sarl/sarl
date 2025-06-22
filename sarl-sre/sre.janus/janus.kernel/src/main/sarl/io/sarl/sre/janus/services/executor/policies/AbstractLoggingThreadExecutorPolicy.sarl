@@ -22,12 +22,12 @@ package io.sarl.sre.janus.services.executor.policies
 
 import io.sarl.sre.janus.IssueCodes
 import io.sarl.sre.janus.services.executor.tasks.EarlyExitException
+import jakarta.inject.Singleton
 import java.text.MessageFormat
 import java.util.concurrent.CancellationException
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
-import javax.inject.Singleton
 
 /** 
  * A handler for rejected tasks that log a warning on the platform logger.

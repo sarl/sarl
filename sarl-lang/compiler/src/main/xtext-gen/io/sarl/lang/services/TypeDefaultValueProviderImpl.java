@@ -23,7 +23,7 @@
  */
 package io.sarl.lang.services;
 
-import com.google.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.util.TypeReferences;

@@ -23,9 +23,8 @@ package io.sarl.lang.sarlc.tools;
 
 import java.util.logging.Logger;
 
-import com.google.inject.Singleton;
-
 import io.sarl.apputils.bootiqueapp.utils.SystemPath;
+import jakarta.inject.Singleton;
 
 /**
  * Provider of the SARL SDK class path.

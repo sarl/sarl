@@ -23,12 +23,12 @@ package io.sarl.sre.janus.internal
 
 import io.sarl.api.util.SmartListenerCollection
 import io.sarl.lang.core.util.ConcurrentCollectionFactory
+import jakarta.inject.Inject
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import java.util.EventListener
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 
 /** Central access to several factories that are injected.
  *

@@ -23,8 +23,8 @@
  */
 package io.sarl.lang.documentation;
 
-import com.google.inject.Inject;
 import io.sarl.lang.services.SARLGrammarAccess;
+import jakarta.inject.Inject;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;

@@ -75,18 +75,17 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementScanner9;
 import javax.tools.Diagnostic.Kind;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.sun.source.doctree.BlockTagTree;
-import com.sun.source.doctree.DocTree;
-import jdk.javadoc.doclet.Reporter;
-import jdk.javadoc.doclet.Taglet.Location;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sun.source.doctree.BlockTagTree;
+import com.sun.source.doctree.DocTree;
 
 import io.sarl.docs.doclet2.framework.DocUtils;
 import io.sarl.docs.doclet2.framework.DocumentationRepository;
@@ -101,6 +100,8 @@ import io.sarl.docs.doclet2.html.taglets.SarlTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.ExcludeFromApidocTaglet;
 import io.sarl.docs.doclet2.html.taglets.block.HiddenTaglet;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import jdk.javadoc.doclet.Reporter;
+import jdk.javadoc.doclet.Taglet.Location;
 
 /** Abstract implementation of a generator for the documentation.
  *

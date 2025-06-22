@@ -61,15 +61,16 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 
+import org.eclipse.xtext.util.JavaVersion;
+
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.sun.source.util.DocTreePath;
+
+import io.sarl.lang.core.SARLVersion;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
-import org.eclipse.xtext.util.JavaVersion;
-
-import io.sarl.lang.core.SARLVersion;
 
 /** An abstract implementation of a Doclet.
  *

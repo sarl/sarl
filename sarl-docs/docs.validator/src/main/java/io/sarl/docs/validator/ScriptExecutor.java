@@ -26,8 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-import com.google.inject.ImplementedBy;
 import org.arakhne.afc.vmutil.FileSystem;
+
+import com.google.inject.ImplementedBy;
 
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 

@@ -51,10 +51,12 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
  *   }</pre>
  *
  * @see javax.inject.Named @Named
+ * @deprecated Replaced by the {@code jakarta.inject.Qualifier}.
  */
 @Target(ANNOTATION_TYPE)
 @Retention(RUNTIME)
 @Documented
+@Deprecated(since = "0.15", forRemoval = true)
 public @interface Qualifier {
 	//
 }

@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.inject.Provider;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.diagnostics.Severity;
 
@@ -43,6 +41,7 @@ import io.sarl.lang.core.util.OutParameter;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
+import jakarta.inject.Provider;
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarBuilder;
 import me.tongfei.progressbar.ProgressBarStyle;
@@ -77,6 +76,7 @@ public class CompilerCommand extends CommandWithMetadata {
 	 * @param pathDetector the detector of path.
 	 * @param progressConfig the configuration of the progress bar.
 	 */
+	@SuppressWarnings("removal")
 	@BQInject
 	public CompilerCommand(Provider<SarlBatchCompiler> compiler, Provider<SarlcConfig> configuration,
 			Provider<PathDetector> pathDetector, Provider<ProgressBarConfig> progressConfig) {

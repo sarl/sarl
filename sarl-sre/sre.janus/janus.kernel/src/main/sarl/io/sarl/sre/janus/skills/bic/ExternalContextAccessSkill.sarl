@@ -39,9 +39,9 @@ import io.sarl.sre.janus.services.context.ExternalContextMemberListener
 import io.sarl.sre.janus.services.context.InternalContextMembershipListener
 import io.sarl.sre.janus.services.context.InternalContextMembershipListenerFactory
 import io.sarl.sre.janus.services.lifecycle.ContextReference
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 

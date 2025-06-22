@@ -21,9 +21,9 @@
 
 package io.sarl.api.util
 
+import jakarta.inject.Inject
 import java.util.EventListener
 import java.util.function.Consumer
-import javax.inject.Inject
 import org.arakhne.afc.util.ListenerCollection
 
 /** A smart implementation of an event listeners' collection.

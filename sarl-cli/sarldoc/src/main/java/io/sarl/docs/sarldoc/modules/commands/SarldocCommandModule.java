@@ -25,18 +25,16 @@ import static io.bootique.BQCoreModule.extend;
 
 import java.util.logging.Logger;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
+import io.bootique.BQModule;
 import io.bootique.command.CommandManager;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
-
 import io.sarl.docs.sarldoc.commands.SarldocCommand;
 import io.sarl.docs.sarldoc.configs.SarldocConfig;
 import io.sarl.docs.sarldoc.tools.DocumentationPathDetector;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 /** Module for the sarldoc command.
  *

@@ -21,27 +21,14 @@
 
 package io.sarl.api.core.tests.spaces.mocks;
 
-import static io.sarl.tests.api.tools.TestMockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
-import io.sarl.api.core.spaces.AbstractEventSpace;
 import io.sarl.api.core.spaces.AbstractSpaceSpecification;
-import io.sarl.api.core.spaces.Participant;
 import io.sarl.api.core.spaces.SpaceComponentFactory;
-import io.sarl.api.core.spaces.SpaceParticipantListener;
 import io.sarl.api.core.spaces.SpaceParticipantListenerFactory;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.SpaceID;
+import jakarta.inject.Provider;
 
 /**
  * @author $Author: sgalland$

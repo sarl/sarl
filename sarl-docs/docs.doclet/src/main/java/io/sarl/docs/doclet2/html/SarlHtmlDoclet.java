@@ -92,17 +92,15 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
+import org.eclipse.xtext.util.Files;
+import org.eclipse.xtext.util.Strings;
+
 import com.google.common.collect.Iterables;
 import com.google.common.io.Resources;
 import com.google.inject.Inject;
 import com.google.inject.MembersInjector;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
-import jdk.javadoc.doclet.Doclet;
-import jdk.javadoc.doclet.Reporter;
-import jdk.javadoc.doclet.Taglet;
-import org.eclipse.xtext.util.Files;
-import org.eclipse.xtext.util.Strings;
 
 import io.sarl.docs.doclet2.framework.AbstractDoclet;
 import io.sarl.docs.doclet2.framework.CustomTagLocation;
@@ -128,6 +126,10 @@ import io.sarl.docs.doclet2.html.summaries.PackageTreeSummaryGenerator;
 import io.sarl.docs.doclet2.html.summaries.TreeSummaryGenerator;
 import io.sarl.docs.doclet2.html.taglets.block.CustomTaglet;
 import io.sarl.docs.doclet2.html.types.TypeDocumentationGeneratorSelector;
+import jdk.javadoc.doclet.Doclet;
+import jdk.javadoc.doclet.Reporter;
+import jdk.javadoc.doclet.Taglet;
+
 /** SARL Doclet that is generated the HTML documentation.
  *
  * <p>This version of the SARL doc let is an adaptation of the

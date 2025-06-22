@@ -34,9 +34,9 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.sre.janus.internal.SubInjector
 import io.sarl.sre.janus.services.logging.LoggingService
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.text.MessageFormat
-import javax.inject.Inject
-import javax.inject.Singleton
 
 
 /** 

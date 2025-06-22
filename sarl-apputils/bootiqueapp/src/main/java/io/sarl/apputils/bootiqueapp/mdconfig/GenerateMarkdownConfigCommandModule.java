@@ -23,12 +23,11 @@ package io.sarl.apputils.bootiqueapp.mdconfig;
 
 import static io.bootique.BQCoreModule.extend;
 
-import javax.inject.Singleton;
-
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.meta.module.ModulesMetadata;
+import jakarta.inject.Singleton;
 
 /** Module for displaying the help for configuration parameters on the standard output using a Markdown format.
  *

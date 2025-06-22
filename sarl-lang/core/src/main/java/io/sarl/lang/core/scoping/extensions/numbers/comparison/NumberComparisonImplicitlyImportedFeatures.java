@@ -23,7 +23,7 @@ package io.sarl.lang.core.scoping.extensions.numbers.comparison;
 
 import java.util.List;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /** Provide static functions related to the comparison of numbers.
  *

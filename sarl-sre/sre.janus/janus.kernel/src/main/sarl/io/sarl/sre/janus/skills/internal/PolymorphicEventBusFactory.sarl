@@ -23,8 +23,8 @@ package io.sarl.sre.janus.skills.internal
 import io.sarl.sre.janus.capacities.InternalSchedules
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.internal.eventguard.polymorphic.PolymorphicBehaviorGuardEvaluatorRegistry
+import jakarta.inject.Provider
 import java.util.function.Supplier
-import javax.inject.Provider
 
 /** 
  * Factory of event bus that is using the polymorphic method for accessing the event handlers.

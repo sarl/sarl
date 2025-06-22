@@ -21,9 +21,9 @@
 
 package io.sarl.lang.sarlc.modules.general;
 
+import io.bootique.BQModule;
 import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
 
 /** Provider of the module for the sarlc application information.
  *
@@ -33,6 +33,7 @@ import io.bootique.di.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
+@SuppressWarnings("removal")
 public class SarlcApplicationModuleProvider implements BQModuleProvider {
 
 	@Override
@@ -40,6 +41,7 @@ public class SarlcApplicationModuleProvider implements BQModuleProvider {
 		return new SarlcApplicationModule();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     public BQModuleMetadata.Builder moduleBuilder() {
         return BQModuleMetadata

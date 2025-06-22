@@ -31,10 +31,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     &#064;Inject <b>@Named("passenger")</b> Seat passengerSeat;
  *     ...
  *   }</pre>
+ *
+ * @deprecated Replaced by the {@code jakarta.inject.Named}.
  */
 @Qualifier
 @Documented
 @Retention(RUNTIME)
+@Deprecated(since = "0.15", forRemoval = true)
 public @interface Named {
 
     /** The name. */

@@ -102,6 +102,9 @@ import javax.lang.model.util.SimpleElementVisitor9;
 import javax.lang.model.util.SimpleTypeVisitor9;
 import javax.lang.model.util.Types;
 
+import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.util.Strings;
+
 import com.google.inject.Inject;
 import com.sun.source.doctree.DocTree;
 import com.sun.source.doctree.LinkTree;
@@ -112,8 +115,6 @@ import com.sun.source.doctree.SerialFieldTree;
 import com.sun.source.doctree.UsesTree;
 import com.sun.source.doctree.ValueTree;
 import com.sun.source.util.SimpleDocTreeVisitor;
-import org.eclipse.xtext.common.types.JvmVisibility;
-import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;

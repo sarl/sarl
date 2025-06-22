@@ -42,7 +42,9 @@ package javax.inject;
  *   }</pre>
  *
  * @param <T> the type of provided data.
+ * @deprecated Replaced by the {@code jakarta.inject.Provider}.
  */
+@Deprecated(since = "0.15", forRemoval = true)
 public interface Provider<T> {
 
     /**

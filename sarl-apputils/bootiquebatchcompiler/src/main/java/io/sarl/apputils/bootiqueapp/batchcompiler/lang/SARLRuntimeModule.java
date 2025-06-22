@@ -21,17 +21,16 @@
 
 package io.sarl.apputils.bootiqueapp.batchcompiler.lang;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
 import com.google.inject.Injector;
-import io.bootique.di.BQModule;
+
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
-
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.extralanguage.IExtraLanguageContributions;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 /** Empty module that is defined for enabling automatic loading of modules
  * from command-line tools when their CLI options should be computed.

@@ -39,6 +39,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
+@SuppressWarnings({"removal", "deprecation"})
 public class ApplicationData2ModuleProvider implements BQModuleProvider {
 
 	@Override

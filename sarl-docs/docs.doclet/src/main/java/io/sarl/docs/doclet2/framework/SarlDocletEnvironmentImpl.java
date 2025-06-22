@@ -63,9 +63,9 @@ import javax.tools.JavaFileObject.Kind;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.sun.source.util.DocTrees;
-import jdk.javadoc.doclet.DocletEnvironment;
 
 import io.sarl.docs.doclet2.html.framework.DocletOptions;
+import jdk.javadoc.doclet.DocletEnvironment;
 
 /** Environment for the SARL doclet.
  *

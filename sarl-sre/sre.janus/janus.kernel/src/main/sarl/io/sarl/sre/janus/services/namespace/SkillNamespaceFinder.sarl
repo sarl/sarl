@@ -26,8 +26,8 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.UnimplementedCapacityException
 import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.sre.janus.services.context.ContextService
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
 /** 
  * Implementation of a finder of skill into the namespaces.

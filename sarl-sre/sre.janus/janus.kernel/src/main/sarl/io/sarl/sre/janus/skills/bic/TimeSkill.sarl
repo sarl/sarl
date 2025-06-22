@@ -23,8 +23,8 @@ package io.sarl.sre.janus.skills.bic
 import io.sarl.api.core.Time
 import io.sarl.lang.core.Skill
 import io.sarl.sre.janus.services.time.TimeService
+import jakarta.inject.Inject
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /** 
  * SRE implementation of SARL's {@link Time} built-in capacity.

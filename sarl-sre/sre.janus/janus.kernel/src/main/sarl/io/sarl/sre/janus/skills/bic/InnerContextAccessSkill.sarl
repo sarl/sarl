@@ -33,9 +33,9 @@ import io.sarl.sre.janus.internal.ConfigurableAgentInjector
 import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.context.ContextService
 import io.sarl.sre.janus.services.lifecycle.AgentLife
+import jakarta.inject.Inject
+import jakarta.inject.Provider
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
 
 import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 

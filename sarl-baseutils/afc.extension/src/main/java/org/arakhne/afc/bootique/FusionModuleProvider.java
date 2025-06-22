@@ -34,9 +34,8 @@ import io.bootique.BQModule;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Should be removed when the AFC modules have been moved to the main stream of AFC.
  */
-@Deprecated
+@SuppressWarnings({"removal", "deprecation"})
 public class FusionModuleProvider implements BQModuleProvider {
 
 	@Override

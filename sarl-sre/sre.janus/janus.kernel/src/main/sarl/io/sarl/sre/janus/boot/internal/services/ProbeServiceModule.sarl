@@ -34,8 +34,8 @@ import io.sarl.sre.janus.internal.Factories
 import io.sarl.sre.janus.services.executor.ExecutorService
 import io.sarl.sre.janus.services.probing.service.AsynchronousProbeService
 import io.sarl.sre.janus.services.probing.service.SynchronousProbeService
-import javax.inject.Provider
-import javax.inject.Singleton
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 import org.arakhne.afc.services.IService
 
 /** 

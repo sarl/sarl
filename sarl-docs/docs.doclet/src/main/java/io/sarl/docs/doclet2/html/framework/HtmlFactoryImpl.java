@@ -88,6 +88,15 @@ import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
+import org.jsoup.nodes.Comment;
+import org.jsoup.nodes.DataNode;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.DocumentType;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
@@ -122,16 +131,6 @@ import com.sun.source.doctree.UnknownBlockTagTree;
 import com.sun.source.doctree.UnknownInlineTagTree;
 import com.sun.source.doctree.ValueTree;
 import com.sun.source.doctree.VersionTree;
-import jdk.javadoc.doclet.Taglet;
-import jdk.javadoc.doclet.Taglet.Location;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
-import org.jsoup.nodes.Comment;
-import org.jsoup.nodes.DataNode;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.DocumentType;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 
 import io.sarl.docs.doclet2.framework.ElementUtils;
 import io.sarl.docs.doclet2.framework.ExternalLinkManager;
@@ -145,6 +144,8 @@ import io.sarl.docs.doclet2.html.taglets.inline.LiteralTaglet;
 import io.sarl.docs.doclet2.html.taglets.inline.ValueTaglet;
 import io.sarl.lang.core.annotation.DefaultValue;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import jdk.javadoc.doclet.Taglet;
+import jdk.javadoc.doclet.Taglet.Location;
 
 /** Builder of HTML elements.
  *
@@ -655,9 +656,23 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	 * @param parent the receiver.
 	 * @param child the node to add into the parent node.
 	 * @see #appendChildren(Element, Iterable)
+	 * @deprecated see {@link #appendChild(Element, Node)}
+	 */
+	@Deprecated(since = "0.15", forRemoval = true)
+	protected final void appendChildren(Element parent, Node child) {
+		appendChild(parent, child);
+	}
+
+	/** Append the given child to the given parent. This function ignores the pseudo tags
+	 * and adds the children of a pseudo tag directly (not the pseudo tag itself).
+	 *
+	 * @param parent the receiver.
+	 * @param child the node to add into the parent node.
+	 * @see #appendChildren(Element, Iterable)
+	 * @since 0.15
 	 */
 	@SuppressWarnings("static-method")
-	protected void appendChildren(Element parent, Node child) {
+	protected void appendChild(Element parent, Node child) {
 		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
 		assert child != null : "child argument must not be null"; //$NON-NLS-1$
 		if (HtmlTags.isPseudoTag(child.nodeName()) && child instanceof Element) {
@@ -674,14 +689,14 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	 *
 	 * @param parent the receiver.
 	 * @param children the nodes to add into the parent node.
-	 * @see #appendChildren(Element, Node)
+	 * @see #appendChild(Element, Node)
 	 */
 	protected void appendChildren(Element parent, Iterable<? extends Node> children) {
 		assert parent != null : "parent argument must not be null"; //$NON-NLS-1$
 		assert children != null : "children argument must not be null"; //$NON-NLS-1$
 		for (final Node child : children) {
 			if (child != null) {
-				appendChildren(parent, child);
+				appendChild(parent, child);
 			}
 		}
 	}
@@ -1184,7 +1199,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				addAnnotations(annotationElement, annotationLink, htmlElement, pairs, indent, !isArray && lineBreak, valueStyle, context);
 			}
 			if (lineBreak) {
-				appendChildren(htmlElement, createNewLineTag());
+				appendChild(htmlElement, createNewLineTag());
 			}
 			results.add(htmlElement);
 		}
@@ -1208,7 +1223,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				} else {
 					valueElement.appendText(","); //$NON-NLS-1$
 					if (lineBreak) {
-						appendChildren(valueElement, createNewLineTag());
+						appendChild(valueElement, createNewLineTag());
 						int spaces = annotationElement.getSimpleName().length() + 2;
 						for (int k = 0; k < (spaces + indent); k++) {
 							valueElement.appendText(SPACE);
@@ -1281,7 +1296,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 			@Override
 			public Void visitAnnotation(AnnotationMirror a, Void p) {
 				for (final Element c : getAnnotationsFor(0, Collections.singletonList(a), false, valueStyle, valueStyle, context)) {
-					appendChildren(output, c);
+					appendChild(output, c);
 				}
 				return null;
 			}
@@ -2029,7 +2044,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 				this.memory.removeTo(tag);
 				this.memory.changeDocumentationText();
 				final Element top = this.memory.getTop();
-				appendChildren(top, tag);
+				appendChild(top, tag);
 				/*getContext().getReporter().print(Kind.NOTE, MessageFormat.format(Messages.HtmlFactoryImpl_5,
 						getElementUtils().getFullIdentifier(this.memory.getElement())));*/
 			}

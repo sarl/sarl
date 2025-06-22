@@ -24,7 +24,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import javax.inject.Qualifier;
+
+import jakarta.inject.Qualifier;
 
 /**
  * Annotation for marking a String value in order to define the application's name.

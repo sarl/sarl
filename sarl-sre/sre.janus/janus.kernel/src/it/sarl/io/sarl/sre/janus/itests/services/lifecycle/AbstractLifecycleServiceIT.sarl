@@ -73,7 +73,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("spawnAgent 1 agent")
-	def spawnAgent_1(extension rc : SreRunContext) {
+	def spawnAgent_1(extension rc : SreRunContext) : void {
 		typeof(OneAgentSpawnTestAgent).runSre(-1)
 		var results = allResults
 		results.assertNotNull
@@ -102,7 +102,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("killAgent during on Initialize after spawn")
-	def killAgent_duringInitializeAfterSpawn(extension rc : SreRunContext) {
+	def killAgent_duringInitializeAfterSpawn(extension rc : SreRunContext) : void {
 		typeof(InitializeSpawnKillTestAgent).runSre
 		var results = allResults
 		results.assertNotNull
@@ -112,7 +112,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("killAgent in behavior unit")
-	def killAgent_duringEventHandling(extension rc : SreRunContext) {
+	def killAgent_duringEventHandling(extension rc : SreRunContext) : void {
 		typeof(EventHanlderKillTestAgent).runSre
 		var results = allResults
 		results.assertNotNull
@@ -122,7 +122,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("killAgent during parallel task")
-	def killAgent_duringTask(extension rc : SreRunContext) {
+	def killAgent_duringTask(extension rc : SreRunContext) : void {
 		typeof(TaskKillTestAgent).runSre
 		var results = allResults
 		results.assertNotNull
@@ -132,7 +132,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("killAgent during on Destroy")
-	def killAgent_duringDestroy(extension rc : SreRunContext) {
+	def killAgent_duringDestroy(extension rc : SreRunContext) : void {
 		typeof(DestroyKillTestAgent).runSre
 		var results = allResults
 		results.assertNotNull
@@ -142,7 +142,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("isKillableAgent without child without inner context instance")
-	def isKillableAgent_noChild_noInnerContext(extension rc : SreRunContext) {
+	def isKillableAgent_noChild_noInnerContext(extension rc : SreRunContext) : void {
 		typeof(NoChildNoInnerContextIsKillableTestAgent).runSre
 		var results = allResults
 		results.assertNotNull
@@ -152,7 +152,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("isKillableAgent without child with inner context instance")
-	def isKillableAgent_noChild_innerContext(extension rc : SreRunContext) {
+	def isKillableAgent_noChild_innerContext(extension rc : SreRunContext) : void {
 		typeof(NoChildInnerContextIsKillableTestAgent).runSre(-1)
 		var results = allResults
 		results.assertNotNull
@@ -162,7 +162,7 @@ abstract class AbstractLifecycleServiceIT {
 
 	@RepeatedTest(10)
 	@DisplayName("kernelStop w/ 1 success agent")
-	def kernelStop_successAgent(extension rc : SreRunContext) {
+	def kernelStop_successAgent(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).assertException [
 			typeof(InfiniteLifeTestingAgent).runSre(VERY_SHORT_TIMEOUT)
 		]

@@ -23,8 +23,8 @@ package io.sarl.sre.janus.services.namespace
 import io.sarl.api.naming.name.AgentName
 import io.sarl.lang.core.Agent
 import io.sarl.sre.janus.services.context.ContextService
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
 /** 
  * Implementation of a finder of agent into the namespaces.

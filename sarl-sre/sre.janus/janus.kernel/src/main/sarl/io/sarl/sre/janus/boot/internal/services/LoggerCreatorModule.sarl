@@ -29,8 +29,8 @@ import io.bootique.di.Provides
 import io.sarl.apputils.bootiqueapp.config.LogConfig
 import io.sarl.sre.janus.boot.configs.SreConfig
 import io.sarl.sre.janus.services.logging.jul.JulLoggerCreator
-import javax.inject.Provider
-import javax.inject.Singleton
+import jakarta.inject.Provider
+import jakarta.inject.Singleton
 
 /** 
  * Module for the creator of loggers.

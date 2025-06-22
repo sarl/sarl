@@ -23,7 +23,7 @@ package io.sarl.sre.janus.services.namespace
 import io.bootique.di.Injector
 import io.sarl.api.naming.name.ServiceName
 import io.sarl.api.naming.namespace.INamespaceFinder
-import javax.inject.Inject
+import jakarta.inject.Inject
 import org.arakhne.afc.services.IService
 import org.eclipse.xtend.lib.annotations.Accessors
 

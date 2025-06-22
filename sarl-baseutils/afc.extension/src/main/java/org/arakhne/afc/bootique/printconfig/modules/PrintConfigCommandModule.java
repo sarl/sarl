@@ -22,17 +22,16 @@ package org.arakhne.afc.bootique.printconfig.modules;
 
 import static io.bootique.BQCoreModule.extend;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import org.arakhne.afc.bootique.printconfig.commands.PrintConfigCommand;
 
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Injector;
 import io.bootique.di.Provides;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.module.ModulesMetadata;
-
-import org.arakhne.afc.bootique.printconfig.commands.PrintConfigCommand;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 /** Module for the command that prints out the configuration values.
  *
