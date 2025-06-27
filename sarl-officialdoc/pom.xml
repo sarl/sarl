@@ -8,7 +8,8 @@
   <packaging>jar</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
+    <janus.maven.repository.url>http://maven.sarl.io</janus.maven.repository.url>
+    <examples.gitbase.url>https://github.com/sarl/sarl/tree/master/sarl-eclipse/plugins/io.sarl.eclipse.examples/projects</examples.gitbase.url>
     <convert.links>true</convert.links>
   </properties>
   <dependencies>
@@ -185,7 +186,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>

@@ -1,4 +1,4 @@
-# API Documentation for SARL
+# API Documentation for SARL - sarl-doclet
 
 [:Outline:]
 
@@ -27,8 +27,8 @@ SARL comes with a specific doclet that replaces all the elements written with th
 by their equivalent into the SARL syntax.
 The SARL doclet is provided into the Maven module:
 
-* Group Id: `io.sarl.docs`
-* Artifact Id: `io.sarl.docs.doclet`
+* Group Id: [:docletgroupid:]
+* Artifact Id: [:docletartifactid:]
 
 See the next sections for details on the usage of the SARL doclet.
 
@@ -50,10 +50,10 @@ file.
             <artifactId>maven-javadoc-plugin</artifactId>
 
             <configuration>
-                <doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
+                <doclet>[:docletclassname](io.sarl.docs.doclet2.Doclet)</doclet>
                 <docletArtifact>
-                    <groupId>io.sarl.docs</groupId>
-                    <artifactId>io.sarl.docs.doclet</artifactId>
+                    <groupId>[:docletgroupid](io.sarl.docs)</groupId>
+                    <artifactId>[:docletartifactid](docs.doclet)</artifactId>
                     <version>${sarl.version}</version>
                 </docletArtifact>
             </configuration>
@@ -61,6 +61,9 @@ file.
     </plugins>
 </build>
 ```
+
+[:Fact:]{typeof([:docletclassname!])}
+
 
 ## Command-Line Generation
 
@@ -71,9 +74,9 @@ The Javadoc command provides [:docletoption:] option for specifying a custom doc
 A typical command-line to launch is:
 
 ```text
-javadoc [:docletoption](-doclet) io.sarl.docs.doclet.SarlDoclet
+javadoc [:docletoption](-doclet) [:docletclassname!]
         [:cpoption](-cp) [:docletjarfile](doclet-[:sarl.specification.release_version!].jar):path_to_sources
-        -source 1.8
+        -source [:sarl-run.min.jdk.version!]
         -sourcepath path_to_sources
         -d path_to_documentation
 ```
@@ -109,4 +112,4 @@ class TheClass {
 
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)

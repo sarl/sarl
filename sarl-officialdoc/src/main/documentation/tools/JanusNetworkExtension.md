@@ -2,7 +2,7 @@
 
 [:Outline:]
 
-[:Include:](./janus.inc)
+[:Include:](../includes/janus.inc)
 
 By default, Janus does not provide a support for exchanging events over a computer
 network. For enabling this communication feature, a specific Janus extension is needed.
@@ -10,11 +10,11 @@ network. For enabling this communication feature, a specific Janus extension is 
 This documentation page describes the extension [:networkextensionname:] that adds the communication
 among Janus nodes over a computer network.
 
-The extension described on this page was defined according to the [standard method for extending Janus](../tutorials/SreExtension.md).
+The extension described on this page was defined according to the [standard method for extending Janus](../tutorials/runtime/SreExtension.md).
 
 ## General Principles of the Extension
 
-[:Include:](./hazelcast.inc)
+[:Include:](../includes/hazelcast.inc)
 
 ## Maven Inclusion
 
@@ -64,5 +64,5 @@ More details could be obtain by calling your Janus-based software with the comma
 }
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 

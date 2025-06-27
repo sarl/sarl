@@ -608,7 +608,7 @@ public class SarlDocumentationParser {
 		}
 		if (nbTags > 0) {
 			pattern.insert(0, "(" + org.eclipse.xtext.util.Strings.convertToJavaString(getLineSeparator()) //$NON-NLS-1$
-				+ ")|"); //$NON-NLS-1$
+			+ ")|"); //$NON-NLS-1$
 			return pattern.toString();
 		}
 		return null;
@@ -796,6 +796,7 @@ public class SarlDocumentationParser {
 					data.endLineno = context.getEndLineNo();
 					data.offset = context.getOffset();
 					data.length = context.getLength();
+					data.deprecationAsError = context.isDeprecationIssuesAsErrors();
 					if (tag.isOpeningTag()) {
 						data.code = Strings.nullToEmpty(blockValue).trim();
 					} else {
@@ -866,7 +867,11 @@ public class SarlDocumentationParser {
 			if (parentContext != null) {
 				context.linkTo(parentContext);
 			}
-			return parse(context);
+			final var foundSpecialTag = parse(context);
+			if (parentContext != null) {
+				context.propagateTo(parentContext);
+			}
+			return foundSpecialTag;
 		}
 		return false;
 	}
@@ -1220,6 +1225,8 @@ public class SarlDocumentationParser {
 
 		private boolean isVisibleInblock;
 
+		private boolean isHtmlCodeBlock;
+
 		private boolean forceVisibility;
 
 		private boolean[] isParsing = new boolean[] {true};
@@ -1242,6 +1249,8 @@ public class SarlDocumentationParser {
 
 		private boolean isTestingPhase;
 
+		private Boolean deprecationAsError;
+
 		/** Constructor with standard visibility configuration.
 		 */
 		public ParsingContext() {
@@ -1258,6 +1267,24 @@ public class SarlDocumentationParser {
 		public ParsingContext(boolean forceVisibility, boolean isTestingPhase) {
 			this.forceVisibility = forceVisibility;
 			this.isTestingPhase = isTestingPhase;
+		}
+
+		/** Replies if the deprecation issues are assumed to be error or not.
+		 *
+		 * @return {@link Boolean#TRUE} if the deprecation issues are errors, {@link Boolean#FALSE} if the deprecation issues must be ignored, or {@code null} to keep the default configuration.
+		 * @since 0.15
+		 */
+		public Boolean isDeprecationIssuesAsErrors() {
+			return this.deprecationAsError;
+		}
+
+		/** Change the flag that is describing if the deprecation issues are assumed to be error or not.
+		 *
+		 * @param state {@link Boolean#TRUE} if the deprecation issues are errors, {@link Boolean#FALSE} if the deprecation issues must be ignored, or {@code null} to keep the default configuration.
+		 * @since 0.15
+		 */
+		public void setDeprecationIssuesAsErrors(Boolean state) {
+			this.deprecationAsError = state;
 		}
 
 		/** Change the script executor.
@@ -1435,6 +1462,24 @@ public class SarlDocumentationParser {
 			return !isInBlock() || this.isVisibleInblock || this.forceVisibility;
 		}
 
+		/** Set the flag that indicates if the text is enclosing by HTML code block.
+		 *
+		 * @param html {@code true} if the content should be visible in an HTML code block.
+		 * @since 0.15
+		 */
+		public void setInHtmlBlock(boolean html) {
+			this.isHtmlCodeBlock = html;
+		}
+
+		/** Replies if the text is enclosing by HTML code block.
+		 *
+		 * @return {@code true} if the content should be visible in an HTML code block.
+		 * @since 0.15
+		 */
+		public boolean isInHtmlCodeBlock() {
+			return this.isHtmlCodeBlock;
+		}
+
 		/** Replies if the context is created within a testing phase.
 		 *
 		 * <p>Usually, no code for generated the marker language is run during a testing phase.
@@ -1508,11 +1553,25 @@ public class SarlDocumentationParser {
 			this.inBlock = parentContext.inBlock;
 			this.isParsing = parentContext.isParsing;
 			this.isVisibleInblock = parentContext.isVisibleInblock;
+			this.isHtmlCodeBlock = parentContext.isHtmlCodeBlock;
 			this.forceVisibility = parentContext.forceVisibility;
 			this.isTestingPhase = parentContext.isTestingPhase;
 			this.lineno = parentContext.lineno;
 			this.offset = parentContext.offset;
 			this.scriptExecutor = parentContext.scriptExecutor;
+			this.deprecationAsError = parentContext.deprecationAsError;
+		}
+
+		/** Propagate properties from this context to the given parent context.
+		 *
+		 * @param parentContext the parent context.
+		 * @since 0.15
+		 */
+		public void propagateTo(ParsingContext parentContext) {
+			parentContext.isHtmlCodeBlock = this.isHtmlCodeBlock;
+			if (this.deprecationAsError != null) {
+				parentContext.deprecationAsError = this.deprecationAsError;
+			}
 		}
 
 		/** Declare a replacement.
@@ -1626,12 +1685,34 @@ public class SarlDocumentationParser {
 
 		/** Replies the inline format that is compatible with {@link MessageFormat}.
 		 *
-		 * <p>The first argument is the code to put in a block.
+		 * <p>The first argument is the language name. The second argument is the code to put in a block.
 		 *
 		 * @return the format.
 		 */
 		public Function2<String, String, String> getBlockCodeFormat() {
 			return this.blockCodeFormat;
+		}
+
+		/** Replies the inline format that is compatible with {@link MessageFormat}.
+		 *
+		 * <p>The first argument is the language name. The second argument is the code to put in a block.
+		 *
+		 * @return the format.
+		 * @since 0.15
+		 */
+		public Function2<String, String, String> getBlockCodeFormatHtmlCodeBlock() {
+			if (isInHtmlCodeBlock()) {
+				return (languageName, content) -> {
+					final StringBuilder result = new StringBuilder();
+					result.append("<pre><code"); //$NON-NLS-1$
+					if (!Strings.isNullOrEmpty(languageName)) {
+						result.append(" class=\"language-").append(languageName.toLowerCase()).append("\""); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+					result.append(">\n").append(content).append("</code></pre>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+					return result.toString();
+				};
+			}
+			return getBlockCodeFormat();
 		}
 
 		/** Change the outline output tag that will be output when the outline
@@ -1898,7 +1979,7 @@ public class SarlDocumentationParser {
 				super.tag(context, tag, dynamicName, parameter, blockValue);
 			} catch (Throwable ex) {
 				throw new IllegalArgumentException("Invalid regex for tag: " + tag.toString() //$NON-NLS-1$
-					+ "; and dynamic name: " + dynamicName, ex); //$NON-NLS-1$
+				+ "; and dynamic name: " + dynamicName, ex); //$NON-NLS-1$
 			}
 		}
 
@@ -2274,7 +2355,7 @@ public class SarlDocumentationParser {
 							} catch (Throwable exception) {
 								final var root = Throwables.getRootCause(exception);
 								Throwables.throwIfUnchecked(root);
-							    throw new RuntimeException(root);
+								throw new RuntimeException(root);
 							}
 						}
 					}
@@ -2350,7 +2431,7 @@ public class SarlDocumentationParser {
 							} catch (Throwable exception) {
 								final var root = Throwables.getRootCause(exception);
 								Throwables.throwIfUnchecked(root);
-							    throw new RuntimeException(root);
+								throw new RuntimeException(root);
 							}
 						}
 					}
@@ -2374,7 +2455,7 @@ public class SarlDocumentationParser {
 			}
 		},
 
-		/** {@code [:On]} switches on the output of the code.
+		/** {@code [:On]} switches on the output of the code and use the markdown block code.
 		 */
 		ON {
 			@Override
@@ -2400,6 +2481,53 @@ public class SarlDocumentationParser {
 			@Override
 			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
 				context.setVisibleInBlock(true);
+				context.setInHtmlBlock(false);
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:OnHtml]} switches on the output of the code and force the use of HTML tags for the code block.
+		 */
+		ONHTML {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_ONHTML_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.setVisibleInBlock(true);
+				context.setInHtmlBlock(true);
 				return ""; //$NON-NLS-1$
 			}
 
@@ -2464,6 +2592,81 @@ public class SarlDocumentationParser {
 			}
 		},
 
+		/** {@code [:CONFIGURE]} Enables to change the internal property of the generator.
+		 * The properties to be changed depend on the implementation of this tag.
+		 */
+		CONFIGURE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_CONFIGURE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (parameter != null) {
+					for (final var definition : parameter.split("\\s*[,;:]\\s*")) { //$NON-NLS-1$
+						if (definition != null) {
+							final var pair = definition.split("\\s*=\\s*"); //$NON-NLS-1$
+							if (pair.length == 2 && pair[0] != null && pair[1] != null) {
+								switch (pair[0].toLowerCase()) {
+								case "deprecationaserror": { //$NON-NLS-1$
+									Boolean value = null;
+									switch (pair[1].toLowerCase()) {
+									case "true": //$NON-NLS-1$
+										value = Boolean.TRUE;
+										break;
+									case "false": //$NON-NLS-1$
+										value = Boolean.FALSE;
+										break;
+									default:
+										//
+									}
+									context.setDeprecationIssuesAsErrors(value);
+								}
+								break;
+								default:
+									throw new IllegalArgumentException("Unrecognized property: " + pair[0]); //$NON-NLS-1$
+								}
+							} else {
+								throw new IllegalArgumentException("Invalid format for the parameter: " + parameter); //$NON-NLS-1$
+							}
+						}
+					}
+				}
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isTestingPhase();
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
 		/** {@code [:Success:]} starts a block of code should be successfull when compiled.
 		 */
 		SUCCESS {
@@ -2493,7 +2696,7 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_5, name());
 					return null;
 				}
-				return formatBlockText(blockValue, context.getOutputLanguage(), context.getBlockCodeFormat());
+				return formatBlockText(blockValue, context.getOutputLanguage(), context.getBlockCodeFormatHtmlCodeBlock());
 			}
 
 			@Override
@@ -2541,7 +2744,7 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_5, name());
 					return null;
 				}
-				return formatBlockText(blockValue, context.getOutputLanguage(), context.getBlockCodeFormat());
+				return formatBlockText(blockValue, context.getOutputLanguage(), context.getBlockCodeFormatHtmlCodeBlock());
 			}
 
 			@Override
@@ -2948,6 +3151,16 @@ public class SarlDocumentationParser {
 		/** Default pattern.
 		 */
 		static final String DEFAULT_ON_PATTERN = "\\[:On\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 * @since 0.15
+		 */
+		static final String DEFAULT_ONHTML_PATTERN = "\\[:OnHtml\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 * @since 0.15
+		 */
+		static final String DEFAULT_CONFIGURE_PATTERN = "\\[:Configure\\]"; //$NON-NLS-1$
 
 		/** Default pattern.
 		 */

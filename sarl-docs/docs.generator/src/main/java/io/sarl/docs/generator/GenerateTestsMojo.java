@@ -259,8 +259,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		
 		final var absoluteInputFile = FileSystem.makeAbsolute(relativeInputFile, sourceFolder);
 		
-		generateTestsForSuccessCode(it, importManager, relativeInputFile, successCompilationComponents);
-		generateTestsForFailureCode(it, importManager, relativeInputFile, failureCompilationComponents);
+		generateTestsForSuccessCode(it, true, importManager, relativeInputFile, successCompilationComponents);
+		generateTestsForFailureCode(it, true, importManager, relativeInputFile, failureCompilationComponents);
 		generateTestsForFacts(it, importManager, absoluteInputFile , factualComponents);
 		generateDynamicTests(it, importManager, relativeInputFile, specificComponents);
 
@@ -273,7 +273,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		//generateTraceFile(outputFolder, packageName, generalTestName, it.getTraceRegions());
 	}
 
-	private void generateTestsForSuccessCode(ITreeAppendable parent, ImportManager importManager,
+	private void generateTestsForSuccessCode(ITreeAppendable parent, boolean isDeprecationasError, ImportManager importManager,
 			File inputFile, List<ValidationComponent> successCompilationComponents) {
 		var i = 0;
 		for (final var component : successCompilationComponents) {
@@ -300,7 +300,14 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Tag.class).append("(\"success_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
-			it.append(List.class).append("<String> issues = getScriptExecutor().compile(") //$NON-NLS-1$
+			it.append(ScriptExecutor.class).append(" scriptExecutor = getScriptExecutor();").newLine(); //$NON-NLS-1$
+			var deprecationError = isDeprecationasError;
+			final var componentDeprecationError = component.isDeprecationIssuesAsErrors();
+			if (componentDeprecationError != null) {
+				deprecationError = componentDeprecationError.booleanValue();
+			}
+			it.append("scriptExecutor.setDeprecationAsError(").append(Boolean.toString(deprecationError)).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append(List.class).append("<String> issues = scriptExecutor.compile(") //$NON-NLS-1$
 				.append(str(Integer.valueOf(component.getLinenoInSourceFile()))).append(", \"") //$NON-NLS-1$
 				.append(str(component.getCode())).append("\");").newLine(); //$NON-NLS-1$
 			it.append("assertNoIssue(").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$
@@ -311,7 +318,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 	}
 
-	private void generateTestsForFailureCode(ITreeAppendable parent, ImportManager importManager,
+	private void generateTestsForFailureCode(ITreeAppendable parent, boolean isDeprecationasError, ImportManager importManager,
 			File inputFile, List<ValidationComponent> failureCompilationComponents) {
 		var i = 0;
 		for (final var component : failureCompilationComponents) {
@@ -338,7 +345,14 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Tag.class).append("(\"failure_").append(Integer.toString(i)).append("\")").newLine(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			it.append("public void ").append(actionName).append("() throws ") //$NON-NLS-1$ //$NON-NLS-2$
 				.append(Exception.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
-			it.append(List.class).append("<String> issues = getScriptExecutor().compile(") //$NON-NLS-1$
+			it.append(ScriptExecutor.class).append(" scriptExecutor = getScriptExecutor();").newLine(); //$NON-NLS-1$
+			var deprecationError = isDeprecationasError;
+			final var componentDeprecationError = component.isDeprecationIssuesAsErrors();
+			if (componentDeprecationError != null) {
+				deprecationError = componentDeprecationError.booleanValue();
+			}
+			it.append("scriptExecutor.setDeprecationAsError(").append(Boolean.toString(deprecationError)).append(");").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append(List.class).append("<String> issues = scriptExecutor.compile(") //$NON-NLS-1$
 				.append(str(Integer.valueOf(component.getLinenoInSourceFile()))).append(", \"") //$NON-NLS-1$
 				.append(str(component.getCode())).append("\");").newLine(); //$NON-NLS-1$
 			it.append("assertIssues(").append(str(Integer.valueOf(component.getLinenoInSourceFile()))) //$NON-NLS-1$

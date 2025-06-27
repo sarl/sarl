@@ -56,6 +56,12 @@ public class ValidationComponentData implements JsonableObject {
 	/** Validation code. */
 	public String code;
 
+	/** Deprecation issues are errors.
+	 *
+	 * @since 0.15
+	 */
+	public Boolean deprecationAsError;
+
 	@Override
 	public void toJson(JsonBuffer buffer) {
 		buffer.add("file", this.file); //$NON-NLS-1$
@@ -64,6 +70,7 @@ public class ValidationComponentData implements JsonableObject {
 		buffer.add("offset", Integer.valueOf(this.offset)); //$NON-NLS-1$
 		buffer.add("length", Integer.valueOf(this.length)); //$NON-NLS-1$
 		buffer.add("code", Integer.valueOf(this.code)); //$NON-NLS-1$
+		buffer.add("deprecationAsError", this.deprecationAsError); //$NON-NLS-1$
 	}
 
 	@Override

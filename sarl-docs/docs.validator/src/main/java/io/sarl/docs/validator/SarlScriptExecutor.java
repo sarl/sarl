@@ -81,6 +81,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	private Provider<IEvaluationContext> contextProvider;
 
+	private boolean isDeprecationAsError = true;
+
 	/** Change the injector.
 	 *
 	 * @param injector the new injector.
@@ -90,6 +92,11 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		this.compilerProvider = injector.getProvider(SarlBatchCompiler.class);
 		this.interpreterProvider = injector.getProvider(IExpressionInterpreter.class);
 		this.contextProvider = injector.getProvider(IEvaluationContext.class);
+	}
+
+	@Override
+	public void setDeprecationAsError(boolean isError) {
+		this.isDeprecationAsError = isError;
 	}
 
 	@Override
@@ -159,7 +166,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setModulePath(this.modulePath);
 		compiler.setJavaSourceVersion(this.sourceVersion);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
-		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
+		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, this.isDeprecationAsError ? Severity.ERROR : Severity.IGNORE);
 		compiler.setJavaCompilerVerbose(false);
 		final var nopLogger = Logger.getAnonymousLogger();
 		nopLogger.setLevel(Level.OFF);

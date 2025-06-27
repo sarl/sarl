@@ -42,7 +42,7 @@ run_mvn "$CDIR/sarl-docs" "documentation tools and doclets" "$@"
 run_mvn "$CDIR/sarl-cli" "shell command-line tools" "$@"
 
 # BSPL Protocols
-run_mvn "$CDIR/sarl-bspl" "SARL Implementation of BSPL" "$@"
+#run_mvn "$CDIR/sarl-bspl" "SARL Implementation of BSPL" "$@"
 
 # Build Eclipse tools
 run_mvn "$CDIR/sarl-eclipse" "Eclipse-based tools and development environment" "$@"

@@ -34,6 +34,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.eclipse.xtext.util.Strings;
 
+import io.sarl.docs.validator.DocumentationLogger;
 import io.sarl.docs.validator.ShellCommandProvider;
 import io.sarl.docs.validator.ShellExtensions;
 
@@ -60,6 +61,7 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	@Override
 	protected String internalExecute() {
 		try {
+			DocumentationLogger.initializeLogger(new MavenJulHandler(getLog()));
 			for (final var sourceFolder : this.inferredSourceDirectories) {
 				addSourceFolder(sourceFolder);
 			}

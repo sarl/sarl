@@ -1,4 +1,4 @@
-# SARL Command-line Compiler
+# SARL Command-line Compiler - sarlc
 
 [:Outline:]
 
@@ -14,9 +14,9 @@ It means that it does not check if a SARL runtime environment is installed and u
 
 For launching a SARL application, please refer to one of:
 
-* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
-* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
-* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
+* [Running an agent from the command-line shell](../getstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../getstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../getstarted/RunSARLAgentJava.md)
 
 ## Usage
 
@@ -51,5 +51,5 @@ The complete list of the options is:
 }
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 

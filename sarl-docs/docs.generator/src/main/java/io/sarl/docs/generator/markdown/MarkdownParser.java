@@ -40,6 +40,8 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.URISchemeType;
 import org.eclipse.xtext.util.Strings;
@@ -50,7 +52,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Iterables;
-import com.google.inject.Inject;
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.Image;
 import com.vladsch.flexmark.ast.Link;

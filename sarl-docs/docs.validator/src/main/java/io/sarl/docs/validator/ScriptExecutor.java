@@ -60,6 +60,13 @@ public interface ScriptExecutor {
 	 */
 	public static final String PROP_CLASS_LOADER = "SARL_DOC_SCRIPT_CLASS_LOADER"; //$NON-NLS-1$
 
+	/** Indicates how the deprecation issues are considered by the scvript executor.
+	 *
+	 * @param isError {@code true} if the depracation issues are assumed to be error; otherwise they are ignored.
+	 * @since 0.15
+	 */
+	void setDeprecationAsError(boolean isError);
+
 	/** Change the folder that the executor should used for its temporary data.
 	 *
 	 * @param dirname the folder name.

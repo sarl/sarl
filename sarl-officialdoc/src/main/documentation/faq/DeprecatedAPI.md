@@ -10,14 +10,28 @@ the SARL Run-time Environment (SRE).
 
 ## Changes in the SARL API
 
-### Since 0.12
+### Since 0.15
+
+<table>
+<thead>
+<tr><th>Deprecated Type</th><th>Removal?</th><th>Replacement</th></tr>
+</thead><tbody>
+<tr><td>io.sarl.api.core.OpenEventSpace</td><td>Yes</td>
+	<td>Replace with <code class="language-sarl">io.sarl.api.core.spaces.OpenEventSpace</code>.
+	</td></tr>
+<tr><td>io.sarl.api.core.OpenEventSpaceSpecification</td><td>Yes</td>
+	<td>Replace with <code class="language-sarl">io.sarl.api.core.spaces.OpenEventSpaceSpecification</code>.
+	</td></tr>
+</tbody></table>
+
+### Since 0.13
 
 <table>
 <thead>
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Removal?</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>io.sarl.lang.util.Utils</td><td>compareVersions(String, String)</td><td>Yes</td>
-	<td>Replace with <code>compareMajorMinorVersions(String, String)</code>.
+	<td>Replace with <code class="language-sarl">compareMajorMinorVersions(String, String)</code>.
 	</td></tr>
 <tr><td>io.sarl.docs.validator.DocumentationLogger</td><td>setLogger(Logger)</td><td>Yes</td>
 	<td>No replacement.
@@ -41,13 +55,13 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>AbstractSARLLaunchConfiguration</td><td>getClasspath</td>
-	<td>Replace <code>getClasspath(...)</code> by <code>getClasspathAndModulepath(...)</code>.
+	<td>Replace <code class="language-sarl">getClasspath(...)</code> by <code class="language-sarl">getClasspathAndModulepath(...)</code>.
 	</td></tr>
 
 
 
 <tr><td>Address</td><td>getUUID</td>
-	<td>Replace <code>getUUID</code> by <code>getID</code>.
+	<td>Replace <code class="language-sarl">getUUID</code> by <code class="language-sarl">getID</code>.
 	</td></tr>
 
 [:Success:]
@@ -69,13 +83,13 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>OpenEventSpace</td><td>register</td>
-	<td>Replace <code>register(listener, true)</code> by <code>registerWeakParticipant(listener)</code>, and <code>register(listener, false)</code> by <code>registerStrongParticipant(listener)</code>.
+	<td>Replace <code class="language-sarl">register(listener, true)</code> by <code class="language-sarl">registerWeakParticipant(listener)</code>, and <code class="language-sarl">register(listener, false)</code> by <code class="language-sarl">registerStrongParticipant(listener)</code>.
 	</td></tr>
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
     import io.sarl.lang.core.EventListener
-    import io.sarl.api.core.OpenEventSpace
+    import io.sarl.api.core.spaces.OpenEventSpace
     agent X {
         def weak(listener : EventListener, s : OpenEventSpace) : void {
             s.registerWeakParticipant(listener)
@@ -89,10 +103,10 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>ReflectExtensions</td><td>getDefaultNameFormatter</td>
-	<td>Replace <code>getDefaultNameFormatter</code> by <code>getDefaultMethodNameFormatter</code>.
+	<td>Replace <code class="language-sarl">getDefaultNameFormatter</code> by <code class="language-sarl">getDefaultMethodNameFormatter</code>.
 	</td></tr>
 <tr><td>ReflectExtensions</td><td>setDefaultNameFormatter</td>
-	<td>Replace <code>setDefaultNameFormatter</code> by <code>setDefaultMethodNameFormatter</code>.
+	<td>Replace <code class="language-sarl">setDefaultNameFormatter</code> by <code class="language-sarl">setDefaultMethodNameFormatter</code>.
 	</td></tr>
 
 
@@ -145,8 +159,8 @@ the SARL Run-time Environment (SRE).
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>DefaultContextInteractions</td><td>willReceive</td>
-	<td>Replace <code>receiver.willReceive(new [:myeventname!])</code> by <code>emit(new [:myeventname!]) [it.ID == receiver]</code>.
-	The number of functions in the API should be limited. This function is assumed to be redundant with <code>emit</code>.
+	<td>Replace <code class="language-sarl">receiver.willReceive(new [:myeventname!])</code> by <code class="language-sarl">emit(new [:myeventname!]) [it.ID == receiver]</code>.
+	The number of functions in the API should be limited. This function is assumed to be redundant with <code class="language-sarl">emit</code>.
 	</td></tr>
 
 [:Success:]
@@ -163,13 +177,13 @@ the SARL Run-time Environment (SRE).
 [:End:]
 
 
-<tr><td>Lifecycle</td><td>return type of <code>spawn</code></td>
+<tr><td>Lifecycle</td><td>return type of <code class="language-sarl">spawn</code></td>
 	<td>In SRE 2.x, we could spawn an agent and get their assigned UUID code via the spawn method
-	the <code>Lifecycle</code> capacity, e.g.:
-<pre><code>val agent_UUID = spawn(typeof([:myagentname!]))
+	the <code class="language-sarl">Lifecycle</code> capacity, e.g.:
+<pre><code class="language-sarl">val agent_UUID = spawn(typeof([:myagentname!]))
 </code></pre>
-	Because of problems and inconsistencies caused by the parallel execution of the <code>spawn</code> function,
-	the return value of this method has been deprecated. The <code>spawn</code> function replies nothing since version
+	Because of problems and inconsistencies caused by the parallel execution of the <code class="language-sarl">spawn</code> function,
+	the return value of this method has been deprecated. The <code class="language-sarl">spawn</code> function replies nothing since version
 	0.11 of the API.
 	To spawn an agent and grab its UUID code, we first generate the identifier and then spawn the agent with it:
 [:Success:]
@@ -188,7 +202,7 @@ the SARL Run-time Environment (SRE).
         }
     }
 [:End:]
-	(<code>[:defaultContextCall!]</code> is the short for <code>getDefaultContext</code> provided by <code>[:dcicapacity!]</code>)
+	(<code class="language-sarl">[:defaultContextCall!]</code> is the short for <code class="language-sarl">getDefaultContext</code> provided by <code class="language-sarl">[:dcicapacity!]</code>)
 	<br>
 	or, with the version 0.12 of the API:
 [:Success:]
@@ -211,14 +225,14 @@ the SARL Run-time Environment (SRE).
 
 
 <tr><td>OpenEventSpace</td><td>register</td>
-	<td>Replace <code>space.register(participant, isWeak)</code> by <code>[:registerstrongparticipantfct!](participant)</code>
-	if <code>isWeak</code> is true, or <code>[:registerweakparticipantfct!](participant)</code> if <code>isWeak</code> is false. This change
+	<td>Replace <code class="language-sarl">space.register(participant, isWeak)</code> by <code class="language-sarl">[:registerstrongparticipantfct!](participant)</code>
+	if <code class="language-sarl">isWeak</code> is true, or <code class="language-sarl">[:registerweakparticipantfct!](participant)</code> if <code class="language-sarl">isWeak</code> is false. This change
 	is applied by internal design on the space implementation.
 	</td></tr>
 
 [:Success:]
     package io.sarl.docs.faq.deprecation
-    import io.sarl.api.core.OpenEventSpace
+    import io.sarl.api.core.spaces.OpenEventSpace
     import io.sarl.lang.core.EventListener
     agent X {
         def fct0(sp : OpenEventSpace, listener : EventListener) {
@@ -241,10 +255,10 @@ the SARL Run-time Environment (SRE).
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Removal Version</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>DefaultContextInteractions</td><td>spawn</td><td></td>
-	<td>Replace <code>[:spawnfctname!](type, args)</code> by <code>[:lifecyclecapacity!].[:spawnfctname!](type, args)</code>.
-	The definition of the <code>[:spawnfctname!]</code> into <code>DefaultContextInteractions</code> is not expected by SARL
+	<td>Replace <code class="language-sarl">[:spawnfctname!](type, args)</code> by <code class="language-sarl">[:lifecyclecapacity!].[:spawnfctname!](type, args)</code>.
+	The definition of the <code class="language-sarl">[:spawnfctname!]</code> into <code class="language-sarl">DefaultContextInteractions</code> is not expected by SARL
 	users since this capacity seems to be
-	dedicated to interactions. <code>[:lifecyclecapacity!]</code> capacity is a better place for defining the <code>spawn</code>
+	dedicated to interactions. <code class="language-sarl">[:lifecyclecapacity!]</code> capacity is a better place for defining the <code class="language-sarl">spawn</code>
 	functions.
 
 [:Success:]
@@ -262,7 +276,7 @@ the SARL Run-time Environment (SRE).
 </td></tr>
 
 <tr><td>Logging</td><td>println</td><td></td>
-	<td>Replace <code>println(msg)</code> by <code>[:infofctname!](msg)</code>. The semantic of <code>println</code> is linked to the system console.
+	<td>Replace <code class="language-sarl">println(msg)</code> by <code class="language-sarl">[:infofctname!](msg)</code>. The semantic of <code class="language-sarl">println</code> is linked to the system console.
 	Agents are supposed to log their messages on the agent console.
 
 [:Success:]
@@ -279,7 +293,7 @@ the SARL Run-time Environment (SRE).
 </td></tr>
 
 <tr><td>SarlSpecificationChecker</td><td>getSarlSpecificationVersion</td><td></td>
-<td>Replaced by <code>[:checkerfctname!]</code>. Change due to the change of the return type that is now of type <code>[:versiontypename!]</code>.
+<td>Replaced by <code class="language-sarl">[:checkerfctname!]</code>. Change due to the change of the return type that is now of type <code class="language-sarl">[:versiontypename!]</code>.
 
 [:Success:]
 	[:Off]
@@ -307,8 +321,8 @@ the SARL Run-time Environment (SRE).
 <tr><th>Deprecated Type</th><th>Deprecated Feature</th><th>Removal Version</th><th>Replacement</th></tr>
 </thead><tbody>
 <tr><td>DefaultContextInteractions</td><td>receive</td><td>0.10</td>
-	<td>Replace <code>receiver.receive(new Event)</code> by <code>emit(new Event) [it.ID == receiver]</code>. The number of
-	functions in the API should be limited. This function is assumed to be redundant with <code>emit</code>.
+	<td>Replace <code class="language-sarl">receiver.receive(new Event)</code> by <code class="language-sarl">emit(new Event) [it.ID == receiver]</code>. The number of
+	functions in the API should be limited. This function is assumed to be redundant with <code class="language-sarl">emit</code>.
 	</td></tr>
 </tbody></table>
 
@@ -330,14 +344,14 @@ the SARL Run-time Environment (SRE).
 	that could be extended with plugins by only adding these plugins on the classpath of the application.
 	In the context of Janus, the network features were moved into a plugin. One could easily add the
 	network feature by adding the corresponding plugin jar file in the classpath (equivalent to the old
-	<code>Boot.offline = false</code>) or remove it from the classpath (equivalent to <code>Boot.offline = true</code>), or
+	<code class="language-sarl">Boot.offline = false</code>) or remove it from the classpath (equivalent to <code class="language-sarl">Boot.offline = true</code>), or
 	even add another networking plugin that is based on another technology (e.g. MQTT, etc.).
-	So, <code>Boot.offline</code> function is not any more into the Janus kernel (i.e. the Boot class, see below)
+	So, <code class="language-sarl">Boot.offline</code> function is not any more into the Janus kernel (i.e. the Boot class, see below)
 	but into the configuration of the networking plugin. This plugin is under validation and is planned
 	to be back in SARL 0.12.
 	</td></tr>
 <tr><td>Boot</td><td>setVerboseLevel(level)</td><td>0.10</td>
-	<td>This function is removed from <code>Boot</code>. The <code>SRE</code> utility class provides the replacing function.
+	<td>This function is removed from <code class="language-sarl">Boot</code>. The <code class="language-sarl">SRE</code> utility class provides the replacing function.
 	Note that it must be called before any launch of agent since the configuration level of Janus is set at start up.
 
 [:Success:]
@@ -352,9 +366,9 @@ the SARL Run-time Environment (SRE).
 
 	</td></tr>
 <tr><td>Boot</td><td>startJanus(type)</td><td>0.10</td>
-	<td>In the old SRE 2.x, one would start an agent from Java by directly using the <code>Boot</code>
+	<td>In the old SRE 2.x, one would start an agent from Java by directly using the <code class="language-sarl">Boot</code>
 	class in Janus:
-<pre><code>import io.janusproject.Boot
+<pre><code class="language-sarl">import io.janusproject.Boot
 Boot.startJanus(typeof(MyAgent))
 	</code></pre>
 	In order to avoid any problems due to changes into the Janus implementation, in SRE 3.x it is preferable to use the SRE
@@ -376,4 +390,4 @@ Boot.startJanus(typeof(MyAgent))
 </tbody></table>
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)

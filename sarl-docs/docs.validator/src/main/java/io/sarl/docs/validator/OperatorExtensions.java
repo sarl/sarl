@@ -45,6 +45,7 @@ import org.eclipse.xtext.xbase.XInstanceOfExpression;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XPostfixOperation;
 import org.eclipse.xtext.xbase.XUnaryOperation;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 
 import com.google.inject.Injector;
@@ -188,13 +189,37 @@ public final class OperatorExtensions {
 	 * @return validation status.
 	 */
 	public static boolean validateOperatorOrder(List<List<String>> operators) {
+		final var logger = getInjector().getInstance(java.util.logging.Logger.class);
+		final var result = validateOperatorOrder(operators, (message, exception) -> {
+			if (exception != null) {
+				logger.log(java.util.logging.Level.SEVERE, message, exception);
+			} else {
+				logger.severe(message);
+			}
+		});
+		return result == 0;
+	}
+
+	/** Validate the order of the operators according to the operator precedence.
+	 *
+	 * @param operators the list of operators. Each operator description should contain one of:<ul>
+	 *     <li>{@code $v}, a variable;</li>
+	 *     <li>{@code $i}, an integer value with unknown associativity;</li>
+	 *     <li>{@code $L}, an integer value with left-to-right associativity;</li>
+	 *     <li>{@code $R}, an integer value with right-to-left associativity;</li>
+	 *     <li>{@code $o}, an object;</li>
+	 *     <li>{@code $t}, a class.</li>
+	 *     </ul>
+	 * @param errorLogger the logger of the error if there is any.
+	 * @return the number of errors.
+	 * @since 0.15
+	 */
+	public static int validateOperatorOrder(List<List<String>> operators, Procedure2<String, Throwable> errorLogger) {
 		final var flatOperators = new ArrayList<String>();
 		
 		for (final var ops : operators) {
 			flatOperators.addAll(ops);
 		}
-
-		final var logger = getInjector().getInstance(java.util.logging.Logger.class);
 
 		final var associativities = new HashMap<String, Associativity>();
 		final var labels = new HashMap<String, String>();
@@ -202,41 +227,46 @@ public final class OperatorExtensions {
 		try {
 			buildOperatorInfo(flatOperators, associativities, labels, precedenceGroups);
 		} catch (Exception exception) {
-			logger.log(java.util.logging.Level.SEVERE, exception.getLocalizedMessage(), exception);
-			return false;
+			if (errorLogger != null) {
+				errorLogger.apply(exception.getLocalizedMessage(), exception);
+			}
+			return 1;
 		}
 
+		var result = 0;
 		final var iterator = operators.iterator();
 		for (final var actualGroup : precedenceGroups) {
 			if (!iterator.hasNext()) {
-				error(logger, Messages.OperatorExtensions_2, operators, precedenceGroups);
-				return false;
+				error(errorLogger, Messages.OperatorExtensions_2, operators, precedenceGroups);
+				++result;
 			}
 			final var originalExpectedGroup = iterator.next();
 			final var expectedGroup = new ArrayList<>(originalExpectedGroup);
 			if (expectedGroup.size() != actualGroup.size()) {
-				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
-				return false;
+				error(errorLogger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
+				++result;
 			}
 			for (final var actualOp : actualGroup) {
 				if (!expectedGroup.remove(actualOp)) {
-					error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
-					return false;
+					error(errorLogger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
+					++result;
 				}
 			}
 			if (!expectedGroup.isEmpty()) {
-				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
-				return false;
+				error(errorLogger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups);
+				++result;
 			}
 		}
-		return true;
+		return result;
 	}
 
-	private static void error(java.util.logging.Logger logger, String message, List<List<String>> expectedPrecedence,
+	private static void error(Procedure2<String, Throwable> errorLogger, String message, List<List<String>> expectedPrecedence,
 			List<List<String>> actualPrecedence) {
-		logger.severe(message);
-		logger.severe(MessageFormat.format(Messages.OperatorExtensions_4, expectedPrecedence));
-		logger.severe(MessageFormat.format(Messages.OperatorExtensions_5, actualPrecedence));
+		if (errorLogger != null) {
+			errorLogger.apply(message, null);
+			errorLogger.apply(MessageFormat.format(Messages.OperatorExtensions_4, expectedPrecedence), null);
+			errorLogger.apply(MessageFormat.format(Messages.OperatorExtensions_5, actualPrecedence), null);
+		}
 	}
 
 	private static Injector getInjector() {

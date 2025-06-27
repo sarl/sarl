@@ -93,7 +93,5 @@ class, and use it as follow (two events are created in the example):
 	}
 [:End:]
 
-
-
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 

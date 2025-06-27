@@ -40,6 +40,8 @@ public class ValidationComponent implements JsonableObject {
 
 	private boolean isExecutable;
 
+	private Boolean isDeprecationAsError;
+
 	private File file;
 
 	private int lineno;
@@ -51,6 +53,24 @@ public class ValidationComponent implements JsonableObject {
 	private int length;
 
 	private String code;
+
+	/** Replies if the deprecation issues are assumed to be error or not.
+	 *
+	 * @return {@link Boolean#TRUE} if the deprecation issues are errors, {@link Boolean#FALSE} if the deprecation issues must be ignored, or {@code null} to keep the default configuration.
+	 * @since 0.15
+	 */
+	public Boolean isDeprecationIssuesAsErrors() {
+		return this.isDeprecationAsError;
+	}
+	
+	/** Change the flag that is describing if the deprecation issues are assumed to be error or not.
+	 *
+	 * @param state {@link Boolean#TRUE} if the deprecation issues are errors, {@link Boolean#FALSE} if the deprecation issues must be ignored, or {@code null} to keep the default configuration.
+	 * @since 0.15
+	 */
+	public void setDeprecationIssuesAsErrors(Boolean state) {
+		this.isDeprecationAsError = state;
+	}
 
 	/** Change the flag that indicates if the component is compilable with success.
 	 *

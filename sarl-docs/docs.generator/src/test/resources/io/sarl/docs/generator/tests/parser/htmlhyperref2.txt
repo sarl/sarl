@@ -1,0 +1,2 @@
+<a href="[:myvar]([:some.url!]/path/to/page)">XXX</a>
+[:myvar!]

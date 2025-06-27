@@ -19,7 +19,7 @@ the operation on the space.
 
 ## Capacity Definition
 
-The first step is the [definition of a capacity](../reference/Capacity.md) that enables an agent to access to
+The first step is the [definition of a capacity](../lang/aop/Capacity.md) that enables an agent to access to
 the operations of the space.
 
 In the following example, the [:mycapacityname:] capacity is defined with the [:fctname:] function. 
@@ -239,5 +239,5 @@ to give the instance of the caller to the space. The code of the skill becomes:
 	[:Off]
 [:End:]
 
+[:Include:](../includes/legal.inc)
 
-[:Include:](../legal.inc)

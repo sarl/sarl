@@ -1,8 +1,8 @@
-# Janus Command-line Launcher with Network Support
+# Janus Command-line Launcher with Network Support - janusnode
 
 [:Outline:]
 
-[:Include:](./janus.inc)
+[:Include:](../includes/janus.inc)
 
 The [`janus`](./Janus.md) tool is the base command-line tool for launching the SRE.
 But, it does not provide a support for exchanging events over a computer
@@ -16,7 +16,7 @@ The [:name:] is explained on this page.
 
 ## Basics of the Networking Feature
 
-[:Include:](./hazelcast.inc)
+[:Include:](../includes/hazelcast.inc)
 
 ## Note on the application classpath
 
@@ -25,9 +25,9 @@ It means that you don't need to add any SRE, including Janus, in the dependencie
 
 For other methods for launching a SARL application, please refer to one of:
 
-* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
-* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
-* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
+* [Running an agent from the command-line shell](../getstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../getstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../getstarted/RunSARLAgentJava.md)
 
 ## Usage
 
@@ -80,5 +80,5 @@ help page of the [main command-line tool](./Janus.md).
 The configuration of the networking feature is explained on this [page](./JanusNetworkExtension.md).
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 

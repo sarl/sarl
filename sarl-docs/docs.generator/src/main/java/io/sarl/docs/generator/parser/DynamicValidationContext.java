@@ -165,14 +165,7 @@ public class DynamicValidationContext {
 			receiver.decreaseIndentation().newLine();
 			receiver.append("}"); //$NON-NLS-1$
 		}
-		for (final var resource : getResourceRoots()) {
-			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
-			appendSafeFileExistenceTest(receiver, fileInResource);
-		}
-		for (final var resource : getTempResourceRoots()) {
-			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
-			appendSafeFileExistenceTest(receiver, fileInResource);
-		}
+		appendFileExistenceTestsInReferenceFolders(receiver, relativeFile);
 		receiver.newLine();
 		receiver.append(Assertions.class).append(".fail(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
 			+ ": " + Strings.convertToJavaString(relativeFile.toString()) + "\");"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -198,14 +191,7 @@ public class DynamicValidationContext {
 			if (relativeFile.isAbsolute()) {
 				appendSafeFileExistenceTest(receiver, fileWithNewExtension);
 			} else {
-				for (final var resource : getResourceRoots()) {
-					final var fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
-					appendSafeFileExistenceTest(receiver, fileInResource);
-				}
-				for (final var resource : getTempResourceRoots()) {
-					final var fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
-					appendSafeFileExistenceTest(receiver, fileInResource);
-				}
+				appendFileExistenceTestsInReferenceFolders(receiver, fileWithNewExtension);
 			}
 		}
 		receiver.newLine();
@@ -223,6 +209,21 @@ public class DynamicValidationContext {
 			receiver.append(Strings.convertToJavaString(ext));
 		}
 		receiver.append("]\");"); //$NON-NLS-1$
+	}
+	
+	private void appendFileExistenceTestsInReferenceFolders(ITreeAppendable receiver, File relativeFile) {
+		for (final var resource : getDestinationRoots()) {
+			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+			appendSafeFileExistenceTest(receiver, fileInResource);
+		}
+		for (final var resource : getResourceRoots()) {
+			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+			appendSafeFileExistenceTest(receiver, fileInResource);
+		}
+		for (final var resource : getTempResourceRoots()) {
+			final var fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+			appendSafeFileExistenceTest(receiver, fileInResource);
+		}
 	}
 
 	private static void appendSafeFileExistenceTest(ITreeAppendable receiver, File fileInResource) {
@@ -328,6 +329,7 @@ public class DynamicValidationContext {
 		receiver.append(".concat(\"\\n\", ").append(Files.class); //$NON-NLS-1$
 		receiver.append(".readLines(theFile, "); //$NON-NLS-1$
 		receiver.append(Charset.class).append(".defaultCharset()));").newLine(); //$NON-NLS-1$
+		receiver.append("if (content != null) {").increaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append(Matcher.class).append(" matcher = sectionPattern.matcher(content);").newLine(); //$NON-NLS-1$
 		receiver.append("while (matcher.find()) {").increaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("String title = matcher.group(1);").newLine(); //$NON-NLS-1$
@@ -337,7 +339,8 @@ public class DynamicValidationContext {
 		receiver.append(Strings.convertToJavaString(anchor)).append("\".equals(key2)) {"); //$NON-NLS-1$
 		receiver.increaseIndentation().newLine().append("return;").decreaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
-		receiver.append("}").newLine().append(Assertions.class).append(".fail(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append("}").newLine().append("}").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Assertions.class).append(".fail(\""); //$NON-NLS-1$
 		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0,
 				anchor, fileInResource.getName())));
 		receiver.append("\");").newLine(); //$NON-NLS-1$

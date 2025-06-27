@@ -95,5 +95,4 @@ With the example below, the message "hello world" is no more printed out because
 	}
 [:End:]
 
-
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)

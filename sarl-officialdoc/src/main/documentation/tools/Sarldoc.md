@@ -1,4 +1,4 @@
-# SARL Documentation Generator
+# SARL Documentation Generator - sarldoc
 
 [:Outline:]
 
@@ -228,5 +228,5 @@ Tags have the following types:
 This documentation is inspired by the documentation from the
 [Oracle Javadoc](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html) project.
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 

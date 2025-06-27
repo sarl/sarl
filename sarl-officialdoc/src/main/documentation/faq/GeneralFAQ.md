@@ -4,7 +4,7 @@
 
 ## General Questions about SARL
 
-###	What is SARL?
+### What is SARL?
 
 SARL is a statically-typed agent-programming language. SARL aims at providing the fundamental abstractions for
 dealing with concurrency, distribution, interaction, decentralization, reactivity, autonomy and dynamic
@@ -14,22 +14,22 @@ agent-oriented paradigm holds the keys to effectively meet this challenge.
 
 Syntactically and semantically SARL has its roots in the Java programming language but improves on many aspects:
 
-* [Agent specific statements](../index.md#agent-oriented-programming) - provide specific statements for agent programming
-* [Type inference](../reference/GeneralSyntax.md) - you rarely need to write down type signatures anymore
-* [Lambda expressions](../reference/general/Lambda.md) - concise syntax for anonymous function literals
-* [Operator overloading](../reference/general/Operators.md) - make your libraries even more expressive
-* [Extension methods](../reference/general/Extension.md) - enhance closed types with new functionality
-* [Powerful switch expressions](../reference/general/SwitchExpression.md) - type based switching with implicit casts
-* [No statements](../reference/GeneralSyntax.md#details-on-the-sarl-language-elements) - everything is an expression
-* Full support for Java generics - including all conformance and conversion rules
+* [Agent specific statements](../lang/aop/index.md) - provide specific statements for agent programming
+* [Type inference](../lang/expr/index.md) - you rarely need to write down type signatures anymore
+* [Lambda expressions](../lang/expr/Lambda.md) - concise syntax for anonymous function literals
+* [Operator overloading](../lang/expr/Operators.md) - make your libraries even more expressive
+* [Extension methods](../lang/expr/Extension.md) - enhance closed types with new functionality
+* [Powerful switch expressions](../lang/expr/SwitchExpression.md) - type based switching with implicit casts
+* [No statements](../lang/expr/index.md) - everything is an expression
+* Full support for Java generics types - including all conformance and conversion rules
 * Translates to Java not byte code - understand what is going on and use your code for platforms such as Android or GWT
 
-Unlike other JVM languages, SARL has zero interoperability issues with Java: everything you write interacts with Java exactly as expected. At the same time, SARL is much more concise, readable and expressive.
+Unlike other JVM-based languages, SARL has zero interoperability issues with Java: everything you write interacts with Java exactly as expected. At the same time, SARL is much more concise, readable and expressive.
 
 __The language is platform- and architecture-independent.__
 
 For a brief comparison between SARL, Java and Xtend languages, see the Section
-"[Comparison between SARL and other languages](../reference/OOP.md#comparison-between-sarl-and-other-languages)".
+"[Comparison between SARL and other languages](../lang/Comparison.md)".
 
 
 ### Can I use SARL to make agent-based software?
@@ -113,13 +113,13 @@ management of your project's dependencies on the SARL libraries.
 SRE stands for "SARL Runtime Environment."
 The SRE is an implementation of an agent platform which is able to run a SARL program.
 The official standard SRE supported by the SARL developers is the
-[Janus platform](http://www.janusproject.io).
+[Janus platform]([:janus.url!]).
 
 
 ### What is the difference between SARL and Janus?
 
 SARL is a general-purpose agent-oriented language.
-Janus is a runtime environment (SRE) for multi-agent applications
+Janus is an agent framework that is a runtime environment (SRE) for multi-agent applications
 that fully supports the concepts of SARL.
 
 We can compare the SARL universe with the Java universe:
@@ -150,7 +150,7 @@ on the [instant messaging forum](https://gitter.im/sarl/Lobby).
 
 ### Where can I find more information and projects related to SARL?
 
-A list of successful projects are given on the [Community](http://sarl.io/community/index.html#sucessstories)
+A list of successful projects are given on the [Community]([:sarl.url!]/community/index.html#sucessstories)
 page of the SARL web site.
 
 Additionally, a community driven list of useful SARL libraries, frameworks and software
@@ -329,7 +329,7 @@ Where `Eclipse.app` is the name of the SARL Eclipse application on MacOS X.
 #### c) The Eclipse.app application is damaged
 
 This error message is shown up on a dialog box, and you have the choices to move the application to the bin or to cancel the launch.
-This error message has the same cause as the Gatekeeper error that is described into the previous section. 
+This error message may due to the Gatekeeper error that is described into the previous section. Or, it may be due to corruption of the SARL product when you download it using a web browser. In this second case, please download the SARL product using a shell command-line tool, such as [wget](https://www.gnu.org/software/wget/).
 
 
 ### Why does the SARL product launch but not contain any features related to SARL?
@@ -500,7 +500,7 @@ agent is created, the `spawn()` commands returns.
 
 ### What is the list of all the error, warning and information messages that may be generated by the SARL compiler?
 
-We provide a [page](../reference/CompilerErrors.md) that lists all the issue messages from the SARL compiler. 
+We provide a [page](../lang/CompilerErrors.md) that lists all the issue messages from the SARL compiler. 
 
 Additionally, several run-time errors from the [Janus framework](../tools/Janus.md) are explained [here](../tools/Janus.md#list-of-errors-and-warnings). 
 
@@ -557,4 +557,4 @@ The issues are listed on [Github](https://github.com/sarl/sarl/issues).
 You should submit your issue on [this page](https://github.com/sarl/sarl/issues/new).
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)

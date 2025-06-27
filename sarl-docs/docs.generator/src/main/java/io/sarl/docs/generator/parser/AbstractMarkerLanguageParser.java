@@ -383,6 +383,7 @@ public abstract class AbstractMarkerLanguageParser {
 					component.setLengthInSourceFile(code.length);
 					component.setLinenoInSourceFile(code.lineno);
 					component.setEndLinenoInSourceFile(code.endLineno);
+					component.setDeprecationIssuesAsErrors(code.deprecationAsError);
 					component.setCode(code.code);
 					this.components.add(component);
 				}

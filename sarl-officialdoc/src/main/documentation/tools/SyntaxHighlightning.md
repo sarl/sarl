@@ -1,4 +1,4 @@
-# SARL Syntax highlighting with other tools
+# SARL Syntax highlighting with other code editors
 
 [:Outline:]
 
@@ -135,5 +135,5 @@ For using the SARL style, you should:
 
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 

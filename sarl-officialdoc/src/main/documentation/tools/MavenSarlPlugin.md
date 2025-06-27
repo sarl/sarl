@@ -1,4 +1,4 @@
-# Maven Plugin for the SARL Compiler
+# Maven Plugin for the SARL Compiler - sarl-maven-plugin
 
 [:Outline:]
 
@@ -23,9 +23,9 @@ It means that it does not enforce if a SARL runtime environment is installed and
 
 For launching a SARL application, please refer to one of:
 
-* [Running an agent from the command-line shell](../gettingstarted/RunSARLAgentCLI.md)
-* [Running an agent inside SARL Eclipse environment](../gettingstarted/RunSARLAgentEclipse.md)
-* [Running an agent from a Java program progammatically](../gettingstarted/RunSARLAgentJava.md)
+* [Running an agent from the command-line shell](../getstarted/RunSARLAgentCLI.md)
+* [Running an agent inside SARL Eclipse environment](../getstarted/RunSARLAgentEclipse.md)
+* [Running an agent from a Java program progammatically](../getstarted/RunSARLAgentJava.md)
 
 
 ## Usage
@@ -105,5 +105,5 @@ The configuration section may contains the following elements.
 
 
 
-[:Include:](../legal.inc)
+[:Include:](../includes/legal.inc)
 
