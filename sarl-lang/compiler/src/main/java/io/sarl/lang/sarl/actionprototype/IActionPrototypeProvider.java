@@ -22,6 +22,7 @@
 package io.sarl.lang.sarl.actionprototype;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -290,5 +291,14 @@ public interface IActionPrototypeProvider {
 	 * @since 0.10
 	 */
 	IActionPrototypeContext createContext();
+
+	/** Build the action signatures according to the formal parameters that are provided by the given provider.
+	 *
+	 * @param container the container of the feature with the signatures.
+	 * @param parameterProvider the provider of the formal parameters.
+	 * @return the signatures.
+	 * @since 0.15
+	 */
+	Map<ActionParameterTypes, List<InferredStandardParameter>> buildSignatures(JvmIdentifiableElement container, FormalParameterProvider parameterProvider);
 
 }

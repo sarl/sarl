@@ -50,7 +50,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmMember;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
@@ -214,7 +213,7 @@ public abstract class AbstractJvmModelInferrerFragment {
 	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
 	 * @return the result type, i.e. a copy of the source type.
 	 */
-	protected JvmTypeReference cloneWithProxiesFromOtherResource(JvmTypeReference type, JvmOperation target,
+	protected JvmTypeReference cloneWithProxiesFromOtherResource(JvmTypeReference type, JvmExecutable target,
 			IBaseJvmModelInferrer baseInferrer) {
 		if (type == null) {
 			return baseInferrer.getJvmTypeReferenceBuilder().typeRef(Void.TYPE);

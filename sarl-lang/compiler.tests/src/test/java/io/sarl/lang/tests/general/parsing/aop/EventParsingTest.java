@@ -612,10 +612,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"val field2 : String",
 					"}"
 					));
-			validate(getValidationHelper(), getInjector(), mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					FIELD_NOT_INITIALIZED,
-					"The blank final field field2 may not have been initialized");
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 		}
 
 		@Test

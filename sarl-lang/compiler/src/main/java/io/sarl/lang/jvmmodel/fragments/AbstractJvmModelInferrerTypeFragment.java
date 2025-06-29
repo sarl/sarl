@@ -137,8 +137,12 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	@Inject
 	private InheritanceHelper inheritanceHelper;
 
+	/** The tracker of the read/write accesses to the fields.
+	 *
+	 * @since 0.15
+	 */
 	@Inject
-	private ReadAndWriteTracking readAndWriteTracking;
+	protected ReadAndWriteTracking readAndWriteTracking;
 
 	/** Generate the missed operations that are the results from the generation of actions with default value parameters.
 	 *
@@ -569,7 +573,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				} else if (refs.is(type, Float.class)) {
 					generateToEqualForObjectNullity(it, field);
-					it.append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.newLine().append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(" != null && Float.floatToIntBits(other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(".floatValue()) != Float.floatToIntBits(this.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(".floatValue()))").increaseIndentation(); //$NON-NLS-1$
@@ -835,6 +839,24 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 		}
 	}
 
+	/** Replies the constructors from the super type that are visible.
+	 *
+	 * @return the visible inherited constructors.
+	 * @since 0.15
+	 */
+	@SuppressWarnings("static-method")
+	protected Iterable<JvmConstructor> getVisibleInheritedJvmConstructors(JvmGenericType source, JvmGenericType target) {
+		final var samePackage = Objects.equal(source.getPackageName(), target.getPackageName());
+		final var constructors = Iterables.transform(Iterables.filter(source.getMembers(), it -> {
+			if (it instanceof JvmConstructor op) {
+				return op.getVisibility() != JvmVisibility.PRIVATE
+						&& (op.getVisibility() != JvmVisibility.DEFAULT || samePackage);
+			}
+			return false;
+		}), it -> (JvmConstructor) it);
+		return constructors;
+	}
+
 	/** Copy the JVM constructors from the source to the destination.
 	 *
 	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
@@ -852,14 +874,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 			JvmGenericType source, JvmGenericType target,
 			XtendTypeDeclaration sarlSource, Set<ActionParameterTypes> createdConstructors,
 			JvmVisibility minimalVisibility) {
-		final var samePackage = Objects.equal(source.getPackageName(), target.getPackageName());
-		final var constructors = Iterables.transform(Iterables.filter(source.getMembers(), it -> {
-			if (it instanceof JvmConstructor op) {
-				return op.getVisibility() != JvmVisibility.PRIVATE
-						&& (op.getVisibility() != JvmVisibility.DEFAULT || samePackage);
-			}
-			return false;
-		}), it -> (JvmConstructor) it);
+		final var constructors = getVisibleInheritedJvmConstructors(source, target);
 
 		// Sort the constructor in order to always add them in the same order.
 		final var sortedConstructors = new TreeSet<Pair<JvmConstructor, ActionParameterTypes>>((elt1, elt2) -> elt1.getValue().compareTo(elt2.getValue()));

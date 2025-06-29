@@ -24,6 +24,7 @@ package io.sarl.lang.sarl.actionprototype;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -241,6 +242,14 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		return new Pair<>(tmpSignatures, Boolean.valueOf(isOptional));
 	}
 
+	@Override
+	public Map<ActionParameterTypes, List<InferredStandardParameter>> buildSignatures(JvmIdentifiableElement container,
+			FormalParameterProvider parameterProvider) {
+		final var context = new Context();
+		final var key = new ActionParameterTypes(false, parameterProvider.getFormalParameterCount());
+		return buildSignaturesForArgDefaultValues(context, container, "$", parameterProvider, key); //$NON-NLS-1$
+	}
+	
 	private InnerMap<ActionParameterTypes, List<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
 			Context context,
 			JvmIdentifiableElement container, String actionId,
