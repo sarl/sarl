@@ -230,7 +230,7 @@ diamond operator on generic method and constructor call.
 ###	Inherited Constructor
 
 In the implementation of a constructor, it is possible to call one of the inherited constructors.
-The syntax is similar to Java: the (:super:] keyword is used to represent the inherited constructor.
+The syntax is similar to Java: the [:super:] keyword is used to represent the inherited constructor.
 
 > **_Important Note:_** We recommend that you include the parentheses when invoking the default constructor
 > of the super type because, in some cases, typing [:super:] alone (without the parenthesis pair)

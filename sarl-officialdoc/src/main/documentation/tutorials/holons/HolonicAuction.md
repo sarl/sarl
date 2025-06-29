@@ -96,9 +96,6 @@ the price has changed. This event contains the new price.
 	package io.sarl.docs.tutorials.holonicauction
 	event [:priceevent](Price) {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 [:End:]
 
@@ -112,9 +109,6 @@ This event contains the value of the bid.
 	package io.sarl.docs.tutorials.holonicauction
 	[:On]event [:bidevent](Bid) {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 [:End:]
 
@@ -172,15 +166,9 @@ price, then the bidder is sending its bid in a [:bidevent:] event.
 	import io.sarl.api.core.Logging
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	[:On]agent Bidder {
 		val random = new Random
@@ -236,15 +224,9 @@ Below, we update the bidding behavior by creating a scope, and providing it to t
 	import io.sarl.api.core.Logging
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	[:On]agent Bidder {
 		val random = new Random
@@ -311,9 +293,6 @@ innerContext.defaultSpace.emit(new Price(50))
 	import io.sarl.lang.core.Address
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	[:On]agent Auctioneer {
 						
@@ -349,9 +328,6 @@ which provides the [:getinner:s] function. Below, we create the three bidders.
 	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	agent Bidder {}
 	[:On]agent Auctioneer {
@@ -392,15 +368,9 @@ price, the source of the [:bidevent:] event becomes the new potential winner.
 	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	agent Bidder {}
 	[:On]agent Auctioneer {
@@ -456,15 +426,9 @@ we use the [:infct:] function provided by the capacity.
 	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	agent Bidder {}
 	[:On]agent Auctioneer {
@@ -536,15 +500,9 @@ executed in parallel by different threads.
 	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	agent Bidder {}
 	[:On]agent Auctioneer {
@@ -636,15 +594,9 @@ This function is provided by the [:lifecyclecap:] capacity.
 	import io.sarl.api.core.Lifecycle
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	event StopAuction
 	[:On]agent Bidder {
@@ -700,15 +652,9 @@ to stop its execution.
 	import io.sarl.api.core.Initialize
 	event Price {
 		val price : float
-		new(price : float) {
-			this.price = price
-		}
 	}
 	event Bid {
 		val value : float
-		new(value : float) {
-			this.value = value
-		}
 	}
 	event StopAuction
 	agent Bidder {}

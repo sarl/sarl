@@ -98,6 +98,8 @@ According to the type inference mechanism used by SARL, the attribute [:code4:] 
 	}
 [:End:]
 
+If no constructor is defined in the event type, implicit constructors will be assumed as describes in the section dedicated to the [generated event constructors](#generated-event-constructors).
+
 
 ### Define an event with value attributes
 
@@ -122,19 +124,13 @@ directive or by specifying a constructor.
 	event MyEvent {
 		[:valmodifier](val) string = "abcd"
 		val number : Integer
-		
-		new(nb : Integer) {
-			number = nb
+		new(number : Integer) {
+		  this.number = number
 		}
 	}
 [:End:]
 
-
-If no constructor is defined in the event type and a super-type is declared, implicit constructors will be assumed.
-Implicit constructors has the same prototypes as the constructors of the super type.
-Details on implicit constructors are given in the reference documentation related to the
-[synthetic functions](../expr/SyntheticFunctions.md).
-
+If no constructor is defined in the event type, implicit constructors will be assumed as describes in the section dedicated to the [generated event constructors](#generated-event-constructors).
 
 ### Define an event with generic type parameter
 
@@ -233,6 +229,186 @@ The following code illustrates the use of event instances.
 [:End:]
 
 
+### Generated Event Constructors
+
+The SARL compiler is equiped with a feature for automatically generating event's constructors when they are not explicitly defined in the code of the event.
+
+The SARL compiler considers different cases:
+
+
+#### No super event, no field declaration
+
+The event has neither super type declared, nor field.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent
+[:End:]
+
+The previous code is equivalent to the following code, in which the generated constructors are copied from the [:addresstype:] type, according the inheritance of constructors that is implemented by the SARL compiler, as it is documented in the the reference documentation related to the
+[synthetic functions](../expr/SyntheticFunctions.md).
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	import io.sarl.lang.core.Address
+	[:On]
+	event MyEvent {
+		new(address : [:addresstype](Address) = null) {
+			super(address)
+		}
+	}
+[:End:]
+
+
+#### No super event, regular variable field
+
+The event has no super type declared. A variable field is declared.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent {
+		var field : String
+	}
+[:End:]
+
+The previous code is equivalent to the following code, in which different constructors enable to initialize, or not, the event's field:
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent {
+		var field : String
+		new (field : String = null) {
+			this.field = field
+		}
+	}
+[:End:]
+
+
+#### No super event, value field without initialization
+
+The event has no super type declared. A value field is declared without initialization.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent {
+		val field : String
+	}
+[:End:]
+
+The previous code is equivalent to the following code, in which different constructors enable to initialize the event's field:
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent {
+		val field : String
+		new (field : String) {
+			this.field = field
+		}
+	}
+[:End:]
+
+
+#### No super event, value field with initialization
+
+The event has no super type declared. A value field is declared without initialization.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MyEvent {
+		val field = "abc"
+	}
+[:End:]
+
+The previous code is equivalent to the following code, in which different constructors enable to initialize the event's field:
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	import io.sarl.lang.core.Address
+	[:On]
+	event MyEvent {
+		val field = "abc"
+		new(address : [:addresstype](Address) = null) {
+			super(address)
+		}
+	}
+[:End:]
+
+The two generated constructors above copied from in the [:addresstype:] type, according the inheritance of constructors that is implemented by the SARL compiler, as it is documented in the the reference documentation related to the
+[synthetic functions](../expr/SyntheticFunctions.md).
+
+
+#### Declared super event, no field declaration
+
+The event has a super type declared, but no field.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MySuperEvent {
+		var field : String
+	}
+	event MyEvent extends [:inhconssupertype](MySuperEvent)
+[:End:]
+
+The previous code is equivalent to the following code, in which the generated constructors are the same as the constructors that are defined in the [:inhconssupertype:] event type, according the inheritance of constructors that is implemented by the SARL compiler, as it is documented in the the reference documentation related to the [synthetic functions](../expr/SyntheticFunctions.md).
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	import io.sarl.lang.core.Address
+	event MySuperEvent {
+		var field : String
+	}
+	[:On]
+	event MyEvent extends MySuperEvent {
+		new(field : String = null) {
+			super(field)
+		}
+	}
+[:End:]
+
+
+#### Declared super event, regular variable field declaration
+
+The event has a super type and a variable field declared.
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event MySuperEvent {
+		var field : String
+	}
+	event MyEvent extends [:inhconssupertype](MySuperEvent) {
+		var subfield : int
+	}
+[:End:]
+
+The previous code is equivalent to the following code, in which the generated constructors are based on the constructors that are defined in the [:inhconssupertype:] event type, according the inheritance of constructors that is implemented by the SARL compiler, as it is documented in the the reference documentation related to the [synthetic functions](../expr/SyntheticFunctions.md).
+
+The generated constructors also includes the support of the locally declared fields in addition to those that are inherited. 
+
+[:Success:]
+	package io.sarl.docs.reference.er
+	import io.sarl.lang.core.Address
+	event MySuperEvent {
+		var field : String
+	}
+	[:On]
+	event MyEvent extends [:inhconssupertype](MySuperEvent) {
+		var subfield : int
+		new(field : String = null, subfield : int = 0) {
+			super(field)
+			this.subfield = subfield
+		}
+	}
+[:End:]
+
+
 ### Modifiers
 
 Modifiers are used to modify declarations of types and type members.
@@ -257,12 +433,11 @@ Examples:
 [:Success:]
 	package io.sarl.docs.reference.er
 	[:On]
-	[:publicmodifier](public) event Example1 {
-	}
-	[:packagemodifier](package) event Example2 {
-	}
-	[:finalmodifier](final) event Example3 {
-	}
+	[:publicmodifier](public) event Example1
+
+	[:packagemodifier](package) event Example2
+
+	[:finalmodifier](final) event Example3
 [:End:]
 
 

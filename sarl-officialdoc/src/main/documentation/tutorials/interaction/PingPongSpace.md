@@ -55,9 +55,6 @@ For setting the value of the [:indexvar:] value, it is mandatory to define a con
 	package io.sarl.docs.tutorials.pingpongspace
 	event [:pingevent](Ping) {
 		val [:indexvar](index) : int
-		new(i : int) {
-			this.index = i
-		}
 	}
 [:End:]
 
@@ -73,9 +70,6 @@ The [:indexvar:] attribute is also a _value_, and it must be set in a constructo
 	package io.sarl.docs.tutorials.pingpongspace
 	[:On]event [:pongevent](Pong) {
 		val index : int
-		new(i : int) {
-			this.index = i
-		}
 	}
 [:End:]
 
@@ -153,9 +147,6 @@ receiving a [:pingevent:] event.
 	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PongAgent {
 		
@@ -213,15 +204,9 @@ stored in the received [:pingevent:] event.
 	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PongAgent {
 		
@@ -272,15 +257,9 @@ It permits to restrict to the initial sender of the [:pingevent:] event: [:scopi
 	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PongAgent {
 		uses DefaultContextInteractions, ExternalContextAccess, Behaviors
@@ -351,9 +330,6 @@ defined in the agent.
 	import io.sarl.api.core.Initialize
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		
@@ -395,15 +371,9 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		
@@ -445,15 +415,9 @@ receiving the [:initevent:] event.
 	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		
@@ -511,15 +475,9 @@ one agent belonging to the default space. If not, the agent is sending the initi
 	import io.sarl.api.core.Schedules
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		

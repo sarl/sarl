@@ -53,9 +53,6 @@ For setting the value of the [:indexvar:] value, it is mandatory to define a con
 	package io.sarl.docs.tutorials.pingpong
 	event [:pingevent](Ping) {
 		val [:indexvar](index) : int
-		new(i : int) {
-			this.index = i
-		}
 	}
 [:End:]
 
@@ -71,9 +68,6 @@ The [:indexvar:] attribute is also a _value_, and it must be set in a constructo
 	package io.sarl.docs.tutorials.pingpong
 	[:On]event [:pongevent](Pong) {
 		val index : int
-		new(i : int) {
-			this.index = i
-		}
 	}
 [:End:]
 
@@ -111,9 +105,6 @@ each time the agent is receiving a [:pingevent:] event.
 	package io.sarl.docs.tutorials.pingpong
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PongAgent {
 		[:onkw](on) Ping {
@@ -150,15 +141,9 @@ stored in the received [:pingevent:] event.
 	import io.sarl.api.core.DefaultContextInteractions
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PongAgent {
 		[:useskw](uses) [:intercap](DefaultContextInteractions)
@@ -192,15 +177,9 @@ of the [:pingevent:] event.
 	import io.sarl.api.core.DefaultContextInteractions
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PongAgent {
 		uses DefaultContextInteractions
@@ -238,9 +217,6 @@ agent.
 	package io.sarl.docs.tutorials.pingpong
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		on Pong {
@@ -263,15 +239,9 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 	import io.sarl.api.core.DefaultContextInteractions
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		uses DefaultContextInteractions
@@ -297,15 +267,9 @@ receiving the [:initevent:] event.
 	import io.sarl.api.core.Initialize
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		uses DefaultContextInteractions
@@ -348,15 +312,9 @@ one agent belonging to the default space. If not, the agent is sending the initi
 	import io.sarl.api.core.Schedules
 	event Ping {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	event Pong {
 		val index : int
-		new (i : int) {
-			this.index = i
-		}
 	}
 	[:On]agent PingAgent {
 		uses DefaultContextInteractions, [:schedcap](Schedules)

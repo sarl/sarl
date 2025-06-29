@@ -30,9 +30,6 @@ Consequently, a constructor is defined with the identifier value as parameter.
 	package io.sarl.docs.bestpractices.eventbuilder
 	[:On]event MyEvent {
 		[:valkw](val) id : long
-		new (id : long) {
-			this.id = id
-		}
 	}
 [:End:]
 
@@ -49,9 +46,6 @@ The next available unique identifier for the events is stored into a field of th
 	package io.sarl.docs.bestpractices.eventbuilder
 	event MyEvent {
 		val [:id](id) : long
-		new(id : long) {
-			this.id = id
-		}
 	}
 	[:On]class MyEventBuilder {
 		private var id : long = 0
