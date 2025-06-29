@@ -33,10 +33,4 @@ event Perception {
 	val alive : boolean
 	val position : Point2i
 
-	new(neighbors : Set<Point2i>, alive : boolean, position : Point2i) {
-		this.neighbors = neighbors
-		this.alive = alive
-		this.position = position
-	}
-
 }

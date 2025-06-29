@@ -29,9 +29,4 @@ event SetupEvent {
 	val width : int
 	val height : int
 
-	new (width : int, height : int) {
-		this.width = width
-		this.height = height
-	}
-
 }

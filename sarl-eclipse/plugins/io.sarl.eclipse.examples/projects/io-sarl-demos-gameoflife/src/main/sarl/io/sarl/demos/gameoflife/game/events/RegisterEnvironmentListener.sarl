@@ -30,8 +30,4 @@ event RegisterEnvironmentListener {
 
 	val environmentListener : EnvironmentListener
 
-	new (environmentListener : EnvironmentListener){
-		this.environmentListener = environmentListener
-	}
-
 }

@@ -44,7 +44,7 @@ event Factorial {
  * @author Nicolas Gaud
  * @author Stephane Galland
  */
-event BehaviorInitialize {}
+event BehaviorInitialize
 
 /**
  * Declaration of a new behavior.

@@ -28,8 +28,4 @@ event PeriodUpdatedEvent {
 
 	val period : int
 
-	new (period : int) {
-		this.period = period
-	}
-
 }

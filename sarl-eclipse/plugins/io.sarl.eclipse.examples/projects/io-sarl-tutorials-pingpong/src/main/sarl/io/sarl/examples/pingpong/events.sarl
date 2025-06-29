@@ -25,24 +25,12 @@ package io.sarl.examples.pingpong
  * @author $Author: sgalland$
  */
 event Ping {
-	
 	val index : int
-	
-	new (i : int) {
-		index = i
-	}
-
 }
 
 /**
  * @author $Author: sgalland$
  */
 event Pong {
-	
 	val index : int
-	
-	new (i : int) {
-		index = i
-	}
-
 }

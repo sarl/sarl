@@ -26,9 +26,6 @@ package io.sarl.examples.holonicauction
  */
 event Price {
 	val price : float
-	new(price : float) {
-		this.price = price
-	}
 }
 
 /**
@@ -36,9 +33,6 @@ event Price {
  */
 event Bid {
 	val value : float
-	new(value : float) {
-		this.value = value
-	}
 }
 
 /**
