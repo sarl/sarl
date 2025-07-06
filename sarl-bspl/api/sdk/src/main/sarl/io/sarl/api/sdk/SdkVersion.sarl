@@ -29,7 +29,7 @@ import io.sarl.lang.core.SARLVersion
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.13
+ * @since 0.15
  */
 final class SdkVersion {
 

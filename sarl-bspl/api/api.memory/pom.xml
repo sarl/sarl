@@ -12,9 +12,9 @@
     <manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>io.sarl.sdk</groupId>
-      <artifactId>sdk</artifactId>
+	<dependency>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>core</artifactId>
     </dependency>
     <dependency>
       <groupId>io.sarl.baseutils</groupId>
@@ -52,7 +52,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
@@ -102,7 +102,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <id>add-sarl-source</id>
@@ -220,7 +220,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
+        <version>3.5.3</version>
         <configuration>
           <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
           <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
@@ -267,7 +267,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.1</version>
+            <version>3.11.2</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -345,7 +345,7 @@
       </roles>
     </developer>
     <developer>
-	  <id>stedeschi</id>
+      <id>stedeschi</id>
       <name>Stefano Tedeschi</name>
       <email>s.tedeschi@univda.it</email>
       <url>https://github.com/stefanotedeschi</url>
@@ -362,7 +362,7 @@
       <email>baldoni@di.unito.it</email>
       <url>https://www.unito.it/persone/mbaldoni</url>
       <properties>
-      	<id>mbaldoni</id>
+        <id>mbaldoni</id>
       </properties>
       <roles>
         <role>BSPL implementation</role>
@@ -373,7 +373,7 @@
       <email>baroglio@di.unito.it</email>
       <url>http://informatica.unito.it/persone/cristina.baroglio</url>
       <properties>
-      	<id>cbaroglio</id>
+        <id>cbaroglio</id>
       </properties>
       <roles>
         <role>BSPL implementation</role>
@@ -384,7 +384,7 @@
       <email>micalizio@di.unito.it</email>
       <url>https://www.unito.it/persone/rmicaliz</url>
       <properties>
-      	<id>rmicalizio</id>
+        <id>rmicalizio</id>
       </properties>
       <roles>
         <role>BSPL implementation</role>

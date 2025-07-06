@@ -35,7 +35,7 @@ Run_Mvn "$CDIR\sarl-docs" "documentation tools and doclets" $mavenargs
 Run_Mvn "$CDIR\sarl-cli" "shell command-line tools" $mavenargs
 
 # SARL Implementation of BSPL
-#Run_Mvn "$CDIR\sarl-bspl" "SARL implementation of BSPL" $mavenargs
+"$CDIR\sarl-bspl\build-all.ps1" $mavenargs
 
 # Build Eclipse tools
 Run_Mvn "$CDIR\sarl-eclipse" "Eclipse-based tools and development environment" $mavenargs

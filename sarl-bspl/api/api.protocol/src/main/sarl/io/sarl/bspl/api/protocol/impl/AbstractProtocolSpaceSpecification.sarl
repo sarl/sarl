@@ -21,14 +21,14 @@
 
 package io.sarl.bspl.api.protocol.impl
 
-import io.bootique.di.Injector
 import io.sarl.api.core.spaces.AbstractSpaceSpecification
 import io.sarl.api.core.spaces.SpaceParticipantListener
 import io.sarl.lang.core.InteractionProtocol
 import io.sarl.lang.core.SpaceID
 import java.util.function.Supplier
 import java.util.logging.Logger
-import javax.inject.Inject
+
+import static io.sarl.lang.core.SRE.*
 
 /**
  * Abstract implementation of a space specification that serves as a base
@@ -45,9 +45,6 @@ import javax.inject.Inject
  * @since 0.15
  */
 abstract class AbstractProtocolSpaceSpecification extends AbstractSpaceSpecification<ProtocolSpace> {
-
-	@Inject
-	var injector : Injector
 
 	/** Replies the list of the roles that are supported by the protocol. This function must be overriden by the subclasses that are implementing a specific protocol.
 	 *
@@ -70,7 +67,7 @@ abstract class AbstractProtocolSpaceSpecification extends AbstractSpaceSpecifica
 		val logger = getLoggerProvider.apply(id)
 		val listener = getSpaceParticipantListenerFactory.create(getDefaultSpace, logger)
 		val ^space = id.createProtocolSpace(listener) [ logger ]
-		this.injector.injectMembers(^space)
+		getBootstrap.injectMembers(^space)
 		listener.defaultSpace = ^space
 		return ^space
 	}
