@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="io.sarl.eclipse.features.sarlcompiler"
-      label="Coding Tools for SARL Eclipse"
+      id="io.sarl.bspl.lang.feature"
+      label="BSPL Feature"
       version="0.15.0.qualifier"
-      plugin="io.sarl.eclipse">
+      plugin="io.sarl.bspl.lang.ui">
 
    <description url="http://www.sarl.io/about/">
-      Contains the Eclipse plugins for coding SARL programs
+      Contains the plugins for BSPL programs
    </description>
 
    <copyright url="http://www.sarl.io/about/">
@@ -221,140 +221,28 @@
       <update label="SARL Snapshots" url="http://updates.sarl.io/snapshots/"/>
    </url>
 
-   <includes
-         id="org.eclipse.platform"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jdt"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.e4.rcp"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.epp.package.java.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.equinox.p2.core.feature"
+   <plugin
+         id="io.sarl.bspl.bspl.api.memory"
          version="0.0.0"/>
 
    <plugin
-         id="io.sarl.lang.core"
+         id="io.sarl.bspl.bspl.api.protocol"
          version="0.0.0"/>
 
    <plugin
-         id="io.sarl.eclipse"
+         id="io.sarl.bspl.bspl.lang.compiler"
          version="0.0.0"/>
 
    <plugin
-         id="io.sarl.eclipse.m2e"
+         id="io.sarl.bspl.lang.ide"
          version="0.0.0"/>
 
    <plugin
-         id="io.sarl.eclipse.pythongenerator"
+         id="io.sarl.bspl.lang.ui"
          version="0.0.0"/>
 
    <plugin
-         id="io.sarl.lang.compiler"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.lang.ide"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.lang.pythongenerator"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.lang.ui"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.core"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.core.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.experienceindex"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.experienceindex.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.naming"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.naming.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.probing"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.probing.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.util"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.api.util.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.sdk"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.sdk.sdk.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.baseutils.afc.extension"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.apputils.bootiqueapp"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.apputils.bootiqueapp.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.baseutils.afc.extension.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.eclipse.experienceindex"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.lang.compiler.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.lang.core.source"
-         version="0.0.0"/>
-
-   <plugin
-         id="io.sarl.lang.pythongenerator.source"
+         id="io.sarl.bspl.lang.ui.tests"
          version="0.0.0"/>
 
 </feature>

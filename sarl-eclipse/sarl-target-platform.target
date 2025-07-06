@@ -133,5 +133,45 @@
 			  </dependency>
 		  </dependencies>
 	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="error" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.bspl</groupId>
+				  <artifactId>io.sarl.bspl.lang.ui</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="ignore" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.bspl</groupId>
+				  <artifactId>io.sarl.bspl.lang.ide</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.bspl</groupId>
+				  <artifactId>bspl.lang.compiler</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="none" missingManifest="error" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.bspl</groupId>
+				  <artifactId>io.sarl.bspl.lang.feature</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
   </locations>
 </target>

@@ -11,6 +11,7 @@
 	<module>lang.ide</module>
   	<module>lang.ui</module>
   	<module>lang.ui.tests</module>
+  	<module>lang.feature</module>
   </modules>
   <properties>
     <tycho.scmUrl>${sarl.scm.url}</tycho.scmUrl>

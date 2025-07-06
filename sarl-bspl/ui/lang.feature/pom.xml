@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.sarl.bspl</groupId>
+    <artifactId>bspl-ui</artifactId>
+    <version>0.15.0-SNAPSHOT</version>
+  </parent>
+
+	<artifactId>io.sarl.bspl.lang.feature</artifactId>
+	<packaging>eclipse-feature</packaging>
+	<name>BSPL Feature</name>
+	<description>Contains the plugins for BSPL programs</description>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>3.5.3</version>
+			</extension>
+		</extensions>
+	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>io.sarl.maven.upload</id>
+			<url>${MAVENSARLIO_URL}</url>
+			<name>SARL Maven Repository</name>
+		</repository>
+		<snapshotRepository>
+			<id>io.sarl.maven.upload</id>
+			<url>${MAVENSARLIO_URL}</url>
+			<name>SARL Maven Repository</name>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
