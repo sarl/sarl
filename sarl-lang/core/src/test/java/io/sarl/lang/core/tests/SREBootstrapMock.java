@@ -80,4 +80,9 @@ public class SREBootstrapMock implements SREBootstrap {
 		throw new IllegalStateException();
 	}
 
+	@Override
+	public void injectMembers(Object object) {
+		throw new IllegalStateException();
+	}
+
 }

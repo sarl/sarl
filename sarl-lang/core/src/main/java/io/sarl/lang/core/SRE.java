@@ -280,6 +280,11 @@ public final class SRE {
 			//
 		}
 
+		@Override
+		public void injectMembers(Object object) {
+			throw new UnsupportedOperationException();
+		}
+
 	}
 
 }

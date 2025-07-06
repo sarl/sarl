@@ -373,4 +373,15 @@ public interface SREBootstrap {
 	 */
 	void removeSREListener(SREListener listener);
 
+	/**
+	 * Inject the given object with the components provided by the SRE.
+	 *
+	 * <p>The injection engine depends on the concrete implementation of the SRE.
+	 * This function is provided for making independent the SARL API tools to the injection engine (Eclipse, Guice, Bootique). 
+	 *
+	 * @param object the object to inject.
+	 * @since 0.15
+	 */
+	void injectMembers(Object object);
+
 }
