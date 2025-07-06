@@ -35,6 +35,7 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.XExpression;
@@ -296,31 +297,34 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 
 	private void generateSyntheticConstructorForFields(GenerationContext context, SarlEvent source, JvmGenericType container,
 			IBaseJvmModelInferrer baseInferrer) {
-		SyntheticConstructorGenerator generator = null;
-		final var superType = container.getExtendedClass().getType();
-		if (superType instanceof JvmGenericType superGenericType) {
-			if (superGenericType.getQualifiedName().equals(Event.class.getName())) {
-				final var declaredFields = extractDeclaredFields(source);
-				if (!declaredFields.isEmpty()) {
-					generator = new FieldBasedGenerator(declaredFields);
-				}
-			} else {
-				final var inheritedConstructors = extractInheritedConstructors(superGenericType, container);
-				if (inheritedConstructors != null) {
+		final var extendedClass = container.getExtendedClass();
+		if (extendedClass != null) {
+			final JvmType superType = extendedClass.getType();
+			if (superType instanceof JvmGenericType superGenericType) {
+				SyntheticConstructorGenerator generator = null;
+				if (superGenericType.getQualifiedName().equals(Event.class.getName())) {
 					final var declaredFields = extractDeclaredFields(source);
-					final var hasLocalField = !declaredFields.isEmpty();
-					final var hasInheritedConstructor = inheritedConstructors.iterator().hasNext();
-					if (hasLocalField && hasInheritedConstructor) {
-						generator = new InheritedConstructorFieldBasedGenerator(inheritedConstructors, declaredFields);
-					} else if (hasLocalField) {
+					if (!declaredFields.isEmpty()) {
 						generator = new FieldBasedGenerator(declaredFields);
 					}
+				} else {
+					final var inheritedConstructors = extractInheritedConstructors(superGenericType, container);
+					if (inheritedConstructors != null) {
+						final var declaredFields = extractDeclaredFields(source);
+						final var hasLocalField = !declaredFields.isEmpty();
+						final var hasInheritedConstructor = inheritedConstructors.iterator().hasNext();
+						if (hasLocalField && hasInheritedConstructor) {
+							generator = new InheritedConstructorFieldBasedGenerator(inheritedConstructors, declaredFields);
+						} else if (hasLocalField) {
+							generator = new FieldBasedGenerator(declaredFields);
+						}
+					}
+					// The other cases are supported by appendDefaultConstructors()
 				}
-				// The other cases are supported by appendDefaultConstructors()
+				if (generator != null) {
+					generator.generate(context, source, container, baseInferrer);
+				}
 			}
-		}
-		if (generator != null) {
-			generator.generate(context, source, container, baseInferrer);
 		}
 	}
 
