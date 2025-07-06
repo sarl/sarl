@@ -117,6 +117,7 @@ org.objenesis:
 
 org.eclipse.tycho:
   target-platform-configuration: $tycho.version
+  tycho-build: $tycho.version
   tycho-compiler-plugin: $tycho.version
   tycho-maven-plugin: $tycho.version
   tycho-p2-repository-plugin: $tycho.version

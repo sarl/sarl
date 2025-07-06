@@ -37,8 +37,8 @@ This section describes how to set up the Eclipse development environment for con
 The main SARL developpers are using the following development environment:
 
 * *Java Development Kit (JDK) 21* from OpenJDK or Oracle.
-* *Maven 3.9.9* (for shell command-line actions) from Apache.
-* *Eclipse 2024-12*, version "for Java and DSL Developers", and version "for RCP and RAP Developers".
+* *Maven 3.9.10* (for shell command-line actions) from Apache.
+* *Eclipse 2025-06*, version "for Java and DSL Developers", and version "for RCP and RAP Developers".
 
 
 === 2.2. Obtaining the SARL Source Code
@@ -56,7 +56,7 @@ We recommend to use the git tool on command-line until you're becoming expert wi
 
 === 2.3. Structure of the SARL project
 
-The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. These sub-projects are:
+The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. **These sub-projects are listed below in the order they should be compiled**:
 
 * link:./sarl-bom[sarl-bom]: Provide the Build-of-Material, i.e., a shared list of Maven dependency, for all the SARL sub-projects;
 * link:./sarl-baseutils[sarl-baseutils]: Set of Maven artifacts that are independent of SARL but needed to build the SARL artifacts;
@@ -128,29 +128,33 @@ where `<subproject_folder>` must be replaced by the name one of the subprojects 
 
 Three different types of contributions could be associated to the SARL project:
 
-* **DSL Method:** Contributions to the SARL tool chain (compiler, etc), excluding Eclipse-based tools and tools written in SARL (see below);
-* **RCP Method:** Contributions to the Ecipse tools: they are the plugins inside Eclipse and the Eclipse IDE; and
-* **SARL Method:** Contributions to the tools written in SARL (SDK/API, Janus SRE).
+* **DSL Contribution:** Contributions to the SARL tool chain (compiler, etc), excluding Eclipse-based tools and tools written in SARL (see below);
+* **RCP Contribution:** Contributions to the Eclipse tools: they are the plugins inside Eclipse and the Eclipse IDE; and
+* **SARL Contribution:** Contributions to the tools written in SARL (SDK/API, Janus SRE).
 
-The following table gives you the best contribution approach according to the SARL subproject. The last column indicates if you could you Maven on the command-line interface.
+The following table gives you the best contribution approach according to the SARL subproject. The last column indicates if you could use Maven from the Shell command-line interface.
 
 [%header,format=dsv]
 |===
-SARL Subproject:DSL Method:RCP Method:SARL Method:CLI
-`sarl-bom`::::X
-`sarl-baseutils`:X:::X
-`sarl-lang`:X:::X
-`sarl-sdk`:::X:X
+SARL Subproject:DSL Contribution:RCP Contribution:SARL Contribution:CLI
 `sarl-apputils`:X:::X
-`sarl-sre`:::X:X
-`sarl-docs`:X:::X
+`sarl-baseutils`:X:::X
+`sarl-bom`::::X
+`sarl-bspl / api`:::X:X
+`sarl-bspl / lang`:X:::X
+`sarl-bspl / ui`::X::X
+`sarl-bspl`:X:X:X:X
 `sarl-cli`:X:::X
+`sarl-docs`:X:::X
 `sarl-eclipse`::X::X
+`sarl-lang`:X:::X
 `sarl-officialdoc`:X:::X
+`sarl-sdk`:::X:X
+`sarl-sre`:::X:X
 |===
 
 
-==== a) DSL Method: Contributions to the SARL tools excluding Eclipse and SARL-written tools
+==== a) DSL Contribution: Contributions to the SARL tools excluding Eclipse and SARL-written tools
 
 For setting up the development environment for contributing to the SARL tools, which are neither the Eclipse-based tools nor the tools written in SARL (API and Janus SRE), you should follow the steps:
 
@@ -163,7 +167,7 @@ For setting up the development environment for contributing to the SARL tools, w
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
 * Clean and compile the project: `Menu Project > Clean`. 
 
-==== b) RCP Method: Contributions to the Eclipse tools of SARL
+==== b) RCP Contribution: Contributions to the Eclipse tools of SARL
 
 For setting up the development environment for contributing to the Eclipse-based tools, you should follow the steps:
 
@@ -180,7 +184,7 @@ For setting up the development environment for contributing to the Eclipse-based
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
 * Clean and compile the project: `Menu Project > Clean`. 
 
-==== b) SARL Method: Contributions to tools written in SARL
+==== b) SARL Contribution: Contributions to tools written in SARL
 
 For setting up the development environment for contributing to the tools written in SARL, you should follow the steps:
 
