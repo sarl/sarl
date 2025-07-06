@@ -21,20 +21,19 @@
 
 package io.sarl.bspl.lang.compiler;
 
-import javax.inject.Singleton;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import io.sarl.bspl.api.protocol.impl.ProtocolRole;
 import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
-import joptsimple.internal.Strings;
 
 /** Provider of names for protocols.
  *
@@ -172,7 +171,7 @@ public class DefaultProtocolNames implements IProtocolNames {
 	}
 
 	private static void appendAdapterPackageName(String packageName, String protocolName, StringBuilder receiver) {
-		if (!Strings.isNullOrEmpty(packageName)) {
+		if (!Strings.isEmpty(packageName)) {
 			receiver.append(packageName).append("."); //$NON-NLS-1$
 		}
 		receiver.append(protocolName.toLowerCase()).append("_adapters"); //$NON-NLS-1$

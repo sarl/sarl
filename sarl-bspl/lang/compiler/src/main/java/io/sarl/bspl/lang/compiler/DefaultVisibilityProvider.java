@@ -21,14 +21,13 @@
 
 package io.sarl.bspl.lang.compiler;
 
-import javax.inject.Singleton;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import io.sarl.bspl.lang.sarl_bspl.BsplProtocol;
 import io.sarl.bspl.lang.sarl_bspl.BsplProtocolMember;

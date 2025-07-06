@@ -27,13 +27,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import com.google.inject.Injector;
-
-import joptsimple.internal.Strings;
 
 /** Context for the generation of SARL files.
  *
@@ -152,7 +151,7 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	default String createJavaFile(String packageName, String typeName, ImportManager importManager, ITreeAppendable content) throws IOException {
 		final var finalContent = new StringBuilder();
 		finalContent.append("/* This file was automatically generated. Do not change its content. */\n\n"); //$NON-NLS-1$
-		if (!Strings.isNullOrEmpty(packageName)) {
+		if (!Strings.isEmpty(packageName)) {
 			finalContent.append("package "); //$NON-NLS-1$
 			finalContent.append(packageName);
 			finalContent.append(";\n\n"); //$NON-NLS-1$
@@ -181,7 +180,7 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	default String createSarlFile(String packageName, String typeName, ImportManager importManager, ITreeAppendable content) throws IOException {
 		final var finalContent = new StringBuilder();
 		finalContent.append("/* This file was automatically generated. Do not change its content. */\n\n"); //$NON-NLS-1$
-		if (!Strings.isNullOrEmpty(packageName)) {
+		if (!Strings.isEmpty(packageName)) {
 			finalContent.append("package ").append(packageName).append("\n\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (importManager != null) {

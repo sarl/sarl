@@ -141,7 +141,6 @@ public class Sarl_bsplPackageImpl extends EPackageImpl implements Sarl_bsplPacka
 	{
 		super(eNS_URI, Sarl_bsplFactory.eINSTANCE);
 	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

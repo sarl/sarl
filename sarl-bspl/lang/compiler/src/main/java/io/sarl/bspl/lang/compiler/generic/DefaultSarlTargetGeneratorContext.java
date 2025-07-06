@@ -35,6 +35,7 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.StringInputStream;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
@@ -44,8 +45,6 @@ import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import com.google.inject.Injector;
-
-import joptsimple.internal.Strings;
 
 /** Context for the generation of SARL files.
  *
@@ -198,11 +197,11 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 	@Override
 	public String toRelativeFilename(String packageName, String typeName, String fileExtension) {
 		final var filename = new StringBuilder();
-		if (!Strings.isNullOrEmpty(packageName)) {
+		if (!Strings.isEmpty(packageName)) {
 			filename.append(packageName.replaceAll(Pattern.quote("."), Matcher.quoteReplacement("/"))).append("/"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		filename.append(typeName);
-		if (!Strings.isNullOrEmpty(fileExtension)) {
+		if (!Strings.isEmpty(fileExtension)) {
 			filename.append(fileExtension);
 		}
 		return filename.toString();
@@ -226,7 +225,7 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 
 	private static URI computeUnusedUri(String packageName, String typeName, String filenameExtension, ResourceSet resourceSet) {
 		final String qualifiedName;
-		if (!Strings.isNullOrEmpty(packageName)) {
+		if (!Strings.isEmpty(packageName)) {
 			qualifiedName = packageName + "." + typeName; //$NON-NLS-1$
 		} else {
 			qualifiedName = typeName;

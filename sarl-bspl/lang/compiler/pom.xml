@@ -184,7 +184,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
@@ -196,7 +196,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -320,7 +320,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.1</version>
+            <version>3.11.2</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -410,7 +410,7 @@
       </roles>
     </developer>
     <developer>
-	  <id>stedeschi</id>
+      <id>stedeschi</id>
       <name>Stefano Tedeschi</name>
       <email>s.tedeschi@univda.it</email>
       <url>https://github.com/stefanotedeschi</url>

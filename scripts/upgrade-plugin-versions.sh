@@ -40,6 +40,7 @@ run_upgrade "$CDIR/sarl-docs" "documentation tools and doclets" "$@"
 run_upgrade "$CDIR/sarl-cli" "SARL shell tools" "$@"
 
 run_upgrade "$CDIR/sarl-bspl/api" "BSPL API" "$@"
+run_upgrade "$CDIR/sarl-bspl/lang" "BSPL language" "$@"
 run_upgrade "$CDIR/sarl-eclipse" "SARL Eclipse environment" --eclipseplatform "$CDIR/sarl-eclipse/sarl-target-platform.target" "$@"
 run_upgrade "$CDIR/sarl-officialdoc" "SARL official documentation" "$@"
 

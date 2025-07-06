@@ -21,8 +21,6 @@
 
 package io.sarl.bspl.lang.compiler.generic;
 
-import javax.inject.Singleton;
-
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
@@ -32,6 +30,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 
 /** Factory of context for the generation of SARL files.
  *

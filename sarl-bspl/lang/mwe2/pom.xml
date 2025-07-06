@@ -91,7 +91,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <source>${sarl-dsl.min.jdk.version}</source>
           <target>${sarl-dsl.min.jdk.version}</target>
@@ -182,7 +182,7 @@
       </roles>
     </developer>
     <developer>
-	  <id>stedeschi</id>
+      <id>stedeschi</id>
       <name>Stefano Tedeschi</name>
       <email>s.tedeschi@univda.it</email>
       <url>https://github.com/stefanotedeschi</url>
