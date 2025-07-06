@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="io.sarl.bspl.eclipse.targetplatform" sequenceNumber="2">
+  <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
+  <locations>
+	  <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		  <repository location="https://download.eclipse.org/releases/2025-06"/>
+		  <unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="3.9.0.202210162353"/>
+		  <unit id="org.eclipse.oomph.version.feature.group" version="1.22.0.v20240821-0658"/>
+		  <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.4.800.v20250520-0549"/>
+		  <unit id="org.eclipse.e4.rcp.feature.group" version="4.36.0.v20250528-1759"/>
+		  <unit id="org.eclipse.egit.feature.group" version="7.3.0.202506031305-r"/>
+		  <unit id="org.eclipse.epp.package.dsl.feature.feature.group" version="4.36.0.20250605-1300"/>
+		  <unit id="org.eclipse.epp.package.java.feature.feature.group" version="4.36.0.20250605-1300"/>
+		  <unit id="org.eclipse.epp.package.rcp.feature.feature.group" version="4.36.0.20250605-1300"/>
+		  <unit id="org.eclipse.equinox.core.feature.feature.group" version="1.15.500.v20250518-0610"/>
+		  <unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.25.500.v20250521-0417"/>
+		  <unit id="org.eclipse.equinox.executable.feature.group" version="3.8.2900.v20250519-0528"/>
+		  <unit id="org.eclipse.jdt.feature.group" version="3.20.200.v20250528-1830"/>
+		  <unit id="org.eclipse.jgit.feature.group" version="7.3.0.202506031305-r"/>
+		  <unit id="org.eclipse.jgit.gpg.bc.feature.group" version="7.3.0.202506031305-r"/>
+		  <unit id="org.eclipse.jgit.http.apache.feature.group" version="7.3.0.202506031305-r"/>
+		  <unit id="org.eclipse.jgit.ssh.apache.feature.group" version="7.3.0.202506031305-r"/>
+		  <unit id="org.eclipse.jgit.ssh.jsch.feature.group" version="7.3.0.202506031305-r"/>
+		  <unit id="org.eclipse.m2e.feature.feature.group" version="2.9.0.20250514-0352"/>
+		  <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="2.9.0.20250514-0353"/>
+		  <unit id="org.eclipse.oomph.preferences.feature.group" version="1.19.0.v20250411-0846"/>
+		  <unit id="org.eclipse.oomph.targlets.feature.group" version="1.28.0.v20250213-1000"/>
+		  <unit id="org.eclipse.oomph.workingsets.feature.group" version="1.20.0.v20250218-0822"/>
+		  <unit id="org.eclipse.platform.feature.group" version="4.36.0.v20250528-2229"/>
+		  <unit id="org.eclipse.platform.ide" version="4.36.0.I20250528-1830"/>
+		  <unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.37.0.v202503020853"/>
+		  <unit id="org.eclipse.xsd.feature.group" version="2.22.0.v20240911-0848"/>
+		  <unit id="org.eclipse.xtext.sdk.feature.group" version="2.39.0.v20250527-0725"/>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.bspl</groupId>
+				  <artifactId>bspl.lang.compiler</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+  </locations>
+</target>

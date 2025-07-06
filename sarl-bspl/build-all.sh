@@ -17,7 +17,8 @@ function run_mvn {
 # Force the script to fail if any command is failing
 set -e
 
-CDIR=`pwd`
+CDIR=`dirname "$0"`
+CDIR=`realpath "$CDIR"`
 
 # Show tools versions
 mvn --version
