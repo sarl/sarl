@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16.25071"
+   height="16.250708"
+   id="svg2"
+   version="1.1"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="bspl-message.svg"
+   inkscape:export-xdpi="101.05"
+   inkscape:export-ydpi="101.05"
+   inkscape:export-filename="bspl-message.png"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="14.195837"
+     inkscape:cx="-1.5849717"
+     inkscape:cy="3.7687105"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4033"
+     showgrid="false"
+     inkscape:window-width="1635"
+     inkscape:window-height="825"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     fit-margin-top="1"
+     fit-margin-left="1"
+     fit-margin-right="1"
+     fit-margin-bottom="1"
+     borderlayer="false"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-194.88996,-401.91997)">
+    <g
+       id="g4033"
+       transform="translate(-3.9043328,-42.986493)"
+       inkscape:export-filename="/home/sgalland/git/sarl/plugins/io.sarl.lang.ui/icons/sarl-agent.png"
+       inkscape:export-xdpi="423.17999"
+       inkscape:export-ydpi="423.17999">
+      <path
+         transform="translate(-6.3839286,11.741071)"
+         sodipodi:open="true"
+         sodipodi:end="4.6265057"
+         sodipodi:start="4.6272956"
+         d="m 212.71926,434.44062 a 6.8749995,6.8749995 0 0 1 7.43432,6.26446 6.8749995,6.8749995 0 0 1 -6.26299,7.43555 6.8749995,6.8749995 0 0 1 -7.43679,-6.26152 6.8749995,6.8749995 0 0 1 6.26005,-7.43803"
+         sodipodi:ry="6.8749995"
+         sodipodi:rx="6.8749995"
+         sodipodi:cy="441.29074"
+         sodipodi:cx="213.30357"
+         id="path4019"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#e06c93;fill-opacity:1;stroke:#d23269;stroke-width:0.5;stroke-opacity:1;marker:none;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <text
+         id="text4029"
+         y="457.79474"
+         x="212.46231"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.632903;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="457.79474"
+           x="212.46231"
+           id="tspan4031"
+           sodipodi:role="line"
+           style="font-size:13.3076px;line-height:1.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.632903;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">M</tspan></text>
+    </g>
+  </g>
+</svg>

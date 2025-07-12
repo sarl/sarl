@@ -245,4 +245,8 @@
          id="io.sarl.bspl.lang.ui.tests"
          version="0.0.0"/>
 
+   <plugin
+         id="io.sarl.bspl.eclipse"
+         version="0.0.0"/>
+
 </feature>

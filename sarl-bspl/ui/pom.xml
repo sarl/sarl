@@ -11,6 +11,7 @@
 	<module>lang.ide</module>
   	<module>lang.ui</module>
   	<module>lang.ui.tests</module>
+  	<module>eclipse</module>
   	<module>lang.feature</module>
   </modules>
   <properties>

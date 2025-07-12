@@ -25,8 +25,8 @@ package lang.ui.internal;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.sarl.bspl.lang.SARL_BSPLRuntimeModule;
-import io.sarl.bspl.lang.ui.SARL_BSPLUiModule;
+import io.sarl.bspl.lang.BSPLRuntimeModule;
+import io.sarl.bspl.lang.ui.BSPLUiModule;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ import org.osgi.framework.BundleContext;
 public class LangActivator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "lang.ui";
-	public static final String IO_SARL_BSPL_LANG_SARL_BSPL = "io.sarl.bspl.lang.SARL_BSPL";
+	public static final String IO_SARL_BSPL_LANG_BSPL = "io.sarl.bspl.lang.BSPL";
 	
 	private static final Logger logger = Logger.getLogger(LangActivator.class);
 	
@@ -93,15 +93,15 @@ public class LangActivator extends AbstractUIPlugin {
 	}
 	
 	protected com.google.inject.Module getRuntimeModule(String grammar) {
-		if (IO_SARL_BSPL_LANG_SARL_BSPL.equals(grammar)) {
-			return new SARL_BSPLRuntimeModule();
+		if (IO_SARL_BSPL_LANG_BSPL.equals(grammar)) {
+			return new BSPLRuntimeModule();
 		}
 		throw new IllegalArgumentException(grammar);
 	}
 	
 	protected com.google.inject.Module getUiModule(String grammar) {
-		if (IO_SARL_BSPL_LANG_SARL_BSPL.equals(grammar)) {
-			return new SARL_BSPLUiModule(this);
+		if (IO_SARL_BSPL_LANG_BSPL.equals(grammar)) {
+			return new BSPLUiModule(this);
 		}
 		throw new IllegalArgumentException(grammar);
 	}

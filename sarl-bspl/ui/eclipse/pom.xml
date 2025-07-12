@@ -7,10 +7,10 @@
     <version>0.15.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>io.sarl.bspl.lang.ui</artifactId>
+  <artifactId>io.sarl.bspl.eclipse</artifactId>
 
-	<name>UI Integration for BSPL</name>
-	<description>UI plugin for BSPL integration</description>
+	<name>Eclipse Tools for BSPL</name>
+	<description>Eclipse components for BSPL</description>
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>

@@ -5,50 +5,51 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
-			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
-			default="true"
-			extensions="bspl"
-			id="io.sarl.bspl.lang.SARL_BSPL"
-			matchingStrategy="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
-			name="SARL_BSPL Editor">
+        class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:io.sarl.bspl.lang.ui.editor.BSPLStandardEditor"
+        contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+        default="true"
+        extensions="bspl,BSPL,Bspl"
+        icon="icons/bspl-file.png"
+        id="io.sarl.bspl.lang.BSPL"
+        matchingStrategy="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
+        name="%editor.name">
 		</editor>
 	</extension>
 
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
 			commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
-			commandId="io.sarl.bspl.lang.SARL_BSPL.validate">
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+			commandId="io.sarl.bspl.lang.BSPL.validate">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<!-- copy qualified name -->
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
 			<activeWhen>
-				<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened" />
+				<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened" />
 			</activeWhen>
 		</handler>
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
 			<activeWhen>
 				<and>
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.XtextEditor.opened" />
+					<reference definitionId="io.sarl.bspl.lang.BSPL.XtextEditor.opened" />
 					<iterate>
 						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 					</iterate>
@@ -57,22 +58,22 @@
 		</handler>
   </extension>
 	<extension point="org.eclipse.core.expressions.definitions">
-		<definition id="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+		<definition id="io.sarl.bspl.lang.BSPL.Editor.opened">
 			<and>
 				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="io.sarl.bspl.lang.SARL_BSPL"
+						value="io.sarl.bspl.lang.BSPL"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
 		</definition>
-		<definition id="io.sarl.bspl.lang.SARL_BSPL.XtextEditor.opened">
+		<definition id="io.sarl.bspl.lang.BSPL.XtextEditor.opened">
 			<and>
 				<reference definitionId="isXtextEditorActive"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="io.sarl.bspl.lang.SARL_BSPL"
+						value="io.sarl.bspl.lang.BSPL"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
@@ -81,33 +82,33 @@
 	<extension
 			point="org.eclipse.ui.preferencePages">
 		<page
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL"
-			name="SARL_BSPL">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="io.sarl.bspl.lang.BSPL"
+			name="%preference.lang.name">
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 		</page>
 		<page
-			category="io.sarl.bspl.lang.SARL_BSPL"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL.coloring"
-			name="Syntax Coloring">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			category="io.sarl.bspl.lang.BSPL"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+			id="io.sarl.bspl.lang.BSPL.coloring"
+			name="%preference.colors.name">
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 		</page>
 		<page
-			category="io.sarl.bspl.lang.SARL_BSPL"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL.templates"
-			name="Templates">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			category="io.sarl.bspl.lang.BSPL"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+			id="io.sarl.bspl.lang.BSPL.templates"
+			name="%preference.templates.name">
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 		</page>
 	</extension>
 	<extension
 			point="org.eclipse.ui.propertyPages">
 		<page
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL"
-			name="SARL_BSPL">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="io.sarl.bspl.lang.BSPL"
+			name="%preference.lang.name">
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -117,14 +118,14 @@
 	<extension
 		point="org.eclipse.ui.keywords">
 		<keyword
-			id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"
+			id="io.sarl.bspl.lang.ui.keyword_BSPL"
 			label="%keyword.label"/>
 	</extension>
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
 			description="%command.description"
-			id="io.sarl.bspl.lang.SARL_BSPL.validate"
+			id="io.sarl.bspl.lang.BSPL.validate"
 			name="%command.name">
 		</command>
 		<!-- copy qualified name -->
@@ -145,12 +146,12 @@
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
 			<command
-				commandId="io.sarl.bspl.lang.SARL_BSPL.validate"
+				commandId="io.sarl.bspl.lang.BSPL.validate"
 				style="push"
 				tooltip="%command.tooltip">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+						definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -160,7 +161,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="%command.tooltip.0">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened" />
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -168,7 +169,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="%command.tooltip.1">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened" />
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -177,7 +178,7 @@
 				style="push" tooltip="%command.tooltip.2">
 				<visibleWhen checkEnabled="false">
 					<and>
-						<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.XtextEditor.opened" />
+						<reference definitionId="io.sarl.bspl.lang.BSPL.XtextEditor.opened" />
 						<iterate>
 							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 						</iterate>
@@ -190,7 +191,7 @@
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
 			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -198,11 +199,11 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
 			commandId="org.eclipse.xtext.ui.editor.FindReferences">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -211,7 +212,7 @@
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
 			file-extensions="bspl"
-			id="io.sarl.bspl.lang.SARL_BSPL.contenttype"
+			id="io.sarl.bspl.lang.BSPL.contenttype"
 			name="%content-type.name"
 			priority="normal">
 		</content-type>
@@ -220,59 +221,59 @@
 	<extension
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
 			type="bspl">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
 		<resourceServiceProvider
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
 			uriExtension="bspl">
 		</resourceServiceProvider>
 	</extension>
-	<!-- marker definitions for io.sarl.bspl.lang.SARL_BSPL -->
+	<!-- marker definitions for io.sarl.bspl.lang.BSPL -->
 	<extension
-			id="sarl_bspl.check.fast"
+			id="bspl.check.fast"
 			name="%extension.name"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.fast"/>
 		<persistent value="true"/>
 	</extension>
 	<extension
-			id="sarl_bspl.check.normal"
-			name="%extension.name.0"
+			id="bspl.check.normal"
+			name="%extension.name"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.normal"/>
 		<persistent value="true"/>
 	</extension>
 	<extension
-			id="sarl_bspl.check.expensive"
-			name="%extension.name.1"
+			id="bspl.check.expensive"
+			name="%extension.name"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.expensive"/>
 		<persistent value="true"/>
 	</extension>
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
 			fileExtensions="bspl"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="io.sarl.bspl.lang.SARL_BSPL"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL.compiler.preferencePage"
+			category="io.sarl.bspl.lang.BSPL"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="io.sarl.bspl.lang.BSPL.compiler.preferencePage"
 			name="%page.name.3">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="io.sarl.bspl.lang.SARL_BSPL"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL.compiler.propertyPage"
+			category="io.sarl.bspl.lang.BSPL"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="io.sarl.bspl.lang.BSPL.compiler.propertyPage"
 			name="%page.name.3">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -283,20 +284,20 @@
 		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
 			<command
 				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
-				id="io.sarl.bspl.lang.SARL_BSPL.OpenGeneratedCode"
+				id="io.sarl.bspl.lang.BSPL.OpenGeneratedCode"
 				style="push">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened" />
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
 			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
 			<activeWhen>
-				<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened" />
+				<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened" />
 			</activeWhen>
 		</handler>
 	</extension>
@@ -304,11 +305,11 @@
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
 			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -328,33 +329,33 @@
 				style="push"
 				tooltip="%command.tooltip.3">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened"/>
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for io.sarl.bspl.lang.SARL_BSPL -->
+	<!-- quickfix marker resolution generator for io.sarl.bspl.lang.BSPL -->
 	<extension
 			point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="lang.ui.sarl_bspl.check.fast">
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="lang.ui.bspl.check.fast">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="lang.ui.sarl_bspl.check.normal">
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="lang.ui.bspl.check.normal">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="lang.ui.sarl_bspl.check.expensive">
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="lang.ui.bspl.check.expensive">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -364,11 +365,11 @@
 	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
 			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -380,7 +381,7 @@
 				style="push">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+						definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -388,39 +389,39 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="io.sarl.bspl.lang.SARL_BSPL"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
-			id="io.sarl.bspl.lang.SARL_BSPL.refactoring"
+			category="io.sarl.bspl.lang.BSPL"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="io.sarl.bspl.lang.BSPL.refactoring"
 			name="%page.name.4">
-			<keywordReference id="io.sarl.bspl.lang.ui.keyword_SARL_BSPL"/>
+			<keywordReference id="io.sarl.bspl.lang.ui.keyword_BSPL"/>
 		</page>
 	</extension>
 	<!-- Type Hierarchy  -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchyHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchyHandler"
 			commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchy">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.QuickTypeHierarchyHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.QuickTypeHierarchyHandler"
 			commandId="org.eclipse.jdt.ui.edit.text.java.open.hierarchy">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.imports.OrganizeImportsHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.imports.OrganizeImportsHandler"
 			commandId="org.eclipse.xtext.xbase.ui.organizeImports">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -434,7 +435,7 @@
 				tooltip="%command.tooltip.4">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+						definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -445,7 +446,7 @@
 				style="push"
 				tooltip="%command.tooltip.5">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened"/>
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -455,7 +456,7 @@
 				style="push"
 				tooltip="%command.tooltip.6">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened"/>
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -463,11 +464,11 @@
 	<!-- Call Hierachy -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierachyHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierachyHandler"
 			commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierarchy">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -479,61 +480,61 @@
 				style="push"
 				tooltip="%command.tooltip.7">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened"/>
+					<reference definitionId="io.sarl.bspl.lang.BSPL.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.core.runtime.adapters">
-		<factory class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.smap.StratumBreakpointAdapterFactory"
-			adaptableType="io.sarl.bspl.lang.ui.editor.SARL_BSPLEditor">
+		<factory class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.builder.smap.StratumBreakpointAdapterFactory"
+			adaptableType="io.sarl.bspl.lang.ui.editor.BSPLEditor">
 			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
 		</factory>
 	</extension>
 	<extension point="org.eclipse.ui.editorActions">
-		<editorContribution targetID="io.sarl.bspl.lang.SARL_BSPL"
-			id="io.sarl.bspl.lang.SARL_BSPL.rulerActions">
+		<editorContribution targetID="io.sarl.bspl.lang.BSPL"
+			id="io.sarl.bspl.lang.BSPL.rulerActions">
 			<action
 				label="%action.label.0"
-				class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+				class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
 				style="push"
 				actionID="RulerDoubleClick"
-				id="io.sarl.bspl.lang.SARL_BSPL.doubleClickBreakpointAction"/>
+				id="io.sarl.bspl.lang.BSPL.doubleClickBreakpointAction"/>
 		</editorContribution>
 	</extension>
 	<extension point="org.eclipse.ui.popupMenus">
 		<viewerContribution
-			targetID="io.sarl.bspl.lang.SARL_BSPL.RulerContext"
-			id="io.sarl.bspl.lang.SARL_BSPL.RulerPopupActions">
+			targetID="io.sarl.bspl.lang.BSPL.RulerContext"
+			id="io.sarl.bspl.lang.BSPL.RulerPopupActions">
 			<action
 				label="%action.label.0"
-				class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+				class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
 				menubarPath="debug"
-				id="io.sarl.bspl.lang.SARL_BSPL.rulerContextMenu.toggleBreakpointAction">
+				id="io.sarl.bspl.lang.BSPL.rulerContextMenu.toggleBreakpointAction">
 			</action>
 			<action
 				label="%action.label"
-				class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+				class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
 				menubarPath="debug"
-				id="io.sarl.bspl.lang.SARL_BSPL.rulerContextMenu.enableDisableBreakpointAction">
+				id="io.sarl.bspl.lang.BSPL.rulerContextMenu.enableDisableBreakpointAction">
 			</action>
 			<action
 				label="%action.label.1"
 				helpContextId="breakpoint_properties_action_context"
-				class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
+				class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
 				menubarPath="group.properties"
-				id="io.sarl.bspl.lang.SARL_BSPL.rulerContextMenu.openBreapointPropertiesAction">
+				id="io.sarl.bspl.lang.BSPL.rulerContextMenu.openBreapointPropertiesAction">
 			</action>
 		</viewerContribution>
 	</extension>
 	<!-- Introduce Local Variable Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.refactoring.ExtractVariableHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.refactoring.ExtractVariableHandler"
 			commandId="org.eclipse.xtext.xbase.ui.refactoring.ExtractLocalVariable">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -545,7 +546,7 @@
 				style="push">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+						definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -554,11 +555,11 @@
 	<!-- Open implementation -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.navigation.OpenImplementationHandler"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.navigation.OpenImplementationHandler"
 			commandId="org.eclipse.xtext.xbase.ui.OpenImplementationCommand">
 			<activeWhen>
 				<reference
-					definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+					definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -569,33 +570,33 @@
 			<command commandId="org.eclipse.xtext.xbase.ui.OpenImplementationCommand">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="io.sarl.bspl.lang.SARL_BSPL.Editor.opened">
+						definitionId="io.sarl.bspl.lang.BSPL.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.compare.contentViewers">
-		<viewer id="io.sarl.bspl.lang.SARL_BSPL.compare.contentViewers"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+		<viewer id="io.sarl.bspl.lang.BSPL.compare.contentViewers"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="bspl">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="io.sarl.bspl.lang.SARL_BSPL.contenttype"
-			contentViewerId="io.sarl.bspl.lang.SARL_BSPL.compare.contentViewers" />
+			contentTypeId="io.sarl.bspl.lang.BSPL.contenttype"
+			contentViewerId="io.sarl.bspl.lang.BSPL.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
-		<viewer id="io.sarl.bspl.lang.SARL_BSPL.compare.contentMergeViewers"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-			extensions="bspl" label="SARL_BSPL Compare">
+		<viewer id="io.sarl.bspl.lang.BSPL.compare.contentMergeViewers"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="bspl" label="%compare.label">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="io.sarl.bspl.lang.SARL_BSPL.contenttype"
-			contentMergeViewerId="io.sarl.bspl.lang.SARL_BSPL.compare.contentMergeViewers" />
+			contentTypeId="io.sarl.bspl.lang.BSPL.contenttype"
+			contentMergeViewerId="io.sarl.bspl.lang.BSPL.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
-		<provider id="io.sarl.bspl.lang.SARL_BSPL.editors.documentProviders"
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+		<provider id="io.sarl.bspl.lang.BSPL.editors.documentProviders"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
 			extensions="bspl">
 		</provider>
 	</extension>
@@ -608,15 +609,15 @@
 	<!-- code mining -->
 	<extension point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
 		<codeMiningProvider
-			class="io.sarl.bspl.lang.ui.SARL_BSPLExecutableExtensionFactory:org.eclipse.jface.text.codemining.ICodeMiningProvider"
-			id="io.sarl.bspl.lang.SARL_BSPL.CodeMiningProvider"
+			class="io.sarl.bspl.lang.ui.BSPLExecutableExtensionFactory:org.eclipse.jface.text.codemining.ICodeMiningProvider"
+			id="io.sarl.bspl.lang.BSPL.CodeMiningProvider"
 			label="%codemining.name">
 			<enabledWhen>
 				<with variable="editorInput">
 					<adapt type="org.eclipse.core.resources.IFile">
 						<test
 							property="org.eclipse.core.resources.contentTypeId"
-							value="io.sarl.bspl.lang.SARL_BSPL.contenttype">
+							value="io.sarl.bspl.lang.BSPL.contenttype">
 						</test>
 					</adapt>
 				</with>
@@ -629,17 +630,17 @@
          The following elements are added by hand for the SARL project.
      ******************************************************* -->
   <extension id="io.sarl.eclipse.contenttype" point="org.eclipse.core.contenttype.contentTypes">
-    <content-type base-type="org.eclipse.core.runtime.text" default-charset="UTF-8" file-extensions="bspl, BSPL, Bspl" id="io.sarl.bspl.lang.SARL_BSPL.contenttype" name="%content-type.name" priority="normal"/>
+    <content-type base-type="org.eclipse.core.runtime.text" default-charset="UTF-8" file-extensions="bspl, BSPL, Bspl" id="io.sarl.bspl.lang.BSPL.contenttype" name="%content-type.name" priority="normal"/>
   </extension>
   <extension point="org.eclipse.ui.genericeditor.reconcilers">
-    <reconciler class="org.eclipse.jface.text.codemining.CodeMiningReconciler" contentType="io.sarl.bspl.lang.SARL_BSPL.contenttype"/>
+    <reconciler class="org.eclipse.jface.text.codemining.CodeMiningReconciler" contentType="io.sarl.bspl.lang.BSPL.contenttype"/>
   </extension>
   <extension point="org.eclipse.ui.contexts">
     <context description="%bsplContext.description" id="io.sarl.bspl.lang.ui.scoping.BSPL_SARLEditorScope" name="%bsplContext.name" parentId="org.eclipse.xtext.ui.XtextEditorScope"/>
   </extension>
   <extension point="org.eclipse.ui.actionSetPartAssociations">
     <actionSetPartAssociation targetID="org.eclipse.jdt.ui.JavaActionSet">
-      <part id="io.sarl.bspl.lang.SARL_BSPL"/>
+      <part id="io.sarl.bspl.lang.BSPL"/>
     </actionSetPartAssociation>
   </extension>
 </plugin>
