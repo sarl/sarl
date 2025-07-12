@@ -31,9 +31,9 @@ import com.google.inject.Singleton;
 
 import io.sarl.bspl.api.protocol.impl.ProtocolCapacity;
 import io.sarl.bspl.api.protocol.impl.ProtocolSpace;
+import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 import io.sarl.bspl.lang.compiler.IProtocolNames;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Skill;
@@ -45,6 +45,7 @@ import io.sarl.lang.core.Skill;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 @Singleton
 public class BsplRoleEnumerationGeneratorFragment {

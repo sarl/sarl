@@ -25,7 +25,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
+import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 
 /** Provider of names for protocols.
  *
@@ -33,6 +33,7 @@ import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 @ImplementedBy(DefaultProtocolNames.class)
 public interface IProtocolNames {

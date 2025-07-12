@@ -32,10 +32,10 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import com.google.inject.Singleton;
 
 import io.sarl.bspl.api.protocol.impl.ProtocolMessage;
+import io.sarl.bspl.lang.bspl.BsplProtocolMessage;
+import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 import io.sarl.bspl.lang.compiler.IProtocolNames;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolMessage;
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
 import io.sarl.lang.core.annotation.SarlAsynchronousExecution;
 
 /** The generator of the BSPL protocol capacity.
@@ -45,6 +45,7 @@ import io.sarl.lang.core.annotation.SarlAsynchronousExecution;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 @Singleton
 public class BsplProtocolCapacityGeneratorFragment {

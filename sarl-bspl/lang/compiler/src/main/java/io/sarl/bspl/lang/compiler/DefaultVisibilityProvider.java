@@ -29,8 +29,8 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocol;
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolMember;
+import io.sarl.bspl.lang.bspl.BsplProtocol;
+import io.sarl.bspl.lang.bspl.BsplProtocolMember;
 
 /** Provide the default visibility modifier for elements.
  *
@@ -40,6 +40,7 @@ import io.sarl.bspl.lang.sarl_bspl.BsplProtocolMember;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 @Singleton
 public class DefaultVisibilityProvider implements IDefaultVisibilityProvider {

@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 
 import com.google.inject.Singleton;
 
-import io.sarl.bspl.lang.sarl_bspl.BsplAnnotationTarget;
+import io.sarl.bspl.lang.bspl.BsplAnnotationTarget;
 
 /** Suppress warnings programmatically with {@code @SuppressWarnings}.
  *
@@ -44,6 +44,7 @@ import io.sarl.bspl.lang.sarl_bspl.BsplAnnotationTarget;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 @Singleton
 public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarningSuppressor {

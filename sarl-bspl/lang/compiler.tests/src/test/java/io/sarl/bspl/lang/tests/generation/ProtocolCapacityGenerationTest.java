@@ -20,16 +20,12 @@
  */
 package io.sarl.bspl.lang.tests.generation;
 
-import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PROTOCOL;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.bspl.lang.sarl_bspl.Sarl_bsplPackage;
-import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
-import io.sarl.lang.core.SARLVersion;
-import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.bspl.lang.tests.AbstractBsplTest;
 
 /**
  * @author $Author: sgalland$
@@ -39,7 +35,7 @@ import io.sarl.lang.sarl.SarlPackage;
  */
 @SuppressWarnings("all")
 @DisplayName("ProtocolCapacity generation")
-public class ProtocolCapacityGenerationTest extends AbstractSarlBsplTest {
+public class ProtocolCapacityGenerationTest extends AbstractBsplTest {
 
 	@Test
 	@DisplayName("Capacity for R1")

@@ -25,8 +25,8 @@ import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PROTOCOL;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.bspl.lang.sarl_bspl.Sarl_bsplPackage;
-import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
+import io.sarl.bspl.lang.bspl.BsplPackage;
+import io.sarl.bspl.lang.tests.AbstractBsplTest;
 
 /**
  * @author $Author: sgalland$
@@ -36,7 +36,7 @@ import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Empty protocol")
-public class EmptyProtocolTest extends AbstractSarlBsplTest {
+public class EmptyProtocolTest extends AbstractBsplTest {
 
 	@Test
 	@DisplayName("Original BSPL syntax")
@@ -45,7 +45,7 @@ public class EmptyProtocolTest extends AbstractSarlBsplTest {
 				"PROTO {",
 				"}");
 		validate(bspl).assertError(
-				Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+				BsplPackage.eINSTANCE.getBsplProtocol(),
 				EMPTY_PROTOCOL,
 				"Protocol PROTO is defined without roles, messages and parameters");
 
@@ -58,7 +58,7 @@ public class EmptyProtocolTest extends AbstractSarlBsplTest {
 				"protocol PROTO {",
 				"}");
 		validate(bspl).assertError(
-				Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+				BsplPackage.eINSTANCE.getBsplProtocol(),
 				EMPTY_PROTOCOL,
 				"Protocol PROTO is defined without roles, messages and parameters");
 	}
@@ -70,7 +70,7 @@ public class EmptyProtocolTest extends AbstractSarlBsplTest {
 				"public protocol PROTO {",
 				"}");
 		validate(bspl).assertError(
-				Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+				BsplPackage.eINSTANCE.getBsplProtocol(),
 				EMPTY_PROTOCOL,
 				"Protocol PROTO is defined without roles, messages and parameters");
 	}
@@ -82,7 +82,7 @@ public class EmptyProtocolTest extends AbstractSarlBsplTest {
 				"package protocol PROTO {",
 				"}");
 		validate(bspl).assertError(
-				Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+				BsplPackage.eINSTANCE.getBsplProtocol(),
 				EMPTY_PROTOCOL,
 				"Protocol PROTO is defined without roles, messages and parameters");
 	}

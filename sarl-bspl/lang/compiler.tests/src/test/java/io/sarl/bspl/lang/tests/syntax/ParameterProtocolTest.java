@@ -34,8 +34,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.bspl.lang.sarl_bspl.Sarl_bsplPackage;
-import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
+import io.sarl.bspl.lang.bspl.BsplPackage;
+import io.sarl.bspl.lang.tests.AbstractBsplTest;
 
 /**
  * @author $Author: sgalland$
@@ -55,7 +55,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Default public parameter w/o type")
-	public class DefaultPublicTest extends AbstractSarlBsplTest {
+	public class DefaultPublicTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Default parameter")
@@ -68,7 +68,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -101,7 +101,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -134,7 +134,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -150,7 +150,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -183,7 +183,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -199,7 +199,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -232,7 +232,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -248,7 +248,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -281,7 +281,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -297,7 +297,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -330,7 +330,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -347,7 +347,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -363,7 +363,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'private'");
 		}
@@ -379,7 +379,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -412,7 +412,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -445,7 +445,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -478,7 +478,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -511,7 +511,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -544,7 +544,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -577,7 +577,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -592,7 +592,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Default public parameter w/ type")
-	public class DefaultPublicTypeTest extends AbstractSarlBsplTest {
+	public class DefaultPublicTypeTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Default parameter")
@@ -663,7 +663,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -724,7 +724,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -785,7 +785,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -846,7 +846,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -907,7 +907,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -940,7 +940,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input ':'");
 		}
@@ -957,7 +957,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -1002,7 +1002,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -1047,7 +1047,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -1092,7 +1092,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -1137,7 +1137,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -1182,7 +1182,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -1227,7 +1227,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -1243,7 +1243,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -1258,7 +1258,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Public parameter w/o type")
-	public class PublicTest extends AbstractSarlBsplTest {
+	public class PublicTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Public parameter modifiers")
@@ -1271,7 +1271,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1304,7 +1304,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1337,7 +1337,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1370,7 +1370,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -1386,7 +1386,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1419,7 +1419,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -1435,7 +1435,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1468,7 +1468,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -1484,7 +1484,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1517,7 +1517,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -1533,7 +1533,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -1566,7 +1566,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -1583,7 +1583,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -1599,7 +1599,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'private'");
 		}
@@ -1615,7 +1615,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1648,7 +1648,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1681,7 +1681,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1714,7 +1714,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1747,7 +1747,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -1780,7 +1780,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -1813,7 +1813,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -1828,7 +1828,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Public parameter w/ type")
-	public class PublicTypeTest extends AbstractSarlBsplTest {
+	public class PublicTypeTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Public parameter modifiers")
@@ -1928,7 +1928,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -1989,7 +1989,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -2050,7 +2050,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -2111,7 +2111,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -2172,7 +2172,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -2205,7 +2205,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input ':'");
 		}
@@ -2222,7 +2222,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -2267,7 +2267,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -2312,7 +2312,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -2357,7 +2357,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -2402,7 +2402,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -2447,7 +2447,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -2492,7 +2492,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -2508,7 +2508,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -2523,7 +2523,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Protected parameter w/o type")
-	public class ProtectedTest extends AbstractSarlBsplTest {
+	public class ProtectedTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Protected parameter modifiers")
@@ -2536,7 +2536,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2569,7 +2569,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2602,7 +2602,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2635,7 +2635,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -2651,7 +2651,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2684,7 +2684,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -2700,7 +2700,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2733,7 +2733,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -2749,7 +2749,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2782,7 +2782,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -2798,7 +2798,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -2831,7 +2831,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -2848,7 +2848,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -2864,7 +2864,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'private'");
 		}
@@ -2880,7 +2880,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2913,7 +2913,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2946,7 +2946,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -2979,7 +2979,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3012,7 +3012,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3045,7 +3045,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -3078,7 +3078,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -3093,7 +3093,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Protected parameter w/ type")
-	public class ProtectedTypeTest extends AbstractSarlBsplTest {
+	public class ProtectedTypeTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Protected parameter modifiers")
@@ -3193,7 +3193,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -3254,7 +3254,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -3315,7 +3315,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -3376,7 +3376,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -3437,7 +3437,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -3470,7 +3470,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input ':'");
 		}
@@ -3487,7 +3487,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -3532,7 +3532,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -3577,7 +3577,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -3622,7 +3622,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -3667,7 +3667,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -3712,7 +3712,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -3757,7 +3757,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -3773,7 +3773,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -3788,7 +3788,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Package parameter w/o type")
-	public class PackageTest extends AbstractSarlBsplTest {
+	public class PackageTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Package parameter modifiers")
@@ -3801,7 +3801,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3834,7 +3834,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3867,7 +3867,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3900,7 +3900,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -3916,7 +3916,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3949,7 +3949,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -3965,7 +3965,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -3998,7 +3998,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -4014,7 +4014,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -4047,7 +4047,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -4063,7 +4063,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -4096,7 +4096,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -4113,7 +4113,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -4129,7 +4129,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'private'");
 		}
@@ -4145,7 +4145,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -4178,7 +4178,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -4211,7 +4211,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -4244,7 +4244,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -4277,7 +4277,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -4310,7 +4310,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -4343,7 +4343,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -4358,7 +4358,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Package parameter w/ type")
-	public class PackageTypeTest extends AbstractSarlBsplTest {
+	public class PackageTypeTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Package parameter modifiers")
@@ -4458,7 +4458,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -4519,7 +4519,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -4580,7 +4580,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -4641,7 +4641,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -4702,7 +4702,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -4735,7 +4735,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input ':'");
 		}
@@ -4752,7 +4752,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -4797,7 +4797,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -4842,7 +4842,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -4887,7 +4887,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -4932,7 +4932,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -4977,7 +4977,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -5022,7 +5022,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -5038,7 +5038,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -5053,7 +5053,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Private parameter w/o type")
-	public class PrivateTest extends AbstractSarlBsplTest {
+	public class PrivateTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Private parameter modifiers")
@@ -5066,7 +5066,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5099,7 +5099,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5132,7 +5132,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5165,7 +5165,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -5181,7 +5181,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5214,7 +5214,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -5230,7 +5230,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5263,7 +5263,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -5279,7 +5279,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5312,7 +5312,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -5328,7 +5328,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -5361,7 +5361,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -5378,7 +5378,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -5394,7 +5394,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'private'");
 		}
@@ -5410,7 +5410,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5443,7 +5443,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5476,7 +5476,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5509,7 +5509,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5542,7 +5542,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 			.assertNoIssues();
@@ -5575,7 +5575,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					MISSED_PARAMETER_TYPE,
 					"Missed type for the parameter P1")
 				.assertNoIssues();
@@ -5608,7 +5608,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}
@@ -5623,7 +5623,7 @@ public class ParameterProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Private parameter w/ type")
-	public class PrivateTypeTest extends AbstractSarlBsplTest {
+	public class PrivateTypeTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Private parameter modifiers")
@@ -5723,7 +5723,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'in'");
 		}
@@ -5784,7 +5784,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'out'");
 		}
@@ -5845,7 +5845,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'nil'");
 		}
@@ -5906,7 +5906,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'opt'");
 		}
@@ -5967,7 +5967,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input 'any'");
 		}
@@ -6000,7 +6000,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input ':'");
 		}
@@ -6017,7 +6017,7 @@ public class ParameterProtocolTest {
 					"}");
 			// Two parameters are recognized: P1 and R1
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '->'");
 		}
@@ -6062,7 +6062,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -6107,7 +6107,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -6152,7 +6152,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -6197,7 +6197,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -6242,7 +6242,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -6287,7 +6287,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input ':'");
 		}
@@ -6303,7 +6303,7 @@ public class ParameterProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolParameter(),
+					BsplPackage.eINSTANCE.getBsplProtocolParameter(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input 'key'");
 		}

@@ -20,16 +20,21 @@
  */
 package io.sarl.bspl.lang.tests.syntax;
 
-import static io.sarl.bspl.lang.validation.IssueCodes.*;
+import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_MESSAGE;
+import static io.sarl.bspl.lang.validation.IssueCodes.INVALID_ROLE_CARDINALITY_ORDER;
+import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_PARAMETER;
+import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.bspl.lang.sarl_bspl.Sarl_bsplPackage;
-import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
+import io.sarl.bspl.lang.bspl.BsplPackage;
+import io.sarl.bspl.lang.tests.AbstractBsplTest;
 
 /**
  * @author $Author: sgalland$
@@ -49,7 +54,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Base syntax")
-	public class BaseSyntaxTest extends AbstractSarlBsplTest {
+	public class BaseSyntaxTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("1 message")
@@ -196,7 +201,7 @@ public class MessageProtocolTest {
 					"  R2 -> R1 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined source role R2 in the protocol PROTO");
 		}
@@ -211,7 +216,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined destination role R2 in the protocol PROTO");
 		}
@@ -227,7 +232,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					DUPLICATE_PROTOCOL_MESSAGE,
 					"Duplicate message M from R1 to R2 in the protocol PROTO");
 		}
@@ -242,7 +247,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Role cardinalities")
-	public class CardinalityTest extends AbstractSarlBsplTest {
+	public class CardinalityTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Invalid min max values")
@@ -254,7 +259,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					INVALID_ROLE_CARDINALITY_ORDER,
 					"Minimum cardinality cannot be greater than to maximum cardinality for the role 'R1'. Assume [1..8]");
 
@@ -294,7 +299,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Base w/ prefix IN modifier")
-	public class PrefixInModifierTest extends AbstractSarlBsplTest {
+	public class PrefixInModifierTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("1 message")
@@ -441,7 +446,7 @@ public class MessageProtocolTest {
 					"  R2 -> in R1 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined source role R2 in the protocol PROTO");
 		}
@@ -456,7 +461,7 @@ public class MessageProtocolTest {
 					"  R1 -> in R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined destination role R2 in the protocol PROTO");
 		}
@@ -472,7 +477,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					DUPLICATE_PROTOCOL_MESSAGE,
 					"Duplicate message M from R1 to R2 in the protocol PROTO");
 		}
@@ -487,7 +492,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Base w/ prefix OUT modifier")
-	public class PrefixOutModifierTest extends AbstractSarlBsplTest {
+	public class PrefixOutModifierTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("1 message")
@@ -670,7 +675,7 @@ public class MessageProtocolTest {
 					"  R2 -> out R1 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined source role R2 in the protocol PROTO");
 		}
@@ -685,7 +690,7 @@ public class MessageProtocolTest {
 					"  R1 -> out R2 : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined destination role R2 in the protocol PROTO");
 		}
@@ -701,7 +706,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					DUPLICATE_PROTOCOL_MESSAGE,
 					"Duplicate message M from R1 to R2 in the protocol PROTO");
 		}
@@ -716,7 +721,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Base w/ postfix IN modifier")
-	public class PostfixInModifierTest extends AbstractSarlBsplTest {
+	public class PostfixInModifierTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("1 message")
@@ -863,7 +868,7 @@ public class MessageProtocolTest {
 					"  R2 -> R1 in : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined source role R2 in the protocol PROTO");
 		}
@@ -878,7 +883,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 in : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined destination role R2 in the protocol PROTO");
 		}
@@ -894,7 +899,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					DUPLICATE_PROTOCOL_MESSAGE,
 					"Duplicate message M from R1 to R2 in the protocol PROTO");
 		}
@@ -909,7 +914,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Base w/ postfix OUT modifier")
-	public class PostfixOutModifierTest extends AbstractSarlBsplTest {
+	public class PostfixOutModifierTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("1 message")
@@ -1056,7 +1061,7 @@ public class MessageProtocolTest {
 					"  R2 -> R1 out : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined source role R2 in the protocol PROTO");
 		}
@@ -1071,7 +1076,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 out : M",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined destination role R2 in the protocol PROTO");
 		}
@@ -1087,7 +1092,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					DUPLICATE_PROTOCOL_MESSAGE,
 					"Duplicate message M from R1 to R2 in the protocol PROTO");
 		}
@@ -1102,7 +1107,7 @@ public class MessageProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Arguments")
-	public class ArgumentsTest extends AbstractSarlBsplTest {
+	public class ArgumentsTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("1 argument")
@@ -1313,7 +1318,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M (xxx P1)",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_PARAMETER,
 					"Undefined parameter xxx in the protocol PROTO");
 		}
@@ -1527,7 +1532,7 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M (xxx P1 key)",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_PARAMETER,
 					"Undefined parameter xxx in the protocol PROTO");
 		}

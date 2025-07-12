@@ -20,7 +20,12 @@
  */
 package io.sarl.bspl.lang.tests.syntax;
 
-import static io.sarl.bspl.lang.validation.IssueCodes.*;
+import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_NAME;
+import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PACKAGE_DECLARATION;
+import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PROTOCOL;
+import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_MESSAGE;
+import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_ROLE;
+import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.IMPORT_UNUSED;
 
 import org.eclipse.xtext.xtype.XtypePackage;
@@ -28,8 +33,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.bspl.lang.sarl_bspl.Sarl_bsplPackage;
-import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
+import io.sarl.bspl.lang.bspl.BsplPackage;
+import io.sarl.bspl.lang.tests.AbstractBsplTest;
 
 /**
  * @author $Author: sgalland$
@@ -49,7 +54,7 @@ public class SpecificationTest {
 	 */
 	@DisplayName("0 protocol")
 	@Nested
-	public class NoProtocolTest extends AbstractSarlBsplTest {
+	public class NoProtocolTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("empty specification file")
@@ -57,7 +62,7 @@ public class SpecificationTest {
 			var bspl = specification("");
 			validate(bspl)
 				.assertWarning(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocolSpecification(),
+						BsplPackage.eINSTANCE.getBsplProtocolSpecification(),
 						EMPTY_PACKAGE_DECLARATION,
 						"No package declaration provided");
 		}
@@ -72,7 +77,7 @@ public class SpecificationTest {
 	 */
 	@DisplayName("1 protocol")
 	@Nested
-	public class OneProtocolTest extends AbstractSarlBsplTest {
+	public class OneProtocolTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("w/o package w/o import")
@@ -80,11 +85,11 @@ public class SpecificationTest {
 			var bspl = specification("protocol PROTO { }");
 			validate(bspl)
 				.assertWarning(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocolSpecification(),
+						BsplPackage.eINSTANCE.getBsplProtocolSpecification(),
 						EMPTY_PACKAGE_DECLARATION,
 						"No package declaration provided")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO is defined without roles, messages and parameters");
 		}
@@ -96,7 +101,7 @@ public class SpecificationTest {
 					"package io.sarl.bspl.lang.compiler.tests.fake protocol",
 					"PROTO { }");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO is defined without roles, messages and parameters");
 		}
@@ -109,7 +114,7 @@ public class SpecificationTest {
 					"protocol PROTO { }");
 			validate(bspl)
 				.assertWarning(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocolSpecification(),
+						BsplPackage.eINSTANCE.getBsplProtocolSpecification(),
 						EMPTY_PACKAGE_DECLARATION,
 						"No package declaration provided")
 				.assertWarning(
@@ -117,7 +122,7 @@ public class SpecificationTest {
 						IMPORT_UNUSED,
 						"The import 'java.lang.Integer' is never used")
 				.assertError(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+						BsplPackage.eINSTANCE.getBsplProtocol(),
 						EMPTY_PROTOCOL,
 						"Protocol PROTO is defined without roles, messages and parameters");
 		}
@@ -135,7 +140,7 @@ public class SpecificationTest {
 					IMPORT_UNUSED,
 					"The import 'java.lang.Integer' is never used")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO is defined without roles, messages and parameters");
 		}
@@ -149,7 +154,7 @@ public class SpecificationTest {
 					"}");
 			validate(bspl)
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO is defined without roles, messages and parameters")
 				.assertNoIssues();
@@ -165,15 +170,15 @@ public class SpecificationTest {
 					"}");
 			validate(bspl)
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined source role R1 in the protocol PROTO")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					UNDEFINED_PROTOCOL_ROLE,
 					"Undefined destination role R1 in the protocol PROTO")
 				.assertError(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+						BsplPackage.eINSTANCE.getBsplProtocol(),
 						MISSED_PROTOCOL_ROLE,
 						"Protocol PROTO must contain at least one definition of a role")
 				.assertNoIssues();
@@ -189,7 +194,7 @@ public class SpecificationTest {
 					"}");
 			validate(bspl)
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertNoIssues();
@@ -205,7 +210,7 @@ public class SpecificationTest {
 	 */
 	@DisplayName("2 protocols")
 	@Nested
-	public class TwoProtocolTest extends AbstractSarlBsplTest {
+	public class TwoProtocolTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("w/o package w/o import")
@@ -213,15 +218,15 @@ public class SpecificationTest {
 			var bspl = specification("protocol PROTO1 { } protocol PROTO2 { }");
 			validate(bspl)
 				.assertWarning(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocolSpecification(),
+						BsplPackage.eINSTANCE.getBsplProtocolSpecification(),
 						EMPTY_PACKAGE_DECLARATION,
 						"No package declaration provided")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO1 is defined without roles, messages and parameters")
 				.assertError(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+						BsplPackage.eINSTANCE.getBsplProtocol(),
 						EMPTY_PROTOCOL,
 						"Protocol PROTO2 is defined without roles, messages and parameters");
 		}
@@ -234,11 +239,11 @@ public class SpecificationTest {
 					"PROTO1 { } PROTO2 { }");
 			validate(bspl)
 			.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO1 is defined without roles, messages and parameters")
 			.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO2 is defined without roles, messages and parameters");
 		}
@@ -251,7 +256,7 @@ public class SpecificationTest {
 					"protocol PROTO1 { } protocol PROTO2 { }");
 			validate(bspl)
 				.assertWarning(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocolSpecification(),
+						BsplPackage.eINSTANCE.getBsplProtocolSpecification(),
 						EMPTY_PACKAGE_DECLARATION,
 						"No package declaration provided")
 				.assertWarning(
@@ -259,11 +264,11 @@ public class SpecificationTest {
 						IMPORT_UNUSED,
 						"The import 'java.lang.Integer' is never used")
 				.assertError(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+						BsplPackage.eINSTANCE.getBsplProtocol(),
 						EMPTY_PROTOCOL,
 						"Protocol PROTO1 is defined without roles, messages and parameters")
 				.assertError(
-						Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+						BsplPackage.eINSTANCE.getBsplProtocol(),
 						EMPTY_PROTOCOL,
 						"Protocol PROTO2 is defined without roles, messages and parameters");
 		}
@@ -281,11 +286,11 @@ public class SpecificationTest {
 					IMPORT_UNUSED,
 					"The import 'java.lang.Integer' is never used")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO1 is defined without roles, messages and parameters")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO2 is defined without roles, messages and parameters");
 		}
@@ -304,7 +309,7 @@ public class SpecificationTest {
 					"  R2 -> R3 : M3",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					DUPLICATE_PROTOCOL_NAME,
 					"Duplicate protocol specification for PROTO1");
 		}

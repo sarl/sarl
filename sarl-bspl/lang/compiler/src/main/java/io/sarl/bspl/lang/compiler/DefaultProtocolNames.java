@@ -33,7 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import io.sarl.bspl.api.protocol.impl.ProtocolRole;
-import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
+import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 
 /** Provider of names for protocols.
  *
@@ -41,6 +41,7 @@ import io.sarl.bspl.lang.sarl_bspl.BsplProtocolRole;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 @Singleton
 public class DefaultProtocolNames implements IProtocolNames {

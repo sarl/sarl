@@ -11,6 +11,10 @@
   </properties>
   <dependencies>
     <dependency>
+		<groupId>io.sarl.lang</groupId>
+		<artifactId>mwe2</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.sarl.bspl</groupId>
       <artifactId>bspl.sdk</artifactId>
     </dependency>

@@ -3,8 +3,8 @@
   <groupId>io.sarl.bspl</groupId>
   <artifactId>bspl.lang.compiler</artifactId>
   <version>0.15.0-SNAPSHOT</version>
-  <name>SARL-BSPL Compiler</name>
-  <description>Main implementation of the SARL-BSPL compiler</description>
+  <name>BSPL Compiler</name>
+  <description>Main implementation of the BSPL compiler for SARL</description>
   <packaging>jar</packaging>
   <url>http://www.sarl.io</url>
   <properties>
@@ -79,14 +79,14 @@
                   <directory>${project.basedir}/src/main/java/io/sarl/bspl/lang</directory>
                   <filtering>false</filtering>
                   <includes>
-                    <include>SARL_BSPL.xtext</include>
+                    <include>BSPL.xtext</include>
                   </includes>
                 </resource>
                 <resource>
                   <directory>${project.basedir}/src/main/xtext-gen/io/sarl/bspl/lang</directory>
                   <filtering>false</filtering>
                   <includes>
-                    <include>SARL_BSPL.xtextbin</include>
+                    <include>BSPL.xtextbin</include>
                   </includes>
                 </resource>
               </resources>
@@ -105,8 +105,8 @@
                   <directory>${project.basedir}/model</directory>
                   <filtering>false</filtering>
                   <includes>
-                    <include>SARL_BSPL.ecore</include>
-                    <include>SARL_BSPL.genmodel</include>
+                    <include>BSPL.ecore</include>
+                    <include>BSPL.genmodel</include>
                   </includes>
                 </resource>
               </resources>

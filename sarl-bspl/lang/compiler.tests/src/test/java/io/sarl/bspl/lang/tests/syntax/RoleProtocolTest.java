@@ -31,8 +31,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.bspl.lang.sarl_bspl.Sarl_bsplPackage;
-import io.sarl.bspl.lang.tests.AbstractSarlBsplTest;
+import io.sarl.bspl.lang.bspl.BsplPackage;
+import io.sarl.bspl.lang.tests.AbstractBsplTest;
 
 /**
  * @author $Author: sgalland$
@@ -52,7 +52,7 @@ public class RoleProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Simple syntax")
-	public class OnlyRoleTest extends AbstractSarlBsplTest {
+	public class OnlyRoleTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Original BSPL syntax")
@@ -62,7 +62,7 @@ public class RoleProtocolTest {
 					"  R1, R2",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 	
@@ -76,7 +76,7 @@ public class RoleProtocolTest {
 					"  R1, R2",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 		}
@@ -89,7 +89,7 @@ public class RoleProtocolTest {
 					"  role R1, R2",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 		}
@@ -103,7 +103,7 @@ public class RoleProtocolTest {
 					"  role R2",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 		}
@@ -118,7 +118,7 @@ public class RoleProtocolTest {
 					"  R1 -> R1 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					DUPLICATE_PROTOCOL_ROLE,
 					"Duplicate definition of the role R1 in the protocol PROTO");
 	
@@ -135,7 +135,7 @@ public class RoleProtocolTest {
 					"  R1 -> R1 : M",
 					"}");
 			validate(bspl).assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					DUPLICATE_PROTOCOL_ROLE,
 					"Duplicate definition of the role R1 in the protocol PROTO");
 	
@@ -151,7 +151,7 @@ public class RoleProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Max cardinality")
-	public class MaxCardinalityTest extends AbstractSarlBsplTest {
+	public class MaxCardinalityTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Single line notation w/o keyword")
@@ -161,7 +161,7 @@ public class RoleProtocolTest {
 					"  R1 [5], R2 [6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -187,7 +187,7 @@ public class RoleProtocolTest {
 					"  role R1 [5], R2 [6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -214,7 +214,7 @@ public class RoleProtocolTest {
 					"  role R2 [6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -241,7 +241,7 @@ public class RoleProtocolTest {
 					"  R2 [6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -268,7 +268,7 @@ public class RoleProtocolTest {
 					"  R2 [6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -295,7 +295,7 @@ public class RoleProtocolTest {
 					"  role R2 [6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -321,11 +321,11 @@ public class RoleProtocolTest {
 					"  R1 [0]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					UNNECESSARY_ROLE_CARDINALITY,
 					"Unexpected specification of the maximum cardinality for the role 'R1'");
 			//
@@ -346,11 +346,11 @@ public class RoleProtocolTest {
 					"  R1 [-4]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input '-'");
 			//
@@ -373,7 +373,7 @@ public class RoleProtocolTest {
 	 */
 	@Nested
 	@DisplayName("Min-Max cardinality")
-	public class MinMaxCardinalityTest extends AbstractSarlBsplTest {
+	public class MinMaxCardinalityTest extends AbstractBsplTest {
 
 		@Test
 		@DisplayName("Single line notation w/o keyword")
@@ -383,7 +383,7 @@ public class RoleProtocolTest {
 					"  R1 [4..5], R2 [1..6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -409,7 +409,7 @@ public class RoleProtocolTest {
 					"  role R1 [4..5], R2 [1..6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -436,7 +436,7 @@ public class RoleProtocolTest {
 					"  R2 [1..6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -463,7 +463,7 @@ public class RoleProtocolTest {
 					"  role R2 [1..6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -490,7 +490,7 @@ public class RoleProtocolTest {
 					"  R2 [1..6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -517,7 +517,7 @@ public class RoleProtocolTest {
 					"  role R2 [1..6]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message");
 			//
@@ -543,11 +543,11 @@ public class RoleProtocolTest {
 					"  R1 [0..5]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					UNNECESSARY_ROLE_CARDINALITY,
 					"Unnecessary specification of the minimum cardinality for the role 'R1'");
 			//
@@ -568,15 +568,15 @@ public class RoleProtocolTest {
 					"  R1 [0..0]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					UNNECESSARY_ROLE_CARDINALITY,
 					"Unnecessary specification of the minimum cardinality for the role 'R1'")
 				.assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					UNNECESSARY_ROLE_CARDINALITY,
 					"Unexpected specification of the maximum cardinality for the role 'R1'");
 			//
@@ -597,15 +597,15 @@ public class RoleProtocolTest {
 					"  R1 [0..-1]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input '-'")
 				.assertWarning(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					UNNECESSARY_ROLE_CARDINALITY,
 					"Unnecessary specification of the minimum cardinality for the role 'R1'");
 			//
@@ -627,11 +627,11 @@ public class RoleProtocolTest {
 					"  R1 [-1..5]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input '-'");
 			//
@@ -652,11 +652,11 @@ public class RoleProtocolTest {
 					"  R1 [-4..0]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input '-'");
 			//
@@ -677,11 +677,11 @@ public class RoleProtocolTest {
 					"  R1 [-8..-1]",
 					"}");
 			validate(bspl).assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocol(),
+					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
 				.assertError(
-					Sarl_bsplPackage.eINSTANCE.getBsplProtocolRole(),
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"extraneous input '-'");
 			//

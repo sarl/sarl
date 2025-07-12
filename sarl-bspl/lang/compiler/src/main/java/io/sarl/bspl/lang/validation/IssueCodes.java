@@ -29,6 +29,7 @@ package io.sarl.bspl.lang.validation;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  * @see org.eclipse.xtend.core.validation.IssueCodes
  */
 public final class IssueCodes {

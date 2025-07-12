@@ -41,6 +41,7 @@ import com.google.inject.Inject;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 public abstract class AbstractSarlTargetGenerator<NP> extends AbstractGenerator implements IGenerator {
 	
