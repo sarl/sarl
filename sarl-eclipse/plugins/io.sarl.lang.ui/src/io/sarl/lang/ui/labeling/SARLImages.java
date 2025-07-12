@@ -47,18 +47,6 @@ public class SARLImages extends XtendImages {
 
 	private static final boolean USE_LIGHT_ICONS = false;
 
-	private static final String[] IMAGE_NAMES;
-
-	static {
-		IMAGE_NAMES = new String[SarlElementType.values().length];
-		IMAGE_NAMES[SarlElementType.AGENT.ordinal()] = "sarl-agent"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.BEHAVIOR.ordinal()] = "sarl-behavior"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.CAPACITY.ordinal()] = "sarl-capacity"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.SKILL.ordinal()] = "sarl-skill"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.EVENT.ordinal()] = "sarl-event"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.BEHAVIOR_UNIT.ordinal()] = "sarl-behavior-unit"; //$NON-NLS-1$
-	}
-
 	@Inject
 	private IImageDescriptorHelper imageHelper;
 
@@ -76,7 +64,7 @@ public class SARLImages extends XtendImages {
 			boolean isInner, boolean isInInterfaceOrAnnotation, int flags, boolean useLightIcons) {
 		final ImageDescriptor desc;
 		if (type != null) {
-			final var iconName = new StringBuilder(IMAGE_NAMES[type.ordinal()]);
+			final var iconName = new StringBuilder(type.getSimpleBasename());
 			if (Flags.isPackageDefault(flags)) {
 				iconName.append("_package"); //$NON-NLS-1$
 			} else if (Flags.isProtected(flags)) {
@@ -251,22 +239,60 @@ public class SARLImages extends XtendImages {
 	public enum SarlElementType {
 		/** Agent.
 		 */
-		AGENT,
+		AGENT {
+			@Override
+			public String getSimpleBasename() {
+				return "sarl-agent"; //$NON-NLS-1$
+			}
+		},
 		/** Behavior.
 		 */
-		BEHAVIOR,
+		BEHAVIOR {
+			@Override
+			public String getSimpleBasename() {
+				return "sarl-behavior"; //$NON-NLS-1$
+			}
+		},
 		/** Capacity.
 		 */
-		CAPACITY,
+		CAPACITY {
+			@Override
+			public String getSimpleBasename() {
+				return "sarl-capacity"; //$NON-NLS-1$
+			}
+		},
 		/** Event.
 		 */
-		EVENT,
+		EVENT {
+			@Override
+			public String getSimpleBasename() {
+				return "sarl-event"; //$NON-NLS-1$
+			}
+		},
 		/** Skill.
 		 */
-		SKILL,
+		SKILL {
+			@Override
+			public String getSimpleBasename() {
+				return "sarl-skill"; //$NON-NLS-1$
+			}
+		},
 		/** Behavior unit.
 		 */
-		BEHAVIOR_UNIT;
+		BEHAVIOR_UNIT {
+			@Override
+			public String getSimpleBasename() {
+				return "sarl-behavior-unit"; //$NON-NLS-1$
+			}
+		};
+
+		/** Replies the simple basename of the file that is containing the icon for the element.
+		 *
+		 * @return the simple basename, without the filename extension.
+		 * @since 0.15
+		 */
+		public abstract String getSimpleBasename();
+
 	}
 
 }
