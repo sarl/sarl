@@ -97,13 +97,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 
+import io.sarl.apputils.eclipseextensions.classpath.SarlDefaultClassPathProvider;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
-import io.sarl.eclipse.util.classpath.SarlDefaultClassPathProvider;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.SARLVersion;
 

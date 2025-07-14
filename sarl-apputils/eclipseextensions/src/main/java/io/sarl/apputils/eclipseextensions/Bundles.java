@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.util;
+package io.sarl.apputils.eclipseextensions;
 
 import java.io.IOException;
 import java.net.URI;
@@ -41,6 +41,7 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -53,9 +54,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleWiring;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities.BundleURLMappings;
-import io.sarl.eclipse.util.classpath.JavaClasspathParser;
+import io.sarl.apputils.eclipseextensions.Utilities.BundleURLMappings;
+import io.sarl.apputils.eclipseextensions.classpath.JavaClasspathParser;
 import io.sarl.lang.SARLConfig;
 
 /** Utilities around bundles. It should be replaced
@@ -66,9 +66,9 @@ import io.sarl.lang.SARLConfig;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
-@SuppressWarnings("restriction")
-public final class BundleUtil {
+public final class Bundles {
 
 	/** OS-independent paths of the bin folders.
 	 */
@@ -97,7 +97,7 @@ public final class BundleUtil {
 
 	private static final String DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT = "target/classes"; //$NON-NLS-1$
 
-	private BundleUtil() {
+	private Bundles() {
 		//
 	}
 
@@ -715,11 +715,11 @@ public final class BundleUtil {
 		private DependencyDefinition getDependencyDefinition() {
 			var dependencies = getBundleDependencies(this.bundle);
 			if (dependencies == null) {
-				final var bundlePath = BundleUtil.getBundlePath(this.bundle);
+				final var bundlePath = Bundles.getBundlePath(this.bundle);
 				if (bundlePath.toFile().isDirectory()) {
 					// we have a directory, we assume we are in debug mode of the
 					// product
-					final var bundleSourcePath = BundleUtil.getSourceBundlePath(this.bundle, bundlePath);
+					final var bundleSourcePath = Bundles.getSourceBundlePath(this.bundle, bundlePath);
 
 					// Default value of the output folder for our project but will be
 					// overload later in we find a .classpath precising the output
@@ -854,7 +854,9 @@ public final class BundleUtil {
 						try {
 							u = FileLocator.resolve(dependency.getEntry(ROOT_NAME));
 						} catch (IOException e) {
-							SARLEclipsePlugin.getDefault().log(e);
+							final var plugin = EclipseExtensionsPlugin.getDefault();
+							final var status = plugin.createStatus(IStatus.ERROR, e);
+							plugin.getLog().log(status);
 							return;
 						}
 
@@ -955,7 +957,9 @@ public final class BundleUtil {
 
 
 					} catch (IOException | CoreException | URISyntaxException e) {
-						SARLEclipsePlugin.getDefault().log(e);
+						final var plugin = EclipseExtensionsPlugin.getDefault();
+						final var status = plugin.createStatus(IStatus.ERROR, e);
+						plugin.getLog().log(status);
 						return null;
 					}
 
@@ -970,7 +974,9 @@ public final class BundleUtil {
 						final var cpEntry = Utilities.newLibraryEntry(bundle, jarFilePath, this.javadocURLs);
 						updateBundleClassPath(bundle, cpEntry, cpEntries);
 					} catch (Exception e) {
-						SARLEclipsePlugin.getDefault().log(e);
+						final var plugin = EclipseExtensionsPlugin.getDefault();
+						final var status = plugin.createStatus(IStatus.ERROR, e);
+						plugin.getLog().log(status);
 						return null;
 					}
 				}

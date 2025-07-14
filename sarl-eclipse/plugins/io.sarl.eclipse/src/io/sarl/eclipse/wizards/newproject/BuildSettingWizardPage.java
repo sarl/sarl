@@ -66,11 +66,11 @@ import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
+import io.sarl.apputils.eclipseextensions.classpath.SarlClassPathDetector;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
-import io.sarl.eclipse.util.classpath.SarlClassPathDetector;
 import io.sarl.lang.core.util.OutParameter;
 
 /**

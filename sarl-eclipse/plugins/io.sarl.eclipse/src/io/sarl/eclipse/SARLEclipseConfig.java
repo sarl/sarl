@@ -34,13 +34,6 @@ package io.sarl.eclipse;
 public final class SARLEclipseConfig {
 
 	/**
-	 * Default SARL file extension (with the dot).
-	 *
-	 * <p>TODO Find a way to get it from the io.sarl.lang code itself (which is generated).
-	 */
-	public static final String SARL_FILE_EXTENSION = ".sarl"; //$NON-NLS-1$
-
-	/**
 	 * ID of the project nature defined by XText.
 	 */
 	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature"; //$NON-NLS-1$

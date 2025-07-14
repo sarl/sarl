@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.natures;
 
+import static io.sarl.apputils.eclipseextensions.ProjectNatures.addNatures;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +56,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.core.ClasspathEntry;
-import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathsBlock;
 import org.eclipse.jdt.internal.ui.wizards.buildpaths.CPListElement;
 import org.eclipse.jdt.ui.PreferenceConstants;
@@ -64,11 +65,12 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.wizards.datatransfer.ProjectConfigurator;
 import org.eclipse.xtext.Constants;
 
+import io.sarl.apputils.eclipseextensions.Bundles;
+import io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurationFragments;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.util.BundleUtil;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.util.OutParameter;
 import io.sarl.lang.ui.preferences.SARLPreferences;
@@ -101,7 +103,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 		injector.injectMembers(this);
 		this.candidates = new ArrayList<>();
-		this.candidates.addAll(Arrays.asList(BundleUtil.SRC_FOLDERS));
+		this.candidates.addAll(Arrays.asList(Bundles.SRC_FOLDERS));
 		this.candidates.add(SARLConfig.FOLDER_TEST_SOURCE_SARL);
 	}
 
@@ -123,7 +125,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	@Override
 	public Set<IFolder> getFoldersToIgnore(IProject project, IProgressMonitor monitor) {
 		final var ignoredFolders = new LinkedHashSet<IFolder>();
-		for (final var binPath : BundleUtil.BIN_FOLDERS) {
+		for (final var binPath : Bundles.BIN_FOLDERS) {
 			ignoredFolders.add(project.getFolder(Path.fromPortableString(binPath)));
 		}
 		ignoredFolders.add(project.getFolder(Path.fromPortableString(SARLConfig.FOLDER_RESOURCES)));
@@ -168,11 +170,20 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	@Override
 	public void unconfigure(IProject project, IProgressMonitor monitor) throws CoreException {
 		try {
-			final var mon = SubMonitor.convert(monitor, 4);
+			// Get the configuration fragments
+			final var fragments = ProjectConfigurationFragments.getConfigurationFragmentsFromExtension();
+
+			final var mon = SubMonitor.convert(monitor, 4 + fragments.size());
+
 			final var description = project.getDescription();
 			final var natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
 			natures.remove(SARLEclipseConfig.XTEXT_NATURE_ID);
 			natures.remove(SARLEclipseConfig.NATURE_ID);
+
+			for (final var fragment : fragments) {
+				fragment.unconfigure(project, mon.newChild(1), natures);
+			}
+
 			final var newNatures = natures.toArray(new String[natures.size()]);
 			mon.worked(1);
 			final var status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
@@ -254,7 +265,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	public static void configureSARLProject(IProject project, boolean addNatures,
 			boolean configureJavaNature, boolean createFolders, IProgressMonitor monitor) {
 		try {
-			final var subMonitor = SubMonitor.convert(monitor, 11);
+			// Get the configuration fragments
+			final var fragments = ProjectConfigurationFragments.getConfigurationFragmentsFromExtension();
+			
+			final var subMonitor = SubMonitor.convert(monitor, 12);
 			// Add Natures
 			final var status = Status.OK_STATUS;
 			if (addNatures) {
@@ -262,13 +276,21 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				if (status != null && !status.isOK()) {
 					SARLEclipsePlugin.getDefault().getLog().log(status);
 				}
+				if (!fragments.isEmpty()) {
+					final var subprogress = subMonitor.newChild(1);
+					subprogress.setWorkRemaining(fragments.size());
+					for (final var fragment : fragments) {
+						fragment.updateNatures(project, subprogress.newChild(1));
+					}
+					subprogress.worked(fragments.size());
+				}
 			}
 
 			// Ensure SARL specific folders.
-			final var sourceFolders = new OutParameter<IFolder[]>();
-			final var testSourceFolders = new OutParameter<IFolder[]>();
-			final var generationFolders = new OutParameter<IFolder[]>();
-			final var testGenerationFolders = new OutParameter<IFolder[]>();
+			final var sourceFolders = new ArrayList<IFolder>();
+			final var testSourceFolders = new ArrayList<IFolder>();
+			final var generationFolders = new ArrayList<IFolder>();
+			final var testGenerationFolders = new ArrayList<IFolder>();
 			final var generationFolder = new OutParameter<IFolder>();
 			final var testGenerationFolder = new OutParameter<IFolder>();
 			final var outputFolder = new OutParameter<IFolder>();
@@ -278,6 +300,16 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 					generationFolders, testGenerationFolders,
 					generationFolder, testGenerationFolder,
 					outputFolder, testOutputFolder);
+			if (!fragments.isEmpty()) {
+				final var subprogress = subMonitor.newChild(1);
+				subprogress.setWorkRemaining(fragments.size());
+				for (final var fragment : fragments) {
+					fragment.updateSourceFolders(project, createFolders, subprogress.newChild(1),
+							sourceFolders, testSourceFolders,
+							generationFolders, testGenerationFolders);
+				}
+				subprogress.worked(fragments.size());
+			}
 
 			// SARL specific configuration
 			final var testGenerationFolderFolder = testGenerationFolder.get();
@@ -287,6 +319,15 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 					generationFolder.get().getProjectRelativePath(),
 					testGenerationFolderPath);
 			subMonitor.worked(1);
+			if (!fragments.isEmpty()) {
+				final var subprogress = subMonitor.newChild(1);
+				subprogress.setWorkRemaining(fragments.size());
+				for (final var fragment : fragments) {
+					fragment.updateSpecificConfiguration(project, subprogress.newChild(1),
+							generationFolder.get().getProjectRelativePath(), testGenerationFolderPath);
+				}
+				subprogress.worked(fragments.size());
+			}
 
 			// Create the Java project
 			if (configureJavaNature) {
@@ -301,10 +342,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				// Build path
 				BuildPathsBlock.flush(
 						buildClassPathEntries(javaProject,
-								sourceFolders.get(),
-								testSourceFolders.get(),
-								generationFolders.get(),
-								testGenerationFolders.get(),
+								sourceFolders.toArray(size -> new IFolder[size]),
+								testSourceFolders.toArray(size -> new IFolder[size]),
+								generationFolders.toArray(size -> new IFolder[size]),
+								testGenerationFolders.toArray(size -> new IFolder[size]),
 								testOutputFolder.get().getFullPath(),
 								false, true),
 						outputFolder.get().getFullPath(), javaProject, null, subMonitor.newChild(1));
@@ -316,61 +357,57 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	}
 
 	private static void ensureSourceFolders(IProject project, boolean createFolders, SubMonitor monitor,
-			OutParameter<IFolder[]> sourcePaths,
-			OutParameter<IFolder[]> testSourcePaths,
-			OutParameter<IFolder[]> generationPaths,
-			OutParameter<IFolder[]> testGenerationPaths,
+			List<IFolder> sourcePaths,
+			List<IFolder> testSourcePaths,
+			List<IFolder> generationPaths,
+			List<IFolder> testGenerationPaths,
 			OutParameter<IFolder> standardGenerationFolder,
 			OutParameter<IFolder> testingGenerationFolder,
 			OutParameter<IFolder> classOutput,
 			OutParameter<IFolder> testClassOutput) throws CoreException {
-		final var sourceSarlFolder = ensureSourceFolder(project,
+		final var sourceSarlFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_SARL, true, createFolders, monitor.newChild(1));
-		final var sourceJavaFolder = ensureSourceFolder(project,
+		final var sourceJavaFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_JAVA, false, createFolders, monitor.newChild(1));
-		final var resourcesFolder = ensureSourceFolder(project,
+		final var resourcesFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
 				SARLConfig.FOLDER_RESOURCES, false, createFolders, monitor.newChild(1));
-		final var testSourceSarlFolder = ensureSourceFolder(project,
+		final var testSourceSarlFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
 				SARLConfig.FOLDER_TEST_SOURCE_SARL, false, createFolders, monitor.newChild(1));
-		final var generationFolder = ensureGeneratedSourceFolder(project,
+		final var generationFolder = ProjectConfigurationFragments.ensureGeneratedSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_GENERATED, true, createFolders, monitor.newChild(1));
-		final var testGenerationFolder = ensureGeneratedSourceFolder(project,
+		final var testGenerationFolder = ProjectConfigurationFragments.ensureGeneratedSourceFolder(project,
 				SARLConfig.FOLDER_TEST_SOURCE_GENERATED, false, createFolders, monitor.newChild(1));
-		final var outputFolder = ensureOutputFolder(project,
+		final var outputFolder = ProjectConfigurationFragments.ensureOutputFolder(project,
 				SARLConfig.FOLDER_BIN, true, createFolders, monitor.newChild(1));
-		final var testOutputFolder = ensureOutputFolder(project,
+		final var testOutputFolder = ProjectConfigurationFragments.ensureOutputFolder(project,
 				SARLConfig.FOLDER_TEST_BIN, true, createFolders, monitor.newChild(1));
 		if (sourcePaths != null) {
 			assert sourceSarlFolder != null : "sourceSarlFolder must not be null"; //$NON-NLS-1$
 			if (sourceJavaFolder != null) {
 				if (resourcesFolder != null) {
-					sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder});
+					sourcePaths.add(sourceSarlFolder);
+					sourcePaths.add(sourceJavaFolder);
+					sourcePaths.add(resourcesFolder);
 				} else {
-					sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder});
+					sourcePaths.add(sourceSarlFolder);
+					sourcePaths.add(sourceJavaFolder);
 				}
 			} else if (resourcesFolder != null) {
-				sourcePaths.set(new IFolder[] {sourceSarlFolder, resourcesFolder});
+				sourcePaths.add(sourceSarlFolder);
+				sourcePaths.add(resourcesFolder);
 			} else {
-				sourcePaths.set(new IFolder[] {sourceSarlFolder});
+				sourcePaths.add(sourceSarlFolder);
 			}
 		}
-		if (testSourcePaths != null) {
-			if (testSourceSarlFolder != null) {
-				testSourcePaths.set(new IFolder[] {testSourceSarlFolder});
-			} else {
-				testSourcePaths.set(new IFolder[] {});
-			}
+		if (testSourcePaths != null && testSourceSarlFolder != null) {
+			testSourcePaths.add(testSourceSarlFolder);
 		}
 		if (generationPaths != null) {
 			assert generationFolder != null : "generationFolder must not be null"; //$NON-NLS-1$
-			generationPaths.set(new IFolder[] {generationFolder});
+			generationPaths.add(generationFolder);
 		}
-		if (testGenerationPaths != null) {
-			if (testGenerationFolder != null) {
-				testGenerationPaths.set(new IFolder[] {testGenerationFolder});
-			} else {
-				testGenerationPaths.set(new IFolder[] {});
-			}
+		if (testGenerationPaths != null && testGenerationFolder != null) {
+			testGenerationPaths.add(testGenerationFolder);
 		}
 		if (standardGenerationFolder != null) {
 			assert generationFolder != null : "generationFolder must not be null"; //$NON-NLS-1$
@@ -403,10 +440,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		try {
 			final var subMonitor = SubMonitor.convert(monitor, 8);
 
-			final var sourceFolders = new OutParameter<IFolder[]>();
-			final var testSourceFolders = new OutParameter<IFolder[]>();
-			final var generationFolders = new OutParameter<IFolder[]>();
-			final var testGenerationFolders = new OutParameter<IFolder[]>();
+			final var sourceFolders = new ArrayList<IFolder>();
+			final var testSourceFolders = new ArrayList<IFolder>();
+			final var generationFolders = new ArrayList<IFolder>();
+			final var testGenerationFolders = new ArrayList<IFolder>();
 			final var testOutputFolder = new OutParameter<IFolder>();
 			ensureSourceFolders(project, createFolders, subMonitor,
 					sourceFolders, testSourceFolders,
@@ -422,10 +459,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			// Build path
 			BuildPathsBlock.flush(
 					buildClassPathEntries(javaProject,
-							sourceFolders.get(),
-							testSourceFolders.get(),
-							generationFolders.get(),
-							testGenerationFolders.get(),
+							sourceFolders.toArray(size -> new IFolder[size]),
+							testSourceFolders.toArray(size -> new IFolder[size]),
+							generationFolders.toArray(size -> new IFolder[size]),
+							testGenerationFolders.toArray(size -> new IFolder[size]),
 							testOutputFolder.get().getFullPath(),
 							true, false),
 					javaProject.getOutputLocation(), javaProject, null, subMonitor.newChild(1));
@@ -471,16 +508,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				srcJavaEntry,
 				srcResourcesEntry,
 				srcGeneratedSourcesEntry);
-	}
-
-	private static void setDerived(IResource resource) {
-		if (resource != null) {
-			try {
-				resource.setDerived(true, null);
-			} catch (CoreException exception) {
-				//
-			}
-		}
 	}
 
 	private static List<CPListElement> buildClassPathEntries(IJavaProject project,
@@ -593,53 +620,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		return list;
 	}
 
-	private static IFolder ensureGeneratedSourceFolder(IProject project, String folderPath, boolean isIFolderRequired,
-			boolean createFolder, IProgressMonitor monitor) throws CoreException {
-		final var folder = project.getFolder(Path.fromPortableString(folderPath));
-		if (!folder.exists()) {
-			if (createFolder) {
-				CoreUtility.createFolder(folder, true, true, monitor);
-			} else if (!isIFolderRequired) {
-				monitor.done();
-				return null;
-			}
-		}
-		setDerived(folder);
-		monitor.done();
-		return folder;
-	}
-
-	private static IFolder ensureSourceFolder(IProject project, String folderPath, boolean isIFolderRequired,
-			boolean createFolder, IProgressMonitor monitor) throws CoreException {
-		final var folder = project.getFolder(Path.fromPortableString(folderPath));
-		if (!folder.exists()) {
-			if (createFolder) {
-				CoreUtility.createFolder(folder, true, true, monitor);
-			} else if (!isIFolderRequired) {
-				monitor.done();
-				return null;
-			}
-		}
-		monitor.done();
-		return folder;
-	}
-
-	private static IFolder ensureOutputFolder(IProject project, String folderPath, boolean isIFolderRequired,
-			boolean createFolder, IProgressMonitor monitor) throws CoreException {
-		final var folder = project.getFolder(Path.fromPortableString(folderPath));
-		if (!folder.exists()) {
-			if (createFolder) {
-				CoreUtility.createFolder(folder, true, true, monitor);
-			} else if (!isIFolderRequired) {
-				monitor.done();
-				return null;
-			}
-		}
-		setDerived(folder);
-		monitor.done();
-		return folder;
-	}
-
 	/** Collect the list of SARL project folders that are under directory into files.
 	 *
 	 * @param folders the list of folders to fill in.
@@ -733,46 +713,6 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 		}
 		return null;
-	}
-
-	/** Add the natures to the given project.
-	 *
-	 * @param project the project.
-	 * @param monitor the monitor.
-	 * @param natureIdentifiers the identifiers of the natures to add to the project.
-	 * @return the status if the operation.
-	 * @since 0.8
-	 */
-	public static IStatus addNatures(IProject project, IProgressMonitor monitor, String... natureIdentifiers) {
-		if (project != null && natureIdentifiers != null && natureIdentifiers.length > 0) {
-			try {
-				final var subMonitor = SubMonitor.convert(monitor, natureIdentifiers.length + 2);
-				final var description = project.getDescription();
-				final var natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
-
-				for (final var natureIdentifier : natureIdentifiers) {
-					if (!Strings.isNullOrEmpty(natureIdentifier) && !natures.contains(natureIdentifier)) {
-						natures.add(0, natureIdentifier);
-					}
-					subMonitor.worked(1);
-				}
-
-				final var newNatures = natures.toArray(new String[natures.size()]);
-				final var status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
-				subMonitor.worked(1);
-
-				// check the status and decide what to do
-				if (status.getCode() == IStatus.OK) {
-					description.setNatureIds(newNatures);
-					project.setDescription(description, subMonitor.newChild(1));
-				}
-				subMonitor.done();
-				return status;
-			} catch (CoreException exception) {
-				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, exception);
-			}
-		}
-		return SARLEclipsePlugin.getDefault().createOkStatus();
 	}
 
 	/** Replies the SARL natures that could be added to a project.

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.buildpath;
+package io.sarl.apputils.eclipseextensions.buildpath;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -37,6 +37,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
 public abstract class AbstractSARLBasedClasspathContainer implements IClasspathContainer {
 

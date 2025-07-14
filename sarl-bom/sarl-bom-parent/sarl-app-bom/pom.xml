@@ -59,6 +59,11 @@
       </dependency>
       <dependency>
         <groupId>io.sarl.lang</groupId>
+        <artifactId>compiler</artifactId>
+        <version>${sarl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.sarl.lang</groupId>
         <artifactId>batchcompiler</artifactId>
         <version>${sarl.version}</version>
       </dependency>
@@ -151,6 +156,16 @@
         <groupId>net.sf.jopt-simple</groupId>
         <artifactId>jopt-simple</artifactId>
         <version>${jopt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.core.resources</artifactId>
+        <version>${eclipse.platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jdt</groupId>
+        <artifactId>org.eclipse.jdt.ui</artifactId>
+        <version>${eclipse.jdt.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

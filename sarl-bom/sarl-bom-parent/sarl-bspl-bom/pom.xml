@@ -18,6 +18,11 @@
         <version>${sarl.version}</version>
       </dependency>
       <dependency>
+	<groupId>io.sarl.sdk</groupId>
+	<artifactId>api.core</artifactId>
+        <version>${sarl.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.sarl.baseutils</groupId>
         <artifactId>afc.extension</artifactId>
         <version>${sarl.version}</version>

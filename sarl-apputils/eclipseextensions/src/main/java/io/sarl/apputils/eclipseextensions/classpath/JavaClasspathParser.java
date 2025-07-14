@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.util.classpath;
+package io.sarl.apputils.eclipseextensions.classpath;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -73,8 +73,8 @@ import org.xml.sax.SAXException;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
-@SuppressWarnings("restriction")
 public final class JavaClasspathParser {
 
     /**

@@ -34,11 +34,7 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String AddBsplNatureHandler_0;
 	public static String BSPLProjectConfigurator_0;
-	public static String RemoveBsplNatureHandler_0;
-	public static String RemoveBsplNatureHandler_1;
-	public static String RemoveBsplNatureHandler_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

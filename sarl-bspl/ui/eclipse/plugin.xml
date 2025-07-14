@@ -33,62 +33,6 @@
 				<description>%wizard.description.newBsplSpecification</description>
 		  </wizard>
 	</extension>
-  <!-- Project configurators -->
-   <extension
-         point="org.eclipse.ui.ide.projectConfigurators">
-      <projectConfigurator
-            class="io.sarl.bspl.eclipse.natures.BSPLProjectConfigurator"
-            label="%projectconfigurator.name">
-      </projectConfigurator>
-   </extension>
-   <extension point="org.eclipse.ui.menus">
-      <menuContribution locationURI="popup:org.eclipse.ui.projectConfigure">
-         <command commandId="io.sarl.bspl.eclipse.natures.addBsplNature"
-                  label="%action.addBsplNature"
-                  style="push">
-             <visibleWhen checkEnabled="false">
-             	<with variable="selection">
-             		<iterate ifEmpty="false" operator="or">
-             			<adapt type="org.eclipse.core.resources.IProject">
-             				<not>
-	             				<test property="org.eclipse.core.resources.projectNature"
-	            					value="io.sarl.bspl.eclipse.BSPLProjectNature"/>
-             				</not>
-             			</adapt>
-             		</iterate>
-             	</with>
-             </visibleWhen>
-         </command>
-         <command commandId="io.sarl.eclipse.natures.removeBsplNature"
-                  label="%action.removeBsplNature"
-                  style="push">
-             <visibleWhen checkEnabled="false">
-             	<with variable="selection">
-             		<iterate ifEmpty="false" operator="or">
-             			<adapt type="org.eclipse.core.resources.IProject">
-             				<test property="org.eclipse.core.resources.projectNature"
-            					value="io.sarl.bspl.eclipse.BSPLProjectNature"/>
-             			</adapt>
-             		</iterate>
-             	</with>
-             </visibleWhen>
-         </command>
-      </menuContribution>
-   </extension>
-   <extension point="org.eclipse.ui.commands">
-      <command id="io.sarl.bspl.eclipse.natures.addBsplNature"
-            name="%action.addBsplNature" />
-      <command id="io.sarl.eclipse.natures.removeBsplNature"
-            name="%action.removeBsplNature" />
-   </extension>
-   <extension point="org.eclipse.ui.handlers">
-   		<handler
-            class="io.sarl.bspl.eclipse.BSPLEclipseExecutableExtensionFactory:io.sarl.bspl.eclipse.natures.AddBsplNatureHandler"
-            commandId="io.sarl.bspl.eclipse.natures.addBsplNature" />
-   		<handler
-            class="io.sarl.bspl.eclipse.BSPLEclipseExecutableExtensionFactory:io.sarl.bspl.eclipse.natures.RemoveBsplNatureHandler"
-            commandId="io.sarl.eclipse.natures.removeBsplNature" />
-   </extension>
 
   <!-- Perspectives -->
    <extension
@@ -111,5 +55,26 @@
          <newWizardShortcut id="io.sarl.bspl.eclipse.wizard.newBsplSpecification"/>
       </perspectiveExtension>
    </extension>
+
+<!-- Class path containers -->
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+          id="io.sarl.bspl.eclipse.launching.BSPL_SUPPORT"
+          class="io.sarl.bspl.eclipse.buildpath.BSPLClasspathContainerInitializer"/>
+   </extension>
+	<extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            name="%classpathContainerPage.name"
+            class="io.sarl.bspl.eclipse.buildpath.BSPLContainerWizardPage"
+            id="io.sarl.bspl.eclipse.launching.BSPL_SUPPORT">
+      </classpathContainerPage>
+   </extension>
+ <extension
+       point="io.sarl.apputils.eclipseextensions.projectConfigurationFragment">
+    <projectConfigurationFragment
+          class="io.sarl.bspl.eclipse.natures.BSPLProjectConfigurationFragment">
+    </projectConfigurationFragment>
+ </extension>
 
 </plugin>

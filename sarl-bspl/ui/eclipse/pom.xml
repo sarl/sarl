@@ -14,6 +14,8 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
+		<bspl.main.bundle>io.sarl.bspl.bspl.sdk</bspl.main.bundle>
+		<bspl.all.bundles>io.sarl.bspl.bspl.sdk,io.sarl.bspl.bspl.api.memory,io.sarl.bspl.bspl.api.protocol</bspl.all.bundles>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -109,6 +111,28 @@
 								<replacement>
 									<token>^(3 *= *)(.*)$</token>
 									<value>$1${sarl.url}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-bspl-bundle-lists</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/bspl/eclipse/buildpath/bspl-bundles.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(BSPL_MAIN_BUNDLE *= *)(.*)$</token>
+									<value>$1${bspl.main.bundle}</value>
+								</replacement>
+								<replacement>
+									<token>^(BSPL_BUNDLES *= *)(.*)$</token>
+									<value>$1${bspl.all.bundles}</value>
 								</replacement>
 							</replacements>
 						</configuration>

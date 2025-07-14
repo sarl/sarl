@@ -10,6 +10,7 @@
   <modules>
     <module>bootiqueapp</module>
     <module>bootiquebatchcompiler</module>
+    <module>eclipseextensions</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

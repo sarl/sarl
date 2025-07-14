@@ -32,7 +32,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
 
-import io.sarl.eclipse.util.BundleUtil;
+import io.sarl.apputils.eclipseextensions.Bundles;
 
 /** Classpath provider dedicated to the Janus networking features.
  *
@@ -83,7 +83,7 @@ public class JanusNetworkClasspathProvider extends StandardClasspathProvider {
 			for (final var bundleId : JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES) {
 				final var bundle = Platform.getBundle(bundleId);
 				if (bundle != null) {
-					final var resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
+					final var resolvedBundles = Bundles.resolveBundleDependencies(bundle);
 					if (resolvedBundles != null) {
 						for (final var entry : resolvedBundles.getTransitiveRuntimeClasspathEntries(true)) {
 							final var location = entry.getLocation();

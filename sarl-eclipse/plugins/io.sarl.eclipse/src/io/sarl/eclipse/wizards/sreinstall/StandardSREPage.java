@@ -45,11 +45,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 
+import io.sarl.apputils.eclipseextensions.Utilities;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREException;
-import io.sarl.eclipse.util.Utilities;
 
 /**
  * Standard implementation of a page for the SRE installation wizard.

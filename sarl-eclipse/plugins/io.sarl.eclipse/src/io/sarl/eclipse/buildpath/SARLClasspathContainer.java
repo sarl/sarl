@@ -21,7 +21,7 @@
 
 package io.sarl.eclipse.buildpath;
 
-import static io.sarl.lang.ide.buildpath.SARLBundleBuildPath.getSarlDependencyBundleNames;
+import static io.sarl.apputils.eclipseextensions.buildpath.SARLBundleBuildPath.getSarlDependencyBundleNames;
 
 import java.text.MessageFormat;
 import java.util.Set;
@@ -31,8 +31,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 
+import io.sarl.apputils.eclipseextensions.Bundles;
+import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.BundleUtil;
 
 /** Classpath container dedicated to the SARL environment.
  *
@@ -73,7 +74,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 		for (final var rootBundleName : getSarlDependencyBundleNames()) {
 			final var bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
-				for (final var symbolicName : BundleUtil.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
+				for (final var symbolicName : Bundles.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
 					entries.add(symbolicName);
 				}
 			} else {
@@ -88,7 +89,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 		for (final var rootBundleName : getSarlDependencyBundleNames()) {
 			final var bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
-				for (final var entry : BundleUtil.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {
+				for (final var entry : Bundles.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {
 					entries.add(entry);
 				}
 			} else {

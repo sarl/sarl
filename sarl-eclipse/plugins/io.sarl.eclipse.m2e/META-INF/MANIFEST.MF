@@ -16,6 +16,7 @@ Export-Package: io.sarl.eclipse.m2e,
  io.sarl.eclipse.m2e.wizards.importproject,
  io.sarl.eclipse.m2e.wizards.newproject
 Require-Bundle: io.sarl.eclipse;bundle-version="0.15.0",
+ io.sarl.apputils.eclipseextensions;bundle-version="0.15.0",
  io.sarl.lang.ide;bundle-version="0.15.0",
  io.sarl.lang.ui;bundle-version="0.15.0",
  io.sarl.lang.compiler;bundle-version="0.15.0",

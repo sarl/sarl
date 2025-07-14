@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.util.classpath;
+package io.sarl.apputils.eclipseextensions.classpath;
 
 import java.io.IOException;
 import java.text.Collator;
@@ -59,9 +59,8 @@ import org.eclipse.jdt.internal.ui.wizards.ClassPathDetector;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities;
+import io.sarl.apputils.eclipseextensions.EclipseExtensionsPlugin;
+import io.sarl.apputils.eclipseextensions.Utilities;
 import io.sarl.lang.SARLConfig;
 
 /** Detect the classpath entries according to the Java and SARL conventions.
@@ -74,10 +73,9 @@ import io.sarl.lang.SARLConfig;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.15
  * @see ClassPathDetector
  */
-@SuppressWarnings("restriction")
 public class SarlClassPathDetector implements IResourceProxyVisitor {
 
 	private final SarlDefaultClassPathProvider defaultCPProvider;
@@ -172,7 +170,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	@SuppressWarnings("static-method")
 	@Pure
 	protected boolean isValidSarlCUName(String name) {
-		return FileSystem.hasExtension(name, SARLEclipseConfig.SARL_FILE_EXTENSION);
+		return FileSystem.hasExtension(name, SARLConfig.SARL_FILE_EXTENSION);
 	}
 
 	private static int computeOrderPriority(IPath path) {
@@ -320,7 +318,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 				reader = ToolFactory.createDefaultClassFileReader(content, IClassFileReader.CLASSFILE_ATTRIBUTES);
 			} catch (IOException exception) {
 				throw new CoreException(
-						SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, exception));
+						EclipseExtensionsPlugin.getDefault().createStatus(IStatus.ERROR, exception));
 			}
 			if (reader == null) {
 				// problematic class file

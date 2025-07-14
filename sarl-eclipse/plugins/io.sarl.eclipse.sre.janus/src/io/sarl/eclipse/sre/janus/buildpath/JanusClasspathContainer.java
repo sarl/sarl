@@ -31,10 +31,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 
-import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
-import io.sarl.eclipse.util.BundleUtil;
-import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
-import io.sarl.lang.ide.buildpath.SARLBundleBuildPath;
+import io.sarl.apputils.eclipseextensions.Bundles;
+import io.sarl.apputils.eclipseextensions.Bundles.IBundleDependencies;
+import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
+import io.sarl.apputils.eclipseextensions.buildpath.SARLBundleBuildPath;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -121,7 +121,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
 		final var bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
-		final var resolvedBundles = BundleUtil.resolveBundleDependencies(bundle);
+		final var resolvedBundles = Bundles.resolveBundleDependencies(bundle);
 		return resolvedBundles;
 	}
 

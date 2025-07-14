@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ide.buildpath;
+package io.sarl.apputils.eclipseextensions.buildpath;
 
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -31,7 +31,7 @@ import java.util.TreeSet;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since0.13
+ * @since 0.13
  */
 public class SARLBundleBuildPath {
 

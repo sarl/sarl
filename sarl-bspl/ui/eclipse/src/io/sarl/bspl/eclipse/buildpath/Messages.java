@@ -19,29 +19,30 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.util.classpath;
+package io.sarl.bspl.eclipse.buildpath;
 
-import java.util.Collection;
+import org.eclipse.osgi.util.NLS;
 
-import org.eclipse.jdt.core.IClasspathEntry;
-
-/** Provide the default class path libraries for a SARL project.
+/** Localized Messages.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @ExcludeFromApidoc
  */
-@FunctionalInterface
-public interface SarlDefaultClassPathProvider {
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String BSPLClasspathContainer_0;
+	public static String BSPLClasspathContainerInitializer_0;
+	public static String BSPLContainerWizardPage_0;
+	public static String BSPLContainerWizardPage_1;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
 
-	/**
-	 * Returns the default class path entries to be added on new projects.
-	 * By default this is the JRE container as selected by the user.
-	 *
-	 * @param classpathEntries the collection in which the classpath entries will be added.
-	 */
-	void putDefaultClasspathEntriesIn(Collection<IClasspathEntry> classpathEntries);
-
+	private Messages() {
+	}
 }

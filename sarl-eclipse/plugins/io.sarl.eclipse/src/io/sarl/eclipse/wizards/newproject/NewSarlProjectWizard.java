@@ -59,11 +59,11 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.StringInputStream;
 
+import io.sarl.apputils.eclipseextensions.Utilities;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.ui.preferences.SARLPreferences;

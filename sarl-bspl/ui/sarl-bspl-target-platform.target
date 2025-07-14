@@ -43,5 +43,35 @@
 			  </dependency>
 		  </dependencies>
 	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.lang</groupId>
+				  <artifactId>compiler</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.baseutils</groupId>
+				  <artifactId>afc.extension</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="none" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="ignore" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.apputils</groupId>
+				  <artifactId>eclipseextensions</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
   </locations>
 </target>

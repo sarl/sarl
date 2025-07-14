@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.util;
+package io.sarl.apputils.eclipseextensions;
 
 import java.util.Iterator;
 
@@ -42,8 +42,8 @@ import io.sarl.lang.SARLConfig;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.15
  */
-@SuppressWarnings("restriction")
 public final class Utilities {
 
 	/** Empty string.
@@ -196,12 +196,12 @@ public final class Utilities {
 		assert bundle != null;
 		final IPath bundlePath;
 		if (precomputedBundlePath == null) {
-			bundlePath = BundleUtil.getBundlePath(bundle);
+			bundlePath = Bundles.getBundlePath(bundle);
 		} else {
 			bundlePath = precomputedBundlePath;
 		}
-		final var sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-		final var javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+		final var sourceBundlePath = Bundles.getSourceBundlePath(bundle, bundlePath);
+		final var javadocPath = Bundles.getJavadocBundlePath(bundle, bundlePath);
 
 		final IClasspathAttribute[] extraAttributes;
 		if (javadocPath == null) {
@@ -247,12 +247,12 @@ public final class Utilities {
 		assert bundle != null;
 		final IPath bundlePath;
 		if (precomputedBundlePath == null) {
-			bundlePath = BundleUtil.getBundlePath(bundle);
+			bundlePath = Bundles.getBundlePath(bundle);
 		} else {
 			bundlePath = precomputedBundlePath;
 		}
-		final var sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-		final var javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+		final var sourceBundlePath = Bundles.getSourceBundlePath(bundle, bundlePath);
+		final var javadocPath = Bundles.getJavadocBundlePath(bundle, bundlePath);
 
 		final IClasspathAttribute[] extraAttributes;
 		if (javadocPath == null) {

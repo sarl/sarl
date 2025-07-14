@@ -1,0 +1,4 @@
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="projectConfigurationFragment" name="%projectConfigurationFragment" schema="schema/projectConfigurationFragment.exsd"/>
+</plugin>

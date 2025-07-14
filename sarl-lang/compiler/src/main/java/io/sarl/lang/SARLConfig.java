@@ -35,6 +35,15 @@ import io.sarl.lang.core.SARLVersion;
  */
 public final class SARLConfig {
 
+	/**
+	 * Default SARL file extension (with the dot).
+	 *
+	 * <p>TODO Find a way to get it from the io.sarl.lang code itself (which is generated).
+	 *
+	 * @since 0.15
+	 */
+	public static final String SARL_FILE_EXTENSION = ".sarl"; //$NON-NLS-1$
+
 	/** Path of the main source files within a Maven project.
 	 * @since 0.8
 	 */

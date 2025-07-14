@@ -19,15 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.bspl.eclipse.natures;
+package io.sarl.apputils.eclipseextensions.classpath;
 
-import com.google.inject.ImplementedBy;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
+import java.util.Collection;
 
-/**
- * Configurator for a BSPL project.
+import org.eclipse.jdt.core.IClasspathEntry;
+
+/** Provide the default class path libraries for a SARL project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -35,23 +33,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-@ImplementedBy(BSPLProjectConfigurator.class)
-public interface IProjectUnconfigurator {
+@FunctionalInterface
+public interface SarlDefaultClassPathProvider {
 
-	/** Replies if the project can be unconfigured.
+	/**
+	 * Returns the default class path entries to be added on new projects.
+	 * By default this is the JRE container as selected by the user.
 	 *
-	 * @param project the project.
-	 * @param monitor the progress monitor.
-	 * @return {@code true} if the project could be unconfigured.
+	 * @param classpathEntries the collection in which the classpath entries will be added.
 	 */
-	boolean canUnconfigure(IProject project, IProgressMonitor monitor);
-
-	/** Unconfigure the given project.
-	 *
-	 * @param project the project.
-	 * @param monitor the progress monitor.
-	 * @throws CoreException if the project cannot be unconfigured.
-	 */
-	void unconfigure(IProject project, IProgressMonitor monitor) throws CoreException;
+	void putDefaultClasspathEntriesIn(Collection<IClasspathEntry> classpathEntries);
 
 }

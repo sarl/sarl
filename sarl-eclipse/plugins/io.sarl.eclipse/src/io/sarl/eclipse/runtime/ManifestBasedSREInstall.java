@@ -49,8 +49,8 @@ import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import io.sarl.apputils.eclipseextensions.Utilities;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities;
 
 /**
  * SRE install that is based on the information within the MANIFEST file.

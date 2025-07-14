@@ -1,0 +1,13 @@
+# about.mappings
+# contains fill-ins for about.properties
+# java.io.Properties file (ISO 8859-1 with "\" escapes)
+# This file does not need to be translated.
+
+# This file may be automatically generated.
+# Do not change it if there no replacement variables below.
+
+0=0.15.0-BETA
+1=2014-2025
+2=SARL.io, the Original Authors and Main Authors
+3=http://www.sarl.io
+
