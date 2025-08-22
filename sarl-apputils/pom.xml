@@ -10,6 +10,7 @@
   <modules>
     <module>bootiqueapp</module>
     <module>bootiquebatchcompiler</module>
+    <module>uiextensions</module>
     <module>eclipseextensions</module>
   </modules>
   <properties>

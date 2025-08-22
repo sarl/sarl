@@ -25,10 +25,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.launching.runner.general.AbstractLaunchProcess;
 import io.sarl.eclipse.launching.runner.general.AbstractSARLLaunchConfiguration;
 import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
-import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL application.

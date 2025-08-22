@@ -21,6 +21,7 @@
 
 package io.sarl.eclipse.sre.janus.buildpath;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -31,10 +32,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 
-import io.sarl.apputils.eclipseextensions.Bundles;
-import io.sarl.apputils.eclipseextensions.Bundles.IBundleDependencies;
 import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.apputils.eclipseextensions.buildpath.SARLBundleBuildPath;
+import io.sarl.apputils.uiextensions.Bundles;
+import io.sarl.apputils.uiextensions.Bundles.IBundleDependencies;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -107,7 +108,17 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 * @param javaProject the associated JAva project.
 	 */
 	public JanusClasspathContainer(IPath containerPath, IJavaProject javaProject) {
-		super(containerPath, javaProject);
+		this(containerPath, javaProject, null);
+	}
+
+	/** Constructor.
+	 *
+	 * @param containerPath the path of the container, e.g. the project.
+	 * @param javaProject the associated JAva project.
+	 * @param entryComparator the comparator of classpath entries to use.
+	 */
+	public JanusClasspathContainer(IPath containerPath, IJavaProject javaProject, Comparator<IClasspathEntry> entryComparator) {
+		super(containerPath, javaProject, entryComparator);
 	}
 
 	@Override

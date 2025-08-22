@@ -21,7 +21,7 @@
 
 package io.sarl.eclipse.natures;
 
-import static io.sarl.apputils.eclipseextensions.ProjectNatures.addNatures;
+import static io.sarl.apputils.uiextensions.ProjectNatures.addNatures;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,14 +65,15 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.wizards.datatransfer.ProjectConfigurator;
 import org.eclipse.xtext.Constants;
 
-import io.sarl.apputils.eclipseextensions.Bundles;
 import io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurationFragments;
+import io.sarl.apputils.uiextensions.Bundles;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.util.OutParameter;
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 /**
@@ -94,8 +95,8 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 */
 	public SARLProjectConfigurator() {
 		final var injector = SARLEclipseExecutableExtensionFactory.getSARLInjector();
-		final var fileExtension = injector.getInstance(
-				Key.get(String.class, Names.named(Constants.FILE_EXTENSIONS)));
+		final var fileExtension = SarlUtils.getMajorFileExtension(injector.getInstance(
+				Key.get(String.class, Names.named(Constants.FILE_EXTENSIONS))));
 		if (Strings.isNullOrEmpty(fileExtension)) {
 			this.fileExtension = null;
 		} else {

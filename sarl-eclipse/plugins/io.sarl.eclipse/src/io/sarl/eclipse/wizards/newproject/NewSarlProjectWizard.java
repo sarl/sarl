@@ -59,7 +59,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.StringInputStream;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
@@ -130,7 +130,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		super.init(workbench, currentSelection);
 		setDefaultPageImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
 				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
-		setWindowTitle(Messages.SARLProjectNewWizard_0);
+		setWindowTitle(Messages.NewSarlProjectWizard_0);
 	}
 
 	@Override
@@ -199,7 +199,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 		if (outputPath == null) {
 			final var message = MessageFormat.format(
-					Messages.BuildSettingWizardPage_0,
+					Messages.NewSarlProjectWizard_1,
 					SARLConfig.FOLDER_SOURCE_GENERATED);
 			final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
@@ -207,7 +207,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		}
 		if (!hasSourcePath(javaProject, outputPath)) {
 			final var message = MessageFormat.format(
-					Messages.SARLProjectCreationWizard_0,
+					Messages.NewSarlProjectWizard_2,
 					toOSString(outputPath),
 					buildInvalidOutputPathMessageFragment(javaProject));
 			final var status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);

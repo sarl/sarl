@@ -22,13 +22,10 @@
 package io.sarl.eclipse.launching.dialog;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
@@ -42,8 +39,9 @@ import org.eclipse.jdt.debug.ui.launchConfigurations.JavaDependenciesTab;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
-import io.sarl.eclipse.SARLEclipseConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.apputils.eclipseextensions.launching.ISarlRuntimeEnvironmentTab;
+import io.sarl.apputils.eclipseextensions.launching.ISreChangeListener;
+import io.sarl.apputils.eclipseextensions.launching.SarlLaunchConfigurationPanels;
 
 /**
  * Abstract tab group for run configurations of a SARL element.
@@ -128,7 +126,7 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 			}
 		}
 
-		final var factories = getFactoriesFromExtension();
+		final var factories = SarlLaunchConfigurationPanels.getPanelFactoriesFromExtension();
 		for (final var factory : factories) {
 			if (factory.canCreatePanel(dialog, mode, list, runtimeTab)) {
 				final var panel = factory.newLaunchConfigurationPanel(dialog, mode, list, runtimeTab);
@@ -151,30 +149,6 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 		final var array = new ILaunchConfigurationTab[list.size()];
 		list.toArray(array);
 		return array;
-	}
-
-	private static List<ISarlLaunchConfigurationPanelFactory> getFactoriesFromExtension() {
-		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID,
-				SARLEclipseConfig.EXTENSION_POINT_LAUNCH_CONFIGURATION_PANEL_FACTORY);
-		if (extensionPoint != null) {
-			final var factories = new ArrayList<ISarlLaunchConfigurationPanelFactory>();
-			for (final var element : extensionPoint.getConfigurationElements()) {
-				try {
-					final var obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					if (obj instanceof ISarlLaunchConfigurationPanelFactory cvalue) {
-						factories.add(cvalue);
-					} else {
-						SARLEclipsePlugin.getDefault().logErrorMessage(
-								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
-					}
-				} catch (CoreException e) {
-					SARLEclipsePlugin.getDefault().log(e);
-				}
-			}
-			return factories;
-		}
-		return Collections.emptyList();
 	}
 
 	/** Register the given SRE listener on any change of SRE selection into the run-time environment tab.

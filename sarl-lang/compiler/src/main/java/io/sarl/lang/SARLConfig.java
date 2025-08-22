@@ -44,10 +44,60 @@ public final class SARLConfig {
 	 */
 	public static final String SARL_FILE_EXTENSION = ".sarl"; //$NON-NLS-1$
 
+	/**
+	 * Default SARL file extension (with the dot).
+	 *
+	 * <p>TODO Find a way to get it from the io.sarl.lang code itself (which is generated).
+	 *
+	 * @since 0.15
+	 */
+	public static final String[] SARL_FILE_EXTENSIONS = { SARL_FILE_EXTENSION, ".Sarl", ".SARL" }; //$NON-NLS-1$ //$NON-NLS-2$
+
+	/** Path of the source files within a Maven project.
+	 * @since 0.15
+	 */
+	public static final String FOLDER_MAVEN_SRC_PREFIX = "src"; //$NON-NLS-1$
+
+	/** Name of the root folder for main source files.
+	 *
+	 * @since 0.15
+	 */
+	public static final String MAIN_FOLDER_SIMPLENAME = "main"; //$NON-NLS-1$
+
+	/** Name of the root folder for SARL files.
+	 *
+	 * @since 0.15
+	 */
+	public static final String SARL_FOLDER_SIMPLENAME = "sarl"; //$NON-NLS-1$
+
+	/** Name of the root folder for test files.
+	 *
+	 * @since 0.15
+	 */
+	public static final String TEST_FOLDER_SIMPLENAME = "test"; //$NON-NLS-1$
+
+	/** Name of the root folder for integration test files.
+	 *
+	 * @since 0.15
+	 */
+	public static final String INTEGRATION_TEST_FOLDER_SIMPLENAME = "it"; //$NON-NLS-1$
+
+	/** Name of the root folder for all the generated files by a SARL compiler.
+	 *
+	 * @since 0.15
+	 */
+	public static final String GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME = "generated-sources"; //$NON-NLS-1$
+
+	/** Name of the root folder for resources.
+	 *
+	 * @since 0.15
+	 */
+	public static final String RESOURCE_FOLDER_SIMPLENAME = "resources"; //$NON-NLS-1$
+
 	/** Path of the main source files within a Maven project.
 	 * @since 0.8
 	 */
-	public static final String FOLDER_MAVEN_MAIN_PREFIX = "src/main"; //$NON-NLS-1$
+	public static final String FOLDER_MAVEN_MAIN_PREFIX = FOLDER_MAVEN_SRC_PREFIX + "/" + MAIN_FOLDER_SIMPLENAME; //$NON-NLS-1$
 
 	/** Path of the Java source files.
 	 */
@@ -55,34 +105,34 @@ public final class SARLConfig {
 
 	/** Path of the SARL source files.
 	 */
-	public static final String FOLDER_SOURCE_SARL = FOLDER_MAVEN_MAIN_PREFIX + "/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_SOURCE_SARL = FOLDER_MAVEN_MAIN_PREFIX + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$
 
 	/** Path of the generated source files.
 	 */
-	public static final String FOLDER_SOURCE_GENERATED = FOLDER_MAVEN_MAIN_PREFIX + "/generated-sources/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_SOURCE_GENERATED = FOLDER_MAVEN_MAIN_PREFIX + "/" + GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Path of the test source files within a Maven project.
 	 * @since 0.8
 	 */
-	public static final String FOLDER_MAVEN_TEST_PREFIX = "src/test"; //$NON-NLS-1$
+	public static final String FOLDER_MAVEN_TEST_PREFIX = FOLDER_MAVEN_SRC_PREFIX + "/" + TEST_FOLDER_SIMPLENAME; //$NON-NLS-1$
 
 	/** Path of the test Java source files.
 	 */
-	public static final String FOLDER_TEST_SOURCE_SARL = FOLDER_MAVEN_TEST_PREFIX + "/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_TEST_SOURCE_SARL = FOLDER_MAVEN_TEST_PREFIX + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$
 
 	/** Path of the integration test source files within a Maven project.
 	 * @since 0.13
 	 */
-	public static final String FOLDER_MAVEN_INTEGRATION_TEST_PREFIX = "src/it"; //$NON-NLS-1$
+	public static final String FOLDER_MAVEN_INTEGRATION_TEST_PREFIX = FOLDER_MAVEN_SRC_PREFIX + "/" + INTEGRATION_TEST_FOLDER_SIMPLENAME; //$NON-NLS-1$
 
 	/** Path of the integration test's Java source files.
 	 * @since 0.13
 	 */
-	public static final String FOLDER_INTEGRATION_TEST_SOURCE_SARL = FOLDER_MAVEN_INTEGRATION_TEST_PREFIX + "/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_INTEGRATION_TEST_SOURCE_SARL = FOLDER_MAVEN_INTEGRATION_TEST_PREFIX + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$
 
 	/** Path of the SARL source files.
 	 */
-	public static final String FOLDER_TEST_SOURCE_GENERATED = FOLDER_MAVEN_TEST_PREFIX + "/generated-sources/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_TEST_SOURCE_GENERATED = FOLDER_MAVEN_TEST_PREFIX + "/" + GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Name of the output configuration that is dedicated to tests.
 	 *
@@ -97,13 +147,13 @@ public final class SARLConfig {
 
 	/** Path of the resource files.
 	 */
-	public static final String FOLDER_RESOURCES = "src/main/resources"; //$NON-NLS-1$
+	public static final String FOLDER_RESOURCES = FOLDER_MAVEN_SRC_PREFIX + "/" + MAIN_FOLDER_SIMPLENAME + "/" + RESOURCE_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Path of the test resource files.
 	 *
 	 * @since 0.13
 	 */
-	public static final String FOLDER_TEST_RESOURCES = "src/test/resources"; //$NON-NLS-1$
+	public static final String FOLDER_TEST_RESOURCES = FOLDER_MAVEN_SRC_PREFIX + "/" + TEST_FOLDER_SIMPLENAME + "/" + RESOURCE_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Path of the binary files.
 	 */

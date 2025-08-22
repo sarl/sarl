@@ -133,6 +133,8 @@
   version = '0.15';
   uuid = '9FFC7A03-C195-3674-BA8C-0A7369460097';
   fileTypes = (
-    'sarl'
+    'sarl',
+    'SARL',
+    'Sarl'
   )
 }

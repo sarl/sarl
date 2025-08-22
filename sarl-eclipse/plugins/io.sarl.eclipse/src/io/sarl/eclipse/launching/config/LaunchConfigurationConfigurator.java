@@ -36,8 +36,8 @@ import org.eclipse.jdt.internal.launching.JavaMigrationDelegate;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 

@@ -278,6 +278,7 @@
       <feature id="io.sarl.eclipse.features.sarlcompiler" installMode="root"/>
       <feature id="io.sarl.eclipse.features.sre.janus" installMode="root"/>
       <feature id="io.sarl.bspl.lang.feature" installMode="root"/>
+      <feature id="org.eclipse.epp.mpc" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
@@ -289,6 +290,7 @@
       <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.discovery.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclientjava.feature" installMode="root"/>
       <feature id="org.eclipse.platform" installMode="root"/>

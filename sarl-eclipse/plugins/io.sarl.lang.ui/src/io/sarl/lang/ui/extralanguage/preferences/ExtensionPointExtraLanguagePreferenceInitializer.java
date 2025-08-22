@@ -21,19 +21,15 @@
 
 package io.sarl.lang.ui.extralanguage.preferences;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.inject.Singleton;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
+import io.sarl.apputils.eclipseextensions.Extensions;
 import io.sarl.lang.ui.SARLUiConfig;
-import io.sarl.lang.ui.internal.LangActivator;
 
 
 /** Provide the output configuration from the SARL code and the extra languages.
@@ -54,26 +50,11 @@ public class ExtensionPointExtraLanguagePreferenceInitializer implements IPrefer
 	@Override
 	public void initialize(IPreferenceStoreAccess access) {
 		if (this.initializers == null) {
-			this.initializers = new ArrayList<>();
-			final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
-			if (extensionPoint != null) {
-				Object obj;
-				for (final var element : extensionPoint.getConfigurationElements()) {
-					try {
-						obj = element.createExecutableExtension(EXTENSION_POINT_PREFERENCE_INITIALIZER_ATTRIBUTE);
-						if (obj instanceof IPreferenceStoreInitializer cvalue) {
-							this.initializers.add(cvalue);
-						}
-					} catch (CoreException exception) {
-						LangActivator.getInstance().getLog().log(new Status(
-								IStatus.WARNING,
-								LangActivator.getInstance().getBundle().getSymbolicName(),
-								exception.getLocalizedMessage(),
-								exception));
-					}
-				}
-			}
+			this.initializers = Extensions.getExtensions(
+					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS,
+					EXTENSION_POINT_PREFERENCE_INITIALIZER_ATTRIBUTE,
+					IPreferenceStoreInitializer.class)
+				.collect(Collectors.toList());
 		}
 		for (final var initializer : this.initializers) {
 			initializer.initialize(access);

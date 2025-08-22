@@ -13,7 +13,7 @@
    </extension>
 
    <extension
-         point="io.sarl.eclipse.projectSREProviderFactory">
+         point="io.sarl.apputils.eclipseextensions.projectSREProviderFactory">
      <projectSREProviderFactory
            class="io.sarl.eclipse.m2e.sre.MavenProjectSREProviderFactory"/>
    </extension>

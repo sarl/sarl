@@ -26,8 +26,8 @@ import java.util.List;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-import io.sarl.eclipse.launching.dialog.ISarlLaunchConfigurationPanelFactory;
-import io.sarl.eclipse.launching.dialog.ISarlRuntimeEnvironmentTab;
+import io.sarl.apputils.eclipseextensions.launching.ISarlLaunchConfigurationPanelFactory;
+import io.sarl.apputils.eclipseextensions.launching.ISarlRuntimeEnvironmentTab;
 
 /**
  * Provider of the launch configuration panel for the Janus network.

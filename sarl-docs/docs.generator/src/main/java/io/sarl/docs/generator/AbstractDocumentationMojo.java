@@ -79,6 +79,7 @@ import io.sarl.docs.generator.parser.SarlDocumentationParser.ParsingException;
 import io.sarl.docs.validator.DocumentationLogger;
 import io.sarl.docs.validator.DocumentationSetup;
 import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
+import io.sarl.lang.core.util.SarlUtils;
 
 /** Abstract Maven MOJO for the documentation of the SARL project.
  *
@@ -240,8 +241,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			this.reflect = this.injector.getInstance(ReflectExtensions.class);
 		}
 
-		this.targetLanguageFileExtension = this.injector.getInstance(Key.get(String.class, Names.named(
-				org.eclipse.xtext.Constants.FILE_EXTENSIONS)));
+		this.targetLanguageFileExtension = SarlUtils.getMajorFileExtension(this.injector.getInstance(Key.get(String.class, Names.named(
+				org.eclipse.xtext.Constants.FILE_EXTENSIONS))));
 
 		final var errorMessage = internalExecute();
 		if (!Strings.isEmpty(errorMessage)) {

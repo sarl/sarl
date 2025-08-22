@@ -36,6 +36,8 @@ import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtext.Constants;
 
+import io.sarl.lang.core.util.SarlUtils;
+
 /**
  * Provides the images for the Package Explorer.
  *
@@ -63,7 +65,7 @@ public class SARLElementImageProvider extends JavaElementImageProvider {
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
 		this.fileExtensions.clear();
-		this.fileExtensions.addAll(Arrays.asList(fileExtensions.split("[,;: ]+"))); //$NON-NLS-1$
+		this.fileExtensions.addAll(Arrays.asList(SarlUtils.getFileExtensions(fileExtensions)));
 	}
 
 	/** Replies the file extensions.

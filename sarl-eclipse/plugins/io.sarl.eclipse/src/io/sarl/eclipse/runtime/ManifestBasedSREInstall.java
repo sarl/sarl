@@ -49,7 +49,7 @@ import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 /**

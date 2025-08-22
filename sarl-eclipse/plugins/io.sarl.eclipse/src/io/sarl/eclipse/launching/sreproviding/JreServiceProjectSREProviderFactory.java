@@ -33,8 +33,8 @@ import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.eclipse.runtime.ProjectSREProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProvider;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
 /** Factory of the default implementation of a project SRE provider.

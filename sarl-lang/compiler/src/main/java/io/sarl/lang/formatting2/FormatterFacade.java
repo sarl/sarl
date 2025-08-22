@@ -23,9 +23,6 @@ package io.sarl.lang.formatting2;
 
 import java.util.Collections;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
@@ -41,6 +38,12 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
+
+import io.sarl.lang.core.util.SarlUtils;
 
 /**
  * Provide a facade for the SARL formatter.
@@ -65,8 +68,18 @@ public class FormatterFacade {
 	@Inject
 	private Provider<TextRegionAccessBuilder> regionAccessBuilder;
 
+	@Inject
 	@Named(Constants.FILE_EXTENSIONS)
+	private String fileExtensions;
+
 	private String fileExtension;
+
+	private String getFileExtension() {
+		if (this.fileExtension == null) {
+			this.fileExtension = SarlUtils.getMajorFileExtension(this.fileExtensions);
+		}
+		return this.fileExtension;
+	}
 
 	/** Format the given code.
 	 *
@@ -88,7 +101,7 @@ public class FormatterFacade {
 	@Pure
 	public String format(String sarlCode, ResourceSet resourceSet) {
 		try {
-			final var createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
+			final var createURI = URI.createURI("synthetic://to-be-formatted." + getFileExtension()); //$NON-NLS-1$
 			final var res = this.resourceFactory.createResource(createURI);
 			if (res instanceof XtextResource resource) {
 				final var resources = resourceSet.getResources();

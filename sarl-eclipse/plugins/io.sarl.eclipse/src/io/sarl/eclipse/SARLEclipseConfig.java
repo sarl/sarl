@@ -124,34 +124,10 @@ public final class SARLEclipseConfig {
 	 */
 	public static final String SARL_APPLICATION_IMAGE = "icons/sarl_application_16.png"; //$NON-NLS-1$
 
-	/**
-	 * Extension point identifier for contributions of a wizard page that for a ISREInstall
-	 * (value {@code "sreInstallPage"}).
-	 */
-	public static final String EXTENSION_POINT_SRE_INSTALL_PAGES = "sreInstallPages"; //$NON-NLS-1$
-
-	/**
-	 * Name of the extension points for SRE installation
-	 * (value {@code "sreInstallations"}).
-	 */
-	public static final String EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT = "sreInstallations"; //$NON-NLS-1$
-
-	/**
-	 * Name of the extension points for the factory of project SRE provider.
-	 * (value {@code "projectSREProviderFactory"}).
-	 */
-	public static final String EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY = "projectSREProviderFactory"; //$NON-NLS-1$
-
 	/** Filename of the image that may be used at
 	 * the top of the wizard dialog when submiting an issue to the SARL tracker.
 	 */
 	public static final String SUBMIT_ISSUE_WIZARD_DIALOG_IMAGE = "icons/sarl_submit_issue_dialog.png"; //$NON-NLS-1$
-
-	/**
-	 * Name of the extension points for the factory of launch configuration panels.
-	 * (value {@code "sarlLaunchConfigurationPanels"}).
-	 */
-	public static final String EXTENSION_POINT_LAUNCH_CONFIGURATION_PANEL_FACTORY = "sarlLaunchConfigurationPanels"; //$NON-NLS-1$
 
 	private SARLEclipseConfig() {
 		//

@@ -23,6 +23,7 @@ package io.sarl.apputils.eclipseextensions.projectconfig;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -61,10 +62,17 @@ public final class ProjectConfigurationFragments {
 	 * @return the list of the fragment.
 	 */
 	public static List<ProjectConfigurationFragment> getConfigurationFragmentsFromExtension() {
+		return getConfigurationFragmentStreamFromExtension().collect(Collectors.toList());
+	}
+
+	/** Replies the fragments that are defined as extensions in the given Eclipse plugin.
+	 *
+	 * @return the list of the fragment.
+	 */
+	public static Stream<ProjectConfigurationFragment> getConfigurationFragmentStreamFromExtension() {
 		return Extensions.getExtensions(
 				EclipseExtensionsPlugin.PLUGIN_ID, EXTENSION_POINT_PROJECT_CONFIGURATION_FRAGMENT,
-				"class", ProjectConfigurationFragment.class) //$NON-NLS-1$
-			.collect(Collectors.toList());
+				"class", ProjectConfigurationFragment.class); //$NON-NLS-1$
 	}
 
 	/** Create a source folder.

@@ -56,8 +56,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
@@ -68,6 +66,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstalls;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
@@ -451,31 +451,11 @@ public final class SARLRuntime {
 	 * Initializes SRE extensions.
 	 */
 	private static void initializeSREExtensions() {
-		final var status = new MultiStatus(SARLEclipsePlugin.PLUGIN_ID,
-				IStatus.OK, "Exceptions occurred", null);  //$NON-NLS-1$
-		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID, SARLEclipseConfig.EXTENSION_POINT_SARL_RUNTIME_ENVIRONMENT);
-		if (extensionPoint != null) {
-			Object obj;
-			for (final var element : extensionPoint.getConfigurationElements()) {
-				try {
-					obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					if (obj instanceof ISREInstall sre) {
-						platformSREInstalls.add(sre.getId());
-						ALL_SRE_INSTALLS.put(sre.getId(), sre);
-					} else {
-						SARLEclipsePlugin.getDefault().logErrorMessage(
-								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
-					}
-				} catch (CoreException e) {
-					status.add(e.getStatus());
-				}
-			}
-			if (!status.isOK()) {
-				//only happens on a CoreException
-				SARLEclipsePlugin.getDefault().getLog().log(status);
-			}
-		}
+		ISREInstalls.getSREInstallStreamFromExtension()
+			.forEach(sre -> {
+				platformSREInstalls.add(sre.getId());
+				ALL_SRE_INSTALLS.put(sre.getId(), sre);
+			});
 	}
 
 	/**

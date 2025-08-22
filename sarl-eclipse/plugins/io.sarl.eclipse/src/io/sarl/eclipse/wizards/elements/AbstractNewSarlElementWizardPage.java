@@ -95,6 +95,7 @@ import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.formatting2.FormatterFacade;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
@@ -232,7 +233,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	@Inject
 	private Injector injector;
 
-	private String sarlFileExtension;
+	private String[] sarlFileExtensions;
 
 	private IResource resource;
 
@@ -300,7 +301,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	@Inject
 	public void setFileExtension(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
-		this.sarlFileExtension = fileExtension;
+		this.sarlFileExtensions = SarlUtils.getFileExtensions(fileExtension);
 	}
 
 	/** Update the status of the wizard.
@@ -340,7 +341,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	protected IStatus typeNameChanged() {
-		assert this.sarlFileExtension != null;
+		assert this.sarlFileExtensions != null;
 		final var packageFragment = getPackageFragment();
 		final var typeName = getTypeName();
 		if (packageFragment != null && !Strings.isNullOrEmpty(typeName)) {
@@ -366,7 +367,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return {@code true} if a file (SALR or Java) with the given name exists.
 	 */
 	protected boolean isSarlFile(IPackageFragment packageFragment, String filename) {
-		if (isFileExists(packageFragment, filename, this.sarlFileExtension)) {
+		if (isFileExists(packageFragment, filename, this.sarlFileExtensions)) {
 			return true;
 		}
 		final var project = getPackageFragmentRoot().getJavaProject();
@@ -390,15 +391,23 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * @param packageFragment the package in which the file should be search for.
 	 * @param filename the filename to test.
-	 * @param extension the filename extension to search for.
+	 * @param extensions the filename extensions to search for.
 	 * @return {@code true} if a file (SARL or Java) with the given name exists.
+	 * @since 0.15
 	 */
-	protected static boolean isFileExists(IPackageFragment packageFragment, String filename, String extension) {
+	protected static boolean isFileExists(IPackageFragment packageFragment, String filename, String... extensions) {
+		assert extensions != null;
 		if (packageFragment != null) {
 			final var resource = packageFragment.getResource();
 			if (resource instanceof IFolder folder) {
-				if (folder.getFile(filename + "." + extension).exists()) { //$NON-NLS-1$
-					return true;
+				for (final var extension : extensions) {
+					final var ffn = new StringBuilder();
+					ffn.append(filename);
+					ffn.append('.');
+					ffn.append(extension);
+					if (folder.getFile(ffn.toString()).exists()) {
+						return true;
+					}
 				}
 			}
 		}
@@ -894,14 +903,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			} else {
 				mainmon.worked(1);
 			}
+			final var majorFileExtension = SarlUtils.getMajorFileExtension(this.sarlFileExtensions);
 			var sarlFile = packageResource.getFile(
 					getTypeName() + "." //$NON-NLS-1$
-					+ this.sarlFileExtension);
+					+ majorFileExtension);
 			var index = 1;
 			while (sarlFile.exists()) {
 				sarlFile = packageResource.getFile(
 						getTypeName() + index + "." //$NON-NLS-1$
-						+ this.sarlFileExtension);
+						+ majorFileExtension);
 				++index;
 			}
 

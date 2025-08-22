@@ -44,7 +44,7 @@ import org.eclipse.osgi.util.TextProcessor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 /** Dialog box for selecting an type.

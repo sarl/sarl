@@ -23,30 +23,29 @@ package io.sarl.eclipse.launching.runner.general;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathProvider;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 
-import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.apputils.eclipseextensions.Extensions;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProviderFactories;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.sreproviding.EclipseIDEProjectSREProvider;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
 /**
@@ -223,29 +222,28 @@ public final class SrePathUtils {
 	}
 
 	private static ISREInstall getSREFromExtension(IProject project, boolean verify) {
-		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID,
-				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
-		if (extensionPoint != null) {
-			for (final var element : extensionPoint.getConfigurationElements()) {
-				try {
-					final var obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					assert obj instanceof ProjectSREProviderFactory;
-					final var factory = (ProjectSREProviderFactory) obj;
-					final var provider = factory.getProjectSREProvider(project);
+		final var sreInstall = ProjectSREProviderFactories.getSREProviderFactoryStreamFromExtension()
+				.map(it -> {
+					final var provider = it.getProjectSREProvider(project);
 					if (provider != null) {
 						final var sre = provider.getProjectSREInstall();
-						if (sre == null) {
-							return null;
+						if (sre != null) {
+							return sre;
 						}
-						if (verify) {
-							verifySREValidity(sre, sre.getId());
-						}
-						return sre;
 					}
-				} catch (CoreException e) {
-					SARLEclipsePlugin.getDefault().log(e);
+					return null;
+				})
+				.filter(it -> it != null)
+				.findFirst();
+		if (sreInstall.isPresent()) {
+			final var sre = sreInstall.get();
+			try {
+				if (verify) {
+					verifySREValidity(sre, sre.getId());
 				}
+				return sre;
+			} catch (CoreException e) {
+				SARLEclipsePlugin.getDefault().log(e);
 			}
 		}
 		return null;
@@ -290,16 +288,14 @@ public final class SrePathUtils {
 		 */
 		protected void ensureProviders() {
 			if (this.cpProviders == null) {
-				this.cpProviders = new HashMap<>();
-				final var point = Platform.getExtensionRegistry().getExtensionPoint(
-						LaunchingPlugin.ID_PLUGIN, JavaRuntime.EXTENSION_POINT_RUNTIME_CLASSPATH_PROVIDERS);
-				if (point != null) {
-					final var extensions = point.getConfigurationElements();
-					for (final var element : Arrays.asList(extensions)) {
-						final var res = new RuntimeClasspathProvider(element);
-						this.cpProviders.put(res.getIdentifier(), res);
-					}
-				}
+				this.cpProviders = Extensions.getExtensions(
+						LaunchingPlugin.ID_PLUGIN, JavaRuntime.EXTENSION_POINT_RUNTIME_CLASSPATH_PROVIDERS)
+						.map(it -> new RuntimeClasspathProvider(it))
+						.collect(Collectors.toMap(
+								it -> it.getIdentifier(),
+								it -> it,
+								(oldValue, newValue) -> newValue,
+								() -> new HashMap<>()));
 			}
 		}
 	}

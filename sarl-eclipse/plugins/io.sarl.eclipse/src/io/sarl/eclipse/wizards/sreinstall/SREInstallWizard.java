@@ -23,16 +23,17 @@ package io.sarl.eclipse.wizards.sreinstall;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.Wizard;
 
-import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.apputils.eclipseextensions.sreinstall.AbstractSREInstallPage;
+import io.sarl.apputils.eclipseextensions.sreinstall.SREInstallPages;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
 import io.sarl.eclipse.runtime.SREException;
 
@@ -92,40 +93,38 @@ public abstract class SREInstallWizard extends Wizard {
 	 * @return the wizard page.
 	 */
 	public AbstractSREInstallPage getPage(ISREInstall sre) {
-		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID,
-				SARLEclipseConfig.EXTENSION_POINT_SRE_INSTALL_PAGES);
-		if (sre != null && extensionPoint != null) {
-			IConfigurationElement firstTypeMatching = null;
-			for (final var info : extensionPoint.getConfigurationElements()) {
-				final var id = info.getAttribute("sreInstallId"); //$NON-NLS-1$
-				if (sre.getId().equals(Strings.nullToEmpty(id))) {
-					try {
-						final var page = (AbstractSREInstallPage)
-								info.createExecutableExtension("class"); //$NON-NLS-1$
-						page.setExistingNames(this.names);
-						return page;
-					} catch (CoreException e) {
-						SARLEclipsePlugin.getDefault().log(e);
-					}
-				} else if (firstTypeMatching == null
-						&& isInstance(info.getAttribute("sreInstallType"), sre)) { //$NON-NLS-1$
-					firstTypeMatching = info;
-				}
-			}
+		final var extensions = SREInstallPages.getSREInstallStreamFromExtension()
+			.collect(Collectors.toList());
 
-			if (firstTypeMatching != null) {
+		IConfigurationElement firstTypeMatching = null;
+		for (final var info : extensions) {
+			final var id = info.getAttribute("sreInstallId"); //$NON-NLS-1$
+			if (sre.getId().equals(Strings.nullToEmpty(id))) {
 				try {
 					final var page = (AbstractSREInstallPage)
-							firstTypeMatching.createExecutableExtension("class"); //$NON-NLS-1$
+							info.createExecutableExtension("class"); //$NON-NLS-1$
 					page.setExistingNames(this.names);
 					return page;
 				} catch (CoreException e) {
 					SARLEclipsePlugin.getDefault().log(e);
 				}
+			} else if (firstTypeMatching == null
+					&& isInstance(info.getAttribute("sreInstallType"), sre)) { //$NON-NLS-1$
+				firstTypeMatching = info;
 			}
 		}
 
+		if (firstTypeMatching != null) {
+			try {
+				final var page = (AbstractSREInstallPage)
+						firstTypeMatching.createExecutableExtension("class"); //$NON-NLS-1$
+				page.setExistingNames(this.names);
+				return page;
+			} catch (CoreException e) {
+				SARLEclipsePlugin.getDefault().log(e);
+			}
+		}
+		
 		if (sre == null || sre instanceof ManifestBasedSREInstall) {
 			final var standardVMPage = new StandardSREPage();
 			standardVMPage.setExistingNames(this.names);

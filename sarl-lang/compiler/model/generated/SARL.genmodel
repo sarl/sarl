@@ -5,7 +5,7 @@
     modelName="SARL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="17.0" copyrightFields="false" runtimeVersion="2.36" usedGenPackages="platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel#//xtend platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
   <genPackages prefix="Sarl" basePackage="io.sarl.lang" disposableProviderFactory="true"
-      fileExtensions="sarl" ecorePackage="SARL.ecore#/">
+      fileExtensions="sarl,SARL,Sarl" ecorePackage="SARL.ecore#/">
     <genClasses ecoreClass="SARL.ecore#//SarlScript"/>
     <genClasses ecoreClass="SARL.ecore#//SarlEvent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/typeParameters"/>

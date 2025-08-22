@@ -26,8 +26,11 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+
+import io.sarl.apputils.uiextensions.UiExtensionsPlugin;
 
 /**
  * Tools for the Eclipse extensions.
@@ -64,19 +67,34 @@ public final class Extensions {
 						if (obj != null && extensionType.isInstance(obj)) {
 							return extensionType.cast(obj);
 						}
-						final var plugin = EclipseExtensionsPlugin.getDefault();
+						final var plugin = UiExtensionsPlugin.getDefault();
 						final var status = plugin.createStatus(IStatus.ERROR,
 							"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
 						plugin.getLog().log(status);
 					} catch (CoreException e) {
-						final var plugin = EclipseExtensionsPlugin.getDefault();
+						final var plugin = UiExtensionsPlugin.getDefault();
 						final var status = plugin.createStatus(IStatus.ERROR, e);
 						plugin.getLog().log(status);
 					}
 					return null;
-				});
+				})
+				.filter(it -> it != null);
 		}
 		return Collections.<T>emptyList().stream();
+	}
+
+	/** Replies the extensions that are defined in the given Eclipse plugin.
+	 *
+	 * @param pluginId the identifier of the plugin that defines the extension.
+	 * @param extensionId the identifier of the extension.
+	 * @return the list of the extensions' informations.
+	 */
+	public static Stream<IConfigurationElement> getExtensions(String pluginId, String extensionId) {
+		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(pluginId, extensionId);
+		if (extensionPoint != null) {
+			return Arrays.asList(extensionPoint.getConfigurationElements()).stream();
+		}
+		return Collections.<IConfigurationElement>emptyList().stream();
 	}
 
 }

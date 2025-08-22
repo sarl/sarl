@@ -90,8 +90,8 @@ var pygmentsToolPath  = "${externalToolPath}/pygments/sarllexer"
 var textmateToolPath  = "${externalToolPath}/textmate"
 var vimToolPath  = "${externalToolPath}/vim"
 
-// File extension for the SARL scripts
-var file.extensions = "sarl"
+// File extension for the SARL scripts, separated by coma characters, in preferred order
+var file.extensions = "sarl,SARL,Sarl"
 
 // URL of the SARL website
 var languageWebsite = "http://www.sarl.io"

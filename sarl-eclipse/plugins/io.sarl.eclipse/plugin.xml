@@ -455,13 +455,6 @@
 			<editorOnboardingCommand id="org.eclipse.debug.ui.commands.Resume" />
 		</perspectiveExtension>
     </extension>
-
-  <!-- Extensions -->
-
-   <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
-   <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
-   <extension-point id="projectSREProviderFactory" name="%projectSREProviderFactory" schema="schema/projectSREProviderFactory.exsd"/>
-   <extension-point id="sarlLaunchConfigurationPanels" name="%sarlLaunchConfigurationPanels" schema="schema/sarlLaunchConfigurationPanels.exsd"/>
    
   <!-- Project configurators -->
    <extension
@@ -605,7 +598,7 @@
 
    <!-- Add a provider of SRE based on the standard JRE service API. -->
    <extension
-         point="io.sarl.eclipse.projectSREProviderFactory">
+         point="io.sarl.apputils.eclipseextensions.projectSREProviderFactory">
      <projectSREProviderFactory
            class="io.sarl.eclipse.launching.sreproviding.JreServiceProjectSREProviderFactory">
      </projectSREProviderFactory>

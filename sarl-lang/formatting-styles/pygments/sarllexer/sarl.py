@@ -39,7 +39,7 @@ class SarlLexer(RegexLexer):
 	
 	name = 'SARL'
 	aliases = ['sarl']
-	filenames = ['*.sarl']
+	filenames = ['*.sarl','*.SARL','*.Sarl']
 	mimetypes = ['text/x-sarl']
 	
 	flags = re.MULTILINE | re.DOTALL

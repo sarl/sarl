@@ -48,6 +48,7 @@ import org.eclipse.xtext.ui.refactoring.impl.RefactoringResourceSetProvider;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameContextFactory;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 
+import io.sarl.lang.core.util.SarlUtils;
 import io.sarl.lang.sarl.SarlScript;
 
 /** Strategy for renaming the package in a SARL script when the initial renaming is on a JDT package.
@@ -70,7 +71,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 	@Inject
 	private IRenameContextFactory renameContextFactory;
 
-	private final String fileExtension;
+	private final String[] fileExtensions;
 
 	/** Construct the participant.
 	 *
@@ -78,7 +79,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 	 */
 	@Inject
 	public SARLJdtPackageRenameParticipant(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
-		this.fileExtension = fileExtension;
+		this.fileExtensions = SarlUtils.getFileExtensions(fileExtension);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 			resourceObjects = Collections.emptyList();
 		}
 		return Iterators.filter(Iterators.filter(resourceObjects.iterator(), IFile.class),
-			it -> it.getName().endsWith(this.fileExtension));
+			it -> SarlUtils.hasFileExtension(it.getName(), this.fileExtensions));
 	}
 
 	@Override

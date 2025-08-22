@@ -43,11 +43,11 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.JavaRuntime;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.runner.general.SrePathUtils.ExtraClassPathProviders;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
 /**

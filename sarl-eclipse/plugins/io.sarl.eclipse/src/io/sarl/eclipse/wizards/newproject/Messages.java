@@ -37,43 +37,12 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
 	public static String BuildSettingWizardPage_0;
-
-	public static String JavaProjectWizard_op_error_create_message;
-
-	public static String JavaProjectWizard_op_error_title;
-
-	public static String MainProjectPage_0;public static String NewJavaProjectWizardPageTwo_DeleteCorruptProjectFile_message;
-
-	public static String NewJavaProjectWizardPageTwo_error_message;
-
-	public static String NewJavaProjectWizardPageTwo_error_remove_message;
-
-	public static String NewJavaProjectWizardPageTwo_error_remove_title;
-
-	public static String NewJavaProjectWizardPageTwo_error_title;
-
-	public static String NewJavaProjectWizardPageTwo_monitor_init_build_path;
-
-	public static String NewJavaProjectWizardPageTwo_operation_create;
-
-	public static String NewJavaProjectWizardPageTwo_operation_initialize;
-
-	public static String NewJavaProjectWizardPageTwo_operation_remove;
-
-	public static String NewJavaProjectWizardPageTwo_problem_backup;
-
-	public static String NewJavaProjectWizardPageTwo_problem_restore_classpath;
-
-	public static String NewJavaProjectWizardPageTwo_problem_restore_project;
-
-	public static String SARLProjectCreationWizard_0;
-
-	public static String SARLProjectNewWizard_0;
-	public static String SARLProjectNewWizard_1;
-	public static String SARLProjectNewWizard_2;
-	public static String SARLProjectNewWizard_3;
-
-	public static String SARLProjectNewWizard_4;
+	public static String MainProjectWizardPage_0;
+	public static String MainProjectWizardPage_1;
+	public static String MainProjectWizardPage_2;
+	public static String NewSarlProjectWizard_0;
+	public static String NewSarlProjectWizard_1;
+	public static String NewSarlProjectWizard_2;
 
 	static {
 		// initialize resource bundle

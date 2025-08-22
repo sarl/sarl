@@ -32,6 +32,7 @@
 		  <unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.37.0.v202503020853"/>
 		  <unit id="org.eclipse.xsd.feature.group" version="2.22.0.v20240911-0848"/>
 		  <unit id="org.eclipse.xtext.sdk.feature.group" version="2.39.0.v20250527-0725"/>
+		  <unit id="org.eclipse.epp.mpc.feature.group" version="1.12.1.v20250508-2126"/>
 	  </location>
 	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="ignore" type="Maven">
 		  <dependencies>
@@ -173,7 +174,7 @@
 			  </dependency>
 		  </dependencies>
 	  </location>
-	  <location includeDependencyDepth="none" includeSource="true" missingManifest="ignore" type="Maven">
+	  <location includeDependencyDepth="none" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="ignore" type="Maven">
 		  <dependencies>
 			  <dependency>
 				  <groupId>io.sarl.apputils</groupId>

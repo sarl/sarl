@@ -23,8 +23,9 @@ package io.sarl.eclipse.wizards.sreinstall;
 
 import java.text.MessageFormat;
 
+import io.sarl.apputils.eclipseextensions.sreinstall.AbstractSREInstallPage;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
  * Wiazrd for SRE installation.

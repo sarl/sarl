@@ -36,7 +36,8 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Version;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 /**

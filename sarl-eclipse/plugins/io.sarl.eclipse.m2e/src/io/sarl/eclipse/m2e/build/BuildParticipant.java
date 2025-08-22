@@ -51,7 +51,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.m2e.utils.M2EUtilities;
 
 /** Build participant for detecting invalid versions of SARL components.

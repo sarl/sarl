@@ -52,5 +52,78 @@ public final class SarlUtils {
 		return name.contains(HIDDEN_MEMBER_CHARACTER);
 	}
 
+	/** Replies the individual file extensions from the given list of file extensions.
+	 *
+	 * <p>The argument could be a list of file extensions, in which extensions must
+	 * be separated by one of the separators {@code ,}, {@code ;} or {@code :}.
+	 *
+	 * @param fileExtensions the list of file extensions.
+	 * @return the extensions.
+	 * @since 0.15
+	 */
+	public static String[] getFileExtensions(String fileExtensions) {
+		if (fileExtensions == null) {
+			return null;
+		}
+		return fileExtensions.split("\\s*([,;:]\\s*)+"); //$NON-NLS-1$
+	}
+
+	/** Replies the major file extension from the given list of file extensions.
+	 *
+	 * @param fileExtensions the list of file extensions.
+	 * @return the major extension.
+	 * @since 0.15
+	 */
+	public static String getMajorFileExtension(String[] fileExtensions) {
+		return fileExtensions == null || fileExtensions.length <= 0 ? null : fileExtensions[0];
+	}
+
+	/** Replies the major file extension from the given list of file extensions.
+	 *
+	 * <p>The argument could be a list of file extensions, in which extensions must
+	 * be separated by coma separators.
+	 *
+	 * @param fileExtensions the list of file extensions
+	 * @return the major extension.
+	 * @since 0.15
+	 */
+	public static String getMajorFileExtension(String fileExtensions) {
+		return getMajorFileExtension(getFileExtensions(fileExtensions));
+	}
+
+	/** Replies if the given filename has one of the following file extensions
+	 *
+	 * @param filename the filename to test.
+	 * @param fileExtensions the list of file extensions.
+	 * @return {@code true} if the filename has the extension. Otherwise {@code file} if the filename has not the extension.
+	 * @since 0.15
+	 */
+	public static boolean hasFileExtension(String filename, String[] fileExtensions) {
+		if (fileExtensions != null && filename != null) {
+			final var lg = filename.length();
+			for (final var extension : fileExtensions) {
+				final var elg = extension.length();
+				if (lg >= elg + 1) {
+					final var idx = filename.length() - elg - 1;
+					if ('.' == filename.charAt(idx) && eq(idx + 1, filename, extension)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean eq(int idx, String filename, String extension) {
+		final var flg = filename.length();
+		final var elg = extension.length();
+		for (int i = 0, j = idx; i < elg && j < flg; ++i, ++j) {
+			if (filename.charAt(j) != extension.charAt(i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
 

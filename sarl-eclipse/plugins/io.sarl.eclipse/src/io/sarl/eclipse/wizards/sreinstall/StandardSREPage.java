@@ -45,8 +45,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
-import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreinstall.AbstractSREInstallPage;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREException;
@@ -114,6 +115,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 		//add the listeners now to prevent them from monkeying with initialized settings
 		this.sreNameTextField.addModifyListener(new ModifyListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent event) {
 				StandardSREPage.this.workingCopy.setName(
@@ -123,6 +125,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			}
 		});
 		this.sreMainClassTextField.addModifyListener(new ModifyListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent event) {
 				StandardSREPage.this.workingCopy.setMainClass(

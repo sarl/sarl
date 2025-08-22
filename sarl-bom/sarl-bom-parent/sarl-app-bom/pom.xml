@@ -68,6 +68,11 @@
         <version>${sarl.version}</version>
       </dependency>
       <dependency>
+	<groupId>io.sarl.apputils</groupId>
+	<artifactId>uiextensions</artifactId>
+        <version>${sarl.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.sarl.sre.janus</groupId>
         <artifactId>janus.kernel</artifactId>
         <version>${janus.version}</version>
@@ -161,6 +166,11 @@
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.core.resources</artifactId>
         <version>${eclipse.platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.core.runtime</artifactId>
+        <version>${eclipse.platform.runtime.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jdt</groupId>

@@ -22,8 +22,6 @@
 package io.sarl.eclipse.launching.dialog;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -32,7 +30,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
@@ -43,14 +40,15 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
-import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.apputils.eclipseextensions.launching.ISarlRuntimeEnvironmentTab;
+import io.sarl.apputils.eclipseextensions.launching.ISreChangeListener;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProviderFactories;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 import io.sarl.eclipse.launching.sreproviding.EclipseIDEProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
 import io.sarl.lang.core.SARLVersion;
@@ -100,36 +98,12 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 		return SARLEclipsePlugin.PLUGIN_ID + ".debug.ui.sarlRuntimeEnvironmentTab"; //$NON-NLS-1$
 	}
 
-	private static List<ProjectSREProviderFactory> getProviderFromExtension() {
-		final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLEclipsePlugin.PLUGIN_ID,
-				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
-		if (extensionPoint != null) {
-			final var providers = new ArrayList<ProjectSREProviderFactory>();
-			for (final var element : extensionPoint.getConfigurationElements()) {
-				try {
-					final var obj = element.createExecutableExtension("class"); //$NON-NLS-1$
-					if (obj instanceof ProjectSREProviderFactory cvalue) {
-						providers.add(cvalue);
-					} else {
-						SARLEclipsePlugin.getDefault().logErrorMessage(
-								"Cannot instance extension point: " + element.getName()); //$NON-NLS-1$
-					}
-				} catch (CoreException e) {
-					SARLEclipsePlugin.getDefault().log(e);
-				}
-			}
-			return providers;
-		}
-		return null;
-	}
-
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
 		final var projectProvider = new ProjectAdapter();
-		final var sreProviderFactories = getProviderFromExtension();
+		final var sreProviderFactories = ProjectSREProviderFactories.getSREProviderFactoriesFromExtension();
 		sreProviderFactories.add(new EclipseIDEProjectSREProviderFactory());
 
 		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);

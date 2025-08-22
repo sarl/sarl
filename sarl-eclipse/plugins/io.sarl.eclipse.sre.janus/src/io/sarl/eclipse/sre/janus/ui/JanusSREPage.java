@@ -34,11 +34,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
-import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreinstall.AbstractSREInstallPage;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.runtime.SREException;
 import io.sarl.eclipse.sre.janus.sre.JanusSREInstall;
-import io.sarl.eclipse.wizards.sreinstall.AbstractSREInstallPage;
 
 /**
  * Implementation of a page for the SRE installation wizard.

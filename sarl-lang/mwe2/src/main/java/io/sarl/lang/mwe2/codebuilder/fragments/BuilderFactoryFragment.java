@@ -32,6 +32,9 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
+
+import io.sarl.lang.core.util.SarlUtils;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -175,7 +178,9 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append(Constants.class);
 				it.append(".FILE_EXTENSIONS) String fileExtensions) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tthis.fileExtension = fileExtensions.split(\"[:;,]+\")[0];"); //$NON-NLS-1$
+				it.append("\t\tthis.fileExtension = "); //$NON-NLS-1$
+				it.append(SarlUtils.class);
+				it.append(".getMajorFileExtension(fileExtensions);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

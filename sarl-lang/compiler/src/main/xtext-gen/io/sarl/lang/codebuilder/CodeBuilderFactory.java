@@ -68,6 +68,7 @@ import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
+import io.sarl.lang.core.util.SarlUtils;
 import jakarta.inject.Inject;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -82,65 +83,65 @@ import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Creates {@code ICodeBuilder} to insert SARL code snippets.
-	 * @see BuilderFactoryFragment.java : appendTo : 89
+	 * @see BuilderFactoryFragment.java : appendTo : 92
  */
 @SuppressWarnings("all")
 public class CodeBuilderFactory {
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 99
+	 * @see BuilderFactoryFragment.java : appendTo : 102
 	 */
 	private static final String[] FORBIDDEN_INJECTION_PREFIXES = new String[] {
 		"com.google.inject.",
 	};
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 114
+	 * @see BuilderFactoryFragment.java : appendTo : 117
 	 */
 	private static final String[] FORBIDDEN_INJECTION_POSTFIXES = new String[] {
 		".Logger",
 	};
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 129
+	 * @see BuilderFactoryFragment.java : appendTo : 132
 	 */
 	@Inject
 	private IResourceFactory resourceFactory;
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 138
+	 * @see BuilderFactoryFragment.java : appendTo : 141
 	 */
 	private String fileExtension;
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 142
+	 * @see BuilderFactoryFragment.java : appendTo : 145
 	 */
 	@Inject
 	private Provider<ImportManager> importManagerProvider;
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 153
+	 * @see BuilderFactoryFragment.java : appendTo : 156
 	 */
 	@Inject
 	private Injector originalInjector;
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 162
+	 * @see BuilderFactoryFragment.java : appendTo : 165
 	 */
 	private Injector builderInjector;
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 168
+	 * @see BuilderFactoryFragment.java : appendTo : 171
 	 */
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
-		this.fileExtension = fileExtensions.split("[:;,]+")[0];
+		this.fileExtension = SarlUtils.getMajorFileExtension(fileExtensions);
 	}
 
 	/** Compute a unused URI for a synthetic resource.
 	 * @param resourceSet the resource set in which the resource should be located.
 	 * @return the uri.
-	 * @see BuilderFactoryFragment.java : appendTo : 189
+	 * @see BuilderFactoryFragment.java : appendTo : 194
 	 */
 	@Pure
 	protected URI computeUnusedUri(ResourceSet resourceSet) {
@@ -155,7 +156,7 @@ public class CodeBuilderFactory {
 	}
 
 	/** Replies the script's file extension.
-	 * @see BuilderFactoryFragment.java : appendTo : 226
+	 * @see BuilderFactoryFragment.java : appendTo : 231
 	 */
 	@Pure
 	public String getScriptFileExtension() {
@@ -165,7 +166,7 @@ public class CodeBuilderFactory {
 	/** Replies the resource factory.
 	 *
 	 * @return the resource factory.
-	 * @see BuilderFactoryFragment.java : appendTo : 245
+	 * @see BuilderFactoryFragment.java : appendTo : 250
 	 */
 	@Pure
 	protected IResourceFactory getResourceFactory() {
@@ -175,7 +176,7 @@ public class CodeBuilderFactory {
 	/** Replies the name of the foo package.
 	 *
 	 * @return the name of the foo package.
-	 * @see BuilderFactoryFragment.java : appendTo : 266
+	 * @see BuilderFactoryFragment.java : appendTo : 271
 	 */
 	@Pure
 	protected String getFooPackageName() {
@@ -185,7 +186,7 @@ public class CodeBuilderFactory {
 	/** Replies the name of the foo type.
 	 *
 	 * @return the name of the foo type.
-	 * @see BuilderFactoryFragment.java : appendTo : 287
+	 * @see BuilderFactoryFragment.java : appendTo : 292
 	 */
 	@Pure
 	protected String getFooTypeName() {
@@ -195,7 +196,7 @@ public class CodeBuilderFactory {
 	/** Replies the name of the foo type member.
 	 *
 	 * @return the name of the foo type member.
-	 * @see BuilderFactoryFragment.java : appendTo : 306
+	 * @see BuilderFactoryFragment.java : appendTo : 311
 	 */
 	@Pure
 	protected String getFooMemberName() {
@@ -206,7 +207,7 @@ public class CodeBuilderFactory {
 	 *
 	 * @param resourceSet the resourceSet.
 	 * @return the resource.
-	 * @see BuilderFactoryFragment.java : appendTo : 327
+	 * @see BuilderFactoryFragment.java : appendTo : 332
 	 */
 	@Pure
 	protected Resource createResource(ResourceSet  resourceSet) {
@@ -218,7 +219,7 @@ public class CodeBuilderFactory {
 
 	/** Replies the injector.
 	 * @return the injector.
-	 * @see BuilderFactoryFragment.java : appendTo : 358
+	 * @see BuilderFactoryFragment.java : appendTo : 363
 	 */
 	@Pure
 	protected Injector getInjector() {
@@ -234,7 +235,7 @@ public class CodeBuilderFactory {
 	 * @param originalInjector the original injector.
 	 * @param module the overriding module.
 	 * @return the new injector.
-	 * @see BuilderFactoryFragment.java : appendTo : 393
+	 * @see BuilderFactoryFragment.java : appendTo : 398
 	 */
 	public static Injector createOverridingInjector(Injector originalInjector, com.google.inject.Module module) {
 		final Map<Key<?>, Binding<?>> bindings = originalInjector.getBindings();
@@ -252,7 +253,7 @@ public class CodeBuilderFactory {
 	}
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 445
+	 * @see BuilderFactoryFragment.java : appendTo : 450
 	 */
 	private static boolean isValid(String name) {
 		for (final String prefix : FORBIDDEN_INJECTION_PREFIXES) {
@@ -272,7 +273,7 @@ public class CodeBuilderFactory {
 	 * <p>The provider uses a local context singleton of the import manager.
 	 * @param type the type of the object to provide.
 	 * @return the provider.
-	 * @see BuilderFactoryFragment.java : appendTo : 481
+	 * @see BuilderFactoryFragment.java : appendTo : 486
 	 */
 	@Pure
 	protected <T> Provider<T> getProvider(Class<T> type) {
@@ -280,24 +281,24 @@ public class CodeBuilderFactory {
 	}
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 496
+	 * @see BuilderFactoryFragment.java : appendTo : 501
 	 */
 	private static class CodeBuilderModule extends AbstractModule {
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 502
+	 * @see BuilderFactoryFragment.java : appendTo : 507
 	 */
 		private final ImportManager importManager;
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 508
+	 * @see BuilderFactoryFragment.java : appendTo : 513
 	 */
 		public CodeBuilderModule(ImportManager importManager) {
 			this.importManager = importManager;
 		}
 
 	/**
-	 * @see BuilderFactoryFragment.java : appendTo : 518
+	 * @see BuilderFactoryFragment.java : appendTo : 523
 	 */
 		@Override
 		protected void configure() {

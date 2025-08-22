@@ -32,7 +32,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
 
-import io.sarl.apputils.eclipseextensions.Bundles;
+import io.sarl.apputils.uiextensions.Bundles;
 
 /** Classpath provider dedicated to the Janus networking features.
  *

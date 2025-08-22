@@ -21,7 +21,8 @@
 
 package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreinstall.AbstractSREInstallPage;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 
 /**
  * Wizard for SRE installation.

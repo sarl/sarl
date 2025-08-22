@@ -28,12 +28,12 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.MavenPluginActivator;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProvider;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProviderFactory;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.m2e.SARLMavenEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
-import io.sarl.eclipse.runtime.ProjectSREProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
 /** Factory of project SRE provider for the Maven projects.

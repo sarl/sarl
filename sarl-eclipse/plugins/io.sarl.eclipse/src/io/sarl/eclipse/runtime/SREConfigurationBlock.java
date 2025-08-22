@@ -46,6 +46,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProvider;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProviderFactory;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.preferences.SREsPreferencePage;
 

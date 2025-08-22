@@ -26,10 +26,10 @@ import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProvider;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
 /** Default implementation of a project SRE provider.

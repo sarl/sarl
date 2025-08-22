@@ -32,12 +32,12 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.runner.general.AbstractLaunchProcess;
 import io.sarl.eclipse.launching.runner.general.AbstractSARLLaunchConfiguration;
 import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 import io.sarl.lang.core.SRE;
 import io.sarl.lang.core.util.CliUtilities;

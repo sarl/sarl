@@ -23,6 +23,7 @@ package io.sarl.lang.ui.refactoring.rename;
 
 import static java.util.Collections.singletonList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +42,8 @@ import org.eclipse.xtext.ui.refactoring.ui.IRenameContextFactory;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 
+import io.sarl.lang.core.util.SarlUtils;
+
 /** Participant to the SARL file renaming mechanism.
  *
  * @author $Author: sgalland$
@@ -57,7 +60,7 @@ public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParti
 	@Inject
 	private IRenameContextFactory renameContextFactory;
 
-	private final String fileExtension;
+	private final List<String> fileExtensions;
 
 	/** Construct the participant.
 	 *
@@ -65,7 +68,7 @@ public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParti
 	 */
 	@Inject
 	public SARLFileRenameParticipant(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
-		this.fileExtension = fileExtension;
+		this.fileExtensions = Arrays.asList(SarlUtils.getFileExtensions(fileExtension));
 	}
 
 	@Override
@@ -76,10 +79,11 @@ public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParti
 		assert element instanceof IFile;
 		final var file = (IFile) element;
 		final var filePath = file.getFullPath();
-		if (Objects.equals(filePath.getFileExtension(), this.fileExtension)) {
+		final var fileExt = filePath.getFileExtension();
+		if (this.fileExtensions.contains(fileExt)) {
 			final var typeName = filePath.removeFileExtension().lastSegment();
 			final var newPath = filePath.removeLastSegments(1).append(
-					getNewName()).addFileExtension(this.fileExtension);
+					getNewName()).addFileExtension(fileExt);
 			final var resourceSet = this.resourceSetProvider.get(file.getProject());
 			final var resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
 			final var resource = resourceSet.getResource(resourceURI, true);

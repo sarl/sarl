@@ -29,7 +29,7 @@
 <language id="sarl" _name="SARL" version="2.0" _section="Source">
  <metadata>
   <property name="mimetypes">text/x-sarl</property>
-  <property name="globs">*.sarl</property>
+  <property name="globs">*.sarl;*.SARL;*.Sarl</property>
   <property name="line-comment-start">//</property>
   <property name="block-comment-start">/*</property>
   <property name="block-comment-end">*/</property>

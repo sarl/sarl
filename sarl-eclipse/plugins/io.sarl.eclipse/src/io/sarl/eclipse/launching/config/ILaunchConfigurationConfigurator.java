@@ -31,7 +31,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 import org.eclipse.xtext.xbase.lib.Inline;
 
-import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 
 /**
  * Configurator for a SARL launch configuration.

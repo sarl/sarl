@@ -30,8 +30,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IProject;
@@ -97,12 +100,14 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 
-import io.sarl.apputils.eclipseextensions.classpath.SarlDefaultClassPathProvider;
+import io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurationFragment;
+import io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurationFragments;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.uiextensions.classpath.SarlDefaultClassPathProvider;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.core.SARLVersion;
@@ -140,24 +145,28 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 	private final WorkingSetGroup workingSetGroup;
 
+	private final ProjectConfiguratorsGroup configuratorGroup;
+
 	/**
 	 * Creates a new {@link MainProjectWizardPage}.
 	 */
 	public MainProjectWizardPage() {
-		super(Messages.SARLProjectNewWizard_3);
+		super(Messages.NewSarlProjectWizard_0);
 		setPageComplete(false);
 
 		this.nameGroup = new NameGroup();
 		this.locationGroup = new LocationGroup();
-		this.sreGroup = new SREConfigurationBlock(Messages.MainProjectPage_0, true, null, null);
+		this.sreGroup = new SREConfigurationBlock(Messages.MainProjectWizardPage_0, true, null, null);
 		this.jreGroup = new JREGroup();
 		this.workingSetGroup = new WorkingSetGroup();
 		this.detectGroup = new DetectGroup();
+		this.configuratorGroup = new ProjectConfiguratorsGroup();
 
 		// establish connections
 		this.nameGroup.addObserver(this.locationGroup);
 		this.detectGroup.addObserver(this.jreGroup);
 		this.locationGroup.addObserver(this.detectGroup);
+		this.configuratorGroup.addObserver(this.locationGroup);
 
 		// initialize all elements
 		this.nameGroup.notifyObservers();
@@ -166,6 +175,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		this.validator = new Validator();
 		this.nameGroup.addObserver(this.validator);
 		this.locationGroup.addObserver(this.validator);
+		this.configuratorGroup.addObserver(this.validator);
 
 		// initialize defaults
 		setProjectName(""); //$NON-NLS-1$
@@ -174,8 +184,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		initializeDefaultVM();
 
-		setTitle(Messages.SARLProjectNewWizard_3);
-		setDescription(Messages.SARLProjectNewWizard_1);
+		setTitle(Messages.NewSarlProjectWizard_0);
+		setDescription(Messages.MainProjectWizardPage_1);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
 				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
@@ -218,6 +228,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		final var workingSetControl = createWorkingSetControl(composite);
 		workingSetControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		final var projectConfiguratorControl = createProjectConfiguratorControl(composite);
+		projectConfiguratorControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final var infoControl = createInfoControl(composite);
 		infoControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -286,6 +299,17 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 */
 	protected Control createWorkingSetControl(Composite composite) {
 		return this.workingSetGroup.createControl(composite);
+	}
+
+	/**
+	 * Creates the controls for the project configurator section.
+	 *
+	 * @param composite the parent composite.
+	 * @return the created control.
+	 * @since 0.15
+	 */
+	protected Control createProjectConfiguratorControl(Composite composite) {
+		return this.configuratorGroup.createControl(composite);
 	}
 
 	/**
@@ -385,6 +409,14 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 				new IClasspathAttribute[0],
 				true);
 		classpathEntries.add(sarlClasspathEntry);
+
+		// Add libraries from the project configurators
+		final var iterator = this.configuratorGroup.getActivatedProjectExtensions().iterator();
+		while (iterator.hasNext()) {
+			final var extension = iterator.next();
+			final var binEntries = extension.getBinaryClassPathEntries(getOutputLocation());
+			classpathEntries.addAll(binEntries);
+		}
 	}
 
 	/**
@@ -527,6 +559,14 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		}
 
 		return true;
+	}
+
+	/** Replies the project extensions that are activated.
+	 *
+	 * @return the activated extensions.
+	 */
+	public Stream<ProjectConfigurationFragment> getActivatedProjectExtensions() {
+		return this.configuratorGroup.getActivatedProjectExtensions();
 	}
 
 	/**
@@ -1518,6 +1558,99 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			}
 
 		}
+	}
+
+	/**
+	 * Show the list of project configuration fragments that are available for project creation.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.15
+	 */
+	private final class ProjectConfiguratorsGroup extends Observable implements IDialogFieldListener {
+
+		private static final String LAST_SELECTED_SETTINGS_KEY_PREFIX = SARLEclipsePlugin.PLUGIN_ID + ".last.selected.create.projectconfigurators."; //$NON-NLS-1$
+
+		private final Map<SelectionButtonDialogField, ProjectConfigurationFragment> field2fragment = new TreeMap<>(
+				(a, b) -> {
+					final var ida = System.identityHashCode(a);
+					final var idb = System.identityHashCode(b);
+					return Integer.compare(ida, idb);
+				});
+
+		/** Constructor.
+		 */
+		ProjectConfiguratorsGroup() {
+			for (final var configuration : ProjectConfigurationFragments.getConfigurationFragmentsFromExtension()) {
+				final var checkbox = new SelectionButtonDialogField(SWT.CHECK);
+				checkbox.setLabelText(configuration.getLabel());
+				checkbox.setDialogFieldListener(this);
+				checkbox.setEnabled(true);
+				this.field2fragment.put(checkbox, configuration);
+			}
+		}
+
+		/** Create the controls in this group.
+		 * 
+		 * @param composite the parent component.
+		 * @return the created control.
+		 */
+		public Control createControl(Composite composite) {
+			final var layout = new GridLayout();
+			layout.numColumns = 2;
+			final var configuratorGroup = new Group(composite, SWT.NONE);
+			configuratorGroup.setFont(composite.getFont());
+			configuratorGroup.setText(Messages.MainProjectWizardPage_2);
+			configuratorGroup.setLayout(layout);
+
+			for (final var entry : this.field2fragment.entrySet()) {
+				final var fragment = entry.getValue();
+				final var pref = JavaPlugin.getDefault().getDialogSettings().get(preferenceKey(fragment.getId()));
+				final var checkbox = entry.getKey();
+				checkbox.setSelection(pref == null ? fragment.isActiveByDefault(): Boolean.parseBoolean(pref));
+				checkbox.doFillIntoGrid(configuratorGroup, 2);
+			}
+
+			return configuratorGroup;
+		}
+
+		private static String preferenceKey(String configurationId) {
+			return LAST_SELECTED_SETTINGS_KEY_PREFIX + configurationId;
+		}
+
+		private void handlePossibleChange(SelectionButtonDialogField field, ProjectConfigurationFragment fragment) {
+			final var pref = JavaPlugin.getDefault().getDialogSettings().get(preferenceKey(fragment.getId()));
+			final var selectedOrig = pref == null ? true : Boolean.parseBoolean(pref);
+			var selected = selectedOrig;
+			if (field.isEnabled()) {
+				selected = field.isSelected();
+			}
+			if (selectedOrig != selected) {
+				final var preferences = JavaPlugin.getDefault().getDialogSettings();
+				preferences.put(preferenceKey(fragment.getId()), field.isSelected());
+			}
+		}
+
+		@Override
+		public void dialogFieldChanged(DialogField field) {
+			if (field instanceof SelectionButtonDialogField cfield) {
+				final var configuration = this.field2fragment.get(cfield); 
+				handlePossibleChange(cfield, configuration);
+			}
+		}
+
+		/** Replies the project extensions that are activated.
+		 *
+		 * @return the activated extensions.
+		 */
+		Stream<ProjectConfigurationFragment> getActivatedProjectExtensions() {
+			return this.field2fragment.entrySet().stream()
+					.filter(it -> it.getKey().isEnabled() && it.getKey().isSelected())
+					.map(it -> it.getValue());
+		}
+
 	}
 
 }

@@ -81,9 +81,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;

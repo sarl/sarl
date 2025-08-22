@@ -24,6 +24,7 @@ package io.sarl.eclipse.buildpath;
 import static io.sarl.apputils.eclipseextensions.buildpath.SARLBundleBuildPath.getSarlDependencyBundleNames;
 
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -31,8 +32,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 
-import io.sarl.apputils.eclipseextensions.Bundles;
 import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
+import io.sarl.apputils.uiextensions.Bundles;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 /** Classpath container dedicated to the SARL environment.
@@ -53,7 +54,17 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 	 * @since 0.12
 	 */
 	public SARLClasspathContainer(IPath containerPath, IJavaProject javaProject) {
-		super(containerPath, javaProject);
+		this(containerPath, javaProject, null);
+	}
+
+	/** Constructor.
+	 * @param containerPath the path of the container, e.g. the project.
+	 * @param javaProject the reference to the containing Java project
+	 * @param entryComparator the comparator of classpath entries to use.
+	 * @since 0.15
+	 */
+	public SARLClasspathContainer(IPath containerPath, IJavaProject javaProject, Comparator<IClasspathEntry> entryComparator) {
+		super(containerPath, javaProject, entryComparator);
 	}
 
 	@Override

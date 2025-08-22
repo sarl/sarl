@@ -25,6 +25,7 @@ import java.util.EventListener;
 
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.eclipse.SARLEclipsePlugin;
 
 /**

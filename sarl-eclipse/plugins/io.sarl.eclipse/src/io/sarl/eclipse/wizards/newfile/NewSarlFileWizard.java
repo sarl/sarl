@@ -32,6 +32,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.xtext.Constants;
 
+import io.sarl.lang.core.util.SarlUtils;
+
 /**
  * SARL new file wizard.
  *
@@ -59,7 +61,7 @@ public class NewSarlFileWizard extends Wizard implements INewWizard {
 	 */
 	@Inject
 	public NewSarlFileWizard(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
-		this.fileExtension = fileExtension;
+		this.fileExtension = SarlUtils.getMajorFileExtension(fileExtension);
 	}
 
 	@Override

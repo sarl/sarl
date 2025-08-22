@@ -41,35 +41,33 @@ import org.eclipse.jdt.launching.JavaRuntime;
  */
 public abstract class AbstractSARLBasedClasspathContainer implements IClasspathContainer {
 
-	/** Comparator of classpath entries.
-	 */
-	protected static final Comparator<IClasspathEntry> CLASSPATH_ENTRY_COMPARATOR = (entry1, entry2) -> {
-		if (entry1 == entry2) {
-			return 0;
-		}
-		if (entry1 == null) {
-			return 1;
-		}
-		if (entry2 == null) {
-			return -1;
-		}
-		return entry1.getPath().toPortableString().compareTo(entry2.getPath().toPortableString());
-	};
-
 	private IClasspathEntry[] entries;
 
 	private final IPath containerPath;
 
 	private IJavaProject project;
 
+	private final Comparator<IClasspathEntry> entryComparator;
+
 	/** Constructor.
 	 * @param containerPath the path of the container, e.g. the project.
 	 * @param javaProject the reference to the containing Java project
-	 * @since 0.12
+	 * @param entryComparator the comparator of classpath entries to use.
+	 * @since 0.15
 	 */
-	public AbstractSARLBasedClasspathContainer(IPath containerPath, IJavaProject javaProject) {
+	public AbstractSARLBasedClasspathContainer(IPath containerPath, IJavaProject javaProject, Comparator<IClasspathEntry> entryComparator) {
 		this.containerPath = containerPath;
 		this.project = javaProject;
+		this.entryComparator = entryComparator == null ? NameSegmentClasspathEntryComparator.getSingleton() : entryComparator;
+	}
+
+	/** Replies the classpath entry that must be used by this object.
+	 *
+	 * @return the comparator, never {@code null}.
+	 * @since 0.15
+	 */
+	protected Comparator<IClasspathEntry> getClasspathEntryComparator() {
+		return this.entryComparator;
 	}
 
 	/** Replies if the associated project is module or not.
@@ -114,7 +112,7 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	@Override
 	public final synchronized IClasspathEntry[] getClasspathEntries() {
 		if (this.entries == null) {
-			final var newEntries = new TreeSet<>(CLASSPATH_ENTRY_COMPARATOR);
+			final var newEntries = new TreeSet<>(getClasspathEntryComparator());
 			updateClasspathEntries(newEntries);
 			this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
 		}

@@ -21,7 +21,7 @@
 
 package io.sarl.lang.tests.modules.codebuilder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -74,11 +74,8 @@ public class CodeBuilderFactoryTest extends AbstractSarlTest {
 	@Test
 	@DisplayName("setFileExtensions(null)")
 	public void setFileExtensions_null() {
-		assertThrows(NullPointerException.class, () -> {
-			this.factory.setFileExtensions(null);
-		});
-		// By default, the SARL file extension is injected. See parameter of setFileExtensions().
-		assertEquals("sarl", this.factory.getScriptFileExtension());
+		this.factory.setFileExtensions(null);
+		assertNull(this.factory.getScriptFileExtension());
 	}
 
 	@Test

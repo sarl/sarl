@@ -33,6 +33,7 @@ import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -66,8 +67,9 @@ import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
-import io.sarl.apputils.eclipseextensions.classpath.SarlClassPathDetector;
 
+import io.sarl.apputils.eclipseextensions.buildpath.SARLClasspathEntryComparator;
+import io.sarl.apputils.uiextensions.classpath.SarlClassPathDetector;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
@@ -130,8 +132,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		this.dotClasspathBackup = null;
 		this.isAutobuild = null;
 
-		setTitle(Messages.SARLProjectNewWizard_3);
-		setDescription(Messages.SARLProjectNewWizard_2);
+		setTitle(Messages.NewSarlProjectWizard_0);
+		setDescription(Messages.BuildSettingWizardPage_0);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
 				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
@@ -304,6 +306,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
 								new Path(this.firstPage.getProjectName()).makeAbsolute());
 				cpEntries.addAll(originalEntries);
+				cpEntries.sort(SARLClasspathEntryComparator.getSingleton());
 				this.firstPage.putDefaultClasspathEntriesIn(cpEntries);
 				if (!cpEntries.isEmpty()) {
 					classpath.set(cpEntries.toArray(new IClasspathEntry[cpEntries.size()]));
@@ -336,10 +339,32 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		final var cpEntries = new ArrayList<IClasspathEntry>();
 		final var root = project.getWorkspace().getRoot();
 
-		final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
-						new Path(this.firstPage.getProjectName()).makeAbsolute());
-		final var subMonitor = SubMonitor.convert(monitor, originalEntries.size() + 1);
-		for (final var sourceClasspathEntry : originalEntries) {
+		final var projectFolder = new Path(this.firstPage.getProjectName()).makeAbsolute();
+		
+		final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(projectFolder);
+
+		List<IClasspathEntry> allEntries = null;
+
+		final var iterator = this.firstPage.getActivatedProjectExtensions().iterator();
+		while (iterator.hasNext()) {
+			final var configuration = iterator.next();
+			final var entries = configuration.getDefaultSourceClassPathEntries(projectFolder);
+			if (allEntries == null) {
+				allEntries = new ArrayList<>(originalEntries.size() + entries.size());
+				allEntries.addAll(originalEntries);
+			}
+			allEntries.addAll(entries);
+		}
+		
+		if (allEntries == null) {
+			allEntries = originalEntries;
+		}
+		
+		allEntries.sort(SARLClasspathEntryComparator.getSingleton());
+
+		final var subMonitor = SubMonitor.convert(monitor, allEntries.size() + 1);
+
+		for (final var sourceClasspathEntry : allEntries) {
 			final var path = sourceClasspathEntry.getPath();
 			if (path.segmentCount() > 1) {
 				final var folder = root.getFolder(path);

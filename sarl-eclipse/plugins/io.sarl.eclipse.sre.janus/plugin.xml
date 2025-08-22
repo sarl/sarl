@@ -2,13 +2,13 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="io.sarl.eclipse.sreInstallations">
+         point="io.sarl.apputils.eclipseextensions.sreInstallations">
       <sreInstallation
             class="io.sarl.eclipse.sre.janus.sre.JanusSREInstall">
       </sreInstallation>
    </extension>
    <extension
-         point="io.sarl.eclipse.sreInstallPages">
+         point="io.sarl.apputils.eclipseextensions.sreInstallPages">
       <sreInstallPage
             class="io.sarl.eclipse.sre.janus.ui.JanusSREPage"
             sreInstallType="io.sarl.eclipse.sre.janus.sre.JanusSREInstall">
@@ -31,7 +31,7 @@
    </extension>
 
 	<extension
-         point="io.sarl.eclipse.sarlLaunchConfigurationPanels">
+         point="io.sarl.apputils.eclipseextensions.sarlLaunchConfigurationPanels">
    		<panel class="io.sarl.eclipse.sre.janus.network.JanusLaunchNetworkTabFactory" />
    </extension>
 

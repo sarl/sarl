@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.IClasspathEntry;
 
 /**
  * Fragment of the configuration for a SARL project.
@@ -42,6 +43,24 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public interface ProjectConfigurationFragment {
 
+	/** Replies the identifier for this project fragment
+	 *
+	 * @return the identifier, never {@code null}.
+	 */
+	String getId();
+
+	/** Replies if the contribution of this fragment should be active by default when opening the project configurator.
+	 *
+	 * @return {@code true} if the fragment is active by default in the configurator interface.
+	 */
+	boolean isActiveByDefault();
+
+	/** Replies the label that is briefly describing this project configuration fragment.
+	 *
+	 * @return the label, never {@code null}.
+	 */
+	String getLabel();
+	
 	/** Update the natures of the given project.
 	 *
 	 * @param project the project to update.
@@ -83,5 +102,19 @@ public interface ProjectConfigurationFragment {
 	 * @param natures the natures to associate to the project after unconfiguring it.
 	 */
 	void unconfigure(IProject project, IProgressMonitor monitor, List<String> natures);
+
+	/** Replies the default source entries for the project configurator.
+	 *
+	 * @param projectFolder the folder of the project.
+	 * @return the classpath entries.
+	 */
+	List<IClasspathEntry> getDefaultSourceClassPathEntries(IPath projectFolder);
+
+	/** Replies the default binary entries or libraries for the project configurator.
+	 *
+	 * @param projectFolder the folder of the project.
+	 * @return the classpath entries.
+	 */
+	List<IClasspathEntry> getBinaryClassPathEntries(IPath projectFolder);
 
 }

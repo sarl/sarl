@@ -23,6 +23,8 @@ package io.sarl.eclipse.runtime;
 
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+
 /**
  * Default implementation of {@code ISREInstallChangedAdapter}.
  *
@@ -40,8 +42,7 @@ public class SREInstallChangedAdapter implements ISREInstallChangedListener {
 	}
 
 	@Override
-	public void defaultSREInstallChanged(ISREInstall previous,
-			ISREInstall current) {
+	public void defaultSREInstallChanged(ISREInstall previous, ISREInstall current) {
 		//
 	}
 

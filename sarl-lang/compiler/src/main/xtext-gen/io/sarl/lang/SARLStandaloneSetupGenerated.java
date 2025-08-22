@@ -58,5 +58,9 @@ public class SARLStandaloneSetupGenerated implements ISetup {
 		
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("sarl", resourceFactory);
 		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("sarl", serviceProvider);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("SARL", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("SARL", serviceProvider);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("Sarl", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("Sarl", serviceProvider);
 	}
 }

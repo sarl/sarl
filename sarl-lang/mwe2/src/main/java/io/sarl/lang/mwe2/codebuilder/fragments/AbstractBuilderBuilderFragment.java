@@ -58,6 +58,8 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import io.sarl.lang.core.util.SarlUtils;
+
 /** Generator of the abstract code builder.
  *
  * @author $Author: sgalland$
@@ -200,7 +202,9 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(Constants.class);
 				it.append(".FILE_EXTENSIONS) String fileExtensions) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tthis.fileExtension = fileExtensions.split(\"[:;,]+\")[0];"); //$NON-NLS-1$
+				it.append("\t\tthis.fileExtension = "); //$NON-NLS-1$
+				it.append(SarlUtils.class);
+				it.append(".getMajorFileExtension(fileExtensions);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

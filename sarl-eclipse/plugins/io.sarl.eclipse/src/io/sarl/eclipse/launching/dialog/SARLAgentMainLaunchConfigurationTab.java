@@ -61,13 +61,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import io.sarl.apputils.eclipseextensions.Utilities;
+import io.sarl.apputils.eclipseextensions.launching.ISreChangeListener;
+import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
+import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 import io.sarl.eclipse.launching.config.RootContextIdentifierType;
-import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 import io.sarl.lang.core.util.CliUtilities;
 

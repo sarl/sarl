@@ -25,15 +25,16 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 
+import io.sarl.apputils.eclipseextensions.Extensions;
 import io.sarl.lang.extralanguage.IExtraLanguageContribution;
 import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorProvider;
@@ -75,30 +76,30 @@ public class ExtensionPointExtraLanguageContributions implements IExtraLanguageC
 		if (this.contributions == null) {
 			this.contributions = new ArrayList<>();
 
-			final var extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
-			if (extensionPoint != null) {
-				for (final var element : extensionPoint.getConfigurationElements()) {
-					try {
-						final var generator = getType(
-								IExtraLanguageGeneratorProvider.class, element, EXTENSION_POINT_GENERATOR_ATTRIBUTE);
-						final var validator = getType(
-								IExtraLanguageValidatorProvider.class, element, EXTENSION_POINT_VALIDATOR_ATTRIBUTE);
-						final var configuration = getType(
-								IOutputConfigurationProvider.class, element, EXTENSION_POINT_OUTPUT_CONFIGURATION_ATTRIBUTE);
-						final var keywords = getType(
-								IExtraLanguageKeywordProvider.class, element, EXTENSION_POINT_KEYWORDS_ATTRIBUTE);
-						this.contributions.add(new ExtensionPointContribution(generator, validator,
-								configuration, keywords));
-					} catch (CoreException exception) {
-						LangActivator.getInstance().getLog().log(new Status(
-								IStatus.WARNING,
-								LangActivator.getInstance().getBundle().getSymbolicName(),
-								exception.getLocalizedMessage(),
-								exception));
-					}
-				}
-			}
+			this.contributions = Extensions.getExtensions(SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS)
+					.map(element -> {
+						try {
+							final var generator = getType(
+									IExtraLanguageGeneratorProvider.class, element, EXTENSION_POINT_GENERATOR_ATTRIBUTE);
+							final var validator = getType(
+									IExtraLanguageValidatorProvider.class, element, EXTENSION_POINT_VALIDATOR_ATTRIBUTE);
+							final var configuration = getType(
+									IOutputConfigurationProvider.class, element, EXTENSION_POINT_OUTPUT_CONFIGURATION_ATTRIBUTE);
+							final var keywords = getType(
+									IExtraLanguageKeywordProvider.class, element, EXTENSION_POINT_KEYWORDS_ATTRIBUTE);
+							return new ExtensionPointContribution(generator, validator,
+									configuration, keywords);
+						} catch (CoreException exception) {
+							LangActivator.getInstance().getLog().log(new Status(
+									IStatus.WARNING,
+									LangActivator.getInstance().getBundle().getSymbolicName(),
+									exception.getLocalizedMessage(),
+									exception));
+							return null;
+						}
+					})
+					.filter(it -> it != null)
+					.collect(Collectors.toList());
 		}
 		return this.contributions;
 	}

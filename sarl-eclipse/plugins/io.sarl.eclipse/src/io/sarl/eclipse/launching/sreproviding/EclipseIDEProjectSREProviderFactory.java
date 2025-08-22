@@ -23,8 +23,8 @@ package io.sarl.eclipse.launching.sreproviding;
 
 import org.eclipse.core.resources.IProject;
 
-import io.sarl.eclipse.runtime.ProjectSREProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProvider;
+import io.sarl.apputils.eclipseextensions.sreprovider.ProjectSREProviderFactory;
 
 /** Factory of the default implementation of a project SRE provider.
  * This provider is reading the Eclipse IDE properties associated to the project and
