@@ -385,6 +385,8 @@ received, __and__ if the guard is true.
 In the guard and the statements, it is possible to use the instance of the received event: the occurrence.
 This instance is represented by the [:occurrencekw:] keyword. It is an implicit
 variable as the keywords `this` and `it`.
+These three keywords are similar to anamorphic [macros or variables](https://en.wikipedia.org/wiki/Anaphoric_macro) that could be found in other programming languages such as LISP.
+
 
 
 ### Initialization Handler

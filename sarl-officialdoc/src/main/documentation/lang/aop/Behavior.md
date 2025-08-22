@@ -284,6 +284,8 @@ The statements are executed only if an event with the given name is received, *a
 In the guard and the statements, it is possible to use the instance of the received event:
 the occurrence. This instance is represented by the [:occurrencekw:] keyword. It is an implicit
 variable as the keywords `this` and `it`.
+These three keywords are similar to anamorphic [macros or variables](https://en.wikipedia.org/wiki/Anaphoric_macro) that could be found in other programming languages such as LISP.
+
 
 
 ### Initialization Handler

@@ -109,16 +109,103 @@ In the following example, the type of the variable is inferred to [:vartype:]:
 [:End:]
 
 
-## Implicit Variables: this and it
+## Implicit or Anaphoric Variables: this, super, it and occurrence
+
+In the domain of computer science and programming language theory, an [anaphoric macro or variable](https://en.wikipedia.org/wiki/Anaphoric_macro) refers to a linguistic construct that enables the implicit capture and reuse of intermediate computation results within an expression. The term anaphora originates from linguistics, where it denotes a word or phrase that refers back to a previously mentioned entity. In programming, this concept is adapted to allow a macro or variable to automatically bind to the result of a preceding computation, thereby reducing redundancy and enhancing expressiveness.
+Anaphoric macros are most commonly associated with Lisp-family languages and domain-specific languages that support advanced macro systems.
+The core characteristics of anaphoric variables are:
+
+- **Implicit Binding:** The variable does not require explicit assignment; instead, it is bound to the result of the most recent relevant computation.
+- **Lexical Scoping:** The binding is typically confined to the lexical scope of the variable use, ensuring referential transparency and avoiding unintended side effects.
+- **Abstraction:** Anaphoric constructs abstract away repetitive patterns, such as repeatedly referencing the result of a function call or expression.
+
+
+The following table describes the four anaphoric variables that are defined in SARL.
+
+
+| Name of the implicit variable | Operational Semantic | Implicitly in naming scope w/ priority level |
+|-------------------------------|----------------------|----------------------------------------------|
+| `this`                        | Reference to the current instance of agent, behavior, skill, class or enumeration. The type of `this` is the type where it is mentionned in the code | Yes (2) |
+| `super`                       | Reference to the current instance of agent, behavior, skill, class or enumeration. The type of `this` is the super-type of the type where it is mentionned in the code | Yes (3) |
+| `it`                          | Reference to an object that depends on the current of usage in the code according to the concept of the [anamorphic macros or variables](https://en.wikipedia.org/wiki/Anaphoric_macro). To determine if `it` is defined at a specific locaiton in the code, you have to refer to the document of the enclosing features | Yes (1) |
+| `occurrence`                  | Reference to the current instance of an event received by an agent, behavior or skill | No |
+
+
 
 Like in Java the current object is bound to the keyword `this`. This allows for implicit field access or method invocations.
+For example, in the following code, `this` represents the current agent instance in memory. Therefore, the code is changing the value of the agent's field [:thisexamplefield:]. In this code, the type of `this` is `A`.
 
-You can use the variable name `it` to get the same behavior for any variable or parameter.
-Moreover, the variable `it` is allowed to be shadowed. This is especially useful when used together with lambda
-expressions.
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	[:On]
+	agent A {
+		var [:thisexamplefield](myvariable) : int
+		def action(value : int) {
+			this.myvariable = value
+		}
+	}
+[:End:]
 
-When you type a name that doesn't resolve to a variable in the local scope, the compiler tries to find a field
-with the same name on the `it` object, then in the `this` object.
+
+In the following code, `super` represents the current agent instance in memory but with a type different than `this`: `super` has the super-type, here `B`. `super` is equivalent to `this as B` in this example.
+
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	[:On]
+	agent B {
+		protected var mysupervariable : int
+	}
+	agent A extends B {
+		var thisexamplefield : int
+		def action(value : int) {
+			super.mysupervariable = value
+		}
+	}
+[:End:]
+
+
+
+The `it` variable is defined and binded by some SARL constructs. For example, Let a [lambda expression][./Lambda.md] declared as a formal formater of a [:itexamplefct:]. This lambda expression takes one argument:
+
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	class A {
+	[:On]
+		static def [:itexamplefct](function)(parameter : (int) => boolean) {
+			println(parameter.apply(45))
+		}
+
+		static def [:itexamplemain](main) {
+			function [ p | p > 30 ]
+			function [ it > 30 ]
+		}
+	[:Off]
+	}
+[:End:]
+
+The two lines in the [:itexamplemain:] function are equivalent. On the first line, the formal parameter of the lambda expression is explicitly named. On the second line, the formal parameter is not explicitly named. Therefore, the SARL compiler assumes that this parameter becomes the anphoric variable `it` with the value given as argument to the lambda expression.
+
+SARL also defines the `it` variable in the [guards of the agent's behaviors units](../aop/Agent.md#behaviors-of-an-agent). The three guards in the following code are equivalent. Here `it` is binding to the `occurrence` variable. The `occurrence` variable is the forth anaphoric variable supported by SARL. It is binded to the instance of a received event.
+
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	[:On]
+	event E {
+		var attr : int
+	}
+	
+	agent A {
+		on E [occurrence.attr > 10] {
+		}
+
+		on E [it.attr > 10] {
+		}
+
+		on E [attr > 10] {
+		}
+	}
+[:End:]
+
 
 
 [:Include:](../../includes/oopref.inc)
