@@ -123,7 +123,7 @@ abstract skill ProtocolSkill implements ProtocolCapacity {
 	 * @param id the identifier of the knowledge to search for.
 	 * @return the protocol instance or {@code null}.
 	 */
-	protected def findSpaceMachtingScope(scope : KnowledgeID) : ProtocolSpace {
+	protected final def findSpaceMachtingScope(scope : KnowledgeID) : ProtocolSpace {
 		if (scope.keys.isEmpty) {
 			return null
 		}
@@ -138,7 +138,7 @@ abstract skill ProtocolSkill implements ProtocolCapacity {
 		}
 		return null
 	}
-	
+
 	//TODO: removeProtocolSpace
 	
 }

@@ -316,4 +316,46 @@ public class SpecificationTest {
 
 	}
 
+	/**
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@Nested
+	@DisplayName("Role definition")
+	public class RoleDefinitionTest extends AbstractBsplTest {
+
+		@Test
+		@DisplayName("Unknown sender role")
+		public void unknownSenderRole() throws Exception {
+			var bspl = specification(
+					"protocol PROTO {",
+					"  role R1, R2",
+					"  R3 -> R2 : Message",
+					"}");
+			validate(bspl).assertError(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					UNDEFINED_PROTOCOL_ROLE,
+					"Undefined source role R3", "protocol PROTO");
+
+		}
+
+		@Test
+		@DisplayName("Unknown receiver role")
+		public void unknownReceiverRole() throws Exception {
+			var bspl = specification(
+					"protocol PROTO {",
+					"  role R1, R2",
+					"  R1 -> R3 : Message",
+					"}");
+			validate(bspl).assertError(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					UNDEFINED_PROTOCOL_ROLE,
+					"Undefined destination role R3", "protocol PROTO");
+
+		}
+
+	}
+
 }

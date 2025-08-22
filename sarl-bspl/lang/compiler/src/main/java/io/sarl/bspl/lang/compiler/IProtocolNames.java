@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import com.google.inject.ImplementedBy;
 
+import io.sarl.bspl.lang.bspl.BsplProtocol;
 import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 
 /** Provider of names for protocols.
@@ -44,12 +45,27 @@ public interface IProtocolNames {
 	 */
 	Class<?> getProtocoRoleGenericInterface();
 
-	/** Replies the basename of the protocol enumeration.
+	/** Replies the basename of the protocol role enumeration.
 	 *
 	 * @param protocolName the name of the protocol.
 	 * @return the name.
 	 */
-	String getProtocolEnumerationName(String protocolName);
+	String getProtocolRoleEnumerationName(String protocolName);
+
+	/** Replies the type of the enumeration for the roles in the given protocol.
+	 *
+	 * @param packageName the name of of the package in which the protocol is defined.
+	 * @param protocol the protocol.
+	 * @return the capacity type.
+	 */
+	LightweightTypeReference getProtocolRoleEnumeration(String packageName, BsplProtocol protocol);
+
+	/** Replies the basename of the protocol's space specification.
+	 *
+	 * @param protocolName the name of the protocol.
+	 * @return the name.
+	 */
+	String getProtocolSpaceSpecificationName(String protocolName);
 
 	/** Replies the basename of the protocol capacity for the given role in the given protocol.
 	 *
@@ -112,7 +128,7 @@ public interface IProtocolNames {
 	 */
 	String getEnabledMessageListFunctionName(String messageName);
 
-	/** Replies the name of the message.
+	/** Replies the fully qualified name of the message.
 	 *
 	 * @param packageName the name of of the package in which the protocol is defined.
 	 * @param protocolName the name of the protocol.
@@ -120,6 +136,31 @@ public interface IProtocolNames {
 	 * @return the fully qualified name of the message.
 	 */
 	String getProtocolMessageQualifiedName(String packageName, String protocolName, String messageName);
+
+	/** Replies the package name of the message.
+	 *
+	 * @param packageName the name of of the package in which the protocol is defined.
+	 * @param protocolName the name of the protocol.
+	 * @param messageName the basename of the message.
+	 * @return the package name of the message.
+	 */
+	String getProtocolMessagePackageName(String packageName, String protocolName, String messageName);
+
+	/** Replies the base name of the message.
+	 *
+	 * @param packageName the name of of the package in which the protocol is defined.
+	 * @param protocolName the name of the protocol.
+	 * @param messageName the basename of the message.
+	 * @return the base name of the message.
+	 */
+	String getProtocolMessageName(String packageName, String protocolName, String messageName);
+
+	/** Replies the name of the function that permits to retrieve the enabled messages.
+	 *
+	 * @param messageName the name of the message.
+	 * @return the function name.
+	 */
+	String getGetEnabledMessagesFunctionName(String messageName);
 
 	/** Replies the name of the function that permits to send a message.
 	 *

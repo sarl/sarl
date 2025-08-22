@@ -22,10 +22,13 @@
 package io.sarl.bspl.lang.compiler.generic;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
@@ -219,5 +222,78 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	 * @return the reference.
 	 */
 	LightweightTypeReference findType(String typeName, EObject context);
+
+	/** Find a reference to a type.
+	 *
+	 * @param type the type.
+	 * @param context the context in which types are defined.
+	 * @return the reference.
+	 */
+	LightweightTypeReference toTypeReference(JvmType type, EObject context);
+
+	/** Find a reference to a type.
+	 *
+	 * @param type the type.
+	 * @param context the context in which types are defined.
+	 * @return the reference.
+	 */
+	LightweightTypeReference toTypeReference(JvmTypeReference type, EObject context);
+
+	/** Append the type replied by the given getter function, or {@code Object}.
+	 *
+	 * @param receiver the receiver of the type name.
+	 * @param source the object that may be invoked.
+	 * @param getter the reference to the getter function of the {@code source}. This function must returns a {@link LightweightTypeReference}.
+	 */
+	default void appendLightweightTypeReferenceOrObject(ITreeAppendable receiver, EObject source, Supplier<LightweightTypeReference> getter) {
+		if (source == null || getter == null) {
+			receiver.append(Object.class);
+		} else {
+			final var type = getter.get();
+			if (type == null) {
+				receiver.append(Object.class);
+			} else {
+				receiver.append(type);
+			}
+		}
+	}
+
+	/** Append the type replied by the given getter function, or {@code Object}.
+	 *
+	 * @param receiver the receiver of the type name.
+	 * @param source the object that may be invoked.
+	 * @param getter the reference to the getter function of the {@code source}. This function must returns a {@link JvmTypeReference}.
+	 */
+	default void appendTypeReferenceOrObject(ITreeAppendable receiver, EObject source, Supplier<JvmTypeReference> getter) {
+		if (source == null || getter == null) {
+			receiver.append(Object.class);
+		} else {
+			final var type = getter.get();
+			if (type == null) {
+				receiver.append(Object.class);
+			} else {
+				receiver.append(toTypeReference(type, source));
+			}
+		}
+	}
+
+	/** Append the type replied by the given getter function, or {@code Object}.
+	 *
+	 * @param receiver the receiver of the type name.
+	 * @param source the object that may be invoked.
+	 * @param getter the reference to the getter function of the {@code source}. This function must returns a {@link JvmType}.
+	 */
+	default void appendTypeOrObject(ITreeAppendable receiver, EObject source, Supplier<JvmType> getter) {
+		if (source == null || getter == null) {
+			receiver.append(Object.class);
+		} else {
+			final var type = getter.get();
+			if (type == null) {
+				receiver.append(Object.class);
+			} else {
+				receiver.append(toTypeReference(type, source));
+			}
+		}
+	}
 
 }

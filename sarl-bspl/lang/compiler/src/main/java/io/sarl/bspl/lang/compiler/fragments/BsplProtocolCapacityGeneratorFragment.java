@@ -22,9 +22,9 @@
 package io.sarl.bspl.lang.compiler.fragments;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
@@ -38,7 +38,7 @@ import io.sarl.bspl.lang.compiler.IProtocolNames;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
 import io.sarl.lang.core.annotation.SarlAsynchronousExecution;
 
-/** The generator of the BSPL protocol capacity.
+/** The generator of the BSPL role's capacity.
  *
  * @author $Author: sgalland$
  * @author $Author: stedeschi$
@@ -50,17 +50,18 @@ import io.sarl.lang.core.annotation.SarlAsynchronousExecution;
 @Singleton
 public class BsplProtocolCapacityGeneratorFragment {
 
-	/** Run the pre-stage actions for the BSPL role enumeration.
+	/** Run the pre-stage actions for the BSPL role's capacity.
 	 *
+	 * @param messages the messages in the BSPL protocol.
 	 * @param roles the roles in the BSPL protocol.
 	 * @param context the generation context.
 	 * @throws IOException when the file cannot be generated on the device.
 	 */
-	public void preGenerate(List<BsplProtocolRole> roles, ISarlTargetGeneratorContext<IProtocolNames> context)throws IOException {
+	public void preGenerate(List<BsplProtocolMessage> messages, List<BsplProtocolRole> roles, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
 		//
 	}
 
-	/** Generate the SARL code that is specific to BSPL roles.
+	/** Generate the SARL code that is specific to BSPL role's capacity.
 	 *
 	 * @param messages the messages in the BSPL protocol.
 	 * @param roles the roles in the BSPL protocol.
@@ -85,14 +86,14 @@ public class BsplProtocolCapacityGeneratorFragment {
 					final var messageType0 = context.findType(messageQualifiedName, role);
 					receiver
 						.newLine().append("@").append(SarlAsynchronousExecution.class).newLine() //$NON-NLS-1$
-						.append("def getEnabled").append(message).append("Messages : ") //$NON-NLS-1$ //$NON-NLS-2$
+						.append("def ").append(names.getGetEnabledMessagesFunctionName(message)).append(" : ") //$NON-NLS-1$ //$NON-NLS-2$
 						.append(List.class).append("<").append(ProtocolMessage.class).append("<") //$NON-NLS-1$ //$NON-NLS-2$
 						.append(messageType0).append(">>"); //$NON-NLS-1$
 
 					final var messageType1 = context.findType(messageQualifiedName, role);
 					receiver
 						.newLine().append("@").append(SarlAsynchronousExecution.class).newLine() //$NON-NLS-1$
-						.append("def send").append(message).append("Message(m : ") //$NON-NLS-1$ //$NON-NLS-2$
+						.append("def ").append(names.getSendMessageFunctionName(message)).append("(m : ") //$NON-NLS-1$ //$NON-NLS-2$
 						.append(ProtocolMessage.class).append("<") //$NON-NLS-1$
 						.append(messageType1).append(">)"); //$NON-NLS-1$
 				}
@@ -101,7 +102,7 @@ public class BsplProtocolCapacityGeneratorFragment {
 	}
 
 	private static void generateProtocolCapacity(List<BsplProtocolMessage> messages, BsplProtocolRole role, ISarlTargetGeneratorContext<IProtocolNames> context, Procedure2<Set<String>, ITreeAppendable> generator) throws IOException {
-		final var sentMessages = new HashSet<String>();
+		final var sentMessages = new TreeSet<String>();
 		final var roleName = role.getName();
 		for (final var message : messages) {
 			if (roleName.equals(message.getFrom())) {

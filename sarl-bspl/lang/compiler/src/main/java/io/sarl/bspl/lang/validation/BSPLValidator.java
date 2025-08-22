@@ -30,7 +30,7 @@ import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PACKAGE_DECLARATION;
 import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PROTOCOL;
 import static io.sarl.bspl.lang.validation.IssueCodes.INVALID_ROLE_CARDINALITY_ORDER;
 import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PARAMETER_TYPE;
-import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_MESSAGE;
+import static io.sarl.bspl.lang.validation.IssueCodes.*;
 import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_ROLE;
 import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_PARAMETER;
 import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
@@ -326,6 +326,7 @@ public class BSPLValidator extends AbstractBSPLValidator {
 	}
 
 	/** Check the protocol message has known parameters and arguments are not duplicated.
+	 * This function also test if all the arguments have been specified.
 	 *
 	 * @param protocol the SARL BSPL protocol.
 	 */
@@ -340,11 +341,25 @@ public class BSPLValidator extends AbstractBSPLValidator {
 				messages.add(message);
 			}
 		}
+
+		final Set<String> expectedArguments;
+		if (!isIgnored(MISSED_ARGUMENT_IN_MESSAGE)) {
+			expectedArguments = new TreeSet<>();
+			for (final var message : messages) {
+				for (final var argument : message.getArguments()) {
+					expectedArguments.add(argument.getName());
+				}
+			}
+		} else {
+			expectedArguments = null;
+		}
+
 		for (final var message : messages) {
 			final var from = message.getFrom();
 			final var to = message.getTo();
 			final var msg = message.getMessage();
 			final var definedArguments = new TreeSet<String>();
+			final var remainArguments = expectedArguments == null ? null : new TreeSet<>(expectedArguments);
 			var i = 0;
 			for (final var argument : message.getArguments()) {
 				final var argumentName = argument.getName();
@@ -364,7 +379,17 @@ public class BSPLValidator extends AbstractBSPLValidator {
 							i,
 							DUPLICATE_PROTOCOL_ARGUMENT);
 				}
+				if (remainArguments != null) {
+					remainArguments.remove(argumentName);
+				}
 				++i;
+			}
+			if (remainArguments != null && !remainArguments.isEmpty()) {
+				for (final var missedArgument : remainArguments) {
+					addIssue(MessageFormat.format(Messages.SARL_BSPLValidator_17, message.getMessage(), missedArgument),
+							message,
+							MISSED_ARGUMENT_IN_MESSAGE);
+				}
 			}
 		}
 	}

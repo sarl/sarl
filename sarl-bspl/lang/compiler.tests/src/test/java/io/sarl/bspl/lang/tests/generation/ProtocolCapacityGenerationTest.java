@@ -38,7 +38,7 @@ import io.sarl.bspl.lang.tests.AbstractBsplTest;
 public class ProtocolCapacityGenerationTest extends AbstractBsplTest {
 
 	@Test
-	@DisplayName("Capacity for R1")
+	@DisplayName("Capacity for single R1")
 	public void onlyOriginBsplProtocol() throws Exception {
 		var source = multilineString(
 				"package io.sarl.bspl.lang.tests",
@@ -50,10 +50,10 @@ public class ProtocolCapacityGenerationTest extends AbstractBsplTest {
 		var expected = multilineString(
 				"/* This file was automatically generated. Do not change its content. */",
 				"",
-				"package io.sarl.bspl.lang.tests.proto_adapters",
+				"package io.sarl.bspl.lang.tests",
 				"",
 				"import io.sarl.bspl.api.protocol.impl.ProtocolMessage",
-				"import io.sarl.bspl.lang.tests.proto_adapters.messages.M",
+				"import io.sarl.bspl.lang.tests.messages.M",
 				"import io.sarl.lang.core.annotation.SarlAsynchronousExecution",
 				"import java.util.List",
 				"",
@@ -64,7 +64,139 @@ public class ProtocolCapacityGenerationTest extends AbstractBsplTest {
 				"  def sendMMessage(m : ProtocolMessage<M>)",
 				"}"
 				);
-		getCompileHelper().assertCompilesTo(source, "io.sarl.bspl.lang.tests.proto_adapters.R1ProtocolCapacity", expected);
+		getCompileHelper().assertCompilesTo(source, "io.sarl.bspl.lang.tests.R1ProtocolCapacity", expected);
+	}
+
+	@Test
+	@DisplayName("Capacity for R1")
+	public void firstOriginBsplProtocol() throws Exception {
+		var source = multilineString(
+				"package io.sarl.bspl.lang.tests",
+				"protocol PROTO {",
+				"  role R1, R2",
+				"  role R3",
+				"  R1 -> R2 : M",
+				"  R3 -> R2 : M",
+				"}");
+		var expected = multilineString(
+				"/* This file was automatically generated. Do not change its content. */",
+				"",
+				"package io.sarl.bspl.lang.tests",
+				"",
+				"import io.sarl.bspl.api.protocol.impl.ProtocolMessage",
+				"import io.sarl.bspl.lang.tests.messages.M",
+				"import io.sarl.lang.core.annotation.SarlAsynchronousExecution",
+				"import java.util.List",
+				"",
+				"capacity R1ProtocolCapacity {",
+				"  @SarlAsynchronousExecution",
+				"  def getEnabledMMessages : List<ProtocolMessage<M>>",
+				"  @SarlAsynchronousExecution",
+				"  def sendMMessage(m : ProtocolMessage<M>)",
+				"}"
+				);
+		getCompileHelper().assertCompilesTo(source, "io.sarl.bspl.lang.tests.R1ProtocolCapacity", expected);
+	}
+
+	@Test
+	@DisplayName("Capacity for R3")
+	public void secondOriginBsplProtocol() throws Exception {
+		var source = multilineString(
+				"package io.sarl.bspl.lang.tests",
+				"protocol PROTO {",
+				"  role R1, R2",
+				"  role R3",
+				"  R1 -> R2 : M",
+				"  R3 -> R2 : M",
+				"}");
+		var expected = multilineString(
+				"/* This file was automatically generated. Do not change its content. */",
+				"",
+				"package io.sarl.bspl.lang.tests",
+				"",
+				"import io.sarl.bspl.api.protocol.impl.ProtocolMessage",
+				"import io.sarl.bspl.lang.tests.messages.M",
+				"import io.sarl.lang.core.annotation.SarlAsynchronousExecution",
+				"import java.util.List",
+				"",
+				"capacity R3ProtocolCapacity {",
+				"  @SarlAsynchronousExecution",
+				"  def getEnabledMMessages : List<ProtocolMessage<M>>",
+				"  @SarlAsynchronousExecution",
+				"  def sendMMessage(m : ProtocolMessage<M>)",
+				"}"
+				);
+		getCompileHelper().assertCompilesTo(source, "io.sarl.bspl.lang.tests.R3ProtocolCapacity", expected);
+	}
+
+	@Test
+	@DisplayName("Multiple R1 for same message")
+	public void multipleR1SingleMessage() throws Exception {
+		var source = multilineString(
+				"package io.sarl.bspl.lang.tests",
+				"protocol PROTO {",
+				"  role R1, R2",
+				"  role R3",
+				"  R1 -> R2 : M",
+				"  R3 -> R2 : M",
+				"  R1 -> R3 : M",
+				"}");
+		var expected = multilineString(
+				"/* This file was automatically generated. Do not change its content. */",
+				"",
+				"package io.sarl.bspl.lang.tests",
+				"",
+				"import io.sarl.bspl.api.protocol.impl.ProtocolMessage",
+				"import io.sarl.bspl.lang.tests.messages.M",
+				"import io.sarl.lang.core.annotation.SarlAsynchronousExecution",
+				"import java.util.List",
+				"",
+				"capacity R1ProtocolCapacity {",
+				"  @SarlAsynchronousExecution",
+				"  def getEnabledMMessages : List<ProtocolMessage<M>>",
+				"  @SarlAsynchronousExecution",
+				"  def sendMMessage(m : ProtocolMessage<M>)",
+				"}"
+				);
+		getCompileHelper().assertCompilesTo(source, "io.sarl.bspl.lang.tests.R1ProtocolCapacity", expected);
+	}
+
+	@Test
+	@DisplayName("Multiple R1 for multiple messages")
+	public void multipleR1ManyMessages() throws Exception {
+		var source = multilineString(
+				"package io.sarl.bspl.lang.tests",
+				"protocol PROTO {",
+				"  role R1, R2",
+				"  role R3",
+				"  R1 -> R2 : M",
+				"  R3 -> R2 : M",
+				"  R1 -> R3 : M2",
+				"}");
+		var expected = multilineString(
+				"/* This file was automatically generated. Do not change its content. */",
+				"",
+				"package io.sarl.bspl.lang.tests",
+				"",
+				"import io.sarl.bspl.api.protocol.impl.ProtocolMessage",
+				"import io.sarl.bspl.lang.tests.messages.M",
+				"import io.sarl.bspl.lang.tests.messages.M2",
+				"import io.sarl.lang.core.annotation.SarlAsynchronousExecution",
+				"import java.util.List",
+				"",
+				"capacity R1ProtocolCapacity {",
+				"  @SarlAsynchronousExecution",
+				"  def getEnabledMMessages : List<ProtocolMessage<M>>",
+				"  @SarlAsynchronousExecution",
+				"  def sendMMessage(m : ProtocolMessage<M>)",
+				"",
+				"  @SarlAsynchronousExecution",
+				"  def getEnabledM2Messages : List<ProtocolMessage<M2>>",
+				"  @SarlAsynchronousExecution",
+				"  def sendM2Message(m : ProtocolMessage<M2>)",
+				"}"
+				);
+		getCompileHelper().assertCompilesTo(source, "io.sarl.bspl.lang.tests.R1ProtocolCapacity", expected);
 	}
 
 }

@@ -8,11 +8,11 @@
   <description>Definition of the SARL-BSPL UI</description>
   <url>http://www.sarl.io</url>
   <modules>
-	<module>lang.ide</module>
-  	<module>lang.ui</module>
-  	<module>lang.ui.tests</module>
-  	<module>eclipse</module>
-  	<module>lang.feature</module>
+	<module>io.sarl.bspl.lang.ide</module>
+	<module>io.sarl.bspl.lang.ui</module>
+ 	<module>io.sarl.bspl.lang.ui.tests</module>
+  	<module>io.sarl.bspl.eclipse</module>
+	<module>io.sarl.bspl.lang.feature</module>
   </modules>
   <properties>
     <tycho.scmUrl>${sarl.scm.url}</tycho.scmUrl>

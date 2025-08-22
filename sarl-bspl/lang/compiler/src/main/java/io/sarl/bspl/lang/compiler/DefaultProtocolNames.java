@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import io.sarl.bspl.api.protocol.impl.ProtocolRole;
+import io.sarl.bspl.lang.bspl.BsplProtocol;
 import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 
 /** Provider of names for protocols.
@@ -55,10 +56,27 @@ public class DefaultProtocolNames implements IProtocolNames {
 	}
 
 	@Override
-	public String getProtocolEnumerationName(String protocolName) {
-		return protocolName + "Role"; //$NON-NLS-1$
+	public String getProtocolRoleEnumerationName(String protocolName) {
+		final var basename = new StringBuilder();
+		basename.append(protocolName).append("Role"); //$NON-NLS-1$
+		return basename.toString();
 	}
 	
+	@Override
+	public LightweightTypeReference getProtocolRoleEnumeration(String packageName, BsplProtocol protocol) {
+		final var fullName = new StringBuilder();
+		appendAdapterPackageName(packageName, protocol.getName(), fullName);
+		fullName.append(".").append(getProtocolRoleEnumerationName(protocol.getName())); //$NON-NLS-1$
+		return ensureType(fullName.toString(), protocol);
+	}
+
+	@Override
+	public String getProtocolSpaceSpecificationName(String protocolName) {
+		final var basename = new StringBuilder();
+		basename.append(protocolName).append("SpaceSpecification"); //$NON-NLS-1$
+		return basename.toString();
+	}
+
 	private static LightweightTypeReference toLightweightTypeReference(
 			JvmType type, EObject context, CommonTypeComputationServices services) {
 		if (type == null) {
@@ -69,17 +87,6 @@ public class DefaultProtocolNames implements IProtocolNames {
 		final var reference = factory.toLightweightReference(type);
 		return reference;
 	}
-
-	/*private static LightweightTypeReference toLightweightTypeReference(
-			JvmTypeReference type, EObject context, CommonTypeComputationServices services) {
-		if (type == null) {
-			return null;
-		}
-		final var owner = new StandardTypeReferenceOwner(services, context);
-		final var factory = new LightweightTypeReferenceFactory(owner, false);
-		final var reference = factory.toLightweightReference(type);
-		return reference;
-	}*/
 
 	private LightweightTypeReference ensureType(String typeName, EObject context) {
 		final var declaredType = this.typeServices.getTypeReferences().findDeclaredType(typeName, context);
@@ -96,12 +103,6 @@ public class DefaultProtocolNames implements IProtocolNames {
 			declaredType0.setSimpleName(typeName);
 		}
 		return toLightweightTypeReference(declaredType0, context, this.typeServices);
-
-		/*final var typeReference = this.typeServices.getTypeReferences().getTypeForName(typeName, context);
-		if (typeReference != null) {
-			return toLightweightTypeReference(typeReference, context, this.typeServices);
-		}
-		throw new IllegalArgumentException();*/
 	}
 
 	@Override
@@ -165,6 +166,26 @@ public class DefaultProtocolNames implements IProtocolNames {
 	}
 
 	@Override
+	public String getProtocolMessagePackageName(String packageName, String protocolName, String messageName) {
+		final var fullName = new StringBuilder();
+		appendAdapterPackageName(packageName, protocolName, fullName);
+		fullName.append(".messages"); //$NON-NLS-1$
+		return fullName.toString();
+	}
+
+	@Override
+	public String getProtocolMessageName(String packageName, String protocolName, String messageName) {
+		return messageName;
+	}
+
+	@Override
+	public String getGetEnabledMessagesFunctionName(String messageName) {
+		final var fullName = new StringBuilder();
+		fullName.append("getEnabled").append(messageName).append("Messages"); //$NON-NLS-1$ //$NON-NLS-2$
+		return fullName.toString();
+	}
+
+	@Override
 	public String getSendMessageFunctionName(String messageName) {
 		final var fullName = new StringBuilder();
 		fullName.append("send").append(messageName).append("Message"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -173,9 +194,10 @@ public class DefaultProtocolNames implements IProtocolNames {
 
 	private static void appendAdapterPackageName(String packageName, String protocolName, StringBuilder receiver) {
 		if (!Strings.isEmpty(packageName)) {
-			receiver.append(packageName).append("."); //$NON-NLS-1$
+			receiver.append(packageName);
 		}
-		receiver.append(protocolName.toLowerCase()).append("_adapters"); //$NON-NLS-1$
+		// Do not put the adapters in a subpackage to avoid the creation of "shadow" packages.
+		// receiver.append(protocolName.toLowerCase()).append("_adapters"); //$NON-NLS-1$
 	}
 
 	@Override

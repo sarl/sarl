@@ -22,6 +22,7 @@ package io.sarl.bspl.lang.tests.syntax;
 
 import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_MESSAGE;
 import static io.sarl.bspl.lang.validation.IssueCodes.INVALID_ROLE_CARDINALITY_ORDER;
+import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_ARGUMENT_IN_MESSAGE;
 import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_PARAMETER;
 import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -235,6 +236,19 @@ public class MessageProtocolTest {
 					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					DUPLICATE_PROTOCOL_MESSAGE,
 					"Duplicate message M from R1 to R2 in the protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Not duplicate message")
+		public void notDuplicateMessage() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"protocol PROTO {",
+					"  role R1, R2, R3",
+					"  R1 -> R2 : M",
+					"  R1 -> R3 : M",
+					"}");
+			validate(bspl).assertNoIssues();
 		}
 
 	}
@@ -1308,7 +1322,7 @@ public class MessageProtocolTest {
 		}
 
 		@Test
-		@DisplayName("1 argument with inalid modifier")
+		@DisplayName("1 argument with invalid modifier")
 		public void oneArgumentInvalidModifier() throws Exception {
 			var bspl = specification(
 					"package io.sarl.bspl.lang.tests",
@@ -1522,7 +1536,7 @@ public class MessageProtocolTest {
 		}
 
 		@Test
-		@DisplayName("1 KEY argument with inalid modifier")
+		@DisplayName("1 KEY argument with invalid modifier")
 		public void oneKeyArgumentInvalidModifier() throws Exception {
 			var bspl = specification(
 					"package io.sarl.bspl.lang.tests",
@@ -1580,7 +1594,6 @@ public class MessageProtocolTest {
 			assertFalse(arg1.isAny());
 		}
 
-
 		@Test
 		@DisplayName("2 IN KEY arguments")
 		public void twoInKeyArguments() throws Exception {
@@ -1622,6 +1635,63 @@ public class MessageProtocolTest {
 			assertFalse(arg1.isNil());
 			assertFalse(arg1.isOptional());
 			assertFalse(arg1.isAny());
+		}
+
+		@Test
+		@DisplayName("Unconsistent message prototype #1")
+		public void unconsistentMessagePrototype1() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"protocol PROTO {",
+					"  role R1, R2",
+					"  parameter A1",
+					"  parameter A2",
+					"  R1 -> R2 : M (in A1, out A2)",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					MISSED_ARGUMENT_IN_MESSAGE,
+					"Missing definition of argument A1 for message M")
+			.assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					MISSED_ARGUMENT_IN_MESSAGE,
+					"Missing definition of argument A2 for message M");
+		}
+
+		@Test
+		@DisplayName("Unconsistent message prototype #2")
+		public void unconsistentMessagePrototype2() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"protocol PROTO {",
+					"  role R1, R2",
+					"  parameter A1",
+					"  parameter A2",
+					"  R1 -> R2 : M (in A1, out A2)",
+					"  R1 -> R2 : M (out A2)",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					MISSED_ARGUMENT_IN_MESSAGE,
+					"Missing definition of argument A1 for message M");
+		}
+
+		@Test
+		@DisplayName("Unconsistent message prototype #3")
+		public void unconsistentMessagePrototype3() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"protocol PROTO {",
+					"  role R1, R2",
+					"  parameter A1",
+					"  parameter A2",
+					"  R1 -> R2 : M (in A1, out A2)",
+					"  R1 -> R2 : M (in A1, in A2)",
+					"}");
+			validate(bspl).assertNoWarnings(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					MISSED_ARGUMENT_IN_MESSAGE);
 		}
 
 	}

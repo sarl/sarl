@@ -4,7 +4,7 @@
   <artifactId>bspl.sdk</artifactId>
   <version>0.15.0-SNAPSHOT</version>
   <name>Full SDK for SARL-BSPL Applications</name>
-  <description>Provides all necessary dependencies to develop a MAS with SARL-BSPL</description>
+  <description>Provides all necessary dependencies to develop a MAS with BSPL</description>
   <packaging>jar</packaging>
   <url>http://www.sarl.io</url>
   <properties>
@@ -144,9 +144,9 @@
 						Bundle-SymbolicName: ${project.groupId}.${project.artifactId};singleton:=true
 						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
 						Bundle-Vendor: ${sarl.vendor}
-						Export-Package: io.sarl.bspl.sdk.*
-						Require-Bundle: io.sarl.bspl.api.memory, \
-							io.sarl.bspl.api.protocol
+						Export-Package: io.sarl.bspl.api.sdk.*
+						Require-Bundle: io.sarl.bspl.bspl.api.memory, \
+							io.sarl.bspl.bspl.api.protocol
 					</bnd>
         </configuration>
       </plugin>

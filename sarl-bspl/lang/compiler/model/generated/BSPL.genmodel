@@ -5,7 +5,7 @@
     modelName="BSPL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="17.0" copyrightFields="false" runtimeVersion="2.36" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xAnnotations platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
   <genPackages prefix="Bspl" basePackage="io.sarl.bspl.lang" disposableProviderFactory="true"
-      fileExtensions="bspl" ecorePackage="BSPL.ecore#/">
+      fileExtensions="bspl,BSPL,Bspl" ecorePackage="BSPL.ecore#/">
     <genClasses ecoreClass="BSPL.ecore#//BsplProtocolSpecification">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute BSPL.ecore#//BsplProtocolSpecification/package"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference BSPL.ecore#//BsplProtocolSpecification/importSection"/>

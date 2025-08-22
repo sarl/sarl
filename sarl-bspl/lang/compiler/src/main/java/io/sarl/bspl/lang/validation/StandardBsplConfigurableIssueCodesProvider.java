@@ -90,6 +90,10 @@ public class StandardBsplConfigurableIssueCodesProvider extends XbaseConfigurabl
 		acceptor.accept(create(
 				IssueCodes.INVALID_ROLE_CARDINALITY_ORDER,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.MISSED_ARGUMENT_IN_MESSAGE,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

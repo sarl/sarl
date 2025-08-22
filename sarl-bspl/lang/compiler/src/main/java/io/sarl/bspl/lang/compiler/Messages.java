@@ -37,7 +37,8 @@ public final class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages";
 
-	public static String SarlBsplOutputConfigurationProvider_0;
+	public static String BsplOutputConfigurationProvider_0;
+	public static String BsplOutputConfigurationProvider_1;
 
 	static {
 		// initialize resource bundle

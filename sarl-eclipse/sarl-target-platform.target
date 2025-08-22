@@ -184,5 +184,25 @@
 			  </dependency>
 		  </dependencies>
 	  </location>
+	  <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.bspl</groupId>
+				  <artifactId>io.sarl.bspl.eclipse</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.apputils</groupId>
+				  <artifactId>uiextensions</artifactId>
+				  <version>0.15.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
   </locations>
 </target>

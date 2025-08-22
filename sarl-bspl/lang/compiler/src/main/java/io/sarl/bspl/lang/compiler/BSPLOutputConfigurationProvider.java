@@ -25,13 +25,13 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import com.google.inject.Singleton;
-
-import io.sarl.bspl.lang.BSPLConfig;
-
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.generator.OutputConfigurationProvider;
+
+import com.google.inject.Singleton;
+
+import io.sarl.bspl.lang.BSPLConfig;
 
 
 /** Provide the output configuration from the SARL code to the Java code.
@@ -48,8 +48,15 @@ public class BSPLOutputConfigurationProvider extends OutputConfigurationProvider
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
 		final var defaultOutput = createStandardOutputConfiguration();
+		final var testOutput = createTestOutputConfiguration();
 		if (defaultOutput != null) {
+			if (testOutput != null) {
+				return newHashSet(defaultOutput, testOutput);
+			}
 			return newHashSet(defaultOutput);
+		}
+		if (testOutput != null) {
+			return newHashSet(testOutput);
 		}
 		return newHashSet();
 	}
@@ -61,7 +68,7 @@ public class BSPLOutputConfigurationProvider extends OutputConfigurationProvider
 	@SuppressWarnings("static-method")
 	protected OutputConfiguration createStandardOutputConfiguration() {
 		final var defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
-		defaultOutput.setDescription(Messages.SarlBsplOutputConfigurationProvider_0);
+		defaultOutput.setDescription(Messages.BsplOutputConfigurationProvider_0);
 		defaultOutput.setOutputDirectory(BSPLConfig.FOLDER_SOURCE_GENERATED);
 		defaultOutput.setOverrideExistingResources(true);
 		defaultOutput.setCreateOutputDirectory(true);
@@ -70,6 +77,24 @@ public class BSPLOutputConfigurationProvider extends OutputConfigurationProvider
 		defaultOutput.setSetDerivedProperty(true);
 		defaultOutput.setKeepLocalHistory(Boolean.FALSE);
 		return defaultOutput;
+	}
+
+	/** Create the unit test output configuration.
+	 *
+	 * @return the configuration, never {@code null}.
+	 */
+	@SuppressWarnings("static-method")
+	protected OutputConfiguration createTestOutputConfiguration() {
+		final var testOutput = new OutputConfiguration(BSPLConfig.TEST_OUTPUT_CONFIGURATION);
+		testOutput.setDescription(Messages.BsplOutputConfigurationProvider_1);
+		testOutput.setOutputDirectory(BSPLConfig.FOLDER_TEST_SOURCE_GENERATED);
+		testOutput.setOverrideExistingResources(true);
+		testOutput.setCreateOutputDirectory(true);
+		testOutput.setCanClearOutputDirectory(false);
+		testOutput.setCleanUpDerivedResources(true);
+		testOutput.setSetDerivedProperty(true);
+		testOutput.setKeepLocalHistory(Boolean.FALSE);
+		return testOutput;
 	}
 
 }

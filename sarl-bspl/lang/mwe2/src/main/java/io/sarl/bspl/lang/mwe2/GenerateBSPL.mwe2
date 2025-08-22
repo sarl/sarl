@@ -44,28 +44,28 @@ var compilerTestProjectPath = "${rootPathForAllXtextProjects}/${compilerTestProj
 var compilerTestProjectSrcGenPath = "${compilerTestProjectPath}/src/main/generated-sources/java"
 
 // Project for the UI that is independent of the framework, i.e., Eclipse and IntelliJ
-var genericIdeProjectName = "lang.ide"
+var genericIdeProjectName = "io.sarl.bspl.lang.ide"
 var genericIdeProjectPath = "${rootPathForAllUiXtextProjects}/${genericIdeProjectName}"
 var genericIdeProjectMetaInfPath = "${genericIdeProjectPath}/META-INF"
 var genericIdeProjectSrcPath = "${genericIdeProjectPath}/src"
 var genericIdeProjectSrcGenPath = "${genericIdeProjectPath}/src-gen"
 
 // Project for the UI that is dedicated to the Eclipse framework
-var eclipseIdeProjectName = "lang.ui"
+var eclipseIdeProjectName = "io.sarl.bspl.lang.ui"
 var eclipseIdeProjectPath = "${rootPathForAllUiXtextProjects}/${eclipseIdeProjectName}"
 var eclipseIdeProjectMetaInfPath = "${eclipseIdeProjectPath}/META-INF"
 var eclipseIdeProjectSrcPath = "${eclipseIdeProjectPath}/src"
 var eclipseIdeProjectSrcGenPath = "${eclipseIdeProjectPath}/src-gen"
 
 // Project for the UI tests
-var eclipseIdeTestProjectName = "lang.ui.tests"
+var eclipseIdeTestProjectName = "io.sarl.bspl.lang.ui.tests"
 var eclipseIdeTestProjectPath = "${rootPathForAllUiXtextProjects}/${eclipseIdeTestProjectName}"
 var eclipseIdeTestProjectMetaInfPath = "${eclipseIdeTestProjectPath}/META-INF"
 var eclipseIdeTestProjectSrcPath = "${eclipseIdeTestProjectPath}/src"
 var eclipseIdeTestProjectSrcGenPath = "${eclipseIdeTestProjectPath}/src-gen"
 
-// File extension for the SARL-BSPL scripts
-var file.extensions = "bspl"
+// File extension for the SARL-BSPL scripts, separated by coma characters, in preferred order
+var file.extensions = "bspl,BSPL,Bspl"
 
 // Encoding of the generated source files
 var fileEncoding = "UTF-8"
@@ -143,6 +143,7 @@ Workflow {
 					srcGen = genericIdeProjectSrcGenPath
 					metaInf = genericIdeProjectMetaInfPath
 					overwriteSrc = false
+					
 				}
 				eclipsePlugin = auto-inject {
 					enabled = true

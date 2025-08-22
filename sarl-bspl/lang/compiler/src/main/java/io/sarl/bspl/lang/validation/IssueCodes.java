@@ -113,6 +113,11 @@ public final class IssueCodes {
 	public static final String INVALID_ROLE_CARDINALITY_ORDER =
 			ISSUE_CODE_PREFIX + "invalid_role_cardinality_order"; //$NON-NLS-1$
 
+	/** An argument is missed from the definition of a message.
+	 */
+	public static final String MISSED_ARGUMENT_IN_MESSAGE =
+			ISSUE_CODE_PREFIX + "missed_argument_in_message"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

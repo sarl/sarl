@@ -58,5 +58,9 @@ public class BSPLStandaloneSetupGenerated implements ISetup {
 		
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("bspl", resourceFactory);
 		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("bspl", serviceProvider);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("BSPL", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("BSPL", serviceProvider);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("Bspl", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("Bspl", serviceProvider);
 	}
 }

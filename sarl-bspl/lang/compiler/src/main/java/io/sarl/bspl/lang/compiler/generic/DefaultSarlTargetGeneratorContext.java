@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.resource.IResourceFactory;
@@ -274,6 +275,17 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 		return reference;
 	}
 
+	private static LightweightTypeReference toLightweightTypeReference(
+			JvmTypeReference type, EObject context, CommonTypeComputationServices services) {
+		if (type == null) {
+			return null;
+		}
+		final var owner = new StandardTypeReferenceOwner(services, context);
+		final var factory = new LightweightTypeReferenceFactory(owner, false);
+		final var reference = factory.toLightweightReference(type);
+		return reference;
+	}
+
 	@Override
 	public LightweightTypeReference findType(String typeName, EObject context) {
 		final var declaredType = this.typeServices.getTypeReferences().findDeclaredType(typeName, context);
@@ -290,12 +302,16 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 			declaredType0.setSimpleName(typeName);
 		}
 		return toLightweightTypeReference(declaredType0, context, this.typeServices);
+	}
 
-		/*final var typeReference = this.typeServices.getTypeReferences().getTypeForName(typeName, context);
-		if (typeReference != null) {
-			return toLightweightTypeReference(declaredType, this.typeServices);
-		}
-		throw new IllegalArgumentException();*/
+	@Override
+	public LightweightTypeReference toTypeReference(JvmType type, EObject context) {
+		return toLightweightTypeReference(type, context, this.typeServices);
+	}
+
+	@Override
+	public LightweightTypeReference toTypeReference(JvmTypeReference type, EObject context) {
+		return toLightweightTypeReference(type, context, this.typeServices);
 	}
 
 }

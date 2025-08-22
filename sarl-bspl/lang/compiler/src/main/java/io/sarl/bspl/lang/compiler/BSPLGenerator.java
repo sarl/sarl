@@ -28,7 +28,11 @@ import com.google.inject.Inject;
 import io.sarl.bspl.lang.bspl.BsplProtocol;
 import io.sarl.bspl.lang.bspl.BsplProtocolSpecification;
 import io.sarl.bspl.lang.compiler.fragments.BsplProtocolCapacityGeneratorFragment;
-import io.sarl.bspl.lang.compiler.fragments.BsplRoleEnumerationGeneratorFragment;
+import io.sarl.bspl.lang.compiler.fragments.BsplProtocolMessageGeneratorFragment;
+import io.sarl.bspl.lang.compiler.fragments.BsplProtocolReactiveBehaviorGeneratorFragment;
+import io.sarl.bspl.lang.compiler.fragments.BsplProtocolRoleEnumerationGeneratorFragment;
+import io.sarl.bspl.lang.compiler.fragments.BsplProtocolSkillGeneratorFragment;
+import io.sarl.bspl.lang.compiler.fragments.BsplProtocolSpaceSpecificationGeneratorFragment;
 import io.sarl.bspl.lang.compiler.generic.AbstractSarlTargetGenerator;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
 
@@ -44,11 +48,23 @@ import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
 public class BSPLGenerator extends AbstractSarlTargetGenerator<IProtocolNames> {
 
 	@Inject
-	private BsplRoleEnumerationGeneratorFragment roleEnumerationFragment; 
+	private BsplProtocolRoleEnumerationGeneratorFragment roleEnumerationFragment; 
+	
+	@Inject
+	private BsplProtocolMessageGeneratorFragment protocolMessageFragment;
 
 	@Inject
 	private BsplProtocolCapacityGeneratorFragment protocolCapacityFragment;
-	
+
+	@Inject
+	private BsplProtocolSkillGeneratorFragment protocolSkillFragment;
+
+	@Inject
+	private BsplProtocolReactiveBehaviorGeneratorFragment reactiveBehaviorFragment;
+
+	@Inject
+	private BsplProtocolSpaceSpecificationGeneratorFragment spaceSpecificationFragment;
+
 	/** Generate the SARL code from a BSPL specification.
 	 *
 	 * @param specification the BSPL specification.
@@ -76,10 +92,18 @@ public class BSPLGenerator extends AbstractSarlTargetGenerator<IProtocolNames> {
 
 		if (context.isPreStage()) {
 			this.roleEnumerationFragment.preGenerate(protocol.getRoles(), packagedNamedContext);
-			this.protocolCapacityFragment.preGenerate(protocol.getRoles(), packagedNamedContext);
+			this.protocolMessageFragment.preGenerate(protocol.getMessages(), protocol.getParameters(), packagedNamedContext);
+			this.protocolCapacityFragment.preGenerate(protocol.getMessages(), protocol.getRoles(), packagedNamedContext);
+			this.protocolSkillFragment.preGenerate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);
+			this.reactiveBehaviorFragment.preGenerate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);
+			this.spaceSpecificationFragment.preGenerate(protocol, packagedNamedContext);
 		} else {
 			this.roleEnumerationFragment.generate(protocol.getRoles(), packagedNamedContext);
+			this.protocolMessageFragment.generate(protocol.getMessages(), protocol.getParameters(), packagedNamedContext);
 			this.protocolCapacityFragment.generate(protocol.getMessages(), protocol.getRoles(), packagedNamedContext);
+			this.protocolSkillFragment.generate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);
+			this.reactiveBehaviorFragment.generate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);
+			this.spaceSpecificationFragment.generate(protocol, packagedNamedContext);
 		}
 	}
 

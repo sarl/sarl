@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+       id="BSPLProjectNature"
+       name="%nature.name"
+       point="org.eclipse.core.resources.natures">
+		<runtime>
+			<run class="io.sarl.bspl.eclipse.natures.BSPLProjectNature" />
+		</runtime>
+		<!-- <requires-nature id="io.sarl.eclipse.natures.SARLProjectNature"/> -->
+	</extension>
+		
+  <extension
+        point="org.eclipse.ui.ide.projectNatureImages">
+     <image
+           icon="icons/bspl_project_nature_overlay.png"
+           id="io.sarl.bspl.eclipse.natures.BSPLProjectNatureImage"
+           natureId="io.sarl.bspl.eclipse.natures.BSPLProjectNature">
+     </image>
+  </extension>
+	<extension point="org.eclipse.ui.newWizards">
+		<category
+			id="io.sarl.bspl.eclipse.category.wizards"
+			name="%category.name">
+		</category>
+		  <wizard 
+		        category="io.sarl.bspl.eclipse.category.wizards"
+		        class="io.sarl.bspl.eclipse.BSPLEclipseExecutableExtensionFactory:io.sarl.bspl.eclipse.wizards.newfile.NewBsplFileWizard"
+		        icon="icons/bspl_new_file_16.png"
+		        id="io.sarl.bspl.eclipse.wizard.newBsplSpecification"
+		        name="%wizard.name.newBsplSpecification">
+				<description>%wizard.description.newBsplSpecification</description>
+		  </wizard>
+	</extension>
+
+  <!-- Perspectives -->
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <!-- Extends the Java perspectives with the BSPL contributions -->
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <newWizardShortcut id="io.sarl.bspl.eclipse.wizard.newBsplSpecification"/>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         <newWizardShortcut id="io.sarl.bspl.eclipse.wizard.newBsplSpecification"/>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="io.sarl.eclipse.perspective.devel">
+         <newWizardShortcut id="io.sarl.bspl.eclipse.wizard.newBsplSpecification"/>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="io.sarl.eclipse.perspective.debug">
+         <newWizardShortcut id="io.sarl.bspl.eclipse.wizard.newBsplSpecification"/>
+      </perspectiveExtension>
+   </extension>
+
+<!-- Class path containers -->
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+          id="io.sarl.bspl.eclipse.launching.BSPL_SUPPORT"
+          class="io.sarl.bspl.eclipse.BSPLEclipseExecutableExtensionFactory:io.sarl.bspl.eclipse.buildpath.BSPLClasspathContainerInitializer"/>
+   </extension>
+	<extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            name="%classpathContainerPage.name"
+            class="io.sarl.bspl.eclipse.BSPLEclipseExecutableExtensionFactory:io.sarl.bspl.eclipse.buildpath.BSPLContainerWizardPage"
+            id="io.sarl.bspl.eclipse.launching.BSPL_SUPPORT">
+      </classpathContainerPage>
+   </extension>
+ <extension
+       point="io.sarl.apputils.eclipseextensions.projectConfigurationFragment">
+    <projectConfigurationFragment
+          class="io.sarl.bspl.eclipse.BSPLEclipseExecutableExtensionFactory:io.sarl.bspl.eclipse.natures.BSPLProjectConfigurationFragment">
+    </projectConfigurationFragment>
+ </extension>
+
+</plugin>

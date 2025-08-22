@@ -3,7 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SARL IDE Application
 Bundle-Vendor: SARL.io
 Bundle-Version: 0.15.0.qualifier
-Require-Bundle: io.sarl.eclipse;bundle-version="0.15.0"
+Require-Bundle: io.sarl.eclipse;bundle-version="0.15.0",
+ io.sarl.bspl.bspl.api.memory;bundle-version="0.15.0",
+ io.sarl.bspl.bspl.api.protocol;bundle-version="0.15.0",
+ io.sarl.bspl.bspl.lang.compiler;bundle-version="0.15.0",
+ io.sarl.bspl.bspl.sdk;bundle-version="0.15.0",
+ io.sarl.bspl.lang.ide;bundle-version="0.15.0",
+ io.sarl.bspl.lang.ui;bundle-version="0.15.0",
+ io.sarl.bspl.eclipse;bundle-version="0.15.0"
 Bundle-SymbolicName: io.sarl.eclipse.ideapp;singleton:=true
 Automatic-Module-Name: io.sarl.eclipse.ideapp
 Bundle-RequiredExecutionEnvironment: JavaSE-21

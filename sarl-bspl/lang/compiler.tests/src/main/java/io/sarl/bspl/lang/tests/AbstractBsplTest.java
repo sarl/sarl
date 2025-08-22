@@ -22,13 +22,18 @@ package io.sarl.bspl.lang.tests;
 
 import static io.sarl.tests.api.tools.TestEObjects.fileGen;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.util.IAcceptor;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Assert;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -163,7 +168,7 @@ public abstract class AbstractBsplTest {
 		 * @throws IOException if the resource loading fails 
 		 */
 		public void assertCompilesTo(CharSequence source, String typename, CharSequence expected) throws IOException {
-			final boolean[] called = {false};
+			final var called = new AtomicBoolean(false);
 			compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
@@ -176,17 +181,69 @@ public abstract class AbstractBsplTest {
 						if (genResource.isPresent()) {
 							final var value = genResource.get().getValue();
 							if (value != null) {
-								generatedCode = value.toString();
+								final var res = new StringBuilder();
+								var first = true;
+								for (final var line : value.toString().split("[\n\r]")) {
+									if (first) {
+										first = false;
+									} else {
+										res.append("\n");
+									}
+									res.append(line.stripTrailing());
+								}
+								generatedCode = res.toString();
 							}
 						}
 					}
 					Assert.assertEquals(expected.toString(), generatedCode);
-					called[0] = true;
+					called.set(true);
 				}
 			});
-			Assert.assertTrue("Nothing was generated but the expectation was :\n" + expected, called[0]);
+			Assert.assertTrue("Nothing was generated but the expectation was :\n" + expected, called.get());
 		}
 
+		/**
+		 * Asserts that there is no code generation for the given source.
+		 * 
+		 * @param source some valid source code written in the language under test
+		 * @param typename the name of the generated type. 
+		 * @throws IOException if the resource loading fails 
+		 */
+		public void assertNoCompiles(CharSequence source, String typename) throws IOException {
+			final var called = new AtomicBoolean(false);
+			compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+				@Override
+				public void accept(Result r) {
+					var generatedCode = r.getGeneratedCode(typename);
+					if (generatedCode == null) {
+						// Check for generated code that is not Java-based
+						final var pattern = Pattern.compile(Pattern.quote(typename.replaceAll(Pattern.quote("."), "/")) + "(\\.[^.]+)?$");
+						final var allResources = r.getAllGeneratedResources().entrySet();
+						final var genResource = allResources.stream().filter(it -> pattern.matcher(it.getKey()).find()).findFirst();
+						if (genResource.isPresent()) {
+							final var value = genResource.get().getValue();
+							if (value != null) {
+								final var res = new StringBuilder();
+								var first = true;
+								for (final var line : value.toString().split("[\n\r]")) {
+									if (first) {
+										first = false;
+									} else {
+										res.append("\n");
+									}
+									res.append(line.stripTrailing());
+								}
+								generatedCode = res.toString();
+								if (!Strings.isEmpty(generatedCode)) {
+									Assert.fail("Unexpected generation of code with :\n" + generatedCode);
+								}
+							}
+						}
+					}
+					called.set(true);
+				}
+			});
+		}
 		
 
 	}
