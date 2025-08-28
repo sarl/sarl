@@ -22,6 +22,7 @@
 package io.sarl.apputils.eclipseextensions.projectconfig;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -80,10 +81,10 @@ public interface ProjectConfigurationFragment {
 	 * @throws CoreException if there is an error related to one of the source folders.
 	 */
 	void updateSourceFolders(IProject project, boolean createFolders, IProgressMonitor monitor,
-			List<IFolder> sourcePaths,
-			List<IFolder> testSourcePaths,
-			List<IFolder> generationPaths,
-			List<IFolder> testGenerationPaths) throws CoreException;
+			SortedSet<IFolder> sourcePaths,
+			SortedSet<IFolder> testSourcePaths,
+			SortedSet<IFolder> generationPaths,
+			SortedSet<IFolder> testGenerationPaths) throws CoreException;
 
 	/** Update the specific configuration of the project.
 	 *

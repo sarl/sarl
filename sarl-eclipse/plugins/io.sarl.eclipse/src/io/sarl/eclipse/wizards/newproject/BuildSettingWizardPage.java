@@ -31,11 +31,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -302,11 +302,10 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		if (!project.getFile(FILENAME_CLASSPATH).exists()) {
 			// Determine the default values
 			if (classpath != null) {
-				final var cpEntries = new ArrayList<IClasspathEntry>();
+				final var cpEntries = new TreeSet<>(SARLClasspathEntryComparator.getSingleton());
 				final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
 								new Path(this.firstPage.getProjectName()).makeAbsolute());
 				cpEntries.addAll(originalEntries);
-				cpEntries.sort(SARLClasspathEntryComparator.getSingleton());
 				this.firstPage.putDefaultClasspathEntriesIn(cpEntries);
 				if (!cpEntries.isEmpty()) {
 					classpath.set(cpEntries.toArray(new IClasspathEntry[cpEntries.size()]));
@@ -336,32 +335,31 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private void buildNewBuildPath(IProject project, OutParameter<IClasspathEntry[]> classpath,
 			OutParameter<IPath> outputLocation, IProgressMonitor monitor) throws CoreException {
-		final var cpEntries = new ArrayList<IClasspathEntry>();
+		final var cpEntries = new TreeSet<>(SARLClasspathEntryComparator.getSingleton());
 		final var root = project.getWorkspace().getRoot();
 
 		final var projectFolder = new Path(this.firstPage.getProjectName()).makeAbsolute();
 		
 		final var originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(projectFolder);
 
-		List<IClasspathEntry> allEntries = null;
+		SortedSet<IClasspathEntry> allEntries = null;
 
 		final var iterator = this.firstPage.getActivatedProjectExtensions().iterator();
 		while (iterator.hasNext()) {
 			final var configuration = iterator.next();
 			final var entries = configuration.getDefaultSourceClassPathEntries(projectFolder);
 			if (allEntries == null) {
-				allEntries = new ArrayList<>(originalEntries.size() + entries.size());
+				allEntries = new TreeSet<>(SARLClasspathEntryComparator.getSingleton());
 				allEntries.addAll(originalEntries);
 			}
 			allEntries.addAll(entries);
 		}
 		
 		if (allEntries == null) {
-			allEntries = originalEntries;
+			allEntries = new TreeSet<>(SARLClasspathEntryComparator.getSingleton());
+			allEntries.addAll(originalEntries);
 		}
 		
-		allEntries.sort(SARLClasspathEntryComparator.getSingleton());
-
 		final var subMonitor = SubMonitor.convert(monitor, allEntries.size() + 1);
 
 		for (final var sourceClasspathEntry : allEntries) {

@@ -33,6 +33,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.google.common.base.Strings;
@@ -65,6 +66,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.wizards.datatransfer.ProjectConfigurator;
 import org.eclipse.xtext.Constants;
 
+import io.sarl.apputils.eclipseextensions.buildpath.SARLFolderComparator;
 import io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurationFragments;
 import io.sarl.apputils.uiextensions.Bundles;
 import io.sarl.eclipse.SARLEclipseConfig;
@@ -258,7 +260,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	 * @param project the project.
 	 * @param addNatures indicates if the natures must be added to the project by calling {@link #addSarlNatures(IProject, IProgressMonitor)}.
 	 * @param configureJavaNature indicates if the Java configuration elements must be configured.
-	 * @param createFolders indicates if the folders must be created or not.
+	 * @param createFolders indicates if the folders must be created or not.Collection
 	 * @param monitor the monitor.
 	 * @see #addSarlNatures(IProject, IProgressMonitor)
 	 * @see #configureSARLSourceFolders(IProject, boolean, IProgressMonitor)
@@ -288,10 +290,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 
 			// Ensure SARL specific folders.
-			final var sourceFolders = new ArrayList<IFolder>();
-			final var testSourceFolders = new ArrayList<IFolder>();
-			final var generationFolders = new ArrayList<IFolder>();
-			final var testGenerationFolders = new ArrayList<IFolder>();
+			final var sourceFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
+			final var testSourceFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
+			final var generationFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
+			final var testGenerationFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
 			final var generationFolder = new OutParameter<IFolder>();
 			final var testGenerationFolder = new OutParameter<IFolder>();
 			final var outputFolder = new OutParameter<IFolder>();
@@ -358,10 +360,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	}
 
 	private static void ensureSourceFolders(IProject project, boolean createFolders, SubMonitor monitor,
-			List<IFolder> sourcePaths,
-			List<IFolder> testSourcePaths,
-			List<IFolder> generationPaths,
-			List<IFolder> testGenerationPaths,
+			SortedSet<IFolder> sourcePaths,
+			SortedSet<IFolder> testSourcePaths,
+			SortedSet<IFolder> generationPaths,
+			SortedSet<IFolder> testGenerationPaths,
 			OutParameter<IFolder> standardGenerationFolder,
 			OutParameter<IFolder> testingGenerationFolder,
 			OutParameter<IFolder> classOutput,
@@ -441,10 +443,10 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		try {
 			final var subMonitor = SubMonitor.convert(monitor, 8);
 
-			final var sourceFolders = new ArrayList<IFolder>();
-			final var testSourceFolders = new ArrayList<IFolder>();
-			final var generationFolders = new ArrayList<IFolder>();
-			final var testGenerationFolders = new ArrayList<IFolder>();
+			final var sourceFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
+			final var testSourceFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
+			final var generationFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
+			final var testGenerationFolders = new TreeSet<>(SARLFolderComparator.getSingleton());
 			final var testOutputFolder = new OutParameter<IFolder>();
 			ensureSourceFolders(project, createFolders, subMonitor,
 					sourceFolders, testSourceFolders,

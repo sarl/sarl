@@ -23,10 +23,10 @@ package io.sarl.apputils.eclipseextensions.buildpath;
 
 import java.util.Comparator;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.core.IClasspathEntry;
 
-/** Comparator of classpath entries according tothe typical structure of a SARL project.
+/** Comparator of folders according to the standard SARL project structure.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -34,15 +34,15 @@ import org.eclipse.jdt.core.IClasspathEntry;
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-public class SARLClasspathEntryComparator implements Comparator<IClasspathEntry> {
+public class SARLFolderComparator implements Comparator<IFolder> {
 
-	private static SARLClasspathEntryComparator singleton;
+	private static SARLFolderComparator singleton;
 
 	private final Comparator<? super IPath> pathComparator;
 
 	/** Create the comparator using the {@link SARLPathComparator} for comparing paths.
 	 */
-	public SARLClasspathEntryComparator() {
+	public SARLFolderComparator() {
 		this(null);
 	}
 
@@ -50,7 +50,7 @@ public class SARLClasspathEntryComparator implements Comparator<IClasspathEntry>
 	 *
 	 * @param pathComparator the comparator of paths to be used. If it is {@code null}, a {@link SARLPathComparator} is used.
 	 */
-	public SARLClasspathEntryComparator(Comparator<? super IPath> pathComparator) {
+	public SARLFolderComparator(Comparator<? super IPath> pathComparator) {
 		if (pathComparator == null) {
 			this.pathComparator = SARLPathComparator.getSingleton();
 		} else {
@@ -62,26 +62,26 @@ public class SARLClasspathEntryComparator implements Comparator<IClasspathEntry>
 	 *
 	 * @return the comparator, never {@code null}.
 	 */
-	public static SARLClasspathEntryComparator getSingleton() {
+	public static SARLFolderComparator getSingleton() {
 		if (singleton == null) {
-			singleton = new SARLClasspathEntryComparator();
+			singleton = new SARLFolderComparator();
 		}
 		return singleton;
 	}
 
 	@Override
-	public int compare(IClasspathEntry entry1, IClasspathEntry entry2) {
-		if (entry1 == entry2) {
+	public int compare(IFolder folder1, IFolder folder2) {
+		if (folder1 == folder2) {
 			return 0;
 		}
-		if (entry1 == null) {
+		if (folder1 == null) {
 			return Integer.MIN_VALUE;
 		}
-		if (entry2 == null) {
+		if (folder2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		final var path1 = entry1.getPath();
-		final var path2 = entry2.getPath();
+		final var path1 = folder1.getFullPath();
+		final var path2 = folder2.getFullPath();
 		return this.pathComparator.compare(path1, path2);
 	}
 
