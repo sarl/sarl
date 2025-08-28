@@ -60,5 +60,15 @@ public class Messages extends NLS {
 	public static String SARL_BSPLValidator_15;
 	public static String SARL_BSPLValidator_16;
 	public static String SARL_BSPLValidator_17;
+	public static String SARL_BSPLValidator_18;
+	public static String SARL_BSPLValidator_19;
+	public static String SARL_BSPLValidator_20;
+	public static String SARL_BSPLValidator_21;
+	public static String SARL_BSPLValidator_22;
+	public static String SARL_BSPLValidator_23;
+	public static String SARL_BSPLValidator_24;
+	public static String SARL_BSPLValidator_25;
+	public static String SARL_BSPLValidator_26;
+	public static String SARL_BSPLValidator_27;
 
 }

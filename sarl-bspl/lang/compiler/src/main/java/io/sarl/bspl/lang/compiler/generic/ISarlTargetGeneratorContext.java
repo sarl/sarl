@@ -72,6 +72,12 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	 */
 	String getEnclosingTypeName();
 	
+	/** Replies if the protocol is marked with the package visibility.
+	 *
+	 * @return {@code true} if the protocol is with package visibility.
+	 */
+	boolean isPackageVisibility();
+
 	/** Replies if the a generator is marked as in a pre-stage context.
 	 * Pre-stage is the first step in the generation. It is supposed to
 	 * generate the base elements for enabling the full generation. 
@@ -109,6 +115,13 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	 */
 	ISarlTargetGeneratorContext<NP> withTypeName(String typeName);
 
+	/** Create a generator context that has the flag regarding the package visibility.
+	 *
+	 * @param packageVisibility indicates if the protocol is marked with package visibility.
+	 * @return the generator context.
+	 */
+	ISarlTargetGeneratorContext<NP> withPackageVisibility(boolean packageVisibility);
+
 	/** Create a import manager.
 	 *
 	 * @param packageName the name of the package for the current type.
@@ -126,13 +139,14 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 
 	/** Create a Java file.
 	 *
+	 * @param source the object that is the source for the creation of the file. The file will be associated to this source.
 	 * @param packageName the name of the package. It may be {@code null}.
 	 * @param typeName the base name of the type.
 	 * @param fileExtension the extension in the filename.
 	 * @param content the content of the file.
 	 * @throws IOException error when it is impossible to create the file.
 	 */
-	void createFile(String packageName, String typeName, String fileExtension, String content) throws IOException;
+	void createFile(EObject source, String packageName, String typeName, String fileExtension, String content) throws IOException;
 
 	/** Build a filename based on the given arguments, using {@code /} as file separator.
 	 *
@@ -145,6 +159,7 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 
 	/** Create a Java file.
 	 *
+	 * @param source the object that is the source for the creation of the file. The file will be associated to this source.
 	 * @param packageName the name of the package. It may be {@code null}.
 	 * @param typeName the base name of the type.
 	 * @param importManager the manager of imports that are used by the appendable {@code content}.
@@ -152,28 +167,30 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	 * @return the file content.
 	 * @throws IOException error when it is impossible to create the file.
 	 */
-	default String createJavaFile(String packageName, String typeName, ImportManager importManager, ITreeAppendable content) throws IOException {
+	default String createJavaFile(EObject source, String packageName, String typeName, ImportManager importManager, ITreeAppendable content) throws IOException {
 		final var finalContent = new StringBuilder();
 		finalContent.append("/* This file was automatically generated. Do not change its content. */\n\n"); //$NON-NLS-1$
 		if (!Strings.isEmpty(packageName)) {
 			finalContent.append("package "); //$NON-NLS-1$
 			finalContent.append(packageName);
-			finalContent.append(";\n\n"); //$NON-NLS-1$
+			finalContent.append(";\n"); //$NON-NLS-1$
 		}
 		if (importManager != null) {
+			finalContent.append("\n"); //$NON-NLS-1$
 			for (final var importedType : importManager.getImports()) {
 				finalContent.append("import ").append(importedType).append(";\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			finalContent.append("\n"); //$NON-NLS-1$
 		}
+		finalContent.append("\n"); //$NON-NLS-1$
 		finalContent.append(content.getContent());
 		final var stringContent = finalContent.toString();
-		createFile(packageName, typeName, ".java", stringContent); //$NON-NLS-1$
+		createFile(source, packageName, typeName, ".java", stringContent); //$NON-NLS-1$
 		return stringContent;
 	}
 
 	/** Create a SARL file.
 	 *
+	 * @param source the object that is the source for the creation of the file. The file will be associated to this source.
 	 * @param packageName the name of the package. It may be {@code null}.
 	 * @param typeName the base name of the type.
 	 * @param importManager the manager of imports that are used by the appendable {@code content}.
@@ -181,21 +198,22 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	 * @return the content of the file.
 	 * @throws IOException error when it is impossible to create the file.
 	 */
-	default String createSarlFile(String packageName, String typeName, ImportManager importManager, ITreeAppendable content) throws IOException {
+	default String createSarlFile(EObject source, String packageName, String typeName, ImportManager importManager, ITreeAppendable content) throws IOException {
 		final var finalContent = new StringBuilder();
 		finalContent.append("/* This file was automatically generated. Do not change its content. */\n\n"); //$NON-NLS-1$
 		if (!Strings.isEmpty(packageName)) {
-			finalContent.append("package ").append(packageName).append("\n\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			finalContent.append("package ").append(packageName).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (importManager != null) {
+			finalContent.append("\n"); //$NON-NLS-1$
 			for (final var importedType : importManager.getImports()) {
 				finalContent.append("import ").append(importedType).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			finalContent.append("\n"); //$NON-NLS-1$
 		}
+		finalContent.append("\n"); //$NON-NLS-1$
 		finalContent.append(content.getContent());
 		final var fileContent = finalContent.toString();
-		createFile(packageName, typeName, ".sarl", fileContent); //$NON-NLS-1$
+		createFile(source, packageName, typeName, ".sarl", fileContent); //$NON-NLS-1$
 		return fileContent;
 	}
 
@@ -204,6 +222,21 @@ public interface ISarlTargetGeneratorContext<NP> extends IGeneratorContext {
 	 * @return the resource set.
 	 */
 	ResourceSet getResourceSet();
+	
+	/** Create a generator context that is associated to the EObject source. 
+	 *
+	 * @param source the EObject source to associate to the context.
+	 * @return the generator context.
+	 * @see #getSource()
+	 */
+	ISarlTargetGeneratorContext<NP> withSource(EObject source);
+
+	/** Replies the source object that is the cause of the compilation.
+	 *
+	 * @return the source object.
+	 * @see #withSource(EObject)
+	 */
+	EObject getSource();	
 
 	/** Create a resource with the given filename extension into the given resource set.
 	 *

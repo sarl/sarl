@@ -27,6 +27,7 @@ import static io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurat
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -91,8 +92,8 @@ public class BSPLProjectConfigurationFragment implements ProjectConfigurationFra
 
 	@Override
 	public void updateSourceFolders(IProject project, boolean createFolders, IProgressMonitor monitor,
-			List<IFolder> sourcePaths, List<IFolder> testSourcePaths, List<IFolder> generationPaths,
-			List<IFolder> testGenerationPaths) throws CoreException {
+			SortedSet<IFolder> sourcePaths, SortedSet<IFolder> testSourcePaths, SortedSet<IFolder> generationPaths,
+			SortedSet<IFolder> testGenerationPaths) throws CoreException {
 		final var subMonitor = SubMonitor.convert(monitor, 2);
 		final var sourceBsplFolder = ensureSourceFolder(project,
 				BSPLConfig.FOLDER_SOURCE_BSPL, true, createFolders, subMonitor.newChild(1));

@@ -47,8 +47,7 @@ public interface ISarlTargetGeneratorContextFactory {
 	 * @param resourceSet the resource set in which the generated resources are located.
 	 * @return the created context.
 	 */
-	<T> ISarlTargetGeneratorContext<T> createContext(IFileSystemAccess2 fsa, IGeneratorContext context,
-			ResourceSet resourceSet);
+	<T> ISarlTargetGeneratorContext<T> createContext(IFileSystemAccess2 fsa, IGeneratorContext context, ResourceSet resourceSet);
 	
 	/** Create a context that is specific to the SARL target generation.
 	 *
@@ -57,7 +56,6 @@ public interface ISarlTargetGeneratorContextFactory {
 	 * @param resourceSet the resource set in which the generated resources are located.
 	 * @return the created context.
 	 */
-	<T> ISarlTargetGeneratorContext<T> createContext(IFileSystemAccess fsa,
-			ResourceSet resourceSet);
+	<T> ISarlTargetGeneratorContext<T> createContext(IFileSystemAccess fsa, ResourceSet resourceSet);
 
 }

@@ -94,6 +94,22 @@ public class StandardBsplConfigurableIssueCodesProvider extends XbaseConfigurabl
 		acceptor.accept(create(
 				IssueCodes.MISSED_ARGUMENT_IN_MESSAGE,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.MISSED_PROTOCOL_KEY,
+				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.UNUSED_PROTOCOL_ROLE,
+				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.UNUSED_PROTOCOL_PARAMETER,
+				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.UNNECESSARY_PROTOCOL_MODIFIER,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

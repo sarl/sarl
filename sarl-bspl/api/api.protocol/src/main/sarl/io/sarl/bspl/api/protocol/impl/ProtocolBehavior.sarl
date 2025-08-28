@@ -19,10 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.bspl.api.protocol.events
+package io.sarl.bspl.api.protocol.impl
 
 /**
- * Event fired when a protocol instance is ready to be used by an agent.
+ * Represents the super type for all the behaviors dedicated to specific BSPL protocols.
+ *
+ * <p>This behavior provides protocol-independent functions to the agents.
+ * The protocol-specific functions are provided by the sub-behaviors.
  *
  * @author $Author: stedeschi$
  * @author $Author: sgalland$
@@ -34,4 +37,6 @@ package io.sarl.bspl.api.protocol.events
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-event ProtocolReady extends BindedProtocolEvent
+abstract behavior ProtocolBehavior {
+
+}

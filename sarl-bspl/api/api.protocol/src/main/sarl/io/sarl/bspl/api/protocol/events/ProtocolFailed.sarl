@@ -34,4 +34,4 @@ package io.sarl.bspl.api.protocol.events
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-event ProtocolFailed extends ProtocolEvent
+event ProtocolFailed extends BindedProtocolEvent

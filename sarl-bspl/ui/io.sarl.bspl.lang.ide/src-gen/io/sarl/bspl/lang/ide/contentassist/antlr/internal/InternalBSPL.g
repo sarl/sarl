@@ -145,25 +145,50 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleProtocolParameter
-entryRuleProtocolParameter
+// Entry rule entryRuleProtocolFirstParameter
+entryRuleProtocolFirstParameter
 :
-{ before(grammarAccess.getProtocolParameterRule()); }
-	 ruleProtocolParameter
-{ after(grammarAccess.getProtocolParameterRule()); } 
+{ before(grammarAccess.getProtocolFirstParameterRule()); }
+	 ruleProtocolFirstParameter
+{ after(grammarAccess.getProtocolFirstParameterRule()); } 
 	 EOF 
 ;
 
-// Rule ProtocolParameter
-ruleProtocolParameter 
+// Rule ProtocolFirstParameter
+ruleProtocolFirstParameter 
 	@init {
 		int stackSize = keepStackSize();
 	}
 	:
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getAlternatives()); }
-		(rule__ProtocolParameter__Alternatives)
-		{ after(grammarAccess.getProtocolParameterAccess().getAlternatives()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getAlternatives()); }
+		(rule__ProtocolFirstParameter__Alternatives)
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getAlternatives()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+// Entry rule entryRuleProtocolFollowingParameter
+entryRuleProtocolFollowingParameter
+:
+{ before(grammarAccess.getProtocolFollowingParameterRule()); }
+	 ruleProtocolFollowingParameter
+{ after(grammarAccess.getProtocolFollowingParameterRule()); } 
+	 EOF 
+;
+
+// Rule ProtocolFollowingParameter
+ruleProtocolFollowingParameter 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getProtocolFollowingParameterAccess().getGroup()); }
+		(rule__ProtocolFollowingParameter__Group__0)
+		{ after(grammarAccess.getProtocolFollowingParameterAccess().getGroup()); }
 	)
 ;
 finally {
@@ -2342,39 +2367,27 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Alternatives
+rule__ProtocolFirstParameter__Alternatives
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getGroup_0()); }
-		(rule__ProtocolParameter__Group_0__0)
-		{ after(grammarAccess.getProtocolParameterAccess().getGroup_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_0()); }
+		(rule__ProtocolFirstParameter__Group_0__0)
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_0()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getGroup_1()); }
-		(rule__ProtocolParameter__Group_1__0)
-		{ after(grammarAccess.getProtocolParameterAccess().getGroup_1()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_1()); }
+		(rule__ProtocolFirstParameter__Group_1__0)
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_1()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getGroup_2()); }
-		(rule__ProtocolParameter__Group_2__0)
-		{ after(grammarAccess.getProtocolParameterAccess().getGroup_2()); }
-	)
-	|
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getGroup_3()); }
-		(rule__ProtocolParameter__Group_3__0)
-		{ after(grammarAccess.getProtocolParameterAccess().getGroup_3()); }
-	)
-	|
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getGroup_4()); }
-		(rule__ProtocolParameter__Group_4__0)
-		{ after(grammarAccess.getProtocolParameterAccess().getGroup_4()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_2()); }
+		(rule__ProtocolFirstParameter__Group_2__0)
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_2()); }
 	)
 ;
 finally {
@@ -3857,9 +3870,9 @@ rule__Protocol__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getAnnotationsAssignment_1()); }
-	(rule__Protocol__AnnotationsAssignment_1)*
-	{ after(grammarAccess.getProtocolAccess().getAnnotationsAssignment_1()); }
+	{ before(grammarAccess.getProtocolAccess().getModifiersAssignment_1()); }
+	(rule__Protocol__ModifiersAssignment_1)*
+	{ after(grammarAccess.getProtocolAccess().getModifiersAssignment_1()); }
 )
 ;
 finally {
@@ -3884,9 +3897,9 @@ rule__Protocol__Group__2__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getModifiersAssignment_2()); }
-	(rule__Protocol__ModifiersAssignment_2)*
-	{ after(grammarAccess.getProtocolAccess().getModifiersAssignment_2()); }
+	{ before(grammarAccess.getProtocolAccess().getProtocolKeyword_2()); }
+	('protocol')?
+	{ after(grammarAccess.getProtocolAccess().getProtocolKeyword_2()); }
 )
 ;
 finally {
@@ -3911,9 +3924,9 @@ rule__Protocol__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getProtocolKeyword_3()); }
-	('protocol')?
-	{ after(grammarAccess.getProtocolAccess().getProtocolKeyword_3()); }
+	{ before(grammarAccess.getProtocolAccess().getNameAssignment_3()); }
+	(rule__Protocol__NameAssignment_3)
+	{ after(grammarAccess.getProtocolAccess().getNameAssignment_3()); }
 )
 ;
 finally {
@@ -3938,9 +3951,9 @@ rule__Protocol__Group__4__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getNameAssignment_4()); }
-	(rule__Protocol__NameAssignment_4)
-	{ after(grammarAccess.getProtocolAccess().getNameAssignment_4()); }
+	{ before(grammarAccess.getProtocolAccess().getLeftCurlyBracketKeyword_4()); }
+	'{'
+	{ after(grammarAccess.getProtocolAccess().getLeftCurlyBracketKeyword_4()); }
 )
 ;
 finally {
@@ -3965,9 +3978,9 @@ rule__Protocol__Group__5__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getLeftCurlyBracketKeyword_5()); }
-	'{'
-	{ after(grammarAccess.getProtocolAccess().getLeftCurlyBracketKeyword_5()); }
+	{ before(grammarAccess.getProtocolAccess().getGroup_5()); }
+	(rule__Protocol__Group_5__0)*
+	{ after(grammarAccess.getProtocolAccess().getGroup_5()); }
 )
 ;
 finally {
@@ -4034,7 +4047,6 @@ rule__Protocol__Group__8
 	}
 :
 	rule__Protocol__Group__8__Impl
-	rule__Protocol__Group__9
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -4046,35 +4058,144 @@ rule__Protocol__Group__8__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_8()); }
-	(rule__Protocol__MembersAssignment_8)*
-	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_8()); }
+	{ before(grammarAccess.getProtocolAccess().getRightCurlyBracketKeyword_8()); }
+	'}'
+	{ after(grammarAccess.getProtocolAccess().getRightCurlyBracketKeyword_8()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__Group__9
+
+rule__Protocol__Group_5__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__Protocol__Group__9__Impl
+	rule__Protocol__Group_5__0__Impl
+	rule__Protocol__Group_5__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__Group__9__Impl
+rule__Protocol__Group_5__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getRightCurlyBracketKeyword_9()); }
-	'}'
-	{ after(grammarAccess.getProtocolAccess().getRightCurlyBracketKeyword_9()); }
+	{ before(grammarAccess.getProtocolAccess().getRoleKeyword_5_0()); }
+	('role')?
+	{ after(grammarAccess.getProtocolAccess().getRoleKeyword_5_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Protocol__Group_5__1__Impl
+	rule__Protocol__Group_5__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_5_1()); }
+	(rule__Protocol__MembersAssignment_5_1)
+	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_5_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5__2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Protocol__Group_5__2__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5__2__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolAccess().getGroup_5_2()); }
+	(rule__Protocol__Group_5_2__0)*
+	{ after(grammarAccess.getProtocolAccess().getGroup_5_2()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__Protocol__Group_5_2__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Protocol__Group_5_2__0__Impl
+	rule__Protocol__Group_5_2__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5_2__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolAccess().getCommaKeyword_5_2_0()); }
+	','
+	{ after(grammarAccess.getProtocolAccess().getCommaKeyword_5_2_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5_2__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Protocol__Group_5_2__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__Group_5_2__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_5_2_1()); }
+	(rule__Protocol__MembersAssignment_5_2_1)
+	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_5_2_1()); }
 )
 ;
 finally {
@@ -4100,9 +4221,9 @@ rule__Protocol__Group_6__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getRoleKeyword_6_0()); }
-	('role')?
-	{ after(grammarAccess.getProtocolAccess().getRoleKeyword_6_0()); }
+	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_6_0()); }
+	(rule__Protocol__MembersAssignment_6_0)
+	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_6_0()); }
 )
 ;
 finally {
@@ -4115,7 +4236,6 @@ rule__Protocol__Group_6__1
 	}
 :
 	rule__Protocol__Group_6__1__Impl
-	rule__Protocol__Group_6__2
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -4127,35 +4247,9 @@ rule__Protocol__Group_6__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_6_1()); }
-	(rule__Protocol__MembersAssignment_6_1)
-	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_6_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Protocol__Group_6__2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__Protocol__Group_6__2__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Protocol__Group_6__2__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolAccess().getGroup_6_2()); }
-	(rule__Protocol__Group_6_2__0)*
-	{ after(grammarAccess.getProtocolAccess().getGroup_6_2()); }
+	{ before(grammarAccess.getProtocolAccess().getGroup_6_1()); }
+	(rule__Protocol__Group_6_1__0)*
+	{ after(grammarAccess.getProtocolAccess().getGroup_6_1()); }
 )
 ;
 finally {
@@ -4163,53 +4257,53 @@ finally {
 }
 
 
-rule__Protocol__Group_6_2__0
+rule__Protocol__Group_6_1__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__Protocol__Group_6_2__0__Impl
-	rule__Protocol__Group_6_2__1
+	rule__Protocol__Group_6_1__0__Impl
+	rule__Protocol__Group_6_1__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__Group_6_2__0__Impl
+rule__Protocol__Group_6_1__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getCommaKeyword_6_2_0()); }
+	{ before(grammarAccess.getProtocolAccess().getCommaKeyword_6_1_0()); }
 	','
-	{ after(grammarAccess.getProtocolAccess().getCommaKeyword_6_2_0()); }
+	{ after(grammarAccess.getProtocolAccess().getCommaKeyword_6_1_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__Group_6_2__1
+rule__Protocol__Group_6_1__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__Protocol__Group_6_2__1__Impl
+	rule__Protocol__Group_6_1__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__Group_6_2__1__Impl
+rule__Protocol__Group_6_1__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_6_2_1()); }
-	(rule__Protocol__MembersAssignment_6_2_1)
-	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_6_2_1()); }
+	{ before(grammarAccess.getProtocolAccess().getMembersAssignment_6_1_1()); }
+	(rule__Protocol__MembersAssignment_6_1_1)
+	{ after(grammarAccess.getProtocolAccess().getMembersAssignment_6_1_1()); }
 )
 ;
 finally {
@@ -4460,53 +4554,53 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_0__0
+rule__ProtocolFirstParameter__Group_0__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0__0__Impl
-	rule__ProtocolParameter__Group_0__1
+	rule__ProtocolFirstParameter__Group_0__0__Impl
+	rule__ProtocolFirstParameter__Group_0__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0__0__Impl
+rule__ProtocolFirstParameter__Group_0__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getBsplProtocolParameterAction_0_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getBsplProtocolParameterAction_0_0()); }
 	()
-	{ after(grammarAccess.getProtocolParameterAccess().getBsplProtocolParameterAction_0_0()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getBsplProtocolParameterAction_0_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0__1
+rule__ProtocolFirstParameter__Group_0__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0__1__Impl
+	rule__ProtocolFirstParameter__Group_0__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0__1__Impl
+rule__ProtocolFirstParameter__Group_0__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getGroup_0_1()); }
-	(rule__ProtocolParameter__Group_0_1__0)
-	{ after(grammarAccess.getProtocolParameterAccess().getGroup_0_1()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_0_1()); }
+	(rule__ProtocolFirstParameter__Group_0_1__0)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_0_1()); }
 )
 ;
 finally {
@@ -4514,161 +4608,161 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_0_1__0
+rule__ProtocolFirstParameter__Group_0_1__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1__0__Impl
-	rule__ProtocolParameter__Group_0_1__1
+	rule__ProtocolFirstParameter__Group_0_1__0__Impl
+	rule__ProtocolFirstParameter__Group_0_1__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__0__Impl
+rule__ProtocolFirstParameter__Group_0_1__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_0_1_0()); }
-	(rule__ProtocolParameter__ModifiersAssignment_0_1_0)
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_0_1_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_0_1_0()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_0_1_0)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_0_1_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__1
+rule__ProtocolFirstParameter__Group_0_1__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1__1__Impl
-	rule__ProtocolParameter__Group_0_1__2
+	rule__ProtocolFirstParameter__Group_0_1__1__Impl
+	rule__ProtocolFirstParameter__Group_0_1__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__1__Impl
+rule__ProtocolFirstParameter__Group_0_1__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getParameterKeyword_0_1_1()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_0_1_1()); }
 	('parameter')?
-	{ after(grammarAccess.getProtocolParameterAccess().getParameterKeyword_0_1_1()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_0_1_1()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__2
+rule__ProtocolFirstParameter__Group_0_1__2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1__2__Impl
-	rule__ProtocolParameter__Group_0_1__3
+	rule__ProtocolFirstParameter__Group_0_1__2__Impl
+	rule__ProtocolFirstParameter__Group_0_1__3
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__2__Impl
+rule__ProtocolFirstParameter__Group_0_1__2__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_0_1_2()); }
-	(rule__ProtocolParameter__ModifiersAssignment_0_1_2)*
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_0_1_2()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_0_1_2()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_0_1_2)*
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_0_1_2()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__3
+rule__ProtocolFirstParameter__Group_0_1__3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1__3__Impl
-	rule__ProtocolParameter__Group_0_1__4
+	rule__ProtocolFirstParameter__Group_0_1__3__Impl
+	rule__ProtocolFirstParameter__Group_0_1__4
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__3__Impl
+rule__ProtocolFirstParameter__Group_0_1__3__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getNameAssignment_0_1_3()); }
-	(rule__ProtocolParameter__NameAssignment_0_1_3)
-	{ after(grammarAccess.getProtocolParameterAccess().getNameAssignment_0_1_3()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getNameAssignment_0_1_3()); }
+	(rule__ProtocolFirstParameter__NameAssignment_0_1_3)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getNameAssignment_0_1_3()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__4
+rule__ProtocolFirstParameter__Group_0_1__4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1__4__Impl
-	rule__ProtocolParameter__Group_0_1__5
+	rule__ProtocolFirstParameter__Group_0_1__4__Impl
+	rule__ProtocolFirstParameter__Group_0_1__5
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__4__Impl
+rule__ProtocolFirstParameter__Group_0_1__4__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getGroup_0_1_4()); }
-	(rule__ProtocolParameter__Group_0_1_4__0)?
-	{ after(grammarAccess.getProtocolParameterAccess().getGroup_0_1_4()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_0_1_4()); }
+	(rule__ProtocolFirstParameter__Group_0_1_4__0)?
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_0_1_4()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__5
+rule__ProtocolFirstParameter__Group_0_1__5
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1__5__Impl
+	rule__ProtocolFirstParameter__Group_0_1__5__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1__5__Impl
+rule__ProtocolFirstParameter__Group_0_1__5__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_0_1_5()); }
-	(rule__ProtocolParameter__ModifiersAssignment_0_1_5)?
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_0_1_5()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_0_1_5()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_0_1_5)?
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_0_1_5()); }
 )
 ;
 finally {
@@ -4676,53 +4770,53 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_0_1_4__0
+rule__ProtocolFirstParameter__Group_0_1_4__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1_4__0__Impl
-	rule__ProtocolParameter__Group_0_1_4__1
+	rule__ProtocolFirstParameter__Group_0_1_4__0__Impl
+	rule__ProtocolFirstParameter__Group_0_1_4__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1_4__0__Impl
+rule__ProtocolFirstParameter__Group_0_1_4__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getColonKeyword_0_1_4_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getColonKeyword_0_1_4_0()); }
 	':'
-	{ after(grammarAccess.getProtocolParameterAccess().getColonKeyword_0_1_4_0()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getColonKeyword_0_1_4_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1_4__1
+rule__ProtocolFirstParameter__Group_0_1_4__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_0_1_4__1__Impl
+	rule__ProtocolFirstParameter__Group_0_1_4__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_0_1_4__1__Impl
+rule__ProtocolFirstParameter__Group_0_1_4__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getTypeAssignment_0_1_4_1()); }
-	(rule__ProtocolParameter__TypeAssignment_0_1_4_1)
-	{ after(grammarAccess.getProtocolParameterAccess().getTypeAssignment_0_1_4_1()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getTypeAssignment_0_1_4_1()); }
+	(rule__ProtocolFirstParameter__TypeAssignment_0_1_4_1)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getTypeAssignment_0_1_4_1()); }
 )
 ;
 finally {
@@ -4730,161 +4824,161 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_1__0
+rule__ProtocolFirstParameter__Group_1__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1__0__Impl
-	rule__ProtocolParameter__Group_1__1
+	rule__ProtocolFirstParameter__Group_1__0__Impl
+	rule__ProtocolFirstParameter__Group_1__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__0__Impl
+rule__ProtocolFirstParameter__Group_1__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_1_0()); }
-	(rule__ProtocolParameter__ModifiersAssignment_1_0)
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_1_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_1_0()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_1_0)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_1_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__1
+rule__ProtocolFirstParameter__Group_1__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1__1__Impl
-	rule__ProtocolParameter__Group_1__2
+	rule__ProtocolFirstParameter__Group_1__1__Impl
+	rule__ProtocolFirstParameter__Group_1__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__1__Impl
+rule__ProtocolFirstParameter__Group_1__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getParameterKeyword_1_1()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_1_1()); }
 	('parameter')?
-	{ after(grammarAccess.getProtocolParameterAccess().getParameterKeyword_1_1()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_1_1()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__2
+rule__ProtocolFirstParameter__Group_1__2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1__2__Impl
-	rule__ProtocolParameter__Group_1__3
+	rule__ProtocolFirstParameter__Group_1__2__Impl
+	rule__ProtocolFirstParameter__Group_1__3
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__2__Impl
+rule__ProtocolFirstParameter__Group_1__2__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_1_2()); }
-	(rule__ProtocolParameter__ModifiersAssignment_1_2)*
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_1_2()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_1_2()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_1_2)*
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_1_2()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__3
+rule__ProtocolFirstParameter__Group_1__3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1__3__Impl
-	rule__ProtocolParameter__Group_1__4
+	rule__ProtocolFirstParameter__Group_1__3__Impl
+	rule__ProtocolFirstParameter__Group_1__4
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__3__Impl
+rule__ProtocolFirstParameter__Group_1__3__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getNameAssignment_1_3()); }
-	(rule__ProtocolParameter__NameAssignment_1_3)
-	{ after(grammarAccess.getProtocolParameterAccess().getNameAssignment_1_3()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getNameAssignment_1_3()); }
+	(rule__ProtocolFirstParameter__NameAssignment_1_3)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getNameAssignment_1_3()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__4
+rule__ProtocolFirstParameter__Group_1__4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1__4__Impl
-	rule__ProtocolParameter__Group_1__5
+	rule__ProtocolFirstParameter__Group_1__4__Impl
+	rule__ProtocolFirstParameter__Group_1__5
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__4__Impl
+rule__ProtocolFirstParameter__Group_1__4__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getGroup_1_4()); }
-	(rule__ProtocolParameter__Group_1_4__0)?
-	{ after(grammarAccess.getProtocolParameterAccess().getGroup_1_4()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_1_4()); }
+	(rule__ProtocolFirstParameter__Group_1_4__0)?
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_1_4()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__5
+rule__ProtocolFirstParameter__Group_1__5
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1__5__Impl
+	rule__ProtocolFirstParameter__Group_1__5__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1__5__Impl
+rule__ProtocolFirstParameter__Group_1__5__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_1_5()); }
-	(rule__ProtocolParameter__ModifiersAssignment_1_5)?
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_1_5()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_1_5()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_1_5)?
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_1_5()); }
 )
 ;
 finally {
@@ -4892,215 +4986,53 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_1_4__0
+rule__ProtocolFirstParameter__Group_1_4__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1_4__0__Impl
-	rule__ProtocolParameter__Group_1_4__1
+	rule__ProtocolFirstParameter__Group_1_4__0__Impl
+	rule__ProtocolFirstParameter__Group_1_4__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1_4__0__Impl
+rule__ProtocolFirstParameter__Group_1_4__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getColonKeyword_1_4_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getColonKeyword_1_4_0()); }
 	':'
-	{ after(grammarAccess.getProtocolParameterAccess().getColonKeyword_1_4_0()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getColonKeyword_1_4_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1_4__1
+rule__ProtocolFirstParameter__Group_1_4__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_1_4__1__Impl
+	rule__ProtocolFirstParameter__Group_1_4__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_1_4__1__Impl
+rule__ProtocolFirstParameter__Group_1_4__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getTypeAssignment_1_4_1()); }
-	(rule__ProtocolParameter__TypeAssignment_1_4_1)
-	{ after(grammarAccess.getProtocolParameterAccess().getTypeAssignment_1_4_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-rule__ProtocolParameter__Group_2__0
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2__0__Impl
-	rule__ProtocolParameter__Group_2__1
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__0__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_2_0()); }
-	(rule__ProtocolParameter__ModifiersAssignment_2_0)
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_2_0()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2__1__Impl
-	rule__ProtocolParameter__Group_2__2
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__1__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getParameterKeyword_2_1()); }
-	('parameter')?
-	{ after(grammarAccess.getProtocolParameterAccess().getParameterKeyword_2_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2__2__Impl
-	rule__ProtocolParameter__Group_2__3
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__2__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_2_2()); }
-	(rule__ProtocolParameter__ModifiersAssignment_2_2)*
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_2_2()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__3
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2__3__Impl
-	rule__ProtocolParameter__Group_2__4
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__3__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getNameAssignment_2_3()); }
-	(rule__ProtocolParameter__NameAssignment_2_3)
-	{ after(grammarAccess.getProtocolParameterAccess().getNameAssignment_2_3()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__4
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2__4__Impl
-	rule__ProtocolParameter__Group_2__5
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__4__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getGroup_2_4()); }
-	(rule__ProtocolParameter__Group_2_4__0)?
-	{ after(grammarAccess.getProtocolParameterAccess().getGroup_2_4()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__5
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2__5__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2__5__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_2_5()); }
-	(rule__ProtocolParameter__ModifiersAssignment_2_5)?
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_2_5()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getTypeAssignment_1_4_1()); }
+	(rule__ProtocolFirstParameter__TypeAssignment_1_4_1)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getTypeAssignment_1_4_1()); }
 )
 ;
 finally {
@@ -5108,404 +5040,134 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_2_4__0
+rule__ProtocolFirstParameter__Group_2__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_2_4__0__Impl
-	rule__ProtocolParameter__Group_2_4__1
+	rule__ProtocolFirstParameter__Group_2__0__Impl
+	rule__ProtocolFirstParameter__Group_2__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_2_4__0__Impl
+rule__ProtocolFirstParameter__Group_2__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getColonKeyword_2_4_0()); }
-	':'
-	{ after(grammarAccess.getProtocolParameterAccess().getColonKeyword_2_4_0()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2_4__1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_2_4__1__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_2_4__1__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getTypeAssignment_2_4_1()); }
-	(rule__ProtocolParameter__TypeAssignment_2_4_1)
-	{ after(grammarAccess.getProtocolParameterAccess().getTypeAssignment_2_4_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-rule__ProtocolParameter__Group_3__0
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3__0__Impl
-	rule__ProtocolParameter__Group_3__1
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__0__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_3_0()); }
-	(rule__ProtocolParameter__ModifiersAssignment_3_0)
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_3_0()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3__1__Impl
-	rule__ProtocolParameter__Group_3__2
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__1__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getParameterKeyword_3_1()); }
-	('parameter')?
-	{ after(grammarAccess.getProtocolParameterAccess().getParameterKeyword_3_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3__2__Impl
-	rule__ProtocolParameter__Group_3__3
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__2__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_3_2()); }
-	(rule__ProtocolParameter__ModifiersAssignment_3_2)*
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_3_2()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__3
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3__3__Impl
-	rule__ProtocolParameter__Group_3__4
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__3__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getNameAssignment_3_3()); }
-	(rule__ProtocolParameter__NameAssignment_3_3)
-	{ after(grammarAccess.getProtocolParameterAccess().getNameAssignment_3_3()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__4
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3__4__Impl
-	rule__ProtocolParameter__Group_3__5
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__4__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getGroup_3_4()); }
-	(rule__ProtocolParameter__Group_3_4__0)?
-	{ after(grammarAccess.getProtocolParameterAccess().getGroup_3_4()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__5
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3__5__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3__5__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_3_5()); }
-	(rule__ProtocolParameter__ModifiersAssignment_3_5)?
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_3_5()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-rule__ProtocolParameter__Group_3_4__0
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3_4__0__Impl
-	rule__ProtocolParameter__Group_3_4__1
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3_4__0__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getColonKeyword_3_4_0()); }
-	':'
-	{ after(grammarAccess.getProtocolParameterAccess().getColonKeyword_3_4_0()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3_4__1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_3_4__1__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_3_4__1__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getTypeAssignment_3_4_1()); }
-	(rule__ProtocolParameter__TypeAssignment_3_4_1)
-	{ after(grammarAccess.getProtocolParameterAccess().getTypeAssignment_3_4_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-rule__ProtocolParameter__Group_4__0
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__ProtocolParameter__Group_4__0__Impl
-	rule__ProtocolParameter__Group_4__1
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__Group_4__0__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getProtocolParameterAccess().getParameterKeyword_4_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_2_0()); }
 	'parameter'
-	{ after(grammarAccess.getProtocolParameterAccess().getParameterKeyword_4_0()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_2_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__1
+rule__ProtocolFirstParameter__Group_2__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_4__1__Impl
-	rule__ProtocolParameter__Group_4__2
+	rule__ProtocolFirstParameter__Group_2__1__Impl
+	rule__ProtocolFirstParameter__Group_2__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__1__Impl
+rule__ProtocolFirstParameter__Group_2__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_4_1()); }
-	(rule__ProtocolParameter__ModifiersAssignment_4_1)*
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_4_1()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_2_1()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_2_1)*
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_2_1()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__2
+rule__ProtocolFirstParameter__Group_2__2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_4__2__Impl
-	rule__ProtocolParameter__Group_4__3
+	rule__ProtocolFirstParameter__Group_2__2__Impl
+	rule__ProtocolFirstParameter__Group_2__3
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__2__Impl
+rule__ProtocolFirstParameter__Group_2__2__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getNameAssignment_4_2()); }
-	(rule__ProtocolParameter__NameAssignment_4_2)
-	{ after(grammarAccess.getProtocolParameterAccess().getNameAssignment_4_2()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getNameAssignment_2_2()); }
+	(rule__ProtocolFirstParameter__NameAssignment_2_2)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getNameAssignment_2_2()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__3
+rule__ProtocolFirstParameter__Group_2__3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_4__3__Impl
-	rule__ProtocolParameter__Group_4__4
+	rule__ProtocolFirstParameter__Group_2__3__Impl
+	rule__ProtocolFirstParameter__Group_2__4
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__3__Impl
+rule__ProtocolFirstParameter__Group_2__3__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getGroup_4_3()); }
-	(rule__ProtocolParameter__Group_4_3__0)?
-	{ after(grammarAccess.getProtocolParameterAccess().getGroup_4_3()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getGroup_2_3()); }
+	(rule__ProtocolFirstParameter__Group_2_3__0)?
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getGroup_2_3()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__4
+rule__ProtocolFirstParameter__Group_2__4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_4__4__Impl
+	rule__ProtocolFirstParameter__Group_2__4__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4__4__Impl
+rule__ProtocolFirstParameter__Group_2__4__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_4_4()); }
-	(rule__ProtocolParameter__ModifiersAssignment_4_4)?
-	{ after(grammarAccess.getProtocolParameterAccess().getModifiersAssignment_4_4()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_2_4()); }
+	(rule__ProtocolFirstParameter__ModifiersAssignment_2_4)?
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersAssignment_2_4()); }
 )
 ;
 finally {
@@ -5513,53 +5175,242 @@ finally {
 }
 
 
-rule__ProtocolParameter__Group_4_3__0
+rule__ProtocolFirstParameter__Group_2_3__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_4_3__0__Impl
-	rule__ProtocolParameter__Group_4_3__1
+	rule__ProtocolFirstParameter__Group_2_3__0__Impl
+	rule__ProtocolFirstParameter__Group_2_3__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4_3__0__Impl
+rule__ProtocolFirstParameter__Group_2_3__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getColonKeyword_4_3_0()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getColonKeyword_2_3_0()); }
 	':'
-	{ after(grammarAccess.getProtocolParameterAccess().getColonKeyword_4_3_0()); }
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getColonKeyword_2_3_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4_3__1
+rule__ProtocolFirstParameter__Group_2_3__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ProtocolParameter__Group_4_3__1__Impl
+	rule__ProtocolFirstParameter__Group_2_3__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__Group_4_3__1__Impl
+rule__ProtocolFirstParameter__Group_2_3__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getProtocolParameterAccess().getTypeAssignment_4_3_1()); }
-	(rule__ProtocolParameter__TypeAssignment_4_3_1)
-	{ after(grammarAccess.getProtocolParameterAccess().getTypeAssignment_4_3_1()); }
+	{ before(grammarAccess.getProtocolFirstParameterAccess().getTypeAssignment_2_3_1()); }
+	(rule__ProtocolFirstParameter__TypeAssignment_2_3_1)
+	{ after(grammarAccess.getProtocolFirstParameterAccess().getTypeAssignment_2_3_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__ProtocolFollowingParameter__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group__0__Impl
+	rule__ProtocolFollowingParameter__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getBsplProtocolParameterAction_0()); }
+	()
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getBsplProtocolParameterAction_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group__1__Impl
+	rule__ProtocolFollowingParameter__Group__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getModifiersAssignment_1()); }
+	(rule__ProtocolFollowingParameter__ModifiersAssignment_1)*
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getModifiersAssignment_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group__2__Impl
+	rule__ProtocolFollowingParameter__Group__3
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__2__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getNameAssignment_2()); }
+	(rule__ProtocolFollowingParameter__NameAssignment_2)
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getNameAssignment_2()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group__3__Impl
+	rule__ProtocolFollowingParameter__Group__4
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__3__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getGroup_3()); }
+	(rule__ProtocolFollowingParameter__Group_3__0)?
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getGroup_3()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__4
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group__4__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group__4__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getModifiersAssignment_4()); }
+	(rule__ProtocolFollowingParameter__ModifiersAssignment_4)?
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getModifiersAssignment_4()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__ProtocolFollowingParameter__Group_3__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group_3__0__Impl
+	rule__ProtocolFollowingParameter__Group_3__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group_3__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getColonKeyword_3_0()); }
+	':'
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getColonKeyword_3_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group_3__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__ProtocolFollowingParameter__Group_3__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ProtocolFollowingParameter__Group_3__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getProtocolFollowingParameterAccess().getTypeAssignment_3_1()); }
+	(rule__ProtocolFollowingParameter__TypeAssignment_3_1)
+	{ after(grammarAccess.getProtocolFollowingParameterAccess().getTypeAssignment_3_1()); }
 )
 ;
 finally {
@@ -5828,9 +5679,9 @@ rule__ProtocolMessage__Group_8__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolMessageAccess().getLeftParenthesisKeyword_8_0()); }
-	'('
-	{ after(grammarAccess.getProtocolMessageAccess().getLeftParenthesisKeyword_8_0()); }
+	{ before(grammarAccess.getProtocolMessageAccess().getLeftSquareBracketKeyword_8_0()); }
+	'['
+	{ after(grammarAccess.getProtocolMessageAccess().getLeftSquareBracketKeyword_8_0()); }
 )
 ;
 finally {
@@ -5881,9 +5732,9 @@ rule__ProtocolMessage__Group_8__2__Impl
 	}
 :
 (
-	{ before(grammarAccess.getProtocolMessageAccess().getRightParenthesisKeyword_8_2()); }
-	')'
-	{ after(grammarAccess.getProtocolMessageAccess().getRightParenthesisKeyword_8_2()); }
+	{ before(grammarAccess.getProtocolMessageAccess().getRightSquareBracketKeyword_8_2()); }
+	']'
+	{ after(grammarAccess.getProtocolMessageAccess().getRightSquareBracketKeyword_8_2()); }
 )
 ;
 finally {
@@ -18991,75 +18842,90 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__AnnotationsAssignment_1
+rule__Protocol__ModifiersAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolAccess().getAnnotationsXAnnotationParserRuleCall_1_0()); }
-		ruleXAnnotation
-		{ after(grammarAccess.getProtocolAccess().getAnnotationsXAnnotationParserRuleCall_1_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Protocol__ModifiersAssignment_2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolAccess().getModifiersProtocolVisibilityModifierParserRuleCall_2_0()); }
+		{ before(grammarAccess.getProtocolAccess().getModifiersProtocolVisibilityModifierParserRuleCall_1_0()); }
 		ruleProtocolVisibilityModifier
-		{ after(grammarAccess.getProtocolAccess().getModifiersProtocolVisibilityModifierParserRuleCall_2_0()); }
+		{ after(grammarAccess.getProtocolAccess().getModifiersProtocolVisibilityModifierParserRuleCall_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__NameAssignment_4
+rule__Protocol__NameAssignment_3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolAccess().getNameValidIDParserRuleCall_4_0()); }
+		{ before(grammarAccess.getProtocolAccess().getNameValidIDParserRuleCall_3_0()); }
 		ruleValidID
-		{ after(grammarAccess.getProtocolAccess().getNameValidIDParserRuleCall_4_0()); }
+		{ after(grammarAccess.getProtocolAccess().getNameValidIDParserRuleCall_3_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__MembersAssignment_6_1
+rule__Protocol__MembersAssignment_5_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_6_1_0()); }
+		{ before(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_5_1_0()); }
 		ruleProtocolRole
-		{ after(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_6_1_0()); }
+		{ after(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_5_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Protocol__MembersAssignment_6_2_1
+rule__Protocol__MembersAssignment_5_2_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_6_2_1_0()); }
+		{ before(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_5_2_1_0()); }
 		ruleProtocolRole
-		{ after(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_6_2_1_0()); }
+		{ after(grammarAccess.getProtocolAccess().getMembersProtocolRoleParserRuleCall_5_2_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__MembersAssignment_6_0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getProtocolAccess().getMembersProtocolFirstParameterParserRuleCall_6_0_0()); }
+		ruleProtocolFirstParameter
+		{ after(grammarAccess.getProtocolAccess().getMembersProtocolFirstParameterParserRuleCall_6_0_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Protocol__MembersAssignment_6_1_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getProtocolAccess().getMembersProtocolFollowingParameterParserRuleCall_6_1_1_0()); }
+		ruleProtocolFollowingParameter
+		{ after(grammarAccess.getProtocolAccess().getMembersProtocolFollowingParameterParserRuleCall_6_1_1_0()); }
 	)
 ;
 finally {
@@ -19072,24 +18938,9 @@ rule__Protocol__MembersAssignment_7
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolAccess().getMembersProtocolParameterParserRuleCall_7_0()); }
-		ruleProtocolParameter
-		{ after(grammarAccess.getProtocolAccess().getMembersProtocolParameterParserRuleCall_7_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Protocol__MembersAssignment_8
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolAccess().getMembersProtocolMessageParserRuleCall_8_0()); }
+		{ before(grammarAccess.getProtocolAccess().getMembersProtocolMessageParserRuleCall_7_0()); }
 		ruleProtocolMessage
-		{ after(grammarAccess.getProtocolAccess().getMembersProtocolMessageParserRuleCall_8_0()); }
+		{ after(grammarAccess.getProtocolAccess().getMembersProtocolMessageParserRuleCall_7_0()); }
 	)
 ;
 finally {
@@ -19141,396 +18992,294 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_0_1_0
+rule__ProtocolFirstParameter__ModifiersAssignment_0_1_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
 		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
+			{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
 			'private'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
+			{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
 		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersPrivateKeyword_0_1_0_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_0_1_2
+rule__ProtocolFirstParameter__ModifiersAssignment_0_1_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_0_1_2_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersParameterModifierParserRuleCall_0_1_2_0()); }
 		ruleParameterModifier
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_0_1_2_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersParameterModifierParserRuleCall_0_1_2_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__NameAssignment_0_1_3
+rule__ProtocolFirstParameter__NameAssignment_0_1_3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_0_1_3_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getNameValidIDParserRuleCall_0_1_3_0()); }
 		ruleValidID
-		{ after(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_0_1_3_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getNameValidIDParserRuleCall_0_1_3_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__TypeAssignment_0_1_4_1
+rule__ProtocolFirstParameter__TypeAssignment_0_1_4_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_0_1_4_1_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getTypeJvmTypeReferenceParserRuleCall_0_1_4_1_0()); }
 		ruleJvmTypeReference
-		{ after(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_0_1_4_1_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getTypeJvmTypeReferenceParserRuleCall_0_1_4_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_0_1_5
+rule__ProtocolFirstParameter__ModifiersAssignment_0_1_5
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
 		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
+			{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
 			'key'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
+			{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
 		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_0_1_5_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_1_0
+rule__ProtocolFirstParameter__ModifiersAssignment_1_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersPublicKeyword_1_0_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersPublicKeyword_1_0_0()); }
 		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersPublicKeyword_1_0_0()); }
+			{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersPublicKeyword_1_0_0()); }
 			'public'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersPublicKeyword_1_0_0()); }
+			{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersPublicKeyword_1_0_0()); }
 		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersPublicKeyword_1_0_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersPublicKeyword_1_0_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_1_2
+rule__ProtocolFirstParameter__ModifiersAssignment_1_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_1_2_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersParameterModifierParserRuleCall_1_2_0()); }
 		ruleParameterModifier
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_1_2_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersParameterModifierParserRuleCall_1_2_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__NameAssignment_1_3
+rule__ProtocolFirstParameter__NameAssignment_1_3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_1_3_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getNameValidIDParserRuleCall_1_3_0()); }
 		ruleValidID
-		{ after(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_1_3_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getNameValidIDParserRuleCall_1_3_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__TypeAssignment_1_4_1
+rule__ProtocolFirstParameter__TypeAssignment_1_4_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_1_4_1_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getTypeJvmTypeReferenceParserRuleCall_1_4_1_0()); }
 		ruleJvmTypeReference
-		{ after(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_1_4_1_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getTypeJvmTypeReferenceParserRuleCall_1_4_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_1_5
+rule__ProtocolFirstParameter__ModifiersAssignment_1_5
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_1_5_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_1_5_0()); }
 		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_1_5_0()); }
+			{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_1_5_0()); }
 			'key'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_1_5_0()); }
+			{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_1_5_0()); }
 		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_1_5_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_1_5_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_2_0
+rule__ProtocolFirstParameter__ModifiersAssignment_2_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersProtectedKeyword_2_0_0()); }
-		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersProtectedKeyword_2_0_0()); }
-			'protected'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersProtectedKeyword_2_0_0()); }
-		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersProtectedKeyword_2_0_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__ModifiersAssignment_2_2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_2_2_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersParameterModifierParserRuleCall_2_1_0()); }
 		ruleParameterModifier
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_2_2_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersParameterModifierParserRuleCall_2_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__NameAssignment_2_3
+rule__ProtocolFirstParameter__NameAssignment_2_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_2_3_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getNameValidIDParserRuleCall_2_2_0()); }
 		ruleValidID
-		{ after(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_2_3_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getNameValidIDParserRuleCall_2_2_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__TypeAssignment_2_4_1
+rule__ProtocolFirstParameter__TypeAssignment_2_3_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_2_4_1_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getTypeJvmTypeReferenceParserRuleCall_2_3_1_0()); }
 		ruleJvmTypeReference
-		{ after(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_2_4_1_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getTypeJvmTypeReferenceParserRuleCall_2_3_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_2_5
+rule__ProtocolFirstParameter__ModifiersAssignment_2_4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_2_5_0()); }
+		{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_2_4_0()); }
 		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_2_5_0()); }
+			{ before(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_2_4_0()); }
 			'key'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_2_5_0()); }
+			{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_2_4_0()); }
 		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_2_5_0()); }
+		{ after(grammarAccess.getProtocolFirstParameterAccess().getModifiersKeyKeyword_2_4_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_3_0
+rule__ProtocolFollowingParameter__ModifiersAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersPackageKeyword_3_0_0()); }
-		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersPackageKeyword_3_0_0()); }
-			'package'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersPackageKeyword_3_0_0()); }
-		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersPackageKeyword_3_0_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__ModifiersAssignment_3_2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_3_2_0()); }
+		{ before(grammarAccess.getProtocolFollowingParameterAccess().getModifiersParameterModifierParserRuleCall_1_0()); }
 		ruleParameterModifier
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_3_2_0()); }
+		{ after(grammarAccess.getProtocolFollowingParameterAccess().getModifiersParameterModifierParserRuleCall_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__NameAssignment_3_3
+rule__ProtocolFollowingParameter__NameAssignment_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_3_3_0()); }
+		{ before(grammarAccess.getProtocolFollowingParameterAccess().getNameValidIDParserRuleCall_2_0()); }
 		ruleValidID
-		{ after(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_3_3_0()); }
+		{ after(grammarAccess.getProtocolFollowingParameterAccess().getNameValidIDParserRuleCall_2_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__TypeAssignment_3_4_1
+rule__ProtocolFollowingParameter__TypeAssignment_3_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_3_4_1_0()); }
+		{ before(grammarAccess.getProtocolFollowingParameterAccess().getTypeJvmTypeReferenceParserRuleCall_3_1_0()); }
 		ruleJvmTypeReference
-		{ after(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_3_4_1_0()); }
+		{ after(grammarAccess.getProtocolFollowingParameterAccess().getTypeJvmTypeReferenceParserRuleCall_3_1_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProtocolParameter__ModifiersAssignment_3_5
+rule__ProtocolFollowingParameter__ModifiersAssignment_4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_3_5_0()); }
+		{ before(grammarAccess.getProtocolFollowingParameterAccess().getModifiersKeyKeyword_4_0()); }
 		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_3_5_0()); }
+			{ before(grammarAccess.getProtocolFollowingParameterAccess().getModifiersKeyKeyword_4_0()); }
 			'key'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_3_5_0()); }
+			{ after(grammarAccess.getProtocolFollowingParameterAccess().getModifiersKeyKeyword_4_0()); }
 		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_3_5_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__ModifiersAssignment_4_1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_4_1_0()); }
-		ruleParameterModifier
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersParameterModifierParserRuleCall_4_1_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__NameAssignment_4_2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_4_2_0()); }
-		ruleValidID
-		{ after(grammarAccess.getProtocolParameterAccess().getNameValidIDParserRuleCall_4_2_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__TypeAssignment_4_3_1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_4_3_1_0()); }
-		ruleJvmTypeReference
-		{ after(grammarAccess.getProtocolParameterAccess().getTypeJvmTypeReferenceParserRuleCall_4_3_1_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProtocolParameter__ModifiersAssignment_4_4
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_4_4_0()); }
-		(
-			{ before(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_4_4_0()); }
-			'key'
-			{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_4_4_0()); }
-		)
-		{ after(grammarAccess.getProtocolParameterAccess().getModifiersKeyKeyword_4_4_0()); }
+		{ after(grammarAccess.getProtocolFollowingParameterAccess().getModifiersKeyKeyword_4_0()); }
 	)
 ;
 finally {

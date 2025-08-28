@@ -24,9 +24,9 @@ import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_NAME;
 import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PACKAGE_DECLARATION;
 import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PROTOCOL;
 import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_MESSAGE;
-import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_ROLE;
-import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
-import static org.eclipse.xtext.xbase.validation.IssueCodes.IMPORT_UNUSED;
+import static io.sarl.bspl.lang.validation.IssueCodes.*;
+import static io.sarl.bspl.lang.validation.IssueCodes.*;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.*;
 
 import org.eclipse.xtext.xtype.XtypePackage;
 import org.junit.jupiter.api.DisplayName;
@@ -45,6 +45,154 @@ import io.sarl.bspl.lang.tests.AbstractBsplTest;
 @SuppressWarnings("all")
 @DisplayName("BSPL specification")
 public class SpecificationTest {
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@Nested
+	@DisplayName("Protocol modifiers")
+	public class ProtocolModifierTest extends AbstractBsplTest {
+
+		@Test
+		@DisplayName("Public visibility")
+		public void publicVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"public PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl).assertNoErrors();
+		}
+		
+		@Test
+		@DisplayName("Package visibility")
+		public void packageVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"package PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl).assertNoErrors();
+		}
+
+		@Test
+		@DisplayName("Public+package visibility")
+		public void publicPackageVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"public package PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl)
+			.assertError(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					INVALID_PROTOCOL_MODIFIER,
+					"Invalid modifier 'package' for protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Package+public visibility")
+		public void packagePublicVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"package public PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl)
+			.assertError(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					INVALID_PROTOCOL_MODIFIER,
+					"Invalid modifier 'public' for protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Public+public visibility")
+		public void publicPublicVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"public public PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl)
+			.assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					UNNECESSARY_PROTOCOL_MODIFIER,
+					"Duplicate modifier 'public' for protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Package+package visibility")
+		public void packagePackageVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"package package PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl)
+			.assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					UNNECESSARY_PROTOCOL_MODIFIER,
+					"Duplicate modifier 'package' for protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Public+package+public visibility")
+		public void publicPackagePublicVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"public package public PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl)
+			.assertError(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					INVALID_PROTOCOL_MODIFIER,
+					"Invalid modifier 'package' for protocol PROTO")
+			.assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					UNNECESSARY_PROTOCOL_MODIFIER,
+					"Duplicate modifier 'public' for protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Package+public+package visibility")
+		public void packagePublicPackageVisibility() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.compiler.tests.fake",
+					"package public package PROTO {",
+					"  role A, B",
+					"  parameter out o",
+					"  A -> B : M [out o]",
+					"}");
+			validate(bspl)
+			.assertError(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					INVALID_PROTOCOL_MODIFIER,
+					"Invalid modifier 'public' for protocol PROTO")
+			.assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					UNNECESSARY_PROTOCOL_MODIFIER,
+					"Duplicate modifier 'package' for protocol PROTO");
+		}
+
+	}
 
 	/**
 	 * @author $Author: sgalland$
@@ -157,7 +305,15 @@ public class SpecificationTest {
 					BsplPackage.eINSTANCE.getBsplProtocol(),
 					EMPTY_PROTOCOL,
 					"Protocol PROTO is defined without roles, messages and parameters")
-				.assertNoIssues();
+				.assertError(
+						BsplPackage.eINSTANCE.getBsplProtocol(),
+						REQUIRED_OUT_PARAMETER,
+						"Out parameter must be declared for protocol PROTO")
+				.assertError(
+						BsplPackage.eINSTANCE.getBsplProtocol(),
+						REQUIRED_OUT_PARAMETER_IN_MESSAGES,
+						"Out parameter must be defined in at least one message for protocol PROTO")
+				.assertNoErrors();
 		}
 
 		@Test
@@ -181,7 +337,15 @@ public class SpecificationTest {
 						BsplPackage.eINSTANCE.getBsplProtocol(),
 						MISSED_PROTOCOL_ROLE,
 						"Protocol PROTO must contain at least one definition of a role")
-				.assertNoIssues();
+				.assertError(
+						BsplPackage.eINSTANCE.getBsplProtocol(),
+						REQUIRED_OUT_PARAMETER,
+						"Out parameter must be declared for protocol PROTO")
+				.assertError(
+						BsplPackage.eINSTANCE.getBsplProtocol(),
+						REQUIRED_OUT_PARAMETER_IN_MESSAGES,
+						"Out parameter must be defined in at least one message for protocol PROTO")
+				.assertNoErrors();
 		}
 
 		@Test
@@ -197,7 +361,10 @@ public class SpecificationTest {
 					BsplPackage.eINSTANCE.getBsplProtocol(),
 					MISSED_PROTOCOL_MESSAGE,
 					"Protocol PROTO must contain at least one definition of a message")
-				.assertNoIssues();
+				.assertWarning(
+						BsplPackage.eINSTANCE.getBsplProtocolRole(),
+						UNUSED_PROTOCOL_ROLE,
+						"Unused role R1 in protocol PROTO");
 		}
 
 	}

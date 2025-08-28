@@ -25,7 +25,6 @@ import java.io.IOException;
 
 import com.google.inject.Singleton;
 
-import io.sarl.bspl.api.protocol.impl.AbstractProtocolSpaceSpecification;
 import io.sarl.bspl.lang.bspl.BsplProtocol;
 import io.sarl.bspl.lang.compiler.IProtocolNames;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
@@ -68,15 +67,21 @@ public class BsplProtocolSpaceSpecificationGeneratorFragment {
 		final var importManager = context.newImportManager(specificationPackageName, specificationName);
 		final var content = context.newAppendableContent(importManager);
 
+		if (protocol.isPackageVisibility()) {
+			content.append("package "); //$NON-NLS-1$
+		} else {
+			content.append("public "); //$NON-NLS-1$
+		}
+		
 		content.append("class ").append(specificationName) //$NON-NLS-1$
-			.append(" extends ").append(AbstractProtocolSpaceSpecification.class) //$NON-NLS-1$
+			.append(" extends ").append(names.getProtocolSpaceSpecificationGenericInterface()) //$NON-NLS-1$
 			.append(" {").increaseIndentation() //$NON-NLS-1$
-			.newLine().append("override getRoles : ").append(names.getProtocoRoleGenericInterface().arrayType()).append(" {").increaseIndentation() //$NON-NLS-1$ //$NON-NLS-2$
+			.newLine().append("override getRoles : ").append(names.getProtocolRoleGenericInterface().arrayType()).append(" {").increaseIndentation() //$NON-NLS-1$ //$NON-NLS-2$
 			.newLine().append(roleEnumeration).append(".values") //$NON-NLS-1$
 			.decreaseIndentation().newLine().append("}") //$NON-NLS-1$
 			.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 
-		context.createSarlFile(specificationPackageName, specificationName, importManager, content);
+		context.createSarlFile(context.getSource(), specificationPackageName, specificationName, importManager, content);
 	}
 
 }

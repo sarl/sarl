@@ -55,12 +55,12 @@ public class DefaultSarlTargetGeneratorContextFactory implements ISarlTargetGene
 	@Override
 	public <T> ISarlTargetGeneratorContext<T> createContext(IFileSystemAccess2 fsa, IGeneratorContext context,
 			ResourceSet resourceSet) {
-		return new DefaultSarlTargetGeneratorContext<>(context, this.injector, fsa, resourceSet, this.resourceFactory, this.typeServices);
+		return new DefaultSarlTargetGeneratorContext<>(context, this.injector, fsa, null, resourceSet, this.resourceFactory, this.typeServices);
 	}
 
 	@Override
 	public <T> ISarlTargetGeneratorContext<T> createContext(IFileSystemAccess fsa, ResourceSet resourceSet) {
-		return new DefaultSarlTargetGeneratorContext<>(null, this.injector, fsa, resourceSet, this.resourceFactory, this.typeServices);
+		return new DefaultSarlTargetGeneratorContext<>(null, this.injector, fsa, null, resourceSet, this.resourceFactory, this.typeServices);
 	}
 	
 }

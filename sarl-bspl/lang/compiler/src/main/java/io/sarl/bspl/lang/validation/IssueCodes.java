@@ -118,6 +118,51 @@ public final class IssueCodes {
 	public static final String MISSED_ARGUMENT_IN_MESSAGE =
 			ISSUE_CODE_PREFIX + "missed_argument_in_message"; //$NON-NLS-1$
 
+	/** A key is missed in the protocol declaration.
+	 */
+	public static final String MISSED_PROTOCOL_KEY =
+			ISSUE_CODE_PREFIX + "missed_protocol_key"; //$NON-NLS-1$
+
+	/** A out parameter is missed in the protocol declaration.
+	 */
+	public static final String REQUIRED_OUT_PARAMETER =
+			ISSUE_CODE_PREFIX + "required_out_parameter"; //$NON-NLS-1$
+
+	/** A out parameter is missed in the messages of the protocol.
+	 */
+	public static final String REQUIRED_OUT_PARAMETER_IN_MESSAGES =
+			ISSUE_CODE_PREFIX + "required_out_parameter_in_messages"; //$NON-NLS-1$
+
+	/** Unused protocol role.
+	 */
+	public static final String UNUSED_PROTOCOL_ROLE =
+			ISSUE_CODE_PREFIX + "unused_protocol_role"; //$NON-NLS-1$
+
+	/** Unused protocol parameter.
+	 */
+	public static final String UNUSED_PROTOCOL_PARAMETER =
+			ISSUE_CODE_PREFIX + "unused_protocol_parameter"; //$NON-NLS-1$
+
+	/** Invalid modifier for message parameter.
+	 */
+	public static final String INVALID_ARGUMENT_MODIFIER =
+			ISSUE_CODE_PREFIX + "invalid_argument_modifier"; //$NON-NLS-1$
+
+	/** Invalid modifier for protocol parameter.
+	 */
+	public static final String INVALID_PARAMETER_MODIFIER =
+			ISSUE_CODE_PREFIX + "invalid_parameter_modifier"; //$NON-NLS-1$
+
+	/** Invalid modifier for protocol.
+	 */
+	public static final String INVALID_PROTOCOL_MODIFIER =
+			ISSUE_CODE_PREFIX + "invalid_protocol_modifier"; //$NON-NLS-1$
+
+	/** Unnecessary modifier for protocol.
+	 */
+	public static final String UNNECESSARY_PROTOCOL_MODIFIER =
+			ISSUE_CODE_PREFIX + "unnecessary_protocol_modifier"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

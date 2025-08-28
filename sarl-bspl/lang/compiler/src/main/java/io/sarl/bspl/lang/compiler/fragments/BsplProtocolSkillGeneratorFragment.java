@@ -39,10 +39,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure4;
 import com.google.inject.Singleton;
 
 import io.sarl.api.core.ExternalContextAccess;
-import io.sarl.bspl.api.memory.KnowledgeID;
-import io.sarl.bspl.api.memory.LocalStateManager;
-import io.sarl.bspl.api.protocol.impl.ProtocolMessage;
-import io.sarl.bspl.api.protocol.impl.ProtocolSkill;
 import io.sarl.bspl.lang.bspl.BsplProtocolArgument;
 import io.sarl.bspl.lang.bspl.BsplProtocolMessage;
 import io.sarl.bspl.lang.bspl.BsplProtocolParameter;
@@ -103,10 +99,10 @@ public class BsplProtocolSkillGeneratorFragment {
 		receiver
 		.newLine().append("@").append(SarlAsynchronousExecution.class).newLine() //$NON-NLS-1$
 		.append("override ").append(names.getGetEnabledMessagesFunctionName(messageName)).append(" : ") //$NON-NLS-1$ //$NON-NLS-2$
-		.append(List.class).append("<").append(ProtocolMessage.class).append("<") //$NON-NLS-1$ //$NON-NLS-2$
+		.append(List.class).append("<").append(names.getProtocolMessageGenericInterface()).append("<") //$NON-NLS-1$ //$NON-NLS-2$
 		.append(messageType0).append(">> {").increaseIndentation(); //$NON-NLS-1$
 		final var varEnabledMessages = receiver.declareSyntheticVariable(role, "enabledMessages"); //$NON-NLS-1$
-		receiver.newLine().append("val ").append(varEnabledMessages).append(" = <").append(ProtocolMessage.class).append("<").append(messageType1).append(">>newArrayList"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		receiver.newLine().append("val ").append(varEnabledMessages).append(" = <").append(names.getProtocolMessageGenericInterface()).append("<").append(messageType1).append(">>newArrayList"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		for (final var messageMapping : sendableMessages.entrySet()) {
 			final var receiverName = Strings.convertToJavaString(messageMapping.getKey());
@@ -132,7 +128,7 @@ public class BsplProtocolSkillGeneratorFragment {
 						} else {
 							receiver.append(" && "); //$NON-NLS-1$
 						}
-						receiver.append("!new ").append(KnowledgeID.class).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$
+						receiver.append("!new ").append(names.getKnowledgeIdGenericInterface()).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$
 						.append(Strings.convertToJavaString(outParam.getName()))
 						.append("\", ").append(varScope).append(".keys).isBound"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
@@ -148,22 +144,27 @@ public class BsplProtocolSkillGeneratorFragment {
 					var keyIndex = 0;
 					for (final var inParam : inParams) {
 						final var inParamName = Strings.convertToJavaString(inParam.getName());
-						receiver.newLine().append(varMessageInstance).append(".").append(inParam.getName()).append(" = "); //$NON-NLS-1$ //$NON-NLS-2$
-						if (inParam.isKey()) {
-							receiver.append(varScope).append(".keys.get(").append(Integer.toString(keyIndex)).append(") as "); //$NON-NLS-1$ //$NON-NLS-2$
-							context.appendTypeReferenceOrObject(receiver, role, () -> parameters.get(inParam.getName()).getType());
-							receiver.append(" // ").append(inParam.getName()); //$NON-NLS-1$
-							++keyIndex;
+						final var parameter = parameters.get(inParamName);
+						if (parameter == null || !parameter.isPrivateVisibility()) {
+							receiver.newLine().append(varMessageInstance).append(".").append(inParamName).append(" = "); //$NON-NLS-1$ //$NON-NLS-2$
+							if (inParam.isKey()) {
+								receiver.append(varScope).append(".keys.get(").append(Integer.toString(keyIndex)).append(") as "); //$NON-NLS-1$ //$NON-NLS-2$
+								context.appendTypeReferenceOrObject(receiver, role, () -> parameters.get(inParamName).getType());
+								receiver.append(" // ").append(inParamName); //$NON-NLS-1$
+								++keyIndex;
+							} else {
+								receiver.append("new ").append(names.getKnowledgeIdGenericInterface()).append("(\"").append(inParamName) //$NON-NLS-1$ //$NON-NLS-2$
+								.append("\", ").append(varScope).append(".keys), typeof("); //$NON-NLS-1$ //$NON-NLS-2$
+								context.appendTypeReferenceOrObject(receiver, role, () -> parameters.get(inParamName).getType());
+								receiver.append(")).getKnowledge"); //$NON-NLS-1$
+							}
 						} else {
-							receiver.append("new ").append(KnowledgeID.class).append("(\"").append(inParamName) //$NON-NLS-1$ //$NON-NLS-2$
-							.append("\", ").append(varScope).append(".keys), typeof("); //$NON-NLS-1$ //$NON-NLS-2$
-							context.appendTypeReferenceOrObject(receiver, role, () -> parameters.get(inParam.getName()).getType());
-							receiver.append(")).getKnowledge"); //$NON-NLS-1$
+							receiver.newLine().append("// Ignoring private parameter: ").append(inParamName); //$NON-NLS-1$
 						}
 					}
 				}
-				receiver.newLine().append(varEnabledMessages).append(" += new ").append(ProtocolMessage.class).append("<").append(messageType3) //$NON-NLS-1$ //$NON-NLS-2$
-				.append(">(").append(varSpace).append(", ").append(varMessageInstance).append(", new ").append(KnowledgeID.class).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				receiver.newLine().append(varEnabledMessages).append(" += new ").append(names.getProtocolMessageGenericInterface()).append("<").append(messageType3) //$NON-NLS-1$ //$NON-NLS-2$
+				.append(">(").append(varSpace).append(", ").append(varMessageInstance).append(", new ").append(names.getKnowledgeIdGenericInterface()).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				.append(receiverName).append("\", ").append(varScope).append(".keys).getKnowledge(typeof(").append(UUID.class).append(")))"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 				if (!outParams.isEmpty()) {
@@ -190,7 +191,7 @@ public class BsplProtocolSkillGeneratorFragment {
 		receiver
 		.newLine().append("@").append(SarlAsynchronousExecution.class).newLine() //$NON-NLS-1$
 		.append("override ").append(names.getSendMessageFunctionName(messageName)).append("(message : ") //$NON-NLS-1$ //$NON-NLS-2$
-		.append(ProtocolMessage.class).append("<") //$NON-NLS-1$
+		.append(names.getProtocolMessageGenericInterface()).append("<") //$NON-NLS-1$
 		.append(messageType0).append(">) {").increaseIndentation(); //$NON-NLS-1$
 
 		final Comparator<BsplProtocolArgument> comparator = (a, b) -> a.getName().compareTo(b.getName());
@@ -211,7 +212,7 @@ public class BsplProtocolSkillGeneratorFragment {
 				final var idName = receiver.declareSyntheticVariable(role, outParam.getName() + "Id"); //$NON-NLS-1$
 				final var valueName = receiver.declareSyntheticVariable(role, outParam.getName());
 				variables.put(outParam.getName(), Pair.of(idName, valueName));
-				receiver.newLine().append("val ").append(idName).append(" = new ").append(KnowledgeID.class).append("(\"").append(Strings.convertToJavaString(outParam.getName())).append("\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				receiver.newLine().append("val ").append(idName).append(" = new ").append(names.getKnowledgeIdGenericInterface()).append("(\"").append(Strings.convertToJavaString(outParam.getName())).append("\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				if (!inKeys.isEmpty()) {
 					for (final var inKey : inKeys) {
 						receiver.append(", "); //$NON-NLS-1$
@@ -278,11 +279,17 @@ public class BsplProtocolSkillGeneratorFragment {
 			final var importManager = context.newImportManager(skillPackageName, skillName);
 			final var content = context.newAppendableContent(importManager);
 
+			if (context.isPackageVisibility()) {
+				content.append("package "); //$NON-NLS-1$
+			} else {
+				content.append("public "); //$NON-NLS-1$
+			}
+
 			content.append("skill ").append(skillName) //$NON-NLS-1$
-			.append(" extends ").append(ProtocolSkill.class) //$NON-NLS-1$
+			.append(" extends ").append(names.getProtocolSkillGenericInterface()) //$NON-NLS-1$
 			.append(" implements ").append(capacityType) //$NON-NLS-1$
 			.append(" {").increaseIndentation() //$NON-NLS-1$
-			.newLine().append("uses ").append(LocalStateManager.class).append(", ").append(ExternalContextAccess.class); //$NON-NLS-1$ //$NON-NLS-2$
+			.newLine().append("uses ").append(names.getLocalStageManagerGenericInterface()).append(", ").append(ExternalContextAccess.class); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (generator != null) {
 				var first = true;
@@ -298,7 +305,7 @@ public class BsplProtocolSkillGeneratorFragment {
 
 			content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 
-			context.createSarlFile(skillPackageName, skillName, importManager, content);
+			context.createSarlFile(context.getSource(), skillPackageName, skillName, importManager, content);
 		}
 	}
 

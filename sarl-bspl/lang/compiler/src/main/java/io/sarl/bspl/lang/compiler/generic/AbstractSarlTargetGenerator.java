@@ -76,10 +76,10 @@ public abstract class AbstractSarlTargetGenerator<NP> extends AbstractGenerator 
 	public void doGenerate(Resource input, ISarlTargetGeneratorContext<NP> context) {
 		final var preStageContext = context.forPreStage();
 		for (final var obj : input.getContents()) {
-			doGenerate(obj, preStageContext);
+			doGenerate(obj, preStageContext.withSource(obj));
 		}
 		for (final var obj : input.getContents()) {
-			doGenerate(obj, context);
+			doGenerate(obj, context.withSource(obj));
 		}
 	}
 

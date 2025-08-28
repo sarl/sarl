@@ -34,11 +34,11 @@ ProtocolSpecification returns BsplProtocolSpecification:
 ;
 
 Protocol returns BsplProtocol:
-	{BsplProtocol} annotations+=XAnnotation*
+	{BsplProtocol}
 	// Recognize the original syntax for BSPL
 	modifiers+=ProtocolVisibilityModifier* 'protocol'? name=ValidID '{'
 		( 'role'? members+=ProtocolRole (',' members+=ProtocolRole)* )*
-		( members+=ProtocolParameter )*
+		( members+=ProtocolFirstParameter ( ',' members+=ProtocolFollowingParameter )* )*
 		( members+=ProtocolMessage )*
 		/*( members+=ProtocolCall )**/
 	'}'
@@ -49,19 +49,20 @@ ProtocolRole returns BsplProtocolRole:
 	name=ValidID ('[' (min=INT '..')? max=INT ']')?
 ;
 
-ProtocolParameter returns BsplProtocolParameter:
+ProtocolFirstParameter returns BsplProtocolParameter:
 	{BsplProtocolParameter}
 	(
 		modifiers+='private' 'parameter'? modifiers+=ParameterModifier* name=ValidID (':' type=JvmTypeReference)? modifiers+='key'?
 	) | (
 		modifiers+='public' 'parameter'? modifiers+=ParameterModifier* name=ValidID (':' type=JvmTypeReference)? modifiers+='key'?
 	) | (
-		modifiers+='protected' 'parameter'? modifiers+=ParameterModifier* name=ValidID (':' type=JvmTypeReference)? modifiers+='key'?
-	) | (
-		modifiers+='package' 'parameter'? modifiers+=ParameterModifier* name=ValidID (':' type=JvmTypeReference)? modifiers+='key'?
-	) | (
 		'parameter' modifiers+=ParameterModifier* name=ValidID (':' type=JvmTypeReference)? modifiers+='key'?
 	)
+;
+
+ProtocolFollowingParameter returns BsplProtocolParameter:
+	{BsplProtocolParameter}
+	modifiers+=ParameterModifier* name=ValidID (':' type=JvmTypeReference)? modifiers+='key'?
 ;
 
 ProtocolMessage returns BsplProtocolMessage:
@@ -69,7 +70,7 @@ ProtocolMessage returns BsplProtocolMessage:
 	from=ValidID
 			'->' modifiers+=MessageTargetModifier* to=ValidID modifiers+=MessageTargetModifier*
 			':' message=ValidID 
-			( '(' ( arguments+=ArgumentDef (',' arguments+=ArgumentDef)* )?  ')' )?
+			( '[' ( arguments+=ArgumentDef (',' arguments+=ArgumentDef)* )?  ']' )?
 ;
 
 /*ProtocolCall returns BsplProtocolProtocolCall:

@@ -22,7 +22,9 @@ package io.sarl.bspl.lang.tests.syntax;
 
 import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_ROLE;
 import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_MESSAGE;
+import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
 import static io.sarl.bspl.lang.validation.IssueCodes.UNNECESSARY_ROLE_CARDINALITY;
+import static io.sarl.bspl.lang.validation.IssueCodes.UNUSED_PROTOCOL_ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -41,7 +43,7 @@ import io.sarl.bspl.lang.tests.AbstractBsplTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@DisplayName("Protocol with only role")
+@DisplayName("Protocol Role")
 public class RoleProtocolTest {
 
 	/**
@@ -692,6 +694,79 @@ public class RoleProtocolTest {
 			assertEquals("R1", r0.getName());
 			assertNull(r0.getMin());
 			assertEquals(8, r0.getMax());
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@Nested
+	@DisplayName("Singh Definition Compliance")
+	public class SinghDefinitionComplianceTest extends AbstractBsplTest {
+
+		@Test
+		@DisplayName("Unused role")
+		public void unecessaryRole() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"PROTO {",
+					"  role R1, R2, R3",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
+					UNUSED_PROTOCOL_ROLE,
+					"Unused role R3 in protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Missing role")
+		public void missingRole() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"PROTO {",
+					"  role R1",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertError(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					UNDEFINED_PROTOCOL_ROLE,
+					"Undefined destination role R2 in the protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Duplicated role #1")
+		public void duplicatedRole1() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"PROTO {",
+					"  role R1, R2, R1",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
+					DUPLICATE_PROTOCOL_ROLE,
+					"Duplicate definition of the role R1 in the protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Duplicated role #2")
+		public void duplicatedRole2() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"PROTO {",
+					"  role R1, R2",
+					"  role R1",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolRole(),
+					DUPLICATE_PROTOCOL_ROLE,
+					"Duplicate definition of the role R1 in the protocol PROTO");
 		}
 
 	}

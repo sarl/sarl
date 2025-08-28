@@ -54,7 +54,9 @@ interface ProtocolRole {
 	 *
 	 * @return the type of the capacity, never {@code null}.
 	 */
-	def getProtocolCapacity : Class<? extends ProtocolCapacity>
+	def getProtocolCapacity : Class<? extends ProtocolCapacity> {
+		null
+	}
 	
 	/** Replies the skill that should be used by the agent to play this role
 	 * in the protocol instance represented by the given space.
@@ -62,7 +64,9 @@ interface ProtocolRole {
 	 * @param space the space that is supporting the protocol instance.
 	 * @return the skill, never {@code null}.
 	 */
-	def getProtocolSkill(^space : ProtocolSpace) : Skill
+	def getProtocolSkill(^space : ProtocolSpace) : Skill {
+		null
+	}
 
 	/** Replies the behavior that should be used by the agent to run the
 	 * dynamic behavior associated to the role in the protocol instance.
@@ -73,7 +77,9 @@ interface ProtocolRole {
 	 * @param agent the agent that must run the protocol behavior.
 	 * @return the protocol's behavior, never {@code null}.
 	 */
-	def getProtocolBehavior(^agent : Agent) : Behavior
+	def getProtocolBehavior(^agent : Agent) : Behavior {
+		null
+	}
 
 	/** Register the given agent as a player of this role to the given protocol.
 	 *
@@ -105,6 +111,8 @@ interface ProtocolRole {
 	 *
 	 * @return the maximum number of role players. By default, there is no limit.
 	 */
-	def getMaxCardinality : int
+	def getMaxCardinality : int {
+		Integer.MAX_VALUE
+	}
 
 }

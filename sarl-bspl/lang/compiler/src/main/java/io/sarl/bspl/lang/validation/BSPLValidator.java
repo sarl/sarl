@@ -21,23 +21,10 @@
 
 package io.sarl.bspl.lang.validation;
 
-import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_ARGUMENT;
-import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_MESSAGE;
-import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_NAME;
-import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_PARAMETER;
-import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_ROLE;
-import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PACKAGE_DECLARATION;
-import static io.sarl.bspl.lang.validation.IssueCodes.EMPTY_PROTOCOL;
-import static io.sarl.bspl.lang.validation.IssueCodes.INVALID_ROLE_CARDINALITY_ORDER;
-import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PARAMETER_TYPE;
 import static io.sarl.bspl.lang.validation.IssueCodes.*;
-import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_PROTOCOL_ROLE;
-import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_PARAMETER;
-import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_ROLE;
-import static io.sarl.bspl.lang.validation.IssueCodes.UNNECESSARY_ROLE_CARDINALITY;
 
 import java.text.MessageFormat;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -55,6 +42,9 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SortedSetMultimap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -222,25 +212,6 @@ public class BSPLValidator extends AbstractBSPLValidator {
 		}
 	}
 
-	/** Check the protocol parameters in order to not have duplicates.
-	 *
-	 * @param protocol the SARL BSPL protocol.
-	 */
-	@Check(CheckType.EXPENSIVE)
-	public void checkDuplicateParameter(BsplProtocol protocol) {
-		final var definedParameters = new TreeSet<String>();
-		for (final var member : protocol.getMembers()) {
-			if (member instanceof BsplProtocolParameter parameter) {
-				final var name = parameter.getName();
-				if (!definedParameters.add(name)) {
-					addIssue(MessageFormat.format(Messages.SARL_BSPLValidator_9, name, protocol.getName()),
-							parameter,
-							DUPLICATE_PROTOCOL_PARAMETER);
-				}
-			}
-		}
-	}
-
 	/** Check the protocol roles in order to not have duplicates.
 	 *
 	 * @param protocol the SARL BSPL protocol.
@@ -258,41 +229,6 @@ public class BSPLValidator extends AbstractBSPLValidator {
 								DUPLICATE_PROTOCOL_ROLE);
 					}
 				}
-			}
-		}
-	}
-
-	/** Check the protocol message has known roles.
-	 *
-	 * @param protocol the SARL BSPL protocol.
-	 */
-	@Check(CheckType.EXPENSIVE)
-	public void checkMessageRoles(BsplProtocol protocol) {
-		final var roles = new TreeSet<String>();
-		final var messages = new LinkedList<BsplProtocolMessage>();
-		for (final var member : protocol.getMembers()) {
-			if (member instanceof BsplProtocolRole role) {
-				roles.add(role.getName());
-			} else if (member instanceof BsplProtocolMessage message) {
-				messages.add(message);
-			}
-		}
-		for (final var message : messages) {
-			final var from = message.getFrom();
-			if (!roles.contains(from)) {
-				error(
-						MessageFormat.format(Messages.SARL_BSPLValidator_5, from, protocol.getName()),
-						message,
-						BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__FROM,
-						UNDEFINED_PROTOCOL_ROLE);
-			}
-			final var to = message.getTo();
-			if (!roles.contains(to)) {
-				error(
-						MessageFormat.format(Messages.SARL_BSPLValidator_6, to, protocol.getName()),
-						message,
-						BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__TO,
-						UNDEFINED_PROTOCOL_ROLE);
 			}
 		}
 	}
@@ -325,75 +261,6 @@ public class BSPLValidator extends AbstractBSPLValidator {
 		}
 	}
 
-	/** Check the protocol message has known parameters and arguments are not duplicated.
-	 * This function also test if all the arguments have been specified.
-	 *
-	 * @param protocol the SARL BSPL protocol.
-	 */
-	@Check(CheckType.EXPENSIVE)
-	public void checkMessageParameters(BsplProtocol protocol) {
-		final var parameters = new TreeSet<String>();
-		final var messages = new LinkedList<BsplProtocolMessage>();
-		for (final var member : protocol.getMembers()) {
-			if (member instanceof BsplProtocolParameter parameter) {
-				parameters.add(parameter.getName());
-			} else if (member instanceof BsplProtocolMessage message) {
-				messages.add(message);
-			}
-		}
-
-		final Set<String> expectedArguments;
-		if (!isIgnored(MISSED_ARGUMENT_IN_MESSAGE)) {
-			expectedArguments = new TreeSet<>();
-			for (final var message : messages) {
-				for (final var argument : message.getArguments()) {
-					expectedArguments.add(argument.getName());
-				}
-			}
-		} else {
-			expectedArguments = null;
-		}
-
-		for (final var message : messages) {
-			final var from = message.getFrom();
-			final var to = message.getTo();
-			final var msg = message.getMessage();
-			final var definedArguments = new TreeSet<String>();
-			final var remainArguments = expectedArguments == null ? null : new TreeSet<>(expectedArguments);
-			var i = 0;
-			for (final var argument : message.getArguments()) {
-				final var argumentName = argument.getName();
-				if (!parameters.contains(argumentName)) {
-					error(
-							MessageFormat.format(Messages.SARL_BSPLValidator_8, argumentName, protocol.getName()),
-							message,
-							BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__ARGUMENTS,
-							i,
-							UNDEFINED_PROTOCOL_PARAMETER);
-				}
-				if (!definedArguments.add(argumentName)) {
-					error(
-							MessageFormat.format(Messages.SARL_BSPLValidator_11, argumentName, from, to, msg, protocol.getName()),
-							message,
-							BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__ARGUMENTS,
-							i,
-							DUPLICATE_PROTOCOL_ARGUMENT);
-				}
-				if (remainArguments != null) {
-					remainArguments.remove(argumentName);
-				}
-				++i;
-			}
-			if (remainArguments != null && !remainArguments.isEmpty()) {
-				for (final var missedArgument : remainArguments) {
-					addIssue(MessageFormat.format(Messages.SARL_BSPLValidator_17, message.getMessage(), missedArgument),
-							message,
-							MISSED_ARGUMENT_IN_MESSAGE);
-				}
-			}
-		}
-	}
-
 	/** Check the protocol parameter has type.
 	 *
 	 * @param parameter the SARL BSPL parameter.
@@ -421,6 +288,258 @@ public class BSPLValidator extends AbstractBSPLValidator {
 						BsplPackage.Literals.BSPL_PROTOCOL_SPECIFICATION__PACKAGE,
 						EMPTY_PACKAGE_DECLARATION);
 			}
+		}
+	}
+
+	/** Check the roles are declared and used.
+	 *
+	 * @param protocol the SARL BSPL protocol.
+	 */
+	@Check(CheckType.EXPENSIVE)
+	public void checkRoles(BsplProtocol protocol) {
+		final var allDeclaredRoles = new TreeSet<String>();
+		final var declaredRoles = new TreeMap<String, BsplProtocolRole>();
+		for (final var member : protocol.getMembers()) {
+			if (member instanceof BsplProtocolRole role) {
+				allDeclaredRoles.add(role.getName());
+				declaredRoles.put(role.getName(), role);
+			} else if (member instanceof BsplProtocolMessage message) {
+				final var f = message.getFrom();
+				final var t = message.getTo();
+				if (f.equals(t)) {
+					declaredRoles.remove(f);
+					if (!allDeclaredRoles.contains(f)) {
+						error(
+								MessageFormat.format(Messages.SARL_BSPLValidator_5, f, protocol.getName()),
+								message,
+								BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__FROM,
+								UNDEFINED_PROTOCOL_ROLE);
+						error(
+								MessageFormat.format(Messages.SARL_BSPLValidator_6, t, protocol.getName()),
+								message,
+								BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__TO,
+								UNDEFINED_PROTOCOL_ROLE);
+					}
+				} else {
+					declaredRoles.remove(f);
+					if (!allDeclaredRoles.contains(f)) {
+						error(
+								MessageFormat.format(Messages.SARL_BSPLValidator_5, f, protocol.getName()),
+								message,
+								BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__FROM,
+								UNDEFINED_PROTOCOL_ROLE);
+					}
+					declaredRoles.remove(t);
+					if (!allDeclaredRoles.contains(t)) {
+						error(
+								MessageFormat.format(Messages.SARL_BSPLValidator_6, t, protocol.getName()),
+								message,
+								BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__TO,
+								UNDEFINED_PROTOCOL_ROLE);
+					}
+				}
+			}
+		}
+		
+		if (!isIgnored(UNUSED_PROTOCOL_ROLE)) {
+			for (final var declaration : declaredRoles.values()) {
+				addIssue(
+						MessageFormat.format(Messages.SARL_BSPLValidator_18, declaration.getName(), protocol.getName()),
+						declaration,
+						UNUSED_PROTOCOL_ROLE);
+			}
+		}
+	}
+
+
+	/** Check the protocol message has known parameters and arguments are not duplicated.
+	 * This function also test if all the arguments have been specified, and notifies
+	 * when a protocol parameter is not used.
+	 *
+	 * @param protocol the SARL BSPL protocol.
+	 */
+	@Check(CheckType.EXPENSIVE)
+	public void checkParameters(BsplProtocol protocol) {
+		final Multimap<String, BsplProtocolMessage> declaredMessages;
+		final SortedSetMultimap<String, String> declaredArgumentsForMessage;
+		if (isIgnored(MISSED_ARGUMENT_IN_MESSAGE)) {
+			declaredMessages = null;
+			declaredArgumentsForMessage = null;
+		} else {
+			declaredMessages = Multimaps.newListMultimap(new TreeMap<>(), () -> new ArrayList<>());
+			declaredArgumentsForMessage = Multimaps.newSortedSetMultimap(new TreeMap<>(), () -> new TreeSet<>());
+		}
+		final var allDeclaredParameters = new TreeMap<String, BsplProtocolParameter>();
+		final var declaredKeys = new TreeSet<String>();
+		final var declaredParameters = new TreeMap<String, BsplProtocolParameter>();
+		var hasProtocolKey = false;
+		var hasProtocolOutParameter = false;
+		var hasMessageOutParameter = false;
+		final var notUsedOutParameters = new TreeMap<String, BsplProtocolParameter>();
+		for (final var member : protocol.getMembers()) {
+			if (member instanceof BsplProtocolParameter parameter) {
+				if (parameter.isKey()) {
+					declaredKeys.add(parameter.getName());
+					if (!hasProtocolKey) {
+						hasProtocolKey = true;
+					}
+				}
+				if (parameter.isOutput()) {
+					hasProtocolOutParameter = true;
+					notUsedOutParameters.put(parameter.getName(), parameter);
+					if (parameter.isPrivateVisibility()) {
+						error(
+								MessageFormat.format(Messages.SARL_BSPLValidator_25, parameter.getName(), protocol.getName()),
+								parameter,
+								BsplPackage.Literals.BSPL_PROTOCOL_PARAMETER__NAME,
+								INVALID_PARAMETER_MODIFIER);
+					}
+				}
+				if (allDeclaredParameters.putIfAbsent(parameter.getName(), parameter) != null) {
+					error(
+						MessageFormat.format(Messages.SARL_BSPLValidator_9, parameter.getName(), protocol.getName()),
+						parameter,
+						BsplPackage.Literals.BSPL_PROTOCOL_PARAMETER__NAME,
+						DUPLICATE_PROTOCOL_PARAMETER);
+				} else {
+					declaredParameters.put(parameter.getName(), parameter);
+				}
+			} else if (member instanceof BsplProtocolMessage message) {
+				if (declaredMessages != null) {
+					declaredMessages.put(message.getMessage(), message);
+				}
+				final var declaredArguments = new TreeSet<String>();
+				int i = 0;
+				for (final var argument : message.getArguments()) {
+					final var n = argument.getName();
+					notUsedOutParameters.remove(n);
+					if (declaredArgumentsForMessage != null) {
+						declaredArgumentsForMessage.put(message.getMessage(), n);
+					}
+					declaredParameters.remove(n);
+					if (!allDeclaredParameters.containsKey(n)) {
+						error(
+							MessageFormat.format(Messages.SARL_BSPLValidator_8, n, protocol.getName()),
+							message,
+							BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__ARGUMENTS,
+							i,
+							UNDEFINED_PROTOCOL_PARAMETER);
+					} else if (!declaredArguments.add(n)) {
+						error(
+							MessageFormat.format(Messages.SARL_BSPLValidator_11, n, message.getFrom(), message.getTo(), message.getMessage(), protocol.getName()),
+							message,
+							BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__ARGUMENTS,
+							i,
+							DUPLICATE_PROTOCOL_ARGUMENT);
+					}
+					if (argument.isKey()) {
+						final var declaredParameter = allDeclaredParameters.get(n);
+						assert declaredParameter != null;
+						if (!declaredParameter.isKey()) {
+							error(
+								MessageFormat.format(Messages.SARL_BSPLValidator_21, argument.getName(), protocol.getName()),
+								message,
+								BsplPackage.Literals.BSPL_PROTOCOL_MESSAGE__ARGUMENTS,
+								i,
+								INVALID_ARGUMENT_MODIFIER);
+						}
+					}
+					if (!hasMessageOutParameter && argument.isOutput()) {
+						hasMessageOutParameter = true;
+					}
+					++i;
+				}
+			}
+		}
+
+		if (!isIgnored(UNUSED_PROTOCOL_PARAMETER)) {
+			for (final var parameter : declaredParameters.values()) {
+				addIssue(
+						MessageFormat.format(Messages.SARL_BSPLValidator_19, parameter.getName(), protocol.getName()),
+						parameter,
+						UNUSED_PROTOCOL_PARAMETER);
+			}
+		}
+
+		if (declaredArgumentsForMessage != null && declaredMessages != null) {
+			for (final var declaration : declaredMessages.entries()) {
+				final var originalArguments = declaredArgumentsForMessage.get(declaration.getKey());
+				if (!originalArguments.isEmpty()) {
+					final var arguments = new TreeSet<>(originalArguments);
+					for (final var argument : declaration.getValue().getArguments()) {
+						arguments.remove(argument.getName());
+					}
+					if (!arguments.isEmpty()) {
+						for (final var argument : arguments) {
+							addIssue(MessageFormat.format(Messages.SARL_BSPLValidator_17, argument, declaration.getKey()),
+									declaration.getValue(),
+									MISSED_ARGUMENT_IN_MESSAGE);
+						}
+					}
+				}
+			}
+		}
+
+		if (!isIgnored(MISSED_PROTOCOL_KEY) && !hasProtocolKey) {
+			addIssue(MessageFormat.format(Messages.SARL_BSPLValidator_20, protocol.getName()),
+					protocol,
+					BsplPackage.Literals.BSPL_PROTOCOL__NAME,
+					MISSED_PROTOCOL_KEY);
+		}
+
+		if (!hasProtocolOutParameter) {
+			error(
+					MessageFormat.format(Messages.SARL_BSPLValidator_22, protocol.getName()),
+					protocol,
+					BsplPackage.Literals.BSPL_PROTOCOL__NAME,
+					REQUIRED_OUT_PARAMETER);
+		}
+
+		if (!hasMessageOutParameter) {
+			error(
+					MessageFormat.format(Messages.SARL_BSPLValidator_23, protocol.getName()),
+					protocol,
+					BsplPackage.Literals.BSPL_PROTOCOL__NAME,
+					REQUIRED_OUT_PARAMETER_IN_MESSAGES);
+		}
+
+		if (!notUsedOutParameters.isEmpty()) {
+			for (final var parameter : notUsedOutParameters.values()) {
+				error(
+						MessageFormat.format(Messages.SARL_BSPLValidator_24, parameter.getName(), protocol.getName()),
+						parameter,
+						BsplPackage.Literals.BSPL_PROTOCOL_PARAMETER__NAME,
+						REQUIRED_OUT_PARAMETER_IN_MESSAGES);
+			}
+		}
+	}
+
+	/** Check the modifiers of the protocol.
+	 *
+	 * @param protocol the SARL BSPL protocol.
+	 */
+	@Check(CheckType.FAST)
+	public void checkProtocolModifiers(BsplProtocol protocol) {
+		final var declaredModifier = new TreeSet<String>();
+		var i = 0;
+		for (final var modifier : protocol.getModifiers()) {
+			if (!declaredModifier.add(modifier)) {
+				if (!isIgnored(UNNECESSARY_PROTOCOL_MODIFIER)) {
+					addIssue(MessageFormat.format(Messages.SARL_BSPLValidator_27, modifier, protocol.getName()),
+							protocol,
+							BsplPackage.Literals.BSPL_PROTOCOL__MODIFIERS,
+							i,
+							UNNECESSARY_PROTOCOL_MODIFIER);
+				}
+			} else if (i > 0 && declaredModifier.size() > 1) {
+				error(
+						MessageFormat.format(Messages.SARL_BSPLValidator_26, modifier, protocol.getName()),
+						protocol,
+						BsplPackage.Literals.BSPL_PROTOCOL__MODIFIERS,
+						i,
+						INVALID_PROTOCOL_MODIFIER);
+			}
+			++i;
 		}
 	}
 

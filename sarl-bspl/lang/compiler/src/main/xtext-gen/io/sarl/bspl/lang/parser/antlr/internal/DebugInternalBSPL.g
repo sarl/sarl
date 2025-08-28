@@ -38,8 +38,6 @@ ruleProtocolSpecification:
 
 // Rule Protocol
 ruleProtocol:
-	ruleXAnnotation
-	*
 	ruleProtocolVisibilityModifier
 	*
 	'protocol'?
@@ -53,8 +51,13 @@ ruleProtocol:
 			ruleProtocolRole
 		)*
 	)*
-	ruleProtocolParameter
-	*
+	(
+		ruleProtocolFirstParameter
+		(
+			','
+			ruleProtocolFollowingParameter
+		)*
+	)*
 	ruleProtocolMessage
 	*
 	'}'
@@ -74,8 +77,8 @@ ruleProtocolRole:
 	)?
 ;
 
-// Rule ProtocolParameter
-ruleProtocolParameter:
+// Rule ProtocolFirstParameter
+ruleProtocolFirstParameter:
 	(
 		'private'
 		'parameter'?
@@ -101,30 +104,6 @@ ruleProtocolParameter:
 		'key'
 		?
 		    |
-		'protected'
-		'parameter'?
-		ruleParameterModifier
-		*
-		ruleValidID
-		(
-			':'
-			ruleJvmTypeReference
-		)?
-		'key'
-		?
-		    |
-		'package'
-		'parameter'?
-		ruleParameterModifier
-		*
-		ruleValidID
-		(
-			':'
-			ruleJvmTypeReference
-		)?
-		'key'
-		?
-		    |
 		'parameter'
 		ruleParameterModifier
 		*
@@ -136,6 +115,19 @@ ruleProtocolParameter:
 		'key'
 		?
 	)
+;
+
+// Rule ProtocolFollowingParameter
+ruleProtocolFollowingParameter:
+	ruleParameterModifier
+	*
+	ruleValidID
+	(
+		':'
+		ruleJvmTypeReference
+	)?
+	'key'
+	?
 ;
 
 // Rule ProtocolMessage
@@ -150,7 +142,7 @@ ruleProtocolMessage:
 	':'
 	ruleValidID
 	(
-		'('
+		'['
 		(
 			ruleArgumentDef
 			(
@@ -158,7 +150,7 @@ ruleProtocolMessage:
 				ruleArgumentDef
 			)*
 		)?
-		')'
+		']'
 	)?
 ;
 

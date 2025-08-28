@@ -31,7 +31,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 
 import com.google.inject.Singleton;
 
-import io.sarl.bspl.api.protocol.impl.ProtocolMessage;
 import io.sarl.bspl.lang.bspl.BsplProtocolMessage;
 import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 import io.sarl.bspl.lang.compiler.IProtocolNames;
@@ -87,14 +86,14 @@ public class BsplProtocolCapacityGeneratorFragment {
 					receiver
 						.newLine().append("@").append(SarlAsynchronousExecution.class).newLine() //$NON-NLS-1$
 						.append("def ").append(names.getGetEnabledMessagesFunctionName(message)).append(" : ") //$NON-NLS-1$ //$NON-NLS-2$
-						.append(List.class).append("<").append(ProtocolMessage.class).append("<") //$NON-NLS-1$ //$NON-NLS-2$
+						.append(List.class).append("<").append(names.getProtocolMessageGenericInterface()).append("<") //$NON-NLS-1$ //$NON-NLS-2$
 						.append(messageType0).append(">>"); //$NON-NLS-1$
 
 					final var messageType1 = context.findType(messageQualifiedName, role);
 					receiver
 						.newLine().append("@").append(SarlAsynchronousExecution.class).newLine() //$NON-NLS-1$
 						.append("def ").append(names.getSendMessageFunctionName(message)).append("(m : ") //$NON-NLS-1$ //$NON-NLS-2$
-						.append(ProtocolMessage.class).append("<") //$NON-NLS-1$
+						.append(names.getProtocolMessageGenericInterface()).append("<") //$NON-NLS-1$
 						.append(messageType1).append(">)"); //$NON-NLS-1$
 				}
 			});
@@ -118,7 +117,14 @@ public class BsplProtocolCapacityGeneratorFragment {
 			final var importManager = context.newImportManager(capacityPackageName, capacityName);
 			final var content = context.newAppendableContent(importManager);
 	
+			if (context.isPackageVisibility()) {
+				content.append("package "); //$NON-NLS-1$
+			} else {
+				content.append("public "); //$NON-NLS-1$
+			}
+
 			content.append("capacity ").append(capacityName) //$NON-NLS-1$
+				.append(" extends ").append(names.getProtocolCapacityGenericInterface()) //$NON-NLS-1$
 				.append(" {").increaseIndentation(); //$NON-NLS-1$
 	
 			if (generator != null) {
@@ -127,7 +133,7 @@ public class BsplProtocolCapacityGeneratorFragment {
 	
 			content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 	
-			context.createSarlFile(capacityPackageName, capacityName, importManager, content);
+			context.createSarlFile(context.getSource(), capacityPackageName, capacityName, importManager, content);
 		}
 	}
 

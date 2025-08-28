@@ -23,7 +23,6 @@ package io.sarl.bspl.api.protocol.impl
 
 import io.sarl.api.core.spaces.AbstractSpaceSpecification
 import io.sarl.api.core.spaces.SpaceParticipantListener
-import io.sarl.lang.core.InteractionProtocol
 import io.sarl.lang.core.SpaceID
 import java.util.function.Supplier
 import java.util.logging.Logger
@@ -52,11 +51,11 @@ abstract class AbstractProtocolSpaceSpecification extends AbstractSpaceSpecifica
 	 */	
 	abstract def getRoles : ProtocolRole[] 
 
-	/** Replies the type of the protocol. This function must be overriden by the subclasses that are implementing a specific protocol.
+	/** Replies the name of the protocol that is supported by this space specification. This function must be overridden by the subclasses that are implementing a specific protocol.
 	 *
 	 * @return the protocol type.
 	 */	
-	abstract def getProtocolType : Class<? extends InteractionProtocol> 
+	abstract def getProtocolName : String 
 
 	/** Create an instance of the protocol space.
 	 *
@@ -80,7 +79,7 @@ abstract class AbstractProtocolSpaceSpecification extends AbstractSpaceSpecifica
 	 * @return the space instance.
 	 */	
 	protected def createProtocolSpace(id : SpaceID, listener : SpaceParticipantListener, logger : Supplier<Logger>) : ProtocolSpace {
-		new ProtocolSpace(getProtocolType, id, listener, logger, getRoles)
+		new ProtocolSpace(getProtocolName, id, listener, logger, getRoles)
 	}
 
 }

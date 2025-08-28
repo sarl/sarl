@@ -43,7 +43,61 @@ public interface IProtocolNames {
 	 *
 	 * @return the type.
 	 */
-	Class<?> getProtocoRoleGenericInterface();
+	Class<?> getProtocolRoleGenericInterface();
+
+	/** Replies the generic interface for all protocol capacities.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolCapacityGenericInterface();
+
+	/** Replies the generic interface for all protocol skills.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolSkillGenericInterface();
+
+	/** Replies the generic interface for all protocol messages.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolEventGenericInterface();
+
+	/** Replies the generic interface for all internal protocol messages.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolMessageGenericInterface();
+
+	/** Replies the generic interface for a space dedicated to a protocol.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolSpaceGenericInterface();
+
+	/** Replies the generic interface for a space specification dedicated to a protocol.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolSpaceSpecificationGenericInterface();
+
+	/** Replies the generic interface for a behavior dedicated to a protocol.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getProtocolBehaviorGenericInterface();
+
+	/** Replies the generic interface for the identifier of any knowledge.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getKnowledgeIdGenericInterface();
+
+	/** Replies the generic interface for the manager of the agent local state.
+	 *
+	 * @return the type.
+	 */
+	Class<?> getLocalStageManagerGenericInterface();
 
 	/** Replies the basename of the protocol role enumeration.
 	 *

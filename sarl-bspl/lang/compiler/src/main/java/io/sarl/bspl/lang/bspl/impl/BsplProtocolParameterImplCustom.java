@@ -56,7 +56,7 @@ public class BsplProtocolParameterImplCustom extends BsplProtocolParameterImpl {
 
 	@Override
 	public boolean isInput() {
-		return getModifiers().contains("in"); //$NON-NLS-1$
+		return CustomEObjects.isInputModifier(getModifiers());
 	}
 
 	@Override
@@ -66,22 +66,22 @@ public class BsplProtocolParameterImplCustom extends BsplProtocolParameterImpl {
 
 	@Override
 	public boolean isAny() {
-		return getModifiers().contains("any"); //$NON-NLS-1$
+		return CustomEObjects.isAnyModifier(getModifiers());
 	}
 
 	@Override
 	public boolean isNil() {
-		return getModifiers().contains("nil"); //$NON-NLS-1$
+		return CustomEObjects.isNilModifier(getModifiers());
 	}
 
 	@Override
 	public boolean isOptional() {
-		return getModifiers().contains("opt"); //$NON-NLS-1$
+		return CustomEObjects.isOptionalModifier(getModifiers());
 	}
 
 	@Override
 	public boolean isOutput() {
-		return getModifiers().contains("out"); //$NON-NLS-1$
+		return CustomEObjects.isOutputModifier(getModifiers());
 	}
 
 }

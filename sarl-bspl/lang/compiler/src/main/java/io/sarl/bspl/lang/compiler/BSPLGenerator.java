@@ -88,17 +88,18 @@ public class BSPLGenerator extends AbstractSarlTargetGenerator<IProtocolNames> {
 	 */
 	protected void _generate(BsplProtocol protocol, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
 		final var protocolName = protocol.getName();
-		final var packagedNamedContext = context.withTypeName(protocolName);
+		final var packagedNamedContext = context.withTypeName(protocolName)
+				.withPackageVisibility(protocol.isPackageVisibility());
 
 		if (context.isPreStage()) {
-			this.roleEnumerationFragment.preGenerate(protocol.getRoles(), packagedNamedContext);
+			this.roleEnumerationFragment.preGenerate(protocol.getRoles(), protocol.getMessages(), packagedNamedContext);
 			this.protocolMessageFragment.preGenerate(protocol.getMessages(), protocol.getParameters(), packagedNamedContext);
 			this.protocolCapacityFragment.preGenerate(protocol.getMessages(), protocol.getRoles(), packagedNamedContext);
 			this.protocolSkillFragment.preGenerate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);
 			this.reactiveBehaviorFragment.preGenerate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);
 			this.spaceSpecificationFragment.preGenerate(protocol, packagedNamedContext);
 		} else {
-			this.roleEnumerationFragment.generate(protocol.getRoles(), packagedNamedContext);
+			this.roleEnumerationFragment.generate(protocol.getRoles(), protocol.getMessages(), packagedNamedContext);
 			this.protocolMessageFragment.generate(protocol.getMessages(), protocol.getParameters(), packagedNamedContext);
 			this.protocolCapacityFragment.generate(protocol.getMessages(), protocol.getRoles(), packagedNamedContext);
 			this.protocolSkillFragment.generate(protocol.getMessages(), protocol.getRoles(), protocol.getParameters(), packagedNamedContext);

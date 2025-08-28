@@ -70,9 +70,13 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 
 	private final String typeName;
 
+	private final boolean packageVisiblity;
+
 	private final boolean isPreStage;
 	
 	private final ResourceSet resourceSet;
+
+	private final EObject source;
 
 	private final IResourceFactory resourceFactory;
 
@@ -83,14 +87,15 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 	 * @param delegate the base context to delegate to when it is not related to the SARL target generation.
 	 * @param injector the injector to be used.
 	 * @param fileSystemAccess the tool for accessing the file system.
+	 * @param source the EObject that is the source of the compilation for this context.
 	 * @param resourceSet the resource set in which the generated resources are located.
 	 * @param resourceFactory the factory of resources.
 	 * @param typeServices the services for managing types.
 	 */
 	public DefaultSarlTargetGeneratorContext(IGeneratorContext delegate, Injector injector,
-			IFileSystemAccess fileSystemAccess, ResourceSet resourceSet,
+			IFileSystemAccess fileSystemAccess, EObject source, ResourceSet resourceSet,
 			IResourceFactory resourceFactory, CommonTypeComputationServices typeServices) {
-		this(delegate, injector, false, fileSystemAccess, resourceSet, resourceFactory, typeServices, null, null, null);
+		this(delegate, injector, false, fileSystemAccess, source, resourceSet, resourceFactory, typeServices, null, null, null, false);
 	}
 
 	/** Constructor.
@@ -99,27 +104,31 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 	 * @param injector the injector to be used.
 	 * @param preStage indicates if the context is for the pre-stage of the generation.
 	 * @param fileSystemAccess the tool for accessing the file system.
+	 * @param source the EObject that is the source of the compilation for this context.
 	 * @param resourceSet the resource set in which the generated resources are located.
 	 * @param resourceFactory the factory of resources.
 	 * @param typeServices the services for managing types.
 	 * @param nameProvider the provider of names.
 	 * @param packageName the name of the package in which all the elements will be generated.
 	 * @param typeName the name of the type for which all the elements will be generated.
+	 * @param packageVisibility indicates if the protocol is marked with package visibility.
 	 */
 	protected DefaultSarlTargetGeneratorContext(IGeneratorContext delegate,
-			Injector injector, boolean preStage, IFileSystemAccess fileSystemAccess,
+			Injector injector, boolean preStage, IFileSystemAccess fileSystemAccess, EObject source,
 			ResourceSet resourceSet, IResourceFactory resourceFactory, CommonTypeComputationServices typeServices,
-			NP nameProvider, String packageName, String typeName) {
+			NP nameProvider, String packageName, String typeName, boolean packageVisibility) {
 		this.delegate = delegate;
 		this.injector = injector;
 		this.isPreStage = preStage;
 		this.fileSystemAccess = fileSystemAccess;
+		this.source = source;
 		this.resourceSet = resourceSet;
 		this.resourceFactory = resourceFactory;
 		this.typeServices = typeServices;
 		this.nameProvider = nameProvider;
 		this.packageName = packageName;
 		this.typeName = typeName;
+		this.packageVisiblity = packageVisibility;
 	}
 	
 	@Override
@@ -145,29 +154,48 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 	@Override
 	public ISarlTargetGeneratorContext<NP> forPreStage() {
 		return new DefaultSarlTargetGeneratorContext<>(this.delegate, this.injector,
-				true, this.fileSystemAccess, this.resourceSet,
-				this.resourceFactory, this.typeServices, this.nameProvider, this.packageName, this.typeName);
+				true, this.fileSystemAccess, this.source, this.resourceSet,
+				this.resourceFactory, this.typeServices, this.nameProvider, this.packageName,
+				this.typeName, this.packageVisiblity);
+	}
+
+	@Override
+	public ISarlTargetGeneratorContext<NP> withSource(EObject source) {
+		return new DefaultSarlTargetGeneratorContext<>(this.delegate, this.injector,
+				this.isPreStage, this.fileSystemAccess, source, this.resourceSet,
+				this.resourceFactory, this.typeServices, this.nameProvider, this.packageName,
+				this.typeName, this.packageVisiblity);
 	}
 
 	@Override
 	public ISarlTargetGeneratorContext<NP> withNameProvider(NP nameProvider) {
 		return new DefaultSarlTargetGeneratorContext<>(this.delegate, this.injector,
-				this.isPreStage, this.fileSystemAccess, this.resourceSet,
-				this.resourceFactory, this.typeServices, nameProvider, this.packageName, this.typeName);
+				this.isPreStage, this.fileSystemAccess, this.source, this.resourceSet,
+				this.resourceFactory, this.typeServices, nameProvider, this.packageName,
+				this.typeName, this.packageVisiblity);
 	}
 
 	@Override
 	public ISarlTargetGeneratorContext<NP> withPackage(String packageName) {
 		return new DefaultSarlTargetGeneratorContext<>(this.delegate, this.injector,
-				this.isPreStage, this.fileSystemAccess, this.resourceSet,
-				this.resourceFactory, this.typeServices, this.nameProvider, packageName, this.typeName);
+				this.isPreStage, this.fileSystemAccess, this.source, this.resourceSet,
+				this.resourceFactory, this.typeServices, this.nameProvider, packageName,
+				this.typeName, this.packageVisiblity);
 	}
 	
 	@Override
 	public ISarlTargetGeneratorContext<NP> withTypeName(String protocolName) {
 		return new DefaultSarlTargetGeneratorContext<>(this.delegate, this.injector,
-				this.isPreStage, this.fileSystemAccess, this.resourceSet,
-				this.resourceFactory, this.typeServices, this.nameProvider, this.packageName, protocolName);
+				this.isPreStage, this.fileSystemAccess, this.source, this.resourceSet,
+				this.resourceFactory, this.typeServices, this.nameProvider, this.packageName,
+				protocolName, this.packageVisiblity);
+	}
+
+	@Override
+	public ISarlTargetGeneratorContext<NP> withPackageVisibility(boolean packageVisibility) {
+		return new DefaultSarlTargetGeneratorContext<>(this.delegate, this.injector,
+				this.isPreStage, this.fileSystemAccess, this.source, this.resourceSet,
+				this.resourceFactory, this.typeServices, this.nameProvider, this.packageName, this.typeName, packageVisibility);
 	}
 
 	@Override
@@ -197,6 +225,11 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 	}
 
 	@Override
+	public boolean isPackageVisibility() {
+		return this.packageVisiblity;
+	}
+
+	@Override
 	public String toRelativeFilename(String packageName, String typeName, String fileExtension) {
 		final var filename = new StringBuilder();
 		if (!Strings.isEmpty(packageName)) {
@@ -210,7 +243,7 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 	}
 	
 	@Override
-	public void createFile(String packageName, String typeName, String fileExtension, String content) throws IOException {
+	public void createFile(EObject source, String packageName, String typeName, String fileExtension, String content) throws IOException {
 		final var filename = toRelativeFilename(packageName, typeName, fileExtension);
 		final var resourceSet = getResourceSet();
 		final var resource = createResource(packageName, typeName, fileExtension, resourceSet);
@@ -218,6 +251,11 @@ public class DefaultSarlTargetGeneratorContext<NP> implements ISarlTargetGenerat
 			resource.load(is, resourceSet.getLoadOptions());
 		}
 		this.fileSystemAccess.generateFile(filename, content);
+	}
+
+	@Override
+	public EObject getSource() {
+		return this.source;
 	}
 
 	@Override

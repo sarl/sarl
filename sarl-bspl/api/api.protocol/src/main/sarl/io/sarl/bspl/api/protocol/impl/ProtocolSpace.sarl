@@ -25,7 +25,6 @@ import io.sarl.api.core.spaces.OpenLocalEventSpace
 import io.sarl.api.core.spaces.SpaceParticipantListener
 import io.sarl.bspl.api.protocol.events.ProtocolFailed
 import io.sarl.bspl.api.protocol.events.ProtocolReady
-import io.sarl.lang.core.InteractionProtocol
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.SpaceID
 import java.util.List
@@ -59,24 +58,24 @@ class ProtocolSpace extends OpenLocalEventSpace {
 	@Accessors
 	val rolePlayers = <ProtocolRole, List<EventListener>>newHashMap
 
-	/** Replies the type of protocol that is implemented by this protocol space.
+	/** Replies the name of protocol that is implemented by this protocol space.
 	 */
 	@Accessors
-	val protocolType : Class<? extends InteractionProtocol>
+	val protocolName : String
 
 	/** Constructor.
 	 *
-	 * @param protocolType the type of the protocol that is supported by this protocol space.
+	 * @param protocolName the name of the protocol that is supported by this protocol space.
 	 * @param spaceId the identifier of the protocol space.
 	 * @param participantListener listener on changes in the participants' list.
 	 * @param loggerProvider the provider of a logger that is used by the protocol space for logging out mesages.
 	 * @param roles list of the roles that are supported by the protocol, and consequently the protocol space.
 	 */
-	new(protocolType : Class<? extends InteractionProtocol>,
+	new(protocolName : String,
 			spaceId : SpaceID, participantListener : SpaceParticipantListener,
 			loggerProvider : Supplier<Logger>, roles : ProtocolRole*) {
 		super(spaceId, participantListener, loggerProvider)
-		this.protocolType = protocolType
+		this.protocolName = protocolName
 		for (role : roles) {
 			rolePlayers.put(role, newArrayList)
 		}
@@ -125,7 +124,7 @@ class ProtocolSpace extends OpenLocalEventSpace {
 		unregister(^agent)
 		if (role.minCardinality > currentPlayers.size) {
 			val identifier = spaceID.ID
-			emit(identifier, new ProtocolFailed(identifier, getProtocolType))
+			emit(identifier, new ProtocolFailed(identifier, getProtocolName))
 		}
 	}
 
@@ -140,7 +139,7 @@ class ProtocolSpace extends OpenLocalEventSpace {
 			}
 		}
 		val identifier = spaceID.ID
-		emit(identifier, new ProtocolReady(identifier, getProtocolType))
+		emit(identifier, new ProtocolReady(identifier, getProtocolName))
 	}
 
 }

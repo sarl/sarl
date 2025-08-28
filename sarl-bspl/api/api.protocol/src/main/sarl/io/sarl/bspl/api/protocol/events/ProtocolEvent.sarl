@@ -21,9 +21,6 @@
 
 package io.sarl.bspl.api.protocol.events
 
-import io.sarl.lang.core.InteractionProtocol
-import java.util.UUID
-
 /**
  * Super type for all the events that related to the BSPL protocols.
  *
@@ -37,24 +34,4 @@ import java.util.UUID
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-abstract event ProtocolEvent {
-
-	/** Identifier of the protocol instance.
-	 */
-	val ID : UUID
-
-	/** Type of the protocol instance.
-	 */
-	val type : Class<? extends InteractionProtocol>
-
-	/** Constructor.
-	 *
-	 * @param protocolId the identifier of the protocol to which this event is related to.
-	 * @param type the type of the protocol to which this event is related to.
-	 */
-	new (protocolId : UUID, type : Class<? extends InteractionProtocol>) {
-		this.ID = protocolId
-		this.type = type
-	}
-
-}
+abstract event ProtocolEvent

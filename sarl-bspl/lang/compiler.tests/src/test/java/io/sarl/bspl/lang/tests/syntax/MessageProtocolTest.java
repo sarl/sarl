@@ -20,7 +20,7 @@
  */
 package io.sarl.bspl.lang.tests.syntax;
 
-import static io.sarl.bspl.lang.validation.IssueCodes.DUPLICATE_PROTOCOL_MESSAGE;
+import static io.sarl.bspl.lang.validation.IssueCodes.*;
 import static io.sarl.bspl.lang.validation.IssueCodes.INVALID_ROLE_CARDINALITY_ORDER;
 import static io.sarl.bspl.lang.validation.IssueCodes.MISSED_ARGUMENT_IN_MESSAGE;
 import static io.sarl.bspl.lang.validation.IssueCodes.UNDEFINED_PROTOCOL_PARAMETER;
@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -66,8 +67,6 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  R1 -> R2 : M",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -103,8 +102,6 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"  R2 -> R1 : M2",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -149,8 +146,6 @@ public class MessageProtocolTest {
 					"  R2 -> R1 : M2",
 					"  R1 -> R1 : M3",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -248,7 +243,15 @@ public class MessageProtocolTest {
 					"  R1 -> R2 : M",
 					"  R1 -> R3 : M",
 					"}");
-			validate(bspl).assertNoIssues();
+			validate(bspl).assertError(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					REQUIRED_OUT_PARAMETER,
+					"Out parameter must be declared for protocol PROTO")
+				.assertError(
+					BsplPackage.eINSTANCE.getBsplProtocol(),
+					REQUIRED_OUT_PARAMETER_IN_MESSAGES,
+					"Out parameter must be defined in at least one message for protocol PROTO")
+				.assertNoErrors();
 		}
 
 	}
@@ -272,12 +275,6 @@ public class MessageProtocolTest {
 					"  role R1 [8..1], R2",
 					"  R1 -> R2 : M",
 					"}");
-			validate(bspl).assertWarning(
-					BsplPackage.eINSTANCE.getBsplProtocolRole(),
-					INVALID_ROLE_CARDINALITY_ORDER,
-					"Minimum cardinality cannot be greater than to maximum cardinality for the role 'R1'. Assume [1..8]");
-
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -324,8 +321,6 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  R1 -> in R2 : M",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -361,8 +356,6 @@ public class MessageProtocolTest {
 					"  R1 -> in R2 : M",
 					"  R2 -> R1 : M2",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -407,8 +400,6 @@ public class MessageProtocolTest {
 					"  R2 -> in R1 : M2",
 					"  R1 -> R1 : M3",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -517,8 +508,6 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  R1 -> out R2 : M",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -553,8 +542,6 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  R1 -> R2 out : M",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -590,8 +577,6 @@ public class MessageProtocolTest {
 					"  R1 -> out R2 : M",
 					"  R2 -> R1 : M2",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -636,8 +621,6 @@ public class MessageProtocolTest {
 					"  R2 -> out R1 : M2",
 					"  R1 -> R1 : M3",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -746,8 +729,6 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  R1 -> R2 in : M",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -783,8 +764,6 @@ public class MessageProtocolTest {
 					"  R1 -> R2 in : M",
 					"  R2 -> R1 : M2",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -829,8 +808,6 @@ public class MessageProtocolTest {
 					"  R2 -> R1 in : M2",
 					"  R1 -> R1 : M3",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -939,8 +916,6 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  R1 -> R2 out : M",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -976,8 +951,6 @@ public class MessageProtocolTest {
 					"  R1 -> R2 out : M",
 					"  R2 -> R1 : M2",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -1022,8 +995,6 @@ public class MessageProtocolTest {
 					"  R2 -> R1 out : M2",
 					"  R1 -> R1 : M3",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var roles = bspl.getBsplProtocols().get(0).getRoles();
 			assertEquals(2, roles.size());
 	
@@ -1131,10 +1102,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (P1)",
+					"  R1 -> R2 : M [P1]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1149,11 +1118,11 @@ public class MessageProtocolTest {
 			final var arg0 = m0.getArguments().get(0);
 			assertEquals("P1", arg0.getName());
 			assertFalse(arg0.isKey());
-			assertFalse(arg0.isInput());
-			assertFalse(arg0.isOutput());
+			assertTrue(arg0.isInput());
+			assertTrue(arg0.isOutput());
 			assertFalse(arg0.isNil());
 			assertFalse(arg0.isOptional());
-			assertFalse(arg0.isAny());
+			assertTrue(arg0.isAny());
 		}
 
 		@Test
@@ -1164,10 +1133,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (in P1)",
+					"  R1 -> R2 : M [in P1]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1197,10 +1164,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (out P1)",
+					"  R1 -> R2 : M [out P1]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1230,10 +1195,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (nil P1)",
+					"  R1 -> R2 : M [nil P1]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1263,10 +1226,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (opt P1)",
+					"  R1 -> R2 : M [opt P1]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1296,10 +1257,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (any P1)",
+					"  R1 -> R2 : M [any P1]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1314,8 +1273,8 @@ public class MessageProtocolTest {
 			final var arg0 = m0.getArguments().get(0);
 			assertEquals("P1", arg0.getName());
 			assertFalse(arg0.isKey());
-			assertFalse(arg0.isInput());
-			assertFalse(arg0.isOutput());
+			assertTrue(arg0.isInput());
+			assertTrue(arg0.isOutput());
 			assertFalse(arg0.isNil());
 			assertFalse(arg0.isOptional());
 			assertTrue(arg0.isAny());
@@ -1329,7 +1288,7 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (xxx P1)",
+					"  R1 -> R2 : M [xxx P1]",
 					"}");
 			validate(bspl).assertError(
 					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
@@ -1345,10 +1304,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (P1 key)",
+					"  R1 -> R2 : M [P1 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1363,11 +1320,11 @@ public class MessageProtocolTest {
 			final var arg0 = m0.getArguments().get(0);
 			assertEquals("P1", arg0.getName());
 			assertTrue(arg0.isKey());
-			assertFalse(arg0.isInput());
-			assertFalse(arg0.isOutput());
+			assertTrue(arg0.isInput());
+			assertTrue(arg0.isOutput());
 			assertFalse(arg0.isNil());
 			assertFalse(arg0.isOptional());
-			assertFalse(arg0.isAny());
+			assertTrue(arg0.isAny());
 		}
 
 		@Test
@@ -1378,10 +1335,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (in P1 key)",
+					"  R1 -> R2 : M [in P1 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1411,10 +1366,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (out P1 key)",
+					"  R1 -> R2 : M [out P1 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1444,10 +1397,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (nil P1 key)",
+					"  R1 -> R2 : M [nil P1 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1477,10 +1428,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (opt P1 key)",
+					"  R1 -> R2 : M [opt P1 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1510,10 +1459,8 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (any P1 key)",
+					"  R1 -> R2 : M [any P1 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1528,8 +1475,8 @@ public class MessageProtocolTest {
 			final var arg0 = m0.getArguments().get(0);
 			assertEquals("P1", arg0.getName());
 			assertTrue(arg0.isKey());
-			assertFalse(arg0.isInput());
-			assertFalse(arg0.isOutput());
+			assertTrue(arg0.isInput());
+			assertTrue(arg0.isOutput());
 			assertFalse(arg0.isNil());
 			assertFalse(arg0.isOptional());
 			assertTrue(arg0.isAny());
@@ -1543,12 +1490,12 @@ public class MessageProtocolTest {
 					"protocol PROTO {",
 					"  role R1, R2",
 					"  parameter P1 : double",
-					"  R1 -> R2 : M (xxx P1 key)",
+					"  R1 -> R2 : M [xxx P1 key]",
 					"}");
 			validate(bspl).assertError(
 					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
-					UNDEFINED_PROTOCOL_PARAMETER,
-					"Undefined parameter xxx in the protocol PROTO");
+					Diagnostic.SYNTAX_DIAGNOSTIC,
+					"missing ']' at 'P1'");
 		}
 
 		@Test
@@ -1560,10 +1507,8 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  parameter P1 : double",
 					"  parameter P2 : String",
-					"  R1 -> R2 : M (P1, P2)",
+					"  R1 -> R2 : M [P1, P2]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1578,20 +1523,20 @@ public class MessageProtocolTest {
 			final var arg0 = m0.getArguments().get(0);
 			assertEquals("P1", arg0.getName());
 			assertFalse(arg0.isKey());
-			assertFalse(arg0.isInput());
-			assertFalse(arg0.isOutput());
+			assertTrue(arg0.isInput());
+			assertTrue(arg0.isOutput());
 			assertFalse(arg0.isNil());
 			assertFalse(arg0.isOptional());
-			assertFalse(arg0.isAny());
+			assertTrue(arg0.isAny());
 
 			final var arg1 = m0.getArguments().get(1);
 			assertEquals("P2", arg1.getName());
 			assertFalse(arg1.isKey());
-			assertFalse(arg1.isInput());
-			assertFalse(arg1.isOutput());
+			assertTrue(arg1.isInput());
+			assertTrue(arg1.isOutput());
 			assertFalse(arg1.isNil());
 			assertFalse(arg1.isOptional());
-			assertFalse(arg1.isAny());
+			assertTrue(arg1.isAny());
 		}
 
 		@Test
@@ -1603,10 +1548,8 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  parameter P1 : double",
 					"  parameter P2 : String",
-					"  R1 -> R2 : M (in P1, P2 key)",
+					"  R1 -> R2 : M [in P1, P2 key]",
 					"}");
-			validate(bspl).assertNoIssues();
-			//
 			final var messages = bspl.getBsplProtocols().get(0).getMessages();
 			assertEquals(1, messages.size());
 	
@@ -1630,11 +1573,11 @@ public class MessageProtocolTest {
 			final var arg1 = m0.getArguments().get(1);
 			assertEquals("P2", arg1.getName());
 			assertTrue(arg1.isKey());
-			assertFalse(arg1.isInput());
-			assertFalse(arg1.isOutput());
+			assertTrue(arg1.isInput());
+			assertTrue(arg1.isOutput());
 			assertFalse(arg1.isNil());
 			assertFalse(arg1.isOptional());
-			assertFalse(arg1.isAny());
+			assertTrue(arg1.isAny());
 		}
 
 		@Test
@@ -1646,7 +1589,7 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  parameter A1",
 					"  parameter A2",
-					"  R1 -> R2 : M (in A1, out A2)",
+					"  R1 -> R2 : M [in A1, out A2]",
 					"  R1 -> R2 : M",
 					"}");
 			validate(bspl).assertWarning(
@@ -1668,8 +1611,8 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  parameter A1",
 					"  parameter A2",
-					"  R1 -> R2 : M (in A1, out A2)",
-					"  R1 -> R2 : M (out A2)",
+					"  R1 -> R2 : M [in A1, out A2]",
+					"  R1 -> R2 : M [out A2]",
 					"}");
 			validate(bspl).assertWarning(
 					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
@@ -1686,12 +1629,58 @@ public class MessageProtocolTest {
 					"  role R1, R2",
 					"  parameter A1",
 					"  parameter A2",
-					"  R1 -> R2 : M (in A1, out A2)",
-					"  R1 -> R2 : M (in A1, in A2)",
+					"  R1 -> R2 : M [in A1, out A2]",
+					"  R1 -> R2 : M [in A1, in A2]",
 					"}");
 			validate(bspl).assertNoWarnings(
 					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
 					MISSED_ARGUMENT_IN_MESSAGE);
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@Nested
+	@DisplayName("Singh Definition Compliance")
+	public class SinghDefinitionComplianceTest extends AbstractBsplTest {
+
+		@Test
+		@DisplayName("Duplicate message #1")
+		public void duplicateMessage1() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"PROTO {",
+					"  role R1, R2",
+					"  parameter in P1",
+					"  R1 -> R2 : M",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					DUPLICATE_PROTOCOL_MESSAGE,
+					"Duplicate message M from R1 to R2 in the protocol PROTO");
+		}
+
+		@Test
+		@DisplayName("Duplicate message #2")
+		public void duplicateMessage2() throws Exception {
+			var bspl = specification(
+					"package io.sarl.bspl.lang.tests",
+					"PROTO {",
+					"  role R1, R2",
+					"  parameter in P1",
+					"  R1 -> R2 : M [ in P1 ]",
+					"  R1 -> R2 : M",
+					"}");
+			validate(bspl).assertWarning(
+					BsplPackage.eINSTANCE.getBsplProtocolMessage(),
+					DUPLICATE_PROTOCOL_MESSAGE,
+					"Duplicate message M from R1 to R2 in the protocol PROTO");
 		}
 
 	}

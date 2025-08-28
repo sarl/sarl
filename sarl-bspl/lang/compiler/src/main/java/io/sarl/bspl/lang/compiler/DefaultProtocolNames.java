@@ -32,7 +32,16 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import io.sarl.bspl.api.memory.KnowledgeID;
+import io.sarl.bspl.api.memory.LocalStateManager;
+import io.sarl.bspl.api.protocol.events.ProtocolEvent;
+import io.sarl.bspl.api.protocol.impl.AbstractProtocolSpaceSpecification;
+import io.sarl.bspl.api.protocol.impl.ProtocolBehavior;
+import io.sarl.bspl.api.protocol.impl.ProtocolCapacity;
+import io.sarl.bspl.api.protocol.impl.ProtocolMessage;
 import io.sarl.bspl.api.protocol.impl.ProtocolRole;
+import io.sarl.bspl.api.protocol.impl.ProtocolSkill;
+import io.sarl.bspl.api.protocol.impl.ProtocolSpace;
 import io.sarl.bspl.lang.bspl.BsplProtocol;
 import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 
@@ -51,10 +60,55 @@ public class DefaultProtocolNames implements IProtocolNames {
 	private CommonTypeComputationServices typeServices;
 	
 	@Override
-	public Class<?> getProtocoRoleGenericInterface() {
+	public Class<?> getProtocolRoleGenericInterface() {
 		return ProtocolRole.class;
 	}
 
+	@Override
+	public Class<?> getProtocolCapacityGenericInterface() {
+		return ProtocolCapacity.class;
+	}
+
+	@Override
+	public Class<?> getProtocolSkillGenericInterface() {
+		return ProtocolSkill.class;
+	}
+	
+	@Override
+	public Class<?> getProtocolEventGenericInterface() {
+		return ProtocolEvent.class;
+	}
+
+	@Override
+	public Class<?> getProtocolMessageGenericInterface() {
+		return ProtocolMessage.class;
+	}
+	
+	@Override
+	public Class<?> getProtocolSpaceGenericInterface() {
+		return ProtocolSpace.class;
+	}
+
+	@Override
+	public Class<?> getProtocolSpaceSpecificationGenericInterface() {
+		return AbstractProtocolSpaceSpecification.class;
+	}
+
+	@Override
+	public Class<?> getProtocolBehaviorGenericInterface() {
+		return ProtocolBehavior.class;
+	}
+
+	@Override
+	public Class<?> getKnowledgeIdGenericInterface() {
+		return KnowledgeID.class;
+	}
+
+	@Override
+	public Class<?> getLocalStageManagerGenericInterface() {
+		return LocalStateManager.class;
+	}
+	
 	@Override
 	public String getProtocolRoleEnumerationName(String protocolName) {
 		final var basename = new StringBuilder();

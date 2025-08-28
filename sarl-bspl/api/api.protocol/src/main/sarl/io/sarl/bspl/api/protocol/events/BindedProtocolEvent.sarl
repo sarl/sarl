@@ -21,8 +21,10 @@
 
 package io.sarl.bspl.api.protocol.events
 
+import java.util.UUID
+
 /**
- * Event fired when a protocol instance is ready to be used by an agent.
+ * Super type for all the events that related to a specific BSPL protocol.
  *
  * @author $Author: stedeschi$
  * @author $Author: sgalland$
@@ -34,4 +36,24 @@ package io.sarl.bspl.api.protocol.events
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-event ProtocolReady extends BindedProtocolEvent
+abstract event BindedProtocolEvent extends ProtocolEvent {
+
+	/** Identifier of the protocol instance.
+	 */
+	val ID : UUID
+
+	/** Name of the protocol instance.
+	 */
+	val name : String
+
+	/** Constructor.
+	 *
+	 * @param protocolId the identifier of the protocol to which this event is related to.
+	 * @param name the name of the protocol to which this event is related to.
+	 */
+	new (protocolId : UUID, name : String) {
+		this.ID = protocolId
+		this.name = name
+	}
+
+}

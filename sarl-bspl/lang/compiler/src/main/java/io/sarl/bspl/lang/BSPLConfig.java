@@ -32,9 +32,13 @@ package io.sarl.bspl.lang;
  */
 public final class BSPLConfig {
 
-	/** Name of the root folder for SARL files.
+	/** Name of the root folder for BSPL files.
 	 */
 	public static final String BSPL_FOLDER_SIMPLENAME = "bspl"; //$NON-NLS-1$
+
+	/** Name of the root folder for SARL files.
+	 */
+	public static final String SARL_FOLDER_SIMPLENAME = "sarl"; //$NON-NLS-1$
 
 	/** Path of the source files within a Maven project.
 	 */
@@ -64,7 +68,7 @@ public final class BSPLConfig {
 
 	/** Path of the generated source files.
 	 */
-	public static final String FOLDER_SOURCE_GENERATED = FOLDER_MAVEN_MAIN_PREFIX + "/" + GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME + "/" + BSPL_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String FOLDER_SOURCE_GENERATED = FOLDER_MAVEN_MAIN_PREFIX + "/" + GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Path of the test source files within a Maven project.
 	 */
@@ -72,7 +76,7 @@ public final class BSPLConfig {
 
 	/** Path of the SARL-BSPL test source files.
 	 */
-	public static final String FOLDER_TEST_SOURCE_GENERATED = FOLDER_MAVEN_TEST_PREFIX + "/" + GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME + "/" + BSPL_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String FOLDER_TEST_SOURCE_GENERATED = FOLDER_MAVEN_TEST_PREFIX + "/" + GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME + "/" + SARL_FOLDER_SIMPLENAME; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/** Name of the output configuration that is dedicated to tests.
 	 */

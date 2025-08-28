@@ -30,7 +30,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure4;
+import org.eclipse.xtext.xbase.lib.Functions.Function4;
 
 import com.google.inject.Singleton;
 
@@ -72,16 +72,24 @@ public class BsplProtocolMessageGeneratorFragment {
 	@SuppressWarnings("static-method")
 	public void generate(List<BsplProtocolMessage> messages, List<BsplProtocolParameter> parameters, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
 		generateProtocolMessages(messages, parameters, context, (message, arguments, params, receiver) -> {
+			var hasContent = false;
 			for (final var argument : arguments) {
-				receiver.newLine().append("var ").append(argument).append(" : "); //$NON-NLS-1$ //$NON-NLS-2$
 				final var param = params.get(argument);
-				context.appendTypeReferenceOrObject(receiver, param, param::getType);
+				if (param == null || !param.isPrivateVisibility()) {
+					if (!hasContent) {
+						hasContent = true;
+						receiver.append(" {").increaseIndentation(); //$NON-NLS-1$
+					}
+					receiver.newLine().append("var ").append(argument).append(" : "); //$NON-NLS-1$ //$NON-NLS-2$
+					context.appendTypeReferenceOrObject(receiver, param, param == null ? null : param::getType);
+				}
 			}
+			return Boolean.valueOf(hasContent);
 		});
 	}
 	
 	private static void generateProtocolMessages(List<BsplProtocolMessage> messages, List<BsplProtocolParameter> parameters, ISarlTargetGeneratorContext<IProtocolNames> context,
-			Procedure4<String, Set<String>, Map<String, BsplProtocolParameter>, ITreeAppendable> generator) throws IOException {
+			Function4<String, Set<String>, Map<String, BsplProtocolParameter>, ITreeAppendable, Boolean> generator) throws IOException {
 		final var arguments = new TreeMap<String, Set<String>>();
 		for (final var message : messages) {
 			final var argSet = arguments.computeIfAbsent(message.getMessage(), key -> new TreeSet<>());
@@ -99,7 +107,7 @@ public class BsplProtocolMessageGeneratorFragment {
 	}
 
 	private static void generateProtocolMessage(String message, Set<String> arguments, Map<String, BsplProtocolParameter> params, ISarlTargetGeneratorContext<IProtocolNames> context,
-			Procedure4<String, Set<String>, Map<String, BsplProtocolParameter>, ITreeAppendable> generator) throws IOException {
+			Function4<String, Set<String>, Map<String, BsplProtocolParameter>, ITreeAppendable, Boolean> generator) throws IOException {
 		final var names = context.getNameProvider();
 		final var messagePackageName = names.getProtocolMessagePackageName(context.getPackage(), context.getEnclosingTypeName(), message);
 		final var messageBaseName = names.getProtocolMessageName(context.getPackage(), context.getEnclosingTypeName(), message);
@@ -107,13 +115,19 @@ public class BsplProtocolMessageGeneratorFragment {
 		final var importManager = context.newImportManager(messagePackageName, messageBaseName);
 		final var content = context.newAppendableContent(importManager);
 
-		content.append("event ").append(messageBaseName); //$NON-NLS-1$
-		if (generator != null && !arguments.isEmpty()) {
-			content.append(" {").increaseIndentation(); //$NON-NLS-1$
-			generator.apply(message, arguments, params, content);
-			content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
+		if (context.isPackageVisibility()) {
+			content.append("package "); //$NON-NLS-1$
+		} else {
+			content.append("public "); //$NON-NLS-1$
 		}
-		context.createSarlFile(messagePackageName, messageBaseName, importManager, content);
+
+		content.append("event ").append(messageBaseName).append(" extends ").append(names.getProtocolEventGenericInterface()); //$NON-NLS-1$ //$NON-NLS-2$
+		if (generator != null && !arguments.isEmpty()) {
+			if (generator.apply(message, arguments, params, content).booleanValue()) {
+				content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
+			}
+		}
+		context.createSarlFile(context.getSource(), messagePackageName, messageBaseName, importManager, content);
 	}
 
 }

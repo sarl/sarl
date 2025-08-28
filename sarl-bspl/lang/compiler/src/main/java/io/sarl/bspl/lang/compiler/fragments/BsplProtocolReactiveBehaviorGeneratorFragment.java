@@ -32,18 +32,18 @@ import java.util.stream.Collectors;
 
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure4;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure5;
 
 import com.google.inject.Singleton;
 
-import io.sarl.bspl.api.memory.KnowledgeID;
-import io.sarl.bspl.api.memory.LocalStateManager;
 import io.sarl.bspl.lang.bspl.BsplProtocolArgument;
 import io.sarl.bspl.lang.bspl.BsplProtocolMessage;
 import io.sarl.bspl.lang.bspl.BsplProtocolParameter;
 import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 import io.sarl.bspl.lang.compiler.IProtocolNames;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
+import io.sarl.lang.core.util.OutParameter;
 
 /** The generator of the BSPL reactive behavior for a BSPL role.
  *
@@ -80,7 +80,7 @@ public class BsplProtocolReactiveBehaviorGeneratorFragment {
 	@SuppressWarnings("static-method")
 	public void generate(List<BsplProtocolMessage> messages, List<BsplProtocolRole> roles, List<BsplProtocolParameter> parameters, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
 		for (final var role : roles) {
-			generateReactiveBehavior(messages, role, parameters, context, (messageName, receivableMessages, parametersMapping, receiver) -> {
+			generateReactiveBehavior(messages, role, parameters, context, (messageName, receivableMessages, parametersMapping, initializer, receiver) -> {
 				final var names =  context.getNameProvider();
 				final var messageQualifiedName = names.getProtocolMessageQualifiedName(context.getPackage(), context.getEnclosingTypeName(), messageName);
 
@@ -94,22 +94,29 @@ public class BsplProtocolReactiveBehaviorGeneratorFragment {
 						outParams.add(it);
 					}
 				});
-
+				
 				if (!outParams.isEmpty()) {
+					if (initializer!= null) {
+						initializer.apply();
+					}
 					final var messageType0 = context.findType(messageQualifiedName, role);
 					receiver.newLine().newLine().append("on ").append(messageType0).append(" {").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
 					
 					if (!outParams.isEmpty()) {
+						final var params = parameters.stream().collect(Collectors.toMap(it -> it.getName(), it -> it));
 						for (final var outParam : outParams) {
-							receiver.newLine().append("new ").append(KnowledgeID.class).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$
-								.append(Strings.convertToJavaString(outParam.getName())).append("\""); //$NON-NLS-1$
-							for (final var key : inKeys) {
-								receiver.append(", occurrence.").append(key.getName()).append(" as "); //$NON-NLS-1$ //$NON-NLS-2$
-								context.appendTypeReferenceOrObject(receiver, role, () -> parametersMapping.get(key.getName()).getType());
+							final var param = params.get(outParam.getName());
+							if (param == null || !param.isPrivateVisibility()) {
+								receiver.newLine().append("new ").append(names.getKnowledgeIdGenericInterface()).append("(\"") //$NON-NLS-1$ //$NON-NLS-2$
+									.append(Strings.convertToJavaString(outParam.getName())).append("\""); //$NON-NLS-1$
+								for (final var key : inKeys) {
+									receiver.append(", occurrence.").append(key.getName()).append(" as "); //$NON-NLS-1$ //$NON-NLS-2$
+									context.appendTypeReferenceOrObject(receiver, role, () -> parametersMapping.get(key.getName()).getType());
+								}
+								receiver.append(").setKnowledge(typeof("); //$NON-NLS-1$
+								context.appendTypeReferenceOrObject(receiver, role, () -> parametersMapping.get(outParam.getName()).getType());
+								receiver.append("), occurrence.").append(outParam.getName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
 							}
-							receiver.append(").setKnowledge(typeof("); //$NON-NLS-1$
-							context.appendTypeReferenceOrObject(receiver, role, () -> parametersMapping.get(outParam.getName()).getType());
-							receiver.append("), occurrence.").append(outParam.getName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 
@@ -120,7 +127,7 @@ public class BsplProtocolReactiveBehaviorGeneratorFragment {
 	}
 
 	private static void generateReactiveBehavior(List<BsplProtocolMessage> messages, BsplProtocolRole role, List<BsplProtocolParameter> parameters,
-			ISarlTargetGeneratorContext<IProtocolNames> context, Procedure4<String, List<BsplProtocolMessage>, Map<String, BsplProtocolParameter>, ITreeAppendable> generator) throws IOException {
+			ISarlTargetGeneratorContext<IProtocolNames> context, Procedure5<String, List<BsplProtocolMessage>, Map<String, BsplProtocolParameter>, Procedure0, ITreeAppendable> generator) throws IOException {
 		final var receivedMessages = new TreeMap<String, List<BsplProtocolMessage>>();
 
 		final var roleName = role.getName();
@@ -143,25 +150,36 @@ public class BsplProtocolReactiveBehaviorGeneratorFragment {
 			final var importManager = context.newImportManager(behaviorPackageName, behaviorName);
 			final var content = context.newAppendableContent(importManager);
 
+			if (context.isPackageVisibility()) {
+				content.append("package "); //$NON-NLS-1$
+			} else {
+				content.append("public "); //$NON-NLS-1$
+			}
+
 			content.append("behavior ").append(behaviorName) //$NON-NLS-1$
-			.append(" {").increaseIndentation() //$NON-NLS-1$
-			.newLine().append("uses ").append(LocalStateManager.class); //$NON-NLS-1$
+			.append(" extends ").append(names.getProtocolBehaviorGenericInterface()) //$NON-NLS-1$
+			.append(" {").increaseIndentation(); //$NON-NLS-1$
 			
 			if (generator != null) {
 				var first = true;
+				final OutParameter<Procedure0> initializer = new OutParameter<>();
+				initializer.set(() -> {
+					content.newLine().append("uses ").append(names.getLocalStageManagerGenericInterface()); //$NON-NLS-1$
+					initializer.clear();
+				});
 				for (final var message : receivedMessages.entrySet()) {
 					if (first) {
 						first = false;
 					} else {
 						content.newLine();
 					}
-					generator.apply(message.getKey(), message.getValue(), parametersMapping, content);
+					generator.apply(message.getKey(), message.getValue(), parametersMapping, initializer.get(), content);
 				}
 			}
 
 			content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 
-			context.createSarlFile(behaviorPackageName, behaviorName, importManager, content);
+			context.createSarlFile(context.getSource(), behaviorPackageName, behaviorName, importManager, content);
 		}
 	}
 

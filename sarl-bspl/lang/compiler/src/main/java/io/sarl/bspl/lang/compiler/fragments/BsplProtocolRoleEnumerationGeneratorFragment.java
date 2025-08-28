@@ -23,14 +23,15 @@ package io.sarl.bspl.lang.compiler.fragments;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 
 import com.google.inject.Singleton;
 
-import io.sarl.bspl.api.protocol.impl.ProtocolCapacity;
-import io.sarl.bspl.api.protocol.impl.ProtocolSpace;
+import io.sarl.bspl.lang.bspl.BsplProtocolMessage;
 import io.sarl.bspl.lang.bspl.BsplProtocolRole;
 import io.sarl.bspl.lang.compiler.IProtocolNames;
 import io.sarl.bspl.lang.compiler.generic.ISarlTargetGeneratorContext;
@@ -53,23 +54,41 @@ public class BsplProtocolRoleEnumerationGeneratorFragment {
 	/** Run the pre-stage actions for the BSPL role enumeration.
 	 *
 	 * @param roles the roles in the BSPL protocol.
+	 * @param messages the list of declared messages in the protocol.
 	 * @param context the generation context.
 	 * @throws IOException if the generated file cannot be created.
 	 */
-	public void preGenerate(List<BsplProtocolRole> roles, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
+	public void preGenerate(List<BsplProtocolRole> roles, List<BsplProtocolMessage> messages, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
 		//
 	}
 
 	/** Generate the SARL code that is specific to BSPL roles.
 	 *
 	 * @param roles the roles in the BSPL protocol.
+	 * @param messages the list of declared messages in the protocol.
 	 * @param context the generation context.
 	 * @throws IOException if the generated file cannot be created.
 	 */
-	public void generate(List<BsplProtocolRole> roles, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
+	public void generate(List<BsplProtocolRole> roles, List<BsplProtocolMessage> messages, ISarlTargetGeneratorContext<IProtocolNames> context) throws IOException {
 		generateEnumeration(context, (content, names) -> {
-			for (var i = 0; i < roles.size(); ++i) {
-				generate(roles.get(i), i == (roles.size() - 1), names, context, content);
+			
+			final var fromRoles = new TreeSet<String>();
+			final var toRoles = new TreeSet<String>();
+			for (final var message : messages) {
+				fromRoles.add(message.getFrom());
+				toRoles.add(message.getTo());
+			}
+			
+			final var usedRoles = roles.stream().filter(it -> fromRoles.contains(it.getName()) || toRoles.contains(it.getName())).collect(Collectors.toList());
+			
+			final var roleCount = usedRoles.size();
+			final var roleLastIndex = roleCount - 1;
+			for (var i = 0; i < roleCount; ++i) {
+				final var role = usedRoles.get(i);
+				final var roleName = role.getName();
+				final var fromRole = fromRoles.contains(roleName);
+				final var toRole = toRoles.contains(roleName);
+				generate(role, fromRole, toRole, i == roleLastIndex, names, context, content);
 			}
 		});
 	}
@@ -82,8 +101,12 @@ public class BsplProtocolRoleEnumerationGeneratorFragment {
 		final var importManager = context.newImportManager(enumerationPackageName, enumerationName);
 		final var content = context.newAppendableContent(importManager);
 
-		content.append("public enum ").append(enumerationName) //$NON-NLS-1$
-			.append(" implements ").append(names.getProtocoRoleGenericInterface()) //$NON-NLS-1$
+		if (!context.isPackageVisibility()) {
+			content.append("public "); //$NON-NLS-1$
+		}
+
+		content.append("enum ").append(enumerationName) //$NON-NLS-1$
+			.append(" implements ").append(names.getProtocolRoleGenericInterface()) //$NON-NLS-1$
 			.append(" {").increaseIndentation(); //$NON-NLS-1$
 
 		if (generator != null) {
@@ -92,61 +115,63 @@ public class BsplProtocolRoleEnumerationGeneratorFragment {
 
 		content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 
-		context.createJavaFile(enumerationPackageName, enumerationName, importManager, content);
+		context.createJavaFile(context.getSource(), enumerationPackageName, enumerationName, importManager, content);
 	}
 
 	/** Generate the SARL code that is specific to BSPL role.
 	 *
 	 * @param role the role in the BSPL protocol.
+	 * @param fromRole indicates if the given role is used as the source of a message.
+	 * @param toRole indicates if the given role is used as the destination of a message.
 	 * @param lastRole indicates if the given role is the last one in the list of roles.
 	 * @param names the tools for accessing to the naming convention for the protocols.
 	 * @param context the generation context.
 	 * @param content the generated content.
 	 */
 	@SuppressWarnings("static-method")
-	protected void generate(BsplProtocolRole role, boolean lastRole, IProtocolNames names,
+	protected void generate(BsplProtocolRole role, boolean fromRole, boolean toRole, boolean lastRole, IProtocolNames names,
 			ISarlTargetGeneratorContext<IProtocolNames> context, ITreeAppendable content) {
-		content.newLine().append(role.getName()).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
+		content.newLine().append(role.getName()).append(" {").increaseIndentation(); //$NON-NLS-1$
 
-		content
-			.append("public ").append(Class.class).append("<? extends ").append(ProtocolCapacity.class) //$NON-NLS-1$ //$NON-NLS-2$
-			.append("> getProtocolCapacity() {").increaseIndentation().newLine() //$NON-NLS-1$
-			.append("return ").append(names.getProtocolCapacity(context.getPackage(), context.getEnclosingTypeName(), role)) //$NON-NLS-1$
-			.append(".class;").decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		if (fromRole) {
+			content.newLine()
+				.append("public ").append(Class.class).append("<? extends ").append(names.getProtocolCapacityGenericInterface()) //$NON-NLS-1$ //$NON-NLS-2$
+				.append("> getProtocolCapacity() {").increaseIndentation().newLine() //$NON-NLS-1$
+				.append("return ") //$NON-NLS-1$
+				.append(names.getProtocolCapacity(context.getPackage(), context.getEnclosingTypeName(), role)).append(".class;") //$NON-NLS-1$
+				.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 
-		content
-			.append("public ").append(Skill.class).append(" getProtocolSkill(") //$NON-NLS-1$ //$NON-NLS-2$
-			.append(ProtocolSpace.class).append(" space) {").increaseIndentation().newLine() //$NON-NLS-1$
-			.append("return new ").append(names.getProtocolSkill(context.getPackage(), context.getEnclosingTypeName(), role)) //$NON-NLS-1$
-			.append("(space);").decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+			content.newLine()
+				.append("public ").append(Skill.class).append(" getProtocolSkill(") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(names.getProtocolSpaceGenericInterface()).append(" space) {").increaseIndentation().newLine() //$NON-NLS-1$
+				.append("return new ").append(names.getProtocolSkill(context.getPackage(), context.getEnclosingTypeName(), role)).append("(space);") //$NON-NLS-1$ //$NON-NLS-2$
+				.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
+		}
 
-		content
-			.append("public ").append(Behavior.class).append(" getProtocolBehavior(") //$NON-NLS-1$ //$NON-NLS-2$
-			.append(Agent.class).append(" ag) {").increaseIndentation().newLine() //$NON-NLS-1$
-			.append("return new ").append(names.getProtocolBehavior(context.getPackage(), context.getEnclosingTypeName(), role)) //$NON-NLS-1$
-			.append("(ag);").decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+		if (toRole) {
+			content.newLine()
+				.append("public ").append(Behavior.class).append(" getProtocolBehavior(") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(Agent.class).append(" ag) {").increaseIndentation().newLine() //$NON-NLS-1$
+				.append("return new ").append(names.getProtocolBehavior(context.getPackage(), context.getEnclosingTypeName(), role)).append("(ag);") //$NON-NLS-1$ //$NON-NLS-2$
+				.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
+		}
 
 		final String minCard;
-		if (role.getMin() != null && role.getMin().intValue() > 0) {
+		if (role.getMin() != null && role.getMin().intValue() >= 0) {
 			minCard = role.getMin().toString();
-		} else {
-			minCard = Integer.toString(0);
+			content.newLine()
+				.append("public int  getMinCardinality() {").increaseIndentation().newLine() //$NON-NLS-1$
+				.append("return ").append(minCard) //$NON-NLS-1$
+				.append(";").decreaseIndentation().newLine().append("}"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		content
-			.append("public int  getMinCardinality() {").increaseIndentation().newLine() //$NON-NLS-1$
-			.append("return ").append(minCard) //$NON-NLS-1$
-			.append(";").decreaseIndentation().newLine().append("}").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
-		content
-			.append("public int  getMaxCardinality() {").increaseIndentation().newLine() //$NON-NLS-1$
-			.append("return "); //$NON-NLS-1$
 		if (role.getMax() != null && role.getMax().intValue() >= 0) {
-			content.append(role.getMax().toString());
-		} else {
-			content.append(Integer.class).append(".MAX_VALUE"); //$NON-NLS-1$
+			content.newLine()
+				.append("public int  getMaxCardinality() {").increaseIndentation().newLine() //$NON-NLS-1$
+				.append("return ") //$NON-NLS-1$
+				.append(role.getMax().toString())
+				.append(";").decreaseIndentation().newLine().append("}"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		content
-			.append(";").decreaseIndentation().newLine().append("}"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		content.decreaseIndentation().newLine().append("}"); //$NON-NLS-1$
 		if (lastRole) {

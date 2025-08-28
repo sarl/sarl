@@ -93,14 +93,7 @@ public class BSPLGrammarKeywordAccess {
 	 * Source: io.sarl.bspl.lang.BSPL
 	 */
 	public String getProtocolKeyword() {
-		return this.grammarAccess.getProtocolAccess().getProtocolKeyword_3().getValue();
-	}
-
-	/** Keyword: {@code protected}.
-	 * Source: io.sarl.bspl.lang.BSPL
-	 */
-	public String getModifiersProtectedKeyword() {
-		return this.grammarAccess.getProtocolParameterAccess().getModifiersProtectedKeyword_2_0_0().getValue();
+		return this.grammarAccess.getProtocolAccess().getProtocolKeyword_2().getValue();
 	}
 
 	/** Keyword: {@code else}.
@@ -450,7 +443,7 @@ public class BSPLGrammarKeywordAccess {
 	 * Source: io.sarl.bspl.lang.BSPL
 	 */
 	public String getModifiersPrivateKeyword() {
-		return this.grammarAccess.getProtocolParameterAccess().getModifiersPrivateKeyword_0_1_0_0().getValue();
+		return this.grammarAccess.getProtocolFirstParameterAccess().getModifiersPrivateKeyword_0_1_0_0().getValue();
 	}
 
 	/** Keyword: {@code extension}.
@@ -464,7 +457,7 @@ public class BSPLGrammarKeywordAccess {
 	 * Source: io.sarl.bspl.lang.BSPL
 	 */
 	public String getRoleKeyword() {
-		return this.grammarAccess.getProtocolAccess().getRoleKeyword_6_0().getValue();
+		return this.grammarAccess.getProtocolAccess().getRoleKeyword_5_0().getValue();
 	}
 
 	/** Keyword: {@code import}.
@@ -527,7 +520,7 @@ public class BSPLGrammarKeywordAccess {
 	 * Source: io.sarl.bspl.lang.BSPL
 	 */
 	public String getParameterKeyword() {
-		return this.grammarAccess.getProtocolParameterAccess().getParameterKeyword_4_0().getValue();
+		return this.grammarAccess.getProtocolFirstParameterAccess().getParameterKeyword_2_0().getValue();
 	}
 
 	/** Keyword: {@code [}.
@@ -721,7 +714,6 @@ public class BSPLGrammarKeywordAccess {
 			kws.add(getFinallyKeyword());
 			kws.add(getReturnKeyword());
 			kws.add(getWhileKeyword());
-			kws.add(getModifiersProtectedKeyword());
 			kws.add(getAnyKeyword());
 			kws.add(getExtensionExtensionKeyword());
 			kws.add(getInstanceofKeyword());
