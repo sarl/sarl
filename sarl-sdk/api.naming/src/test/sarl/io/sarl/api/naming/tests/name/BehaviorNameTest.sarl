@@ -90,32 +90,38 @@ class SkillNameTest {
 	}
 
 	@Test
+	@DisplayName("getContextId")
 	def getContextId {
 		this.contextId.assertSame(this.name.contextId)
 	}
 
 	@Test
+	@DisplayName("getSpaceId")
 	def getSpaceId {
 		this.spaceId.assertSame(this.name.spaceId)
 	}
 
 	@Test
+	@DisplayName("getAgentId")
 	def getAgentId {
 		this.agentId.assertSame(this.name.agentId)
 	}
 
 	@Test
+	@DisplayName("getBehaviorType")
 	def getBehaviorType {
 		this.^behaviorType.assertSame(this.name.behaviorType)
 	}
 
 	@Test
+	@DisplayName("getAssociatedObject")
 	def getAssociatedObject {
 		var ref = this.name.associatedObject
 		ref.assertNull
 	}
 
 	@Test
+	@DisplayName("setAssociatedObject")
 	def setAssociatedObject {
 		var beh = typeof(BehaviorMock).mock
 		this.name.associatedObject = beh

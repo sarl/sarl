@@ -49,6 +49,11 @@
       </dependency>
       <dependency>
         <groupId>io.sarl.sdk</groupId>
+        <artifactId>api.workingmemory</artifactId>
+        <version>${sarl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.sarl.sdk</groupId>
         <artifactId>api.probing</artifactId>
         <version>${sarl.version}</version>
       </dependency>

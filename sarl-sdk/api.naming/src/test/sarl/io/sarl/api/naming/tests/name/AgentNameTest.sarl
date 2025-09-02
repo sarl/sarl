@@ -80,27 +80,32 @@ class AgentNameTest {
 	}
 
 	@Test
+	@DisplayName("getContextId")
 	def getContextId {
 		this.contextId.assertSame(this.name.contextId)
 	}
 
 	@Test
+	@DisplayName("getSpaceId")
 	def getSpaceId {
 		this.spaceId.assertSame(this.name.spaceId)
 	}
 
 	@Test
+	@DisplayName("getAgentId")
 	def getAgentId {
 		this.agentId.assertSame(this.name.agentId)
 	}
 	
 	@Test
+	@DisplayName("getAssociatedObject")
 	def getAssociatedObject {
 		var ref = this.name.associatedObject
 		ref.assertNull
 	}
 
 	@Test
+	@DisplayName("setAssociatedObject")
 	def setAssociatedObject {
 		var spc = typeof(Agent).mock
 		this.name.associatedObject = spc

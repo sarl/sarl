@@ -1,0 +1,683 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.workingmemory.tests
+
+import io.sarl.api.naming.name.ScopedDataName
+import io.sarl.api.workingmemory.DictionaryWorkingMemory
+import io.sarl.api.workingmemory.KnowledgeMissingException
+import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import java.net.URI
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+//import static extension org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension)
+])
+@Tag("unit")
+@Tag("api")
+@Tag("api-workingmemory")
+@DisplayName("DictionaryWorkingMemory")
+class DictionaryWorkingMemoryTest {
+
+	var known : ScopedDataName
+
+	var data : String
+
+	var unknown : ScopedDataName
+
+	var memory : DictionaryWorkingMemory
+
+	@BeforeEach
+	def setup : void {
+		this.known = new ScopedDataName(URI::create("data:/known"))
+		this.data = "abc"
+		this.unknown = new ScopedDataName(URI::create("data:/unknown"))
+		this.memory = new DictionaryWorkingMemory(#{this.known -> this.data})
+	}
+
+	@Test
+	@DisplayName("isNullAllowedInMemory")
+	def isNullAllowedInMemory : void {
+		this.memory.isNullAllowedInMemory.assertFalse
+	}
+
+	@Test
+	@DisplayName("setNullAllowedInMemory(true)")
+	def  setNullAllowedInMemory_true : void {
+		this.memory.nullAllowedInMemory = true
+		this.memory.isNullAllowedInMemory.assertTrue
+	}
+
+	@Test
+	@DisplayName("setNullAllowedInMemory(false)")
+	def setNullAllowedInMemory_false : void {
+		this.memory.nullAllowedInMemory = false
+		this.memory.isNullAllowedInMemory.assertFalse
+	}
+
+	@Test
+	@DisplayName("setNullAllowedInMemory(true and false)")
+	def setNullAllowedInMemory_true_false : void {
+		this.memory.nullAllowedInMemory = true
+		this.memory.nullAllowedInMemory = false
+		this.memory.isNullAllowedInMemory.assertFalse
+	}
+
+	@Test
+	@DisplayName("getKnowledge(null, null)")
+	def getKnowledge_null_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.getKnowledge(null, null).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(null, Object)")
+	def getKnowledge_null_Object : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.getKnowledge(null, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(null, String)")
+	def getKnowledge_null_String : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.getKnowledge(null, typeof(String)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(known, null)")
+	def getKnowledge_known_null : void {
+		var actual = this.memory.getKnowledge(this.known, null)
+		this.data.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("getKnowledge(unknown, null)")
+	def getKnowledge_unknown_null : void {
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, null).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(known, CharSequence)")
+	def getKnowledge_known_CharSequence : void {
+		var actual = this.memory.getKnowledge(this.known, typeof(CharSequence))
+		this.data.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("getKnowledge(known, String)")
+	def getKnowledge_known_String : void {
+		var actual = this.memory.getKnowledge(this.known, typeof(String))
+		this.data.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("getKnowledge(known, Integer)")
+	def getKnowledge_known_Integer : void {
+		typeof(ClassCastException).assertThrows [
+			this.memory.getKnowledge(this.known, typeof(Integer)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(unknown, CharSequence)")
+	def getKnowledge_unknown_CharSequence : void {
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(CharSequence)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(unknown, String)")
+	def getKnowledge_unknown_String : void {
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(String)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getKnowledge(unknown, Integer)")
+	def getKnowledge_unknown_Integer : void {
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Integer)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(null, null)")
+	def setKnowledge_null_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.setKnowledge(null, null)
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(null, \"xyz\")")
+	def setKnowledge_null_xyz : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.setKnowledge(null, "xyz")
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(unknown, \"xyz\")")
+	def setKnowledge_unknown_xyz : void {
+		val value = "xyz"
+		val oldValue = this.memory.setKnowledge(this.unknown, value)
+	
+		oldValue.assertNull
+	
+		var actual = this.memory.getKnowledge(this.unknown, typeof(Object))
+		value.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledge(unknown, null)")
+	def setKnowledge_unknown_null : void {
+		val oldValue = this.memory.setKnowledge(this.unknown, null)
+	
+		oldValue.assertNull
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(unknown, \"xyz\" and null)")
+	def setKnowledge_unknown_xyznull : void {
+		val value = "xyz"
+		val oldValue0 = this.memory.setKnowledge(this.unknown, value)
+		val oldValue1 = this.memory.setKnowledge(this.unknown, null)
+	
+		oldValue0.assertNull
+		value.assertSame(oldValue1)
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(known, \"xyz\")")
+	def setKnowledge_known_xyz : void {
+		val value = "xyz"
+		val oldValue = this.memory.setKnowledge(this.known, value)
+	
+		this.data.assertSame(oldValue)
+	
+		var actual = this.memory.getKnowledge(this.known, typeof(Object))
+		value.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledge(known, null)")
+	def setKnowledge_known_null : void {
+		val oldValue = this.memory.setKnowledge(this.known, null)
+	
+		this.data.assertSame(oldValue)
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.known, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(known, \"xyz\" and null)")
+	def setKnowledge_known_xyznull : void {
+		val value = "xyz"
+		val oldValue0 = this.memory.setKnowledge(this.known, value)
+		val oldValue1 = this.memory.setKnowledge(this.known, null)
+
+		this.data.assertSame(oldValue0)
+		value.assertSame(oldValue1)
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.known, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledge(unknown, null) w/ null")
+	def setKnowledge_wnull : void {
+		this.memory.nullAllowedInMemory = true
+		this.memory.setKnowledge(this.unknown, null)
+	
+		#[ this.known, this.unknown ].assertArrayEquals(this.memory.definedNames.toArray)
+
+		var actual0 = this.memory.getKnowledge(this.known, typeof(Object))
+		this.data.assertSame(actual0)
+
+		var actual1 = this.memory.getKnowledge(this.unknown, typeof(Object))
+		actual1.assertNull
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(null, null)")
+	def setKnowledgeIfAbsent_null_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.setKnowledgeIfAbsent(null, null)
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(null, \"xyz\")")
+	def setKnowledgeIfAbsent_null_xyz : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.setKnowledgeIfAbsent(null, "xyz")
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(unknown, \"xyz\")")
+	def setKnowledgeIfAbsent_unknown_xyz : void {
+		val value = "xyz"
+		this.memory.setKnowledgeIfAbsent(this.unknown, value)
+	
+		var actual = this.memory.getKnowledge(this.unknown, typeof(Object))
+		value.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(unknown, null)")
+	def setKnowledgeIfAbsent_unknown_null : void {
+		this.memory.setKnowledgeIfAbsent(this.unknown, null)
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(unknown, \"xyz\" and null)")
+	def setKnowledgeIfAbsent_unknown_xyznull : void {
+		val value = "xyz"
+		this.memory.setKnowledgeIfAbsent(this.unknown, value)
+		this.memory.setKnowledgeIfAbsent(this.unknown, null)
+	
+		var actual = this.memory.getKnowledge(this.unknown, typeof(Object))
+		value.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(known, \"xyz\")")
+	def setKnowledgeIfAbsent_known_xyz : void {
+		this.memory.setKnowledgeIfAbsent(this.known, "xyz")
+	
+		var actual = this.memory.getKnowledge(this.known, typeof(Object))
+		this.data.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(known, null)")
+	def setKnowledgeIfAbsent_known_null : void {
+		this.memory.setKnowledgeIfAbsent(this.known, null)
+	
+		var actual = this.memory.getKnowledge(this.known, typeof(Object))
+		this.data.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfAbsent(known, \"xyz\" and null)")
+	def setKnowledgeIfAbsent_known_xyznull : void {
+		this.memory.setKnowledgeIfAbsent(this.known, "xyz")
+		this.memory.setKnowledgeIfAbsent(this.known, null)
+
+		var actual = this.memory.getKnowledge(this.known, typeof(Object))
+		this.data.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(null, null)")
+	def setKnowledgeIfPresent_null_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.setKnowledgeIfPresent(null, null)
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(null, \"xyz\")")
+	def setKnowledgeIfPresent_null_xyz : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.setKnowledgeIfPresent(null, "xyz")
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(unknown, \"xyz\")")
+	def setKnowledgeIfPresent_unknown_xyz : void {
+		val value = "xyz"
+		val oldValue = this.memory.setKnowledgeIfPresent(this.unknown, value)
+	
+		oldValue.assertNull
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(unknown, null)")
+	def setKnowledgeIfPresent_unknown_null : void {
+		val oldValue = this.memory.setKnowledgeIfPresent(this.unknown, null)
+	
+		oldValue.assertNull
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(unknown, \"xyz\" and null)")
+	def setKnowledgeIfPresent_unknown_xyznull : void {
+		val value = "xyz"
+		val oldValue0 = this.memory.setKnowledgeIfPresent(this.unknown, value)
+		val oldValue1 = this.memory.setKnowledgeIfPresent(this.unknown, null)
+	
+		oldValue0.assertNull
+		oldValue1.assertNull
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(known, \"xyz\")")
+	def setKnowledgeIfPresent_known_xyz : void {
+		val value = "xyz"
+		val oldValue = this.memory.setKnowledgeIfPresent(this.known, value)
+	
+		this.data.assertSame(oldValue)
+	
+		var actual = this.memory.getKnowledge(this.known, typeof(Object))
+		value.assertSame(actual)
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(known, null)")
+	def setKnowledgeIfPresent_known_null : void {
+		val oldValue = this.memory.setKnowledgeIfPresent(this.known, null)
+	
+		this.data.assertSame(oldValue)
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.known, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("setKnowledgeIfPresent(known, \"xyz\" and null)")
+	def setKnowledgeIfPresent_known_xyznull : void {
+		val value = "xyz"
+		val oldValue0 = this.memory.setKnowledgeIfPresent(this.known, value)
+		val oldValue1 = this.memory.setKnowledgeIfPresent(this.known, null)
+
+		this.data.assertSame(oldValue0)
+		value.assertSame(oldValue1)
+	
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.known, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getDefinedForName(null)")
+	def getDefinedForName_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.getDefinedForName(null).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getDefinedForName(\"\")")
+	def getDefinedForName_empty : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.getDefinedForName("").assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("getDefinedForName(unknown)")
+	def getDefinedForName_unknown : void {
+		val values = this.memory.getDefinedForName("unknown")
+		values.assertNotNull
+		#[].assertArrayEquals(values.toArray)
+	}
+
+	@Test
+	@DisplayName("getDefinedForName(known)")
+	def getDefinedForName_known : void {
+		val values = this.memory.getDefinedForName("known")
+		values.assertNotNull
+		#[ this.known ].assertArrayEquals(values.toArray)
+	}
+
+	@Test
+	@DisplayName("getDefinedForName(known) with new data:/ijk/known")
+	def getDefinedForName_known_known2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+		var data2 = "abc"
+		this.memory.setKnowledge(known2, data2)
+		
+		val values = this.memory.getDefinedForName("known")
+		values.assertNotNull
+		#[ known2, this.known ].assertArrayEquals(values.toArray)
+	}
+
+	@Test
+	@DisplayName("isDefined(null)")
+	def isDefined_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.isDefined(null).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("isDefined(known)")
+	def isDefined_known : void {
+		this.memory.isDefined(this.known).assertTrue
+	}
+
+	@Test
+	@DisplayName("isDefined(unknown)")
+	def isDefined_unknown : void {
+		this.memory.isDefined(this.unknown).assertFalse
+	}
+
+	@Test
+	@DisplayName("isDefined(known) with new data:/ijk/known")
+	def isDefined_known_2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+		var data2 = "abc"
+		this.memory.setKnowledge(known2, data2)
+
+		this.memory.isDefined(this.known).assertTrue
+	}
+
+	@Test
+	@DisplayName("isDefined( data:/ijk/known )")
+	def isDefined_known2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+
+		this.memory.isDefined(known2).assertFalse
+	}
+
+	@Test
+	@DisplayName("isDefined( data:/ijk/known ) with new data:/ijk/known")
+	def isDefined_known2_2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+		var data2 = "abc"
+		this.memory.setKnowledge(known2, data2)
+
+		this.memory.isDefined(known2).assertTrue
+	}
+
+	@Test
+	@DisplayName("removeKnowledge(null)")
+	def removeKnowledge_null : void {
+		typeof(AssertionError).assertThrows [
+			this.memory.removeKnowledge(null)
+		]
+	}
+
+	@Test
+	@DisplayName("removeKnowledge(known)")
+	def removeKnowledge_known : void {
+		var value = this.memory.removeKnowledge(this.known)
+
+		this.data.assertSame(value)
+
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.known, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("removeKnowledge(unknown)")
+	def removeKnowledge_unknown : void {
+		var value = this.memory.removeKnowledge(this.unknown)
+
+		value.assertNull
+
+		typeof(KnowledgeMissingException).assertThrows [
+			this.memory.getKnowledge(this.unknown, typeof(Object)).assertNull
+		]
+	}
+
+	@Test
+	@DisplayName("removeNullValuedKnowledges w/o null")
+	def removeKnowledge_wonull : void {
+		this.memory.removeNullValuedKnowledges
+
+		#[ this.known ].assertArrayEquals(this.memory.definedNames.toArray)
+	}
+
+	@Test
+	@DisplayName("removeNullValuedKnowledges w/ null")
+	def removeKnowledge_wnull : void {
+		this.memory.nullAllowedInMemory = true
+		this.memory.setKnowledge(this.unknown, null)
+	
+		this.memory.removeNullValuedKnowledges
+
+		#[ this.known ].assertArrayEquals(this.memory.definedNames.toArray)
+	}
+
+	@Test
+	@DisplayName("getDefinedNames w/o known2")
+	def getDefinedNames_1 : void {
+		var value = this.memory.getDefinedNames
+
+		#[ this.known ].assertArrayEquals(value.toArray)
+	}
+
+	@Test
+	@DisplayName("getDefinedNames w/ known2")
+	def getDefinedNames_2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+		var data2 = "abc"
+		this.memory.setKnowledge(known2, data2)
+
+		var value = this.memory.getDefinedNames
+
+		#[ known2, this.known ].assertArrayEquals(value.toArray)
+	}
+
+	@Test
+	@DisplayName("getMemorySize w/o known2")
+	def getMemorySize_1 : void {
+		var value = this.memory.getMemorySize
+		1.assertEquals(value)
+	}
+
+	@Test
+	@DisplayName("getMemorySize w/ known2")
+	def getMemorySize_2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+		var data2 = "abc"
+		this.memory.setKnowledge(known2, data2)
+
+		var value = this.memory.getMemorySize
+
+		2.assertEquals(value)
+	}
+
+	@Test
+	@DisplayName("getMemorySize with empty")
+	def getMemorySize_3 : void {
+		this.memory.clearMemory
+		var value = this.memory.getMemorySize
+		0.assertEquals(value)
+	}
+
+	@Test
+	@DisplayName("isMemoryEmpty w/o known2")
+	def isMemoryEmpty_1 : void {
+		this.memory.isMemoryEmpty.assertFalse
+	}
+
+	@Test
+	@DisplayName("isMemoryEmpty w/ known2")
+	def isMemoryEmpty_2 : void {
+		var known2 = new ScopedDataName(URI::create("data:/ijk/known"))
+		var data2 = "abc"
+		this.memory.setKnowledge(known2, data2)
+
+		this.memory.isMemoryEmpty.assertFalse
+	}
+
+	@Test
+	@DisplayName("isMemoryEmpty with empty")
+	def isMemoryEmpty_3 : void {
+		this.memory.clearMemory
+		this.memory.isMemoryEmpty.assertTrue
+	}
+
+	@Test
+	@DisplayName("clearMemory")
+	def clearMemory : void {
+		this.memory.clearMemory
+		#[].assertArrayEquals(this.memory.getDefinedNames.toArray)
+	}
+
+}

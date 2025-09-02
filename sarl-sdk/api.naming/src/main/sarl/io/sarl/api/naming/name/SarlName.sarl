@@ -42,6 +42,7 @@ import java.net.URI
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
+@SuppressWarnings("io.sarl.lang.validation.IssueCodes.manual_inline_definition")
 abstract class SarlName implements Cloneable, Serializable, Comparable<SarlName> {
 
 	transient var associatedObject : WeakReference<Object>
@@ -67,6 +68,113 @@ abstract class SarlName implements Cloneable, Serializable, Comparable<SarlName>
 	override compareTo(name : SarlName) : int {
 		if (name === null) 1 else this.uri.compareTo(name.uri)
 	}
+
+    /**
+     * Compares this name with the specified name for order.
+     * Returns a  integer, zero, or a positive integer as this name
+     * is less than, equal to, or greater than the specified object.
+     *
+     * @param other the name to be compared.
+     * @return a negative integer, zero, or a positive integer as this name
+     *     is less than, equal to, or greater than the specified name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline("compareTo($1)")
+	def operator_spaceship(other : SarlName) : int {
+		compareTo(other)
+	}	
+
+    /**
+     * Compares this name with the specified name for order and determines if
+     * this name is strictly lower than the given name.
+     *
+     * @param other the name to be compared.
+     * @return {@code true} if this name is strictly lower than the given name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline(value = "($0compareTo($1) < 0)", constantExpression = true)
+	def operator_lessThan(other : SarlName) : boolean {
+		compareTo(other) < 0
+	}
+
+    /**
+     * Compares this name with the specified name for order and determines if
+     * this name is strictly greater than the given name.
+     *
+     * @param other the name to be compared.
+     * @return {@code true} if this name is strictly greater than the given name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline(value = "($0compareTo($1) > 0)", constantExpression = true)
+	def operator_greaterThan(other : SarlName) : boolean {
+		compareTo(other) > 0
+	}	
+
+    /**
+     * Compares this name with the specified name for order and determines if
+     * this name is lower than or equal to the given name.
+     *
+     * @param other the name to be compared.
+     * @return {@code true} if this name is lower than or equal to the given name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline(value = "($0compareTo($1) <= 0)", constantExpression = true)
+	def operator_lessEqualsThan(other : SarlName) : boolean {
+		compareTo(other) <= 0
+	}	
+
+    /**
+     * Compares this name with the specified name for order and determines if
+     * this name is greater than or equal to the given name.
+     *
+     * @param other the name to be compared.
+     * @return {@code true} if this name is greater than or equal to the given name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline(value = "($0compareTo($1) >= 0)", constantExpression = true)
+	def operator_greaterEqualsThan(other : SarlName) : boolean {
+		compareTo(other) >= 0
+	}	
+
+    /**
+     * Compares this name with the specified name for order and determines if
+     * they are equal.
+     *
+     * @param other the name to be compared.
+     * @return {@code true} if this name is equal to the given name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline(value = "($0compareTo($1) == 0)", constantExpression = true)
+	def operator_equals(other : SarlName) : boolean {
+		compareTo(other) == 0
+	}	
+
+    /**
+     * Compares this name with the specified name for order and determines if
+     * they are not equal.
+     *
+     * @param other the name to be compared.
+     * @return {@code true} if this name is not equal to the given name.
+     * @since 0.15
+     * @see #compareTo(SarlName)
+     */
+    @Pure
+    @Inline(value = "($0compareTo($1) != 0)", constantExpression = true)
+	def operator_notEquals(other : SarlName) : boolean {
+		compareTo(other) != 0
+	}	
 
 	/** Replies the URI associated to this name. */
 	def toURI : URI {

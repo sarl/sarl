@@ -76,22 +76,26 @@ class SpaceNameTest {
 	}
 
 	@Test
+	@DisplayName("getContextId")
 	def getContextId {
 		this.contextId.assertSame(this.name.contextId)
 	}
 
 	@Test
+	@DisplayName("getSpaceId")
 	def getSpaceId {
 		this.spaceId.assertSame(this.name.spaceId)
 	}
 
 	@Test
+	@DisplayName("getAssociatedObject - null")
 	def getAssociatedObject {
 		var ref = this.name.associatedObject
 		ref.assertNull
 	}
 
 	@Test
+	@DisplayName("setAssociatedObject")
 	def setAssociatedObject {
 		var spc = typeof(Space).mock
 		this.name.associatedObject = spc

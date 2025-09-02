@@ -1,0 +1,482 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.naming.tests.parser
+
+import io.sarl.api.naming.name.SarlName
+import io.sarl.api.naming.name.ScopedDataName
+import io.sarl.api.naming.parser.ScopedDataSchemeNameParser
+import io.sarl.api.naming.parser.UriBasedNameParser
+import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import java.net.URI
+import java.util.UUID
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.assertSame
+import static extension org.junit.jupiter.api.Assertions.fail
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension)
+])
+@DisplayName("ScopeData NameParser")
+@Tag("unit")
+@Tag("api")
+@Tag("api-naming")
+class ScopedDataSchemeNameParserTest {
+
+	protected static val NAME1 = UUID::randomUUID.toString
+
+	protected static val NAME2 = UUID::randomUUID.toString
+
+	protected static val NAME3 = UUID::randomUUID.toString
+
+	@Nullable
+	var parser : UriBasedNameParser
+
+	@BeforeEach
+	def setUp : void {
+		this.parser = new UriBasedNameParser()
+		this.parser.addSchemeNameParser(new ScopedDataSchemeNameParser)
+	}
+
+	private static def m(e : String*) : String{
+		val b = new StringBuilder
+		for (elt : e) {
+			if (!elt.isNullOrEmpty) {
+				b.append("/").append(elt)
+			}
+		}
+		return b.toString
+	}
+
+	protected static def assertValid(uri : URI, elements : String*) : void {
+		uri.assertNotNull
+		"data".assertEquals(uri.scheme)
+		m(elements).assertEquals(uri.path)
+		uri.fragment.assertNullOrEmpty
+		uri.host.assertNullOrEmpty
+		uri.port.assertEquals(-1)
+		uri.query.assertNullOrEmpty
+		uri.userInfo.assertNullOrEmpty
+	}
+
+	@Test
+	@DisplayName("decode(\"data:\")")
+	def decode_String_empty_00 {
+		this.parser.decode("data:").assertNull
+	}
+
+	@Test
+	@DisplayName("decode(\"data://\")")
+	def decode_String_empty_01 {
+		this.parser.decode("data://").assertNull
+	}
+	
+	@Test
+	@DisplayName("decode(\"data:/\")")
+	def decode_String_empty_02 {
+		this.parser.decode("data:/").assertNull
+	}
+
+	@Test
+	@DisplayName("decode(\"data:n1\")")
+	def decode_String_name_00 {
+		this.parser.decode("data:" + NAME1).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("decode(\"data://n1\")")
+	def decode_String_name_01 {
+		this.parser.decode("data://" + NAME1).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:/n1\")")
+	def decode_String_name_02 {
+		this.parser.decode("data:/" + NAME1).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:n1/n2\")")
+	def decode_String_names2_00 {
+		this.parser.decode("data:" + NAME1 + "/" + NAME2).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("decode(\"data://n1/n2\")")
+	def decode_String_names2_01 {
+		this.parser.decode("data://" + NAME1 + "/" + NAME2).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:/n1/n2\")")
+	def decode_String_names2_02 {
+		this.parser.decode("data:/" + NAME1 + "/" + NAME2).assertValid(NAME1, NAME2)
+	}
+
+
+	@Test
+	@DisplayName("decode(\"data:n1/n2/n3\")")
+	def decode_String_names3_00 {
+		this.parser.decode("data:" + NAME1 + "/" + NAME2 + "/" + NAME3).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("decode(\"data://n1/n2/n3\")")
+	def decode_String_names3_01 {
+		this.parser.decode("data://" + NAME1 + "/" + NAME2 + "/" + NAME3).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:/n1/n2/n3\")")
+	def decode_String_names3_02 {
+		this.parser.decode("data:/" + NAME1 + "/" + NAME2 + "/" + NAME3).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:#frag\")")
+	def decode_String_fragment_00 {
+		this.parser.decode("data:#frag").assertNull
+	}
+
+	@Test
+	@DisplayName("decode(\"data://#frag\")")
+	def decode_String_fragment_01 {
+		this.parser.decode("data://#frag").assertNull
+	}
+
+	
+	@Test
+	@DisplayName("decode(\"data:/#frag\")")
+	def decode_String_fragment_02 {
+		this.parser.decode("data:/#frag").assertNull
+	}
+
+	@Test
+	@DisplayName("decode(\"data:n1#frag\")")
+	def decode_String_namefrag_00 {
+		this.parser.decode("data:" + NAME1 + "#frag").assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("decode(\"data://n1#frag\")")
+	def decode_String_namefrag_01 {
+		this.parser.decode("data://" + NAME1 + "#frag").assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:/n1#frag\")")
+	def decode_String_namefrag_02 {
+		this.parser.decode("data:/" + NAME1 + "#frag").assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:n1/n2#frag\")")
+	def decode_String_names2frag_00 {
+		this.parser.decode("data:" + NAME1 + "/" + NAME2 + "#frag").assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("decode(\"data://n1/n2#frag\")")
+	def decode_String_names2frag_01 {
+		this.parser.decode("data://" + NAME1 + "/" + NAME2 + "#frag").assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:/n1/n2#frag\")")
+	def decode_String_names2frag_02 {
+		this.parser.decode("data:/" + NAME1 + "/" + NAME2 + "#frag").assertValid(NAME1, NAME2)
+	}
+
+
+	@Test
+	@DisplayName("decode(\"data:n1/n2/n3#frag\")")
+	def decode_String_names3frag_00 {
+		this.parser.decode("data:" + NAME1 + "/" + NAME2 + "/" + NAME3 + "#frag").assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("decode(\"data://n1/n2/n3#frag\")")
+	def decode_String_names3frag_01 {
+		this.parser.decode("data://" + NAME1 + "/" + NAME2 + "/" + NAME3 + "#frag").assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("decode(\"data:/n1/n2/n3#frag\")")
+	def decode_String_names3frag_02 {
+		this.parser.decode("data:/" + NAME1 + "/" + NAME2 + "/" + NAME3 + "#frag").assertValid(NAME1, NAME2, NAME3)
+	}
+
+	private static def createURI(separator : String, elements : String*) : URI {
+		val buffer = new StringBuilder("data:")
+		buffer.append(separator)
+		var first = true
+		for (elt : elements) {
+			if (first) {
+				first = false
+			} else {
+				buffer.append("/")
+			}
+			buffer.append(elt)
+		}
+		return URI::create(buffer.toString)
+	}
+
+	private static def createURI2(separator : String, elements : String*) : URI {
+		val buffer = new StringBuilder("data:")
+		buffer.append(separator)
+		var first = true
+		for (elt : elements) {
+			if (first) {
+				first = false
+			} else {
+				buffer.append("/")
+			}
+			buffer.append(elt)
+		}
+		buffer.append("#frag")
+		return URI::create(buffer.toString)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/ )")
+	def normalize_URI_empty_02 {
+		this.parser.normalize(createURI("/")).assertNull
+	}
+
+	@Test
+	@DisplayName("normalize( data:n1 )")
+	def normalize_URI_name_00 {
+		this.parser.normalize(createURI("", NAME1)).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("normalize( data://n1 )")
+	def normalize_URI_name_01 {
+		this.parser.normalize(createURI("//", NAME1)).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/n1 )")
+	def normalize_URI_name_02 {
+		this.parser.normalize(createURI("/", NAME1)).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("normalize( data:n1/n2 )")
+	def normalize_URI_names2_00 {
+		this.parser.normalize(createURI("", NAME1, NAME2)).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("normalize( data://n1/n2 )")
+	def normalize_URI_names2_01 {
+		this.parser.normalize(createURI("//", NAME1, NAME2)).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/n1/n2 )")
+	def normalize_URI_names2_02 {
+		this.parser.normalize(createURI("/", NAME1, NAME2)).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("normalize( data:n1/n2/n3 )")
+	def normalize_URI_names3_00 {
+		this.parser.normalize(createURI("", NAME1, NAME2, NAME3)).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("normalize( data://n1/n2/n3 )")
+	def normalize_URI_names3_01 {
+		this.parser.normalize(createURI("//", NAME1, NAME2, NAME3)).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/n1/n2/n3 )")
+	def normalize_URI_names3_02 {
+		this.parser.normalize(createURI("/", NAME1, NAME2, NAME3)).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("normalize( data://#frag )")
+	def normalize_URI_fragment_01 {
+		this.parser.normalize(createURI2("//")).assertNull
+	}
+
+	
+	@Test
+	@DisplayName("normalize( data:/#frag )")
+	def normalize_URI_fragment_02 {
+		this.parser.normalize(createURI2("/")).assertNull
+	}
+
+	@Test
+	@DisplayName("normalize( data:n1#frag )")
+	def normalize_URI_namefrag_00 {
+		this.parser.normalize(createURI2("", NAME1)).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("normalize( data://n1#frag )")
+	def normalize_URI_namefrag_01 {
+		this.parser.normalize(createURI2("//", NAME1)).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/n1#frag )")
+	def normalize_URI_namefrag_02 {
+		this.parser.normalize(createURI2("/", NAME1)).assertValid(NAME1)
+	}
+
+	@Test
+	@DisplayName("normalize( data:n1/n2#frag )")
+	def normalize_URI_names2frag_00 {
+		this.parser.normalize(createURI2("", NAME1, NAME2)).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("normalize( data://n1/n2#frag )")
+	def normalize_URI_names2frag_01 {
+		this.parser.normalize(createURI2("//", NAME1, NAME2)).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/n1/n2#frag )")
+	def normalize_URI_names2frag_02 {
+		this.parser.normalize(createURI2("/", NAME1, NAME2)).assertValid(NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("normalize( data:n1/n2/n3#frag )")
+	def normalize_URI_names3frag_00 {
+		this.parser.normalize(createURI2("", NAME1, NAME2, NAME3)).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("normalize( data://n1/n2/n3#frag )")
+	def normalize_URI_names3frag_01 {
+		this.parser.normalize(createURI2("//", NAME1, NAME2, NAME3)).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("normalize( data:/n1/n2/n3#frag )")
+	def normalize_URI_names3frag_02 {
+		this.parser.normalize(createURI2("/", NAME1, NAME2, NAME3)).assertValid(NAME1, NAME2, NAME3)
+	}
+
+	private static def createURI3(elements : String*) : URI {
+		val buffer = new StringBuilder()
+		for (elt : elements) {
+			buffer.append("/").append(elt)
+		}
+		val path = buffer.toString
+		return new URI("data", null, if (path.isNullOrEmpty) null else path, null)
+	}
+
+	private static def createURI4(elements : String*) : URI {
+		val buffer = new StringBuilder()
+		for (elt : elements) {
+			buffer.append("/").append(elt)
+		}
+		val path = buffer.toString
+		return new URI("data", null, if (path.isNullOrEmpty) null else path, "frag")
+	}
+
+	private  static def assertValid(name : SarlName, uri : URI, elements : String*) : void {
+		name.assertNotNull
+		if (name instanceof ScopedDataName) {
+			assertSame(uri, name.toURI)
+			var dataName = name.name
+			var dataScope = name.scope
+			for (var i = 0; i < elements.length - 2; i++) {
+				elements.get(i).assertEquals(dataScope.get(i))
+			}
+			if (elements.length > 0) {
+				elements.get(elements.length - 1).assertEquals(dataName)
+			} else {
+				dataName.assertNull
+			}
+		} else {
+			fail("The actual name is not of type ScopeDataName")
+		}
+	}
+
+	@Test
+	@DisplayName("decode( data:/n1 )")
+	def decode_URI_name_02 {
+		val uri = createURI3(NAME1)
+		this.parser.decode(uri).assertValid(uri, NAME1)
+	}
+
+	@Test
+	@DisplayName("decode( data:/n1/n2 )")
+	def decode_URI_names2_02 {
+		val uri = createURI3(NAME1, NAME2)
+		this.parser.decode(uri).assertValid(uri, NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("decode( data:/n1/n2/n3 )")
+	def decode_URI_names3_02 {
+		val uri = createURI3(NAME1, NAME2, NAME3)
+		this.parser.decode(uri).assertValid(uri, NAME1, NAME2, NAME3)
+	}
+
+	@Test
+	@DisplayName("decode( data:/n1#frag )")
+	def decode_URI_namefrag_02 {
+		val uri = createURI4(NAME1)
+		this.parser.decode(uri).assertValid(uri, NAME1)
+	}
+
+	@Test
+	@DisplayName("decode( data:/n1/n2#frag )")
+	def decode_URI_names2frag_02 {
+		val uri = createURI4(NAME1, NAME2)
+		this.parser.decode(uri).assertValid(uri, NAME1, NAME2)
+	}
+
+	@Test
+	@DisplayName("decode( data:/n1/n2/n3#frag )")
+	def decode_URI_names3frag_02 {
+		val uri = createURI4(NAME1, NAME2, NAME3)
+		this.parser.decode(uri).assertValid(uri, NAME1, NAME2, NAME3)
+	}
+
+}

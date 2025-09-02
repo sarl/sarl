@@ -72,18 +72,21 @@ class ServiceNameTest {
 	}
 
 	@Test
+	@DisplayName("getServiceType")
 	def getServiceType {
 		this.serviceType.assertSame(this.name.serviceType)
 	}
 
 	@Test
+	@DisplayName("getAssociatedObject - null")
 	def getAssociatedObject {
 		var ref = this.name.associatedObject
 		ref.assertNull
 	}
 
 	@Test
-	def setAssociatedService {
+	@DisplayName("setAssociatedObject")
+	def setAssociatedObject {
 		var srv = typeof(IService).mock
 		this.name.associatedObject = srv
 		var ref = this.name.associatedObject

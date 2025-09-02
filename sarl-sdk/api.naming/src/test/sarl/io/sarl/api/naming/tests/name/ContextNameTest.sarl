@@ -72,17 +72,20 @@ class ContextNameTest {
 	}
 
 	@Test
+	@DisplayName("getContextId")
 	def getContextId {
 		this.contextId.assertSame(this.name.contextId)
 	}
 
 	@Test
+	@DisplayName("getAssociatedObject")
 	def getAssociatedObject {
 		var ref = this.name.associatedObject
 		ref.assertNull
 	}
 
 	@Test
+	@DisplayName("setAssociatedObject")
 	def setAssociatedContext {
 		var ctx = typeof(ContextMock).mock
 		this.name.associatedObject = ctx

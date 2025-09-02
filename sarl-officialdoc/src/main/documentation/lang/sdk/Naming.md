@@ -187,24 +187,70 @@ The general syntax of the service names is defined by the following BNF grammar 
 ARTIFACT_NAME = "artifact:" <ODSL> <UUID> <FRG>
 ```
 
-### Naming for Protocol
+### Naming for data with scopes
 
-A protocol is the specification of interactions between agents.
-When agents are running a given protocol, the interaction are supported by a protocol instance dedicated to the protocol and the participants.
-Please note that because the concept of protocol is not related to the agent definition itself, the underlying SRE may
-not provide a support for it.
+Sometimes, a data is defined in scope and store in a part of the application. For example, the working memory API defined in the SARL SDK enables agents to store scoped data in a local memory.
+
+In SARL, the concept of **scope** refers to a mechanism for organizing and disambiguating knowledge or data within an agent’s memory by associating it with a specific context or namespace. Scope serves as a logical container that groups related pieces of information, enabling agents to manage multiple instances of similarly named knowledge without conflict.
+Scopes are often implemented as part of a composite [:scopeddataname:], which combines a base name (e.g., "temperature") with a scope (e.g., "indoor" or "outdoor"). This allows the agent to store and retrieve knowledge precisely, even when the same name is reused across different contexts. It is possible to refer to a scoped data with a URI string. For example, `data:/indoor/temperature` and `data:/outdoor/temperature` represent two distinct knowledge entries, each associated with its own value.
  
-The path of the protocol name specifies the identification of the protocol instance, i.e. its identifier. You could refer a protocol instance with:
+The path of the scoped data name specifies the scope of the data and the basename of the same data. You could refer a scope data as:
 
-* Referring a protocol instance from its identifier. In this case, you have to specify only the protocol's identifier, e.g. `protocol:37b13185-a9d5-43e5-9d7b-da2fa3ba3d54`. 
+* Referring a scope variable from its scope and basename, e.g. `data:/scope1/.../scopen/basename`.
 
-Where, `37b13185-a9d5-43e5-9d7b-da2fa3ba3d54` is the identifier of the protocol instance.
+Where, `scope1` to `scopen` refer to the names of the scopes in whoch the data is located; `basename` is the simple name of the data.
 
-The general syntax of the service names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
+The general syntax of the scoped data names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
 
 ```text
-PROTOCOL_NAME = "protocol:" <ODSL> <UUID>
+SCOPE_DATA_NAME = "data:" <ODSL> <ID> <SCOPE_DATA_SCOPES>
+SCOPE_DATA_SCOPES = "/" <ID> <SCOPE_DATA_SCOPES> | empty
 ```
+
+It is possible to create scoped data name programmatically:
+
+[:Success:]
+	package io.sarl.docs.reference.naming
+	agent A {
+		def block : void {
+		[:On]
+			var uri = new URI("data:/scope1/scope2/name")
+			var name = new [:scopeddataname](ScopedDataName)(uri)
+		[:Off]
+		}
+	}
+[:End:]
+
+In the previous code example, the instance of the scoped data name is based on the type [:scopeddataname:]. The argument for creating the name is the URI of the data. This URI is creating using the regular API.
+Please note that the name of the data must start with a `/` character.
+
+The [:scopeddataname:] class provides two way for making the creation of a scoped data name easier:
+
+* The utility function [:scopeddatabuilduri:] for creating an URI with the expected URI format. It takes as arguments the list of names for the scopes and the data itself:
+
+[:Success:]
+	package io.sarl.docs.reference.naming
+	agent A {
+		def block : void {
+		[:On]
+			var name = new [:scopeddataname](ScopedDataName)(ScopedDataName::[:scopeddatabuilduri](buildURI)("scope1", "scope2", "name"))
+		[:Off]
+		}
+	}
+[:End:]
+
+* The [:scopeddataname:] construction function that takes as arguments the list of names for the scopes and the data itself:
+
+[:Success:]
+	package io.sarl.docs.reference.naming
+	agent A {
+		def block : void {
+		[:On]
+			var name = new ScopedDataName("scope1", "scope2", "name")
+		[:Off]
+		}
+	}
+[:End:]
 
 
 ## Namespace Service
@@ -262,7 +308,7 @@ Observation means that data or information could be extracted from the observed 
 Because an agent is defined as an autonomous entity, the agent should be able to enable or disable the
 access to one of its fields.
 
-In the standard SRE, this observability flag could be defined statically by annotating the obsevable field,
+In the standard SRE, this observability flag could be defined statically by annotating the observable field,
 or one of its enclosing type, with the [:observableannotation:] annotation.
 A second standard method is to implement a dedicated agent skill implementing the capacity [:accesscap:]
 that enables the agent to manage the access rights to its fields dynamically.

@@ -28,7 +28,7 @@ import org.arakhne.afc.services.IService
 /** 
  * This class represents a service name.
  *
- * <p>The components of a service name is: <ul>
+ * <p>The component of a service name is: <ul>
  * <li>{@code serviceType} (mandatory) : the fully qualified name of the service interface for the service implementation to retrieve.</li>
  * </ul>
  *

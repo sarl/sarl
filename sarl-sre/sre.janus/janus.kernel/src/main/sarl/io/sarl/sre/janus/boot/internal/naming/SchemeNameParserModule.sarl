@@ -29,6 +29,7 @@ import io.sarl.api.naming.parser.ArtifactSchemeNameParser
 import io.sarl.api.naming.parser.BehaviorSchemeNameParser
 import io.sarl.api.naming.parser.ContextSchemeNameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
+import io.sarl.api.naming.parser.ScopedDataSchemeNameParser
 import io.sarl.api.naming.parser.ServiceSchemeNameParser
 import io.sarl.api.naming.parser.SkillSchemeNameParser
 import io.sarl.api.naming.parser.SpaceSchemeNameParser
@@ -55,7 +56,8 @@ class SchemeNameParserModule implements BQModule {
 			it.add(typeof(SpaceSchemeNameParser))
 			it.add(typeof(AgentSchemeNameParser))
 			it.add(typeof(SkillSchemeNameParser))
-			it.add(typeof(BehaviorSchemeNameParser))	
+			it.add(typeof(BehaviorSchemeNameParser))
+			it.add(typeof(ScopedDataSchemeNameParser))
 			it.add(typeof(ArtifactSchemeNameParser))
 		]	
 	}

@@ -1,0 +1,252 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.workingmemory
+
+import io.sarl.api.naming.name.ScopedDataName
+import io.sarl.lang.core.DefaultSkill
+import java.util.List
+import java.util.stream.Stream
+
+/**
+ * Capacity to access to the agent working memory.
+ * This working memory enables to have access to a part
+ * of the data storage that is exclusively dedicated to
+ * the agent.
+ *
+ * <p>If the agent does not provide a specific skill for this capacity,
+ * the skill to be used is {@link DictionaryWorkingMemory}.
+ *
+ * @author $Author: stedeschi$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.15
+ */
+@DefaultSkill(typeof(DictionaryWorkingMemory))
+capacity WorkingMemory {
+
+	/** Replies if the {@code null} value is allowed to be associated to a stored knowledge
+	 * in the working memory.
+	 *
+	 * <p>If {@code null} value is not allowed in the memory, then each time a {@code null}
+	 * value is put in the memory for a knowledge, this knowledge is removed from the memory.
+	 * In the case the {@code null} value is allowed in the memory, then it is associated
+	 * to the knowledge.
+	 *
+	 * <p>CAUTION: the support of the {@code null} value also depends on the concrete
+	 * implementation of the working memory. Please refer to the documentation of
+	 * the working memory's implementation for further details.
+	 *
+	 * @return {@code true} if {@code null} value is allowed in working memory.
+	 */
+	@Pure
+	def isNullAllowedInMemory : boolean
+
+	/** Change the flag indicating if the {@code null} value is allowed to be associated
+	 * to a stored knowledge in the working memory.
+	 *
+	 * <p>If {@code null} value is not allowed in the memory, then each time a {@code null}
+	 * value is put in the memory for a knowledge, this knowledge is removed from the memory.
+	 * In the case the {@code null} value is allowed in the memory, then it is associated
+	 * to the knowledge.
+	 *
+	 * <p>When this function is invoked with {@code false} as argument, the content of the
+	 * working memory is not changed. Therefore, the knowledges that
+	 * are already stored in the agent memory and associated with a {@code null} value
+	 * are kept in the memory storage. See {@link #removeNullValuedKnowledges()} for
+	 * removing {@code null} valued knowledges from the working memory.
+	 *
+	 * <p>CAUTION: the support of the {@code null} value also depends on the concrete
+	 * implementation of the working memory. Please refer to the documentation of
+	 * the working memory's implementation for further details.
+	 *
+	 * @param enable is {@code true} if {@code null} value is allowed in working memory;
+	 *     Otherwise, {@code null} value is not allowed.
+	 */
+	def setNullAllowedInMemory(enable : boolean)
+
+	/** Replies the data value that is identified by the given id.
+	 *
+	 * @param <T> the expected type of the data.
+	 * @param id the identifier of the knowledge to be extracted from the local state.
+	 * @param type the expected type of the data. If this type is not specified, the function
+	 *     replies the value as-is. Otherwise, if the value is not compatible with the
+	 *     given type, a {@code ClassCastException} is thrown.
+	 * @return the knowledge value.
+	 * @see #getKnowledge(ScopedDataName)
+	 * @throws KnowledgeMissingException when the knowledge is not stored in the working memory.
+	 */
+	@Pure
+	def getKnowledge(id : ScopedDataName, type : Class<T>) : T with T throws KnowledgeMissingException
+	
+	/** Replies the knowledge value that is identified by the given id.
+	 *
+	 * @param id the identifier of the knowledge to be extracted from the local state.
+	 * @return the knowledge value.
+	 * @see #getKnowledge(ScopedDataName, Class)
+	 * @throws KnowledgeMissingException when the knowledge is not stored in the working memory.
+	 */
+	@Pure
+	def getKnowledge(id : ScopedDataName) : Object throws KnowledgeMissingException
+
+	/** Save the knowledge value in the working memory. If a value was
+	 * already stored in the working memory for this knowledge, then
+	 * the new value provided as argument will replace the previously
+	 * stored value.
+	 *
+	 * @param id the identifier of the knowledge to be saved in the working memory.
+	 * @param value the new value of the knowledge.
+	 * @return previously stored knowledge value
+	 * @see #setKnowledgeIfAbsent(ScopedDataName, Object)
+	 * @see #setKnowledgeIfPresent(ScopedDataName, Object)
+	 */
+	def setKnowledge(id : ScopedDataName, value : Object) : Object
+
+	/** Save the knowledge value in the working memory if this memory does not
+	 * already contain a value for this knowledge. If the memory
+	 * contain the given knowledge, this function has no effect.
+	 *
+	 * @param id the identifier of the knowledge to be saved in the local state.
+	 * @param value the new value of the knowledge.
+	 * @see #setKnowledge(ScopedDataName, Object)
+	 * @see #setKnowledgeIfPresent(ScopedDataName, Object)
+	 */
+	def setKnowledgeIfAbsent(id : ScopedDataName, value : Object)
+	
+	/** Save the knowledge value in the working memory if this memory
+	 * already contains a value for this knowledge. If the memory does
+	 * not contain the given knowledge, this function has no effect.
+	 *
+	 * @param id the identifier of the knowledge to be saved in the local state.
+	 * @param value the new value of the knowledge.
+	 * @return previously stored knowledge value
+	 * @see #setKnowledge(ScopedDataName, Object)
+	 * @see #setKnowledgeIfAbsent(ScopedDataName, Object)
+	 */
+	def setKnowledgeIfPresent(id : ScopedDataName, value : Object) : Object
+
+	/** Replies all the scopes that are known in the working memory and associated
+	 * to the given knowledge name.
+	 * Since multiple knowledge may have the same name, the scopes of the knowledges
+	 * are used to make them unique in the working memory. This function replies
+	 * all the knowledges with the same name that are stored in the working memory
+	 * whatever their scopes.
+	 *
+	 * <p>CAUTION: The replied stream must be manually synchronized by the caller of this function.
+	 *
+	 * @param name the base name of the knowledge to search for.
+	 * @return the scopes of the knowledges with the given name in a stream.
+	 */
+	@Pure
+	def getDefinedForName(name : String) : Stream<ScopedDataName>
+	 
+	/** Replies all the scopes that are known in the working memory and associated
+	 * to the given knowledge name.
+	 * Since multiple knowledge may have the same name, the scopes of the knowledges
+	 * are used to make them unique in the working memory. This function replies
+	 * all the knowledges with the same name that are stored in the working memory
+	 * whatever their scopes.
+	 *
+	 * @param name the base name of the knowledge to search for.
+	 * @return the scopes of the knowledges with the given name in a list.
+	 */
+	@Pure
+	def getDefinedListForName(name : String) : List<ScopedDataName>
+
+	/** Replies if the given knowledge corresponds to a knowledge that is
+	 * stored in the working memory.
+	 *
+	 * <p>Definition of a knowledge is not related to its value. Therefore,
+	 * if the value of the stored knowledge is equal to {@code null}, the
+	 * knowledge is defined with a {@code null} value.
+	 *
+	 * @param id the name to search for.
+	 * @return {@code true} if a knowledge is stored in the working memory. Otherwise
+	 *     {@code false}.
+	 */
+	@Pure
+	def isDefined(id : ScopedDataName) : boolean
+	
+	/** Remove the knowledge from the working memory.
+	 *
+	 * @param id the name to search for.
+	 * @return the value that was stored in the working memory.
+	 */
+	def removeKnowledge(id : ScopedDataName) : Object
+
+	/** Remove from the working memory any knowledge that is associated to a {@code null}
+	 * value.
+	 */
+	def removeNullValuedKnowledges
+
+	/** Replies a resource that enables to have synchronized access to the
+	 * working memory. This resource could be used in a {@code synchronized}
+	 * block of code:
+	 *
+	 * <pre><code>
+	 * synchronized(workingMemory.workingMemoryLock) {
+	 *    ...
+	 * }
+	 * </code></pre>
+	 *
+	 * @return the synchronization resource.
+	 */
+	@Pure
+	def getWorkingMemoryLock : Object
+
+	/** Replies all the defined names stored in the working memory.
+	 *
+	 * <p>CAUTION: The replied stream must be manually synchronized by the caller of this function.
+	 *
+	 * @return the stored knowledge names in a stream.
+	 */
+	@Pure
+	def getDefinedNames : Stream<ScopedDataName>
+
+	/** Replies all the defined names stored in the working memory.
+	 *
+	 * @return the stored knowledge names in an iterable object.
+	 */
+	@Pure
+	def getDefinedNameList : Iterable<ScopedDataName>
+
+	/** Replies the number of knowledges that are stored in the working memory.
+	 *
+	 * @return the number of knowledges.
+	 */
+	@Pure
+	def getMemorySize : long
+
+	/** Replies if the working memory is empty or not.
+	 * The working memory is empty if there is no stored knowledge inside.
+	 *
+	 * @return {@code true} if the working memory is empty.
+	 */
+	@Pure
+	def isMemoryEmpty : boolean
+
+	/** Remove all knowledge from the working memory.
+	 */
+	def clearMemory
+
+}

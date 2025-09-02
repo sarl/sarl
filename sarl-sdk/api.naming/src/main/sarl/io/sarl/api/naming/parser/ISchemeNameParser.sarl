@@ -35,15 +35,36 @@ import java.net.URI
  */
 interface ISchemeNameParser<N extends SarlName> {
 
-	/** Replies the name scheme that is supported by this parser. */
+	/** Replies the name scheme that is supported by this parser.
+	 *
+	 * @return the scheme that is supported by the parser.
+	 */
 	@Pure
 	def getScheme : String
 
-	/** Refactor the given URI in order to fit the name specification. */
+	/** Refactor the given URI in order to fit the name specification.
+	 *
+	 * <p>The key property of an URI for name specification is that its
+	 * path must start with a {@code /} character.
+	 *
+	 * @param name the URI to analyze for obtaining valid URI for name specification.
+	 * @return the fixed URI from that corresponds to the given {@code name}.
+	 */
 	@Pure
 	def refactor(name : URI) : URI
 
-	/** Decode the name.
+	/** Decode the name. The purpose is to extract from the given
+	 * URI all information that is suitable for creating an
+	 * instance of {@code SarlName}.
+	 *
+	 * <p>The provided URI must have a path that is starting with the
+	 * character {@code /}. Otherwise, the returned value will be
+	 * {@code null}.
+	 *
+	 * @param name is the URI containing all relevant information for a {@code SarlName}.
+	 *     It is assumed that the provided URI is valid for name specification as it is
+	 *     defined in {@link #refactor(URI)}.
+	 * @return the {@code SarlName} that is recognized from the URI.
 	 */
 	@Pure
 	def decode(name : URI) : N

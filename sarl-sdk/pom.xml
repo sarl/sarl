@@ -11,6 +11,7 @@
     <module>api.util</module>
     <module>api.core</module>
     <module>api.naming</module>
+    <module>api.workingmemory</module>
     <module>api.probing</module>
     <module>api.javafx</module>
     <module>api.gametgob</module>

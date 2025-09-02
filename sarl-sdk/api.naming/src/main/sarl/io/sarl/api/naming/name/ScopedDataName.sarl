@@ -1,0 +1,135 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.api.naming.name
+
+import static java.lang.Math.*
+
+import java.net.URI
+import org.eclipse.xtext.xbase.lib.Pure
+
+/** 
+ * This class represents a name for a data defined in a scope.
+ *
+ * @author $Author: sgalland$
+ * @author $Author: stedeschi$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.15
+ */
+class ScopedDataName extends SarlName {
+
+	/** Scheme for services. */
+	public static val SCHEME = "data"
+
+	transient var name : String
+
+	transient var scope : String[]
+
+	/** Constructor.
+	 *
+	 * @param uri the uri of the context.
+	 */
+	new (uri : URI) {
+		super(uri)
+	}
+
+	/** Constructor.
+	 *
+	 * @param elements the names that are composing the scoped data name. 
+	 */
+	new (elements : String*) {
+		super(elements.buildURI)
+	}
+
+	/** Build a valid URI for the scoped data name.
+	 *
+	 * @param elements the names that are composing the scoped data name.
+	 * @return the valid URI. 
+	 */
+	static def buildURI(elements : String*) : URI {
+		val path = new StringBuilder
+		for (element : elements) {
+			if (!element.isNullOrEmpty) {
+				path.append("/").append(element)
+			}
+		}
+		return new URI(SCHEME, null, path.toString, null)
+	}
+
+	/** Replies the name of the data. The name of the data is the
+	 * last segment of the URI of this {@code SarlName}.
+	 *
+	 * @return the name of the knowledge.
+	 */
+	@Pure
+	def getName : String {
+		ensureNameScope()
+		this.name
+	}
+	
+	/** Replies the scope of the data. The scope of the data is the
+	 * segments, excluding the last segment, of the URI of this {@code SarlName}.
+	 *
+	 * @return the scope of the knowledge.
+	 */
+	@Pure
+	def getScope : String[] {
+		ensureNameScope()
+		this.scope
+	}
+
+	private def ensureNameScope(segments : String[], start : int) {
+		if (segments.length > 1) {
+			val nsize = max(segments.length - start - 1, 0)
+			this.scope = newArrayOfSize(nsize)
+			System::arraycopy(segments, start, this.scope, 0, nsize)
+		} else {
+			this.scope = newArrayOfSize(0)
+		}
+		this.name = segments.get(segments.length - 1)
+	}
+
+	private def ensureNameScope : void {
+		if (this.scope === null) {
+			val uri = toURI
+			if (uri === null) {
+				this.name = null
+				this.scope = newArrayOfSize(0)
+			} else {
+				val specificPart = uri.path
+				if (specificPart.isNullOrEmpty) {
+					this.name = null
+					this.scope = newArrayOfSize(0)
+				} else {
+					val segments = specificPart.split("/+")
+					if (segments.length > 0) {
+						segments.ensureNameScope(if (segments.get(0).isEmpty) 1 else 0)
+					} else {
+						this.name = null
+						this.scope = newArrayOfSize(0)
+					}
+				}
+			}
+		}
+	}
+
+}

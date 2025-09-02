@@ -45,7 +45,7 @@ interface INameParser {
 	def decode(name : String) : URI {
 		if (!name.isNullOrEmpty) {
 			try {
-				var uri = URI::create(name)
+				val uri = URI::create(name)
 				return normalize(uri)
 			} catch (ex : Throwable) {
 				//

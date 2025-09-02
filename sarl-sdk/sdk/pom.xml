@@ -26,6 +26,10 @@
     </dependency>
     <dependency>
       <groupId>io.sarl.sdk</groupId>
+      <artifactId>api.workingmemory</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sarl.sdk</groupId>
       <artifactId>api.probing</artifactId>
     </dependency>
   </dependencies>

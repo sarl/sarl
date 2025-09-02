@@ -56,9 +56,11 @@ abstract class AbstractSchemeNameParser<N extends SarlName> implements ISchemeNa
 	 * @param maxElements is the expected maximum number of path components.
 	 * @param lastIsInteger indicates if the last component could be an integer. In this case, 
 	 * the expected number of not-integer components becomes [{@code minElements}, {@code maxElements - 1}]. 
+	 * @param allowFragment indicates if the fragment is accepted in the URI, or not. Default is {@code true}. 
 	 * @return the new URI. 
+	 * @since 0.15
 	 */
-	protected def refactor(uri : URI, minElements : int, maxElements : int, lastIsInteger : boolean = false) : URI {
+	protected def refactor(uri : URI, minElements : int, maxElements : int, lastIsInteger : boolean = false, allowFragment : boolean = true) : URI {
 		val newPath = new StringBuilder
 		if (!uri.host.isNullOrEmpty) {
 			newPath.append("/").append(uri.host)
@@ -81,7 +83,8 @@ abstract class AbstractSchemeNameParser<N extends SarlName> implements ISchemeNa
 		if (!path.empty) {
 			val validatedPath = validatePath(path, minElements, maxElements, lastIsInteger)
 			if (!validatedPath.isNullOrEmpty) {
-				return new URI(uri.scheme, null, validatedPath.toString, uri.fragment)
+				val fgmt = if (allowFragment) uri.fragment else null
+				return new URI(uri.scheme, null, validatedPath.toString, fgmt)
 			}
 		}
 		return null

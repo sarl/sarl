@@ -1,0 +1,204 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.workingmemory
+
+import io.sarl.api.naming.name.ScopedDataName
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.stream.Stream
+import java.util.Comparator
+import java.util.Map
+import java.util.TreeMap
+
+
+/**
+ * Standard skill to access to the agent working memory.
+ * In this skill, the knowledges are stored in a data structure
+ * that is based on a {@code TreeMap}.
+ *
+ * <p>This class is thread-safe.
+ *
+ * @author $Author: stedeschi$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.15
+ */
+skill DictionaryWorkingMemory extends AbstractWorkingMemory {
+
+	static val NULL_VALUE = "null value"
+
+	val localState : TreeMap<ScopedDataName, Object>
+
+	val enableNullValues : AtomicBoolean
+
+	/** Constructor.
+	 *
+	 * @param initialBase the initial content of the working memory. If this argument is not provided,
+	 *     the memory is empty.
+	 * @param comparator the comparator for ensuring unique knowledge identifiers in the memory. If this argument
+	 *     is not provided, the natural order of {@code ScopedDataName} is used.
+	 * @param enableNullValues indicates if the {@code null} values are allowed to be assocated to knowledge in
+	 *     the working memory. Default value is {@code false}.
+	 */
+	new (initialBase : Map<ScopedDataName, Object> = null, comparator : Comparator<ScopedDataName> = null, enableNullValues : boolean = false) {
+		if (comparator === null) {
+			this.localState = new TreeMap
+		} else {
+			this.localState = new TreeMap(comparator)
+		} 
+		this.enableNullValues = new AtomicBoolean(enableNullValues)
+		if (initialBase !== null && !initialBase.isEmpty) {
+			for (entry : initialBase.entrySet) {
+				val knowledge = entry.key
+				val value = entry.value
+				if (knowledge !== null) {
+					if (value !== null || enableNullValues) {
+						this.localState.put(knowledge, value)
+					}
+				}
+			}
+		}
+	}
+
+	@Pure
+	override isNullAllowedInMemory : boolean {
+		this.enableNullValues.get
+	}
+
+	override setNullAllowedInMemory(enable : boolean) {
+		this.enableNullValues.set(enable)
+	}
+
+	@Pure
+	override getKnowledge(id : ScopedDataName, type : Class<T>) : T with T {
+		assert id !== null, "null id is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			var value = this.localState.computeIfAbsent(id) [ throw new KnowledgeMissingException ]
+			if (value === NULL_VALUE) {
+				value = null
+			}
+			if (type === null) {
+				return value as T
+			} else {
+				return type.cast(value)
+			}
+		}
+	}
+
+	override setKnowledge(id : ScopedDataName, value : Object) : Object {
+		assert id !== null, "null id is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			if (value === null && !this.enableNullValues.get) {
+				return this.localState.remove(id)
+			}
+			return this.localState.put(id, if (value === null) NULL_VALUE else value)
+		}
+	}
+
+	override setKnowledgeIfAbsent(id : ScopedDataName, value : Object) {
+		assert id !== null, "null id is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			if (value !== null) {
+				this.localState.putIfAbsent(id, value)
+			}
+		}
+	}
+
+	override setKnowledgeIfPresent(id : ScopedDataName, value : Object) : Object {
+		assert id !== null, "null id is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			if (value === null && !this.enableNullValues.get) {
+				return this.localState.remove(id)
+			}
+			val oldValue = this.localState.get(id)
+			if (oldValue !== null) {
+				this.localState.put(id, if (value === null) NULL_VALUE else value)
+				return if (oldValue === NULL_VALUE) null else oldValue
+			}
+			return null
+		}
+	}
+
+	@Pure
+	override getDefinedForName(name : String) : Stream<ScopedDataName> {
+		assert !name.isNullOrEmpty, "null name is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			return this.localState.keySet.stream.filter [it.name == name]
+		}
+	}
+
+	@Pure
+	override isDefined(id : ScopedDataName) : boolean {
+		assert id !== null, "null id is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			return this.localState.containsKey(id)
+		}
+	}
+
+	override removeKnowledge(id : ScopedDataName) : Object {
+		assert id !== null, "null id is not allowed"
+		synchronized (getWorkingMemoryLock) {
+			return this.localState.remove(id)
+		}
+	}
+
+	override removeNullValuedKnowledges : void {
+		synchronized (getWorkingMemoryLock) {
+			val iterator = this.localState.entrySet.iterator
+			while (iterator.hasNext) {
+				val entry = iterator.next
+				if (entry.value === NULL_VALUE) {
+					iterator.remove
+				}
+			}
+		}
+	}
+
+	@Pure
+	override getDefinedNames : Stream<ScopedDataName> {
+		synchronized (getWorkingMemoryLock) {
+			return this.localState.keySet.stream
+		}
+	}
+
+	@Pure
+	override getMemorySize : long {
+		synchronized (getWorkingMemoryLock) {
+			return this.localState.size
+		}
+	}
+
+	@Pure
+	override isMemoryEmpty : boolean {
+		synchronized (getWorkingMemoryLock) {
+			return this.localState.isEmpty
+		}
+	}
+
+	override clearMemory : void {
+		synchronized (getWorkingMemoryLock) {
+			this.localState.clear
+		}
+	}
+
+}

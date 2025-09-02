@@ -21,11 +21,11 @@
 
 package io.sarl.api.naming.tests.name
 
-import io.sarl.api.naming.name.ProtocolName
-import io.sarl.lang.core.Agent
+import io.sarl.api.naming.name.ScopedDataName
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
+import java.util.UUID
 import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -33,10 +33,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
-import static extension org.mockito.Mockito.*
-import java.util.UUID
 
 /**
  * @author $Author: sgalland$
@@ -44,50 +41,76 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("ScopedDataName")
 @ExtendWith(#[
 	typeof(ContextInitExtension),
 	typeof(JavaVersionCheckExtension)
 ])
-@DisplayName("ProtocolName")
 @Tag("unit")
 @Tag("api")
 @Tag("api-naming")
-class ProtocolNameTest {
+class ScopedDataNameTest {
 
 	@Nullable
-	var uri : URI
+	var kname : String
 
 	@Nullable
-	var protocolId : UUID
-
-	@Nullable
-	var name : ProtocolName
+	var kscope : String[]
 
 	@BeforeEach
 	def setUp : void {
-		this.uri = URI::create("http://www.sarl.io/001#fragment")
-		this.protocolId = UUID::randomUUID
-		this.name = (new ProtocolName(this.uri, this.protocolId) {
-		}).spy
+		this.kname = UUID::randomUUID.toString
+		this.kscope = #{
+			UUID::randomUUID.toString,
+			UUID::randomUUID.toString,
+			UUID::randomUUID.toString
+		}
+	}
+
+	def createURI {
+		URI::create("data:/" + this.kscope.get(0) + "/" + this.kscope.get(1) + "/" + this.kscope.get(2) + "/" + this.kname)
 	}
 
 	@Test
-	def getProtocolId {
-		this.protocolId.assertSame(this.name.protocolId)
+	@DisplayName("getName")
+	def getName_slashSlash {
+		var name = new ScopedDataName(createURI) {}
+		this.kname.assertEquals(name.name)
 	}
 
 	@Test
-	def getAssociatedObject {
-		var ref = this.name.associatedObject
-		ref.assertNull
+	@DisplayName("getScope")
+	def getScope_slashSlash {
+		var name = new ScopedDataName(createURI) {}
+		this.kscope.assertArrayEquals(name.scope)
 	}
 
 	@Test
-	def setAssociatedObject {
-		var spc = typeof(Agent).mock
-		this.name.associatedObject = spc
-		var ref = this.name.associatedObject
-		spc.assertSame(ref)
+	@DisplayName("buildURI()")
+	def buildURI_empty {
+	}
+
+	@Test
+	@DisplayName("buildURI(\"a\")")
+	def buildURI_a {
+		var uri = ScopedDataName::buildURI("a")
+		
+		uri.assertNotNull
+		"data".assertEquals(uri.scheme)
+		"/a".assertEquals(uri.path)
+		uri.authority.isNullOrEmpty.assertTrue
+		uri.fragment.isNullOrEmpty.assertTrue
+		"/a".assertEquals(uri.schemeSpecificPart)
+	}
+
+	@Test
+	@DisplayName("buildURI(\"a\", \"b\")")
+	def buildURI_a_b {
+	}
+
+	@Test
+	@DisplayName("buildURI(\"a\", \"b\", \"c\")")
+	def buildURI_a_b_c {
 	}
 
 }

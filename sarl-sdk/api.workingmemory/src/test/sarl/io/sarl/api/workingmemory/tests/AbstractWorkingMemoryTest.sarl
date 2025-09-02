@@ -1,0 +1,147 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.api.workingmemory.tests
+
+import io.sarl.api.naming.name.ScopedDataName
+import io.sarl.api.workingmemory.AbstractWorkingMemory
+import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.forClass
+import static extension org.mockito.ArgumentMatchers.*
+import static extension org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension)
+])
+@Tag("unit")
+@Tag("api")
+@Tag("api-workingmemory")
+@DisplayName("AbstractWorkingMemory")
+class AbstractWorkingMemoryTest {
+
+	var name : ScopedDataName
+
+	var memory : AbstractWorkingMemory
+
+	@BeforeEach
+	def setup : void {
+		this.name = typeof(ScopedDataName).mock
+		this.memory = typeof(AbstractWorkingMemory).mock
+	}
+
+	@Test
+	@DisplayName("getKnowledge")
+	def getKnowledge : void {
+		this.memory.getKnowledge(typeof(ScopedDataName).any).when.thenCallRealMethod
+
+		this.memory.getKnowledge(this.name).assertNull
+
+		val inId = typeof(ScopedDataName).forClass
+		val inType = typeof(Class).forClass
+		this.memory.verify.getKnowledge(inId.capture, inType.capture).assertNull
+		this.name.assertSame(inId.value)
+		inType.value.assertNull
+	}
+
+	@Test
+	@DisplayName("getDefinedListForName")
+	def getKnowledgeListForName : void {
+		var n1 = typeof(ScopedDataName).mock
+		var n2 = typeof(ScopedDataName).mock
+		var n3 = typeof(ScopedDataName).mock
+
+		this.memory.getDefinedListForName(anyString).when.thenCallRealMethod
+		this.memory.getDefinedForName(anyString).when.thenReturn( #[ n1, n2, n3 ].stream )
+
+		var actual = this.memory.getDefinedListForName("abc")
+
+		val inName = typeof(String).forClass
+		this.memory.verify.getDefinedForName(inName.capture).assertNull
+		"abc".assertEquals(inName.value)
+
+		actual.assertNotNull
+		#[ n1, n2, n3 ].assertArrayEquals(actual)
+	}
+
+	@Test
+	@DisplayName("getDefinedNameList")
+	def getDefinedNameList : void {
+		var n1 = typeof(ScopedDataName).mock
+		var n2 = typeof(ScopedDataName).mock
+		var n3 = typeof(ScopedDataName).mock
+
+		this.memory.getDefinedNameList().when.thenCallRealMethod
+		this.memory.getDefinedNames.when.thenReturn( #[ n1, n2, n3 ].stream )
+
+		var actual = this.memory.getDefinedNameList
+
+		actual.assertNotNull
+		#[ n1, n2, n3 ].assertArrayEquals(actual)
+	}
+
+	@Test
+	@DisplayName("isMemoryEmpty w/ empty")
+	def isMemoryEmpty_empty : void {
+		this.memory.isMemoryEmpty().when.thenCallRealMethod
+		this.memory.getMemorySize.when.thenReturn(0l)
+
+		var actual = this.memory.isMemoryEmpty
+
+		actual.assertTrue
+	}
+
+	@Test
+	@DisplayName("isMemoryEmpty w/o empty")
+	def isMemoryEmpty_notEmpty : void {
+		this.memory.isMemoryEmpty().when.thenCallRealMethod
+		this.memory.getMemorySize.when.thenReturn(1254l)
+
+		var actual = this.memory.isMemoryEmpty
+
+		actual.assertFalse
+	}
+
+	@Test
+	@DisplayName("getWorkingMemoryLock")
+	def getWorkingMemoryLock : void {
+		this.memory.getWorkingMemoryLock().when.thenCallRealMethod
+
+		var actual = this.memory.getWorkingMemoryLock
+
+		this.memory.assertSame(actual)
+	}
+
+}

@@ -107,7 +107,7 @@ class FieldAccessTest {
 	@ParameterizedTest
 	@ValueSource(booleans = #[true, false])
 	@DisplayName("set with valid type")
-	def set_validType(writable : boolean) {
+	def set_validType(writable : boolean) : void {
 		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
 		if (writable) {
 			var old = accessor.set(128)
@@ -126,7 +126,7 @@ class FieldAccessTest {
 	@ParameterizedTest
 	@ValueSource(booleans = #[true, false])
 	@DisplayName("set with invalid type")
-	def set_invalidType(writable : boolean) {
+	def set_invalidType(writable : boolean) : void {
 		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
 		if (writable) {
 			typeof(IllegalArgumentException).assertException [

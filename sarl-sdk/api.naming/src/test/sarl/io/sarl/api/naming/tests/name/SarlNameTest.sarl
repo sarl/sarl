@@ -36,7 +36,6 @@ import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.Mockito.*
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -67,6 +66,7 @@ class SarlNameTest {
 	}
 
 	@Test
+	@DisplayName("compareTo(equal)")
 	def compareTo_equal {
 		var uri2 = URI::create("space://0001/0001#fragment")
 		var name2 = new SarlName(uri2) {
@@ -75,7 +75,8 @@ class SarlNameTest {
 	}
 
 	@Test
-	def compareTo_lower {
+	@DisplayName("compareTo(upper)")
+	def compareTo_upper {
 		var uri2 = URI::create("space://0001/0002#fragment")
 		var name2 = new SarlName(uri2) {
 		}
@@ -83,7 +84,8 @@ class SarlNameTest {
 	}
 
 	@Test
-	def compareTo_greater {
+	@DisplayName("compareTo(lower)")
+	def compareTo_lower {
 		var uri2 = URI::create("space://0001/0000#fragment")
 		var name2 = new SarlName(uri2) {
 		}
@@ -91,21 +93,213 @@ class SarlNameTest {
 	}
 
 	@Test
+	@DisplayName("this <=> equal")
+	def operator_spaceship_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name <=> name2).assertZero
+	}
+
+	@DisplayName("this <=> upper")
+	def operator_spaceship_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name <=> name2).assertStrictlyNegative
+	}
+
+	@Test
+	@DisplayName("this <=> lower")
+	def operator_spaceship_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name <=> name2).assertStrictlyPositive
+	}
+
+	@Test
+	@DisplayName("this < equal")
+	def operator_lessThan_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name < name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this < upper")
+	def operator_lessThan_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name < name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this < lower")
+	def operator_lessThan_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name < name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this > equal")
+	def operator_greaterThan_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name > name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this > upper")
+	def operator_greaterThan_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name > name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this > lower")
+	def operator_greaterThan_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name > name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this <= equal")
+	def operator_lessEqualsThan_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name <= name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this <= upper")
+	def operator_lessEqualsThan_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name <= name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this <= lower")
+	def operator_lessEqualsThan_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name <= name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this >= equal")
+	def operator_greaterEqualsThan_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name >= name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this >= upper")
+	def operator_greaterEqualsThan_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name >= name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this >= lower")
+	def operator_greaterEqualsThan_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name >= name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this == equal")
+	def operator_equals_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name == name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this == upper")
+	def operator_equals_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name == name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this == lower")
+	def operator_equals_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name == name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this != equal")
+	def operator_notEquals_equal {
+		var uri2 = URI::create("space://0001/0001#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name != name2).assertFalse
+	}
+
+	@Test
+	@DisplayName("this != upper")
+	def operator_notEquals_upper {
+		var uri2 = URI::create("space://0001/0002#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name != name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("this != lower")
+	def operator_notEquals_lower {
+		var uri2 = URI::create("space://0001/0000#fragment")
+		var name2 = new SarlName(uri2) {
+		}
+		(this.name != name2).assertTrue
+	}
+
+	@Test
+	@DisplayName("toURI")
 	def toURI {
 		this.uri.assertSame(this.name.toURI)
 	}
 
 	@Test
+	@DisplayName("getFragment")
 	def getFragment {
 		this.uri.fragment.assertSame(this.name.getFragment)
 	}
 
 	@Test
+	@DisplayName("hasFragment")
 	def hasFragment {
 		this.name.hasFragment.assertTrue
 	}
 
 	@Test
+	@DisplayName("getScheme")
 	def getScheme {
 		"space".assertEquals(this.name.scheme)
 	}

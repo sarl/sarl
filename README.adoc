@@ -202,7 +202,7 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 * image:https://avatars.githubusercontent.com/tpiotrow[width="50px",link=https://github.com/tpiotrow] Thomas PIOTROWSKI, maven configuration.
 * image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://www.sebastianrodriguez.com.ar[Sebastian RODRIGUEZ], founder, original and active author.
 * image:https://avatars.githubusercontent.com/ssardina[width="50px",link=https://github.com/ssardina] Sebastian SARDINA, documentation contributor.
-* image:https://avatars.githubusercontent.com/stefanotedeschi[width="50px",link=https://github.com/stefanotedeschi] Stefano TEDESCHI, BSPL protocol implementation in SARL toolchain.
+* image:https://avatars.githubusercontent.com/stefanotedeschi[width="50px",link=https://github.com/stefanotedeschi] Stefano TEDESCHI, BSPL protocol implementation with the SARL toolchain.
 
 
 == 7. License of SARL

@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.sdk</groupId>
-  <artifactId>api.naming</artifactId>
+  <artifactId>api.workingmemory</artifactId>
   <version>0.15.0-SNAPSHOT</version>
-  <name>SARL Naming API</name>
-  <description>Naming Library of the SARL SDK</description>
+  <name>Agent Working Memory API</name>
+  <description>Working memory for SARL agents</description>
   <packaging>jar</packaging>
   <url>http://www.sarl.io</url>
   <properties>
@@ -17,14 +17,8 @@
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.sarl.baseutils</groupId>
-      <artifactId>afc.extension</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.eclipse.xtext</groupId>
-          <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>io.sarl.sdk</groupId>
+      <artifactId>api.naming</artifactId>
     </dependency>
     <dependency>
       <groupId>io.sarl.lang</groupId>
@@ -182,7 +176,7 @@
 						Bundle-SymbolicName: ${project.groupId}.${project.artifactId};singleton:=true
 						Automatic-Module-Name: ${project.groupId}.${project.artifactId}
 						Bundle-Vendor: ${sarl.vendor}
-						Export-Package: io.sarl.api.naming.*
+						Export-Package: io.sarl.api.workingmemory.*
 					</bnd>
         </configuration>
       </plugin>

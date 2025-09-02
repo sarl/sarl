@@ -72,17 +72,20 @@ class ArtifactNameTest {
 	}
 
 	@Test
+	@DisplayName("getArtifactId")
 	def getArtifactId {
 		this.artifactId.assertSame(this.name.artifactId)
 	}
 
 	@Test
+	@DisplayName("getAssociatedObject")
 	def getAssociatedObject {
 		var ref = this.name.associatedObject
 		ref.assertNull
 	}
 
 	@Test
+	@DisplayName("setAssociatedObject")
 	def setAssociatedObject {
 		var spc = typeof(Agent).mock
 		this.name.associatedObject = spc
