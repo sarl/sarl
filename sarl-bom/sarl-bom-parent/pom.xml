@@ -16,7 +16,6 @@
     <module>sarl-app-bom</module>
     <module>sarl-sre-bom</module>
     <module>sarl-docs-bom</module>
-    <module>sarl-bspl-bom</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

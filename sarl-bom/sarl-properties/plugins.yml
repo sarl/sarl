@@ -27,10 +27,6 @@ io.sarl.baseutils:
 io.sarl.bom:
   sarl-properties: $sarl.version
 
-io.sarl.bspl:
-  bspl.lang.compiler: $sarl.version
-  bspl.sdk: $sarl.version
-
 io.sarl.lang:
   batchcompiler: $sarl.version
   core: $sarl.version
