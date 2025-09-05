@@ -12,25 +12,25 @@
     <manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
   </properties>
   <dependencies>
-      <dependency>
-		  <groupId>io.sarl.apputils</groupId>
-		  <artifactId>uiextensions</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.core.resources</artifactId>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jdt</groupId>
-        <artifactId>org.eclipse.jdt.ui</artifactId>
-        <scope>provided</scope>
-      </dependency>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.core.runtime</artifactId>
-	        <scope>provided</scope>
-		</dependency>
+    <dependency>
+      <groupId>io.sarl.apputils</groupId>
+      <artifactId>uiextensions</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.resources</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>org.eclipse.jdt.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>io.sarl.baseutils</groupId>
       <artifactId>tests.api</artifactId>
@@ -121,27 +121,27 @@
               </replacements>
             </configuration>
           </execution>
-			<execution>
-				<id>generate-sarl-classpath-container</id>
-				<phase>generate-sources</phase>
-				<goals>
-					<goal>replace</goal>
-				</goals>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<file>${project.basedir}/src/main/resources/io/sarl/apputils/eclipseextensions/buildpath/sarl-bundles.properties</file>
-					<regexFlags>
-						<regexFlag>MULTILINE</regexFlag>
-						<regexFlag>DOTALL</regexFlag>
-					</regexFlags>
-					<replacements>
-						<replacement>
-							<token>^(SARL_BUNDLES *= *)(.*?)([ \t\n\r\f\\]*)$</token>
-							<value>$1${sarl.library.bundles}$3</value>
-						</replacement>
-					</replacements>
-				</configuration>
-			</execution>
+          <execution>
+            <id>generate-sarl-classpath-container</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <encoding>${project.build.sourceEncoding}</encoding>
+              <file>${project.basedir}/src/main/resources/io/sarl/apputils/eclipseextensions/buildpath/sarl-bundles.properties</file>
+              <regexFlags>
+                <regexFlag>MULTILINE</regexFlag>
+                <regexFlag>DOTALL</regexFlag>
+              </regexFlags>
+              <replacements>
+                <replacement>
+                  <token>^(SARL_BUNDLES *= *)(.*?)([ \t\n\r\f\\]*)$</token>
+                  <value>$1${sarl.library.bundles}$3</value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -279,7 +279,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.7</version>
+            <version>3.2.8</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

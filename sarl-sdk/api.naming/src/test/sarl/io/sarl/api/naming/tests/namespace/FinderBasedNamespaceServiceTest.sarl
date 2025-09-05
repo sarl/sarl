@@ -37,7 +37,6 @@ import io.sarl.api.naming.tests.namespace.mocks.MyContext3
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.annotation.PrivateAPI
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
 import java.util.Collections
@@ -75,26 +74,19 @@ import static extension org.mockito.Mockito.spy
 @Tag("api-naming")
 class FinderBasedNamespaceServiceTest {
 
-	@Nullable
 	var service : FinderBasedNamespaceService
 
-	@Nullable
 	var nameParser : UriBasedNameParser
 
-	@Nullable
 	var fieldAccessValidator : AnnotationFieldAccessValidator
 
 	@SuppressWarnings("raw_type")
-	@Nullable
 	var schemeParser : ISchemeNameParser
 
-	@Nullable
 	var finder : INamespaceFinder<SarlName, Object>
 
-	@Nullable
 	var cid0 : UUID
 
-	@Nullable
 	var ctx0 : AgentContext
 
 	@SuppressWarnings("raw_type", "use_reserved_sarl_annotation")

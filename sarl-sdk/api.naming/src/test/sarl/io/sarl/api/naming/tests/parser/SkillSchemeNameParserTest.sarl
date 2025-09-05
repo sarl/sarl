@@ -27,7 +27,6 @@ import io.sarl.api.naming.parser.UriBasedNameParser
 import io.sarl.api.naming.parser.SkillSchemeNameParser
 import io.sarl.api.naming.tests.mocks.CapacityMock
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
 import java.util.UUID
@@ -66,7 +65,6 @@ class SkillSchemeNameParserTest {
 
 	protected static val SKILL_ID = typeof(CapacityMock).name
 
-	@Nullable
 	var parser : UriBasedNameParser
 
 	@BeforeEach

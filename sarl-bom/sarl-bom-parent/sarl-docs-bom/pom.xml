@@ -121,11 +121,11 @@
         <artifactId>flexmark</artifactId>
         <version>${flexmark.version}</version>
       </dependency>
-	<dependency>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-text</artifactId>
-		<version>${apache.commons.text}</version>
-	</dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-text</artifactId>
+        <version>${apache.commons.text}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -168,7 +168,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.7</version>
+            <version>3.2.8</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

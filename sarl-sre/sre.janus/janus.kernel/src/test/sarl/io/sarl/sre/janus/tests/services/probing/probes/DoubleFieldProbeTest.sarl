@@ -33,9 +33,9 @@ import io.sarl.sre.janus.services.probing.probes.DoubleFieldProbe
 import io.sarl.sre.janus.tests.framework.SreTestUtilities
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.PropertyRestoreExtension
+import io.sarl.tests.api.Nullable
 import java.net.URI
 import java.util.UUID
-import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

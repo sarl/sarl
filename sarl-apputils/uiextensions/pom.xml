@@ -12,25 +12,25 @@
     <manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
   </properties>
   <dependencies>
-      <dependency>
-		<groupId>io.sarl.lang</groupId>
-		<artifactId>compiler</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.core.resources</artifactId>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jdt</groupId>
-        <artifactId>org.eclipse.jdt.ui</artifactId>
-        <scope>provided</scope>
-      </dependency>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.core.runtime</artifactId>
-	        <scope>provided</scope>
-		</dependency>
+    <dependency>
+      <groupId>io.sarl.lang</groupId>
+      <artifactId>compiler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.resources</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>org.eclipse.jdt.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>io.sarl.baseutils</groupId>
       <artifactId>tests.api</artifactId>
@@ -258,7 +258,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.7</version>
+            <version>3.2.8</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

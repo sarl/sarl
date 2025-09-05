@@ -37,7 +37,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>4.2.0</version>
+        <version>4.2.1</version>
         <executions>
           <execution>
             <id>compute-sarl-properties</id>
@@ -180,7 +180,7 @@ outPropertiesFile.withOutputStream {
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <type>pom</type>
-            <version>4.0.24</version>
+            <version>5.0.0</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -217,7 +217,7 @@ outPropertiesFile.withOutputStream {
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.7</version>
+            <version>3.2.8</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

@@ -68,8 +68,8 @@
         <version>${sarl.version}</version>
       </dependency>
       <dependency>
-	<groupId>io.sarl.apputils</groupId>
-	<artifactId>uiextensions</artifactId>
+        <groupId>io.sarl.apputils</groupId>
+        <artifactId>uiextensions</artifactId>
         <version>${sarl.version}</version>
       </dependency>
       <dependency>
@@ -140,7 +140,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
-        <version>${jackson.version}</version>
+        <version>${jackson.annotations.version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
@@ -175,7 +175,7 @@
       <dependency>
         <groupId>org.eclipse.jdt</groupId>
         <artifactId>org.eclipse.jdt.ui</artifactId>
-        <version>${eclipse.jdt.version}</version>
+        <version>${eclipse.jdt.ui.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -219,7 +219,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.7</version>
+            <version>3.2.8</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

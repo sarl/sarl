@@ -26,7 +26,6 @@ import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.lang.reflect.Field
-import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -59,15 +58,11 @@ class FieldAccessTest {
 		public var fld : int = 34
 	}
 
-	@Nullable
 	var field : Field
 
-	@Nullable
 	var objectMock : ObjectMock
 
-	@Nullable
 	var nameMock : SarlName
-
 	
 	@BeforeEach
 	def setUp : void {

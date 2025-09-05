@@ -32,7 +32,6 @@ import io.sarl.api.naming.tests.namespace.mocks.MyService0
 import io.sarl.api.naming.tests.namespace.mocks.MySkill0
 import io.sarl.api.naming.tests.namespace.mocks.MySpace0
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.lang.reflect.Field
 import java.util.UUID
@@ -60,7 +59,6 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("api-naming")
 class CapacityFieldAccessValidatorTest {
 
-	@Nullable
 	var validator : CapacityFieldAccessValidator
 
 	@BeforeEach

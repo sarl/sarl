@@ -26,7 +26,6 @@ import io.sarl.api.naming.name.SpaceName
 import io.sarl.api.naming.parser.UriBasedNameParser
 import io.sarl.api.naming.parser.SpaceSchemeNameParser
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
 import java.util.UUID
@@ -61,7 +60,6 @@ class SpaceSchemeNameParserTest {
 
 	protected static val SPACE_ID = "bb0d92be-1730-4453-a284-bd66d31b853f"
 
-	@Nullable
 	var parser : UriBasedNameParser
 
 	@BeforeEach

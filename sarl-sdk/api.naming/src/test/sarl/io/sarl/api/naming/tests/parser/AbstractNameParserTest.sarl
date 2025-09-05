@@ -28,7 +28,6 @@ import io.sarl.api.naming.parser.ServiceSchemeNameParser
 import io.sarl.api.naming.parser.SkillSchemeNameParser
 import io.sarl.api.naming.parser.SpaceSchemeNameParser
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
 import org.junit.jupiter.api.BeforeEach
@@ -57,7 +56,6 @@ import io.sarl.api.naming.parser.UriBasedNameParser
 @Tag("api-naming")
 class NameParserTest {
 
-	@Nullable
 	var parser : UriBasedNameParser
 
 	@BeforeEach

@@ -27,7 +27,6 @@ import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
 import java.util.UUID
-import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -54,19 +53,14 @@ import static extension org.mockito.Mockito.*
 @Tag("api-naming")
 class AgentNameTest {
 
-	@Nullable
 	var uri : URI
 
-	@Nullable
 	var contextId : UUID
 
-	@Nullable
 	var spaceId : UUID
 
-	@Nullable
 	var agentId : UUID
 
-	@Nullable
 	var name : AgentName
 
 	@BeforeEach

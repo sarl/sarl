@@ -26,7 +26,6 @@ import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
 import java.util.UUID
-import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -51,10 +50,8 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("api-naming")
 class ScopedDataNameTest {
 
-	@Nullable
 	var kname : String
 
-	@Nullable
 	var kscope : String[]
 
 	@BeforeEach

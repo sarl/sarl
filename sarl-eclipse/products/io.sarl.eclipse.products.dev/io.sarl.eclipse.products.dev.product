@@ -281,11 +281,9 @@
       <feature id="org.eclipse.xtext.redist" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.language.sdk" installMode="root"/>
       <feature id="org.eclipse.xtext.xtext.ui" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient5.feature" installMode="root"/>
       <feature id="org.eclipse.jdt" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
       <feature id="org.eclipse.xtext.xtext.ui.graph" installMode="root"/>
-      <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.runtime.sdk" installMode="root"/>
       <feature id="org.eclipse.xtend.sdk" installMode="root"/>
@@ -293,17 +291,13 @@
       <feature id="org.eclipse.emf.mwe2.launcher.source" installMode="root"/>
       <feature id="org.eclipse.xtext.sdk" installMode="root"/>
       <feature id="org.eclipse.xtext.runtime" installMode="root"/>
-      <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.examples" installMode="root"/>
       <feature id="org.eclipse.rcp" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
       <feature id="org.eclipse.xtend.lib" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclientjava.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
       <feature id="org.eclipse.platform" installMode="root"/>
       <feature id="org.eclipse.epp.package.java.feature" installMode="root"/>

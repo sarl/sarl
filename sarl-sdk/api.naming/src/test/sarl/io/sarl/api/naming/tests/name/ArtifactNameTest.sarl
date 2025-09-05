@@ -26,7 +26,6 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import java.net.URI
-import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -54,13 +53,10 @@ import java.util.UUID
 @Tag("api-naming")
 class ArtifactNameTest {
 
-	@Nullable
 	var uri : URI
 
-	@Nullable
 	var artifactId : UUID
 
-	@Nullable
 	var name : ArtifactName
 
 	@BeforeEach
