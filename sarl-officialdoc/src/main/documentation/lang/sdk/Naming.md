@@ -211,6 +211,8 @@ It is possible to create scoped data name programmatically:
 
 [:Success:]
 	package io.sarl.docs.reference.naming
+	import java.net.URI
+	import io.sarl.api.naming.name.ScopedDataName
 	agent A {
 		def block : void {
 		[:On]
@@ -230,10 +232,11 @@ The [:scopeddataname:] class provides two way for making the creation of a scope
 
 [:Success:]
 	package io.sarl.docs.reference.naming
+	import io.sarl.api.naming.name.ScopedDataName
 	agent A {
 		def block : void {
 		[:On]
-			var name = new [:scopeddataname](ScopedDataName)(ScopedDataName::[:scopeddatabuilduri](buildURI)("scope1", "scope2", "name"))
+			var name = new ScopedDataName(ScopedDataName::[:scopeddatabuilduri](buildURI)("scope1", "scope2", "name"))
 		[:Off]
 		}
 	}
@@ -243,6 +246,7 @@ The [:scopeddataname:] class provides two way for making the creation of a scope
 
 [:Success:]
 	package io.sarl.docs.reference.naming
+	import io.sarl.api.naming.name.ScopedDataName
 	agent A {
 		def block : void {
 		[:On]

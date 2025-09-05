@@ -106,7 +106,7 @@ And, the function [:unregisterfct:] fires the event `ParticipantLeft`.
 [:Fact:]{typeof(io.sarl.api.core.ParticipantLeft)}
 
 
-##	Defining a Space
+## Defining a Space
 
 The definition of a new space must be done with object-oriented language's features.
 

@@ -40,6 +40,7 @@ For using an working memory in your agent, you have not to do more than using th
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses [:workingmemorycapacity](WorkingMemory)
@@ -67,6 +68,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -84,6 +86,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -101,6 +104,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -122,6 +126,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.workingmemory.[:knowledgemissingexception](KnowledgeMissingException)
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -144,6 +149,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	import io.sarl.api.core.Logging
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory, Logging
@@ -165,6 +171,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.core.Logging
 	import io.sarl.api.workingmemory.WorkingMemory
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory, Logging
@@ -184,6 +191,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.core.Logging
 	import io.sarl.api.workingmemory.WorkingMemory
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory, Logging
@@ -207,6 +215,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.core.Logging
 	import io.sarl.api.workingmemory.WorkingMemory
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory, Logging
@@ -225,6 +234,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.core.Logging
 	import io.sarl.api.workingmemory.WorkingMemory
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory, Logging
@@ -248,6 +258,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -265,6 +276,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -282,6 +294,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	package io.sarl.docs.reference.workingmemory
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory
@@ -301,6 +314,7 @@ This capacity abstracts the underlying storage mechanism, offering a uniform API
 	import io.sarl.api.core.Logging
 	import io.sarl.api.workingmemory.WorkingMemory
 	import io.sarl.api.naming.name.ScopedDataName
+	import io.sarl.lang.core.Event
 	[:On]
 	agent A {
 		uses WorkingMemory, Logging
