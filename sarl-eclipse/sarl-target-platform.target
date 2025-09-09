@@ -39,7 +39,7 @@
 			  <dependency>
 				  <groupId>io.sarl.lang</groupId>
 				  <artifactId>compiler</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -49,7 +49,7 @@
 			  <dependency>
 				  <groupId>io.sarl.baseutils</groupId>
 				  <artifactId>afc.extension</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -59,7 +59,7 @@
 			  <dependency>
 				  <groupId>io.sarl.sdk</groupId>
 				  <artifactId>sdk</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -69,7 +69,7 @@
 			  <dependency>
 				  <groupId>io.sarl.sdk</groupId>
 				  <artifactId>api.experienceindex</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -79,7 +79,7 @@
 			  <dependency>
 				  <groupId>io.sarl.lang</groupId>
 				  <artifactId>pythongenerator</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -99,7 +99,7 @@
 			  <dependency>
 				  <groupId>io.sarl.baseutils</groupId>
 				  <artifactId>tests.api</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -109,7 +109,7 @@
 			  <dependency>
 				  <groupId>io.sarl.lang</groupId>
 				  <artifactId>compiler.tests</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -119,7 +119,7 @@
 			  <dependency>
 				  <groupId>io.sarl.apputils</groupId>
 				  <artifactId>bootiqueapp</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -129,7 +129,7 @@
 			  <dependency>
 				  <groupId>io.sarl.sre.janus</groupId>
 				  <artifactId>janus.network</artifactId>
-				  <version>3.0.15.0-SNAPSHOT</version>
+				  <version>3.0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -139,7 +139,7 @@
 			  <dependency>
 				  <groupId>io.sarl.apputils</groupId>
 				  <artifactId>eclipseextensions</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>
@@ -149,7 +149,7 @@
 			  <dependency>
 				  <groupId>io.sarl.apputils</groupId>
 				  <artifactId>uiextensions</artifactId>
-				  <version>0.15.0-SNAPSHOT</version>
+				  <version>0.15.0</version>
 				  <type>jar</type>
 			  </dependency>
 		  </dependencies>

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.apputils</groupId>
   <artifactId>uiextensions</artifactId>
-  <version>0.15.0-SNAPSHOT</version>
+  <version>0.15.0</version>
   <name>SARL UI Extensions</name>
   <description>Definition of extensions for the SARL UI plugins</description>
   <packaging>jar</packaging>

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.baseutils</groupId>
   <artifactId>tests.api</artifactId>
-  <version>0.15.0-SNAPSHOT</version>
+  <version>0.15.0</version>
   <name>SARL Tests Utilities</name>
   <description>Definition of several utilities for tests</description>
   <packaging>jar</packaging>

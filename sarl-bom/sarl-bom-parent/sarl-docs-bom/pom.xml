@@ -3,7 +3,7 @@
   <parent>
     <groupId>io.sarl.bom</groupId>
     <artifactId>sarl-bom-parent</artifactId>
-    <version>0.15.0-SNAPSHOT</version>
+    <version>0.15.0</version>
   </parent>
   <artifactId>sarl-docs-bom</artifactId>
   <packaging>pom</packaging>

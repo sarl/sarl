@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.cli</groupId>
   <artifactId>janusnode</artifactId>
-  <version>3.0.15.0-SNAPSHOT</version>
+  <version>3.0.15.0</version>
   <name>Janus Node</name>
   <description>Command-line version of the Janus framework with network</description>
   <packaging>jar</packaging>
@@ -11,7 +11,7 @@
     <name>${sarl.vendor}</name>
   </organization>
   <properties>
-    <sarl.version>0.15.0-SNAPSHOT</sarl.version>
+    <sarl.version>0.15.0</sarl.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cliRunnerName>janusnode</cliRunnerName>
     <cliRunnerMainClass>io.sarl.sre.janus.network.boot.internal.cli.NetworkBoot</cliRunnerMainClass>
@@ -49,7 +49,7 @@
       <plugin>
         <groupId>io.sarl.lang</groupId>
         <artifactId>sarl-maven-plugin</artifactId>
-        <version>0.15.0-SNAPSHOT</version>
+        <version>0.15.0</version>
         <executions>
           <execution>
             <id>sarl-compiler-init</id>

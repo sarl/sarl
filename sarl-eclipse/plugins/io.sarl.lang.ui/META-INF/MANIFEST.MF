@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: io.sarl.lang.ui
 Bundle-Vendor: SARL.io
-Bundle-Version: 0.15.0.qualifier
+Bundle-Version: 0.15.0
 Export-Package: io.sarl.lang.ui,
  io.sarl.lang.ui.bugs.bug1115,
  io.sarl.lang.ui.codebuilder,
