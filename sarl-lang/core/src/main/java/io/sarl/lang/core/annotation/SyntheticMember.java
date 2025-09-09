@@ -29,9 +29,9 @@ import java.lang.annotation.Target;
 /** Annotation for marking an element to be created by the SARL compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @Target({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

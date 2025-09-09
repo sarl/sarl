@@ -26,9 +26,9 @@ import org.eclipse.osgi.util.NLS
 /** Messages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.experienceindex 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.experienceindex
  * @since 0.6
  * @ExcludeFromApidoc
  */

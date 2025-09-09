@@ -39,9 +39,9 @@ import jakarta.inject.Inject;
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvaluatorReceiver {

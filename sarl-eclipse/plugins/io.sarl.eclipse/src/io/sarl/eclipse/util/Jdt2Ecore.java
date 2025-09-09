@@ -90,9 +90,9 @@ import io.sarl.lang.util.Utils;
  * <p>This class extends the {@link SarlUtils} from the {@code io.sarl.lang} project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @Singleton
 @SuppressWarnings("restriction")
@@ -819,9 +819,9 @@ public class Jdt2Ecore {
 	/** Iterator on the super types of a given type.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class SuperTypeIterator implements Iterator<IType> {
 
@@ -945,9 +945,9 @@ public class Jdt2Ecore {
 	/** Provider of SARL formal parameters from a the JDT formal parameter list.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class JdtFormalParameterList implements FormalParameterProvider {
 
@@ -1038,9 +1038,9 @@ public class Jdt2Ecore {
 	/** The interface permits to find the JDT definition of a type.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface TypeFinder {
@@ -1059,9 +1059,9 @@ public class Jdt2Ecore {
 	/** Parameter builder.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	protected interface ParameterBuilder {
@@ -1071,9 +1071,9 @@ public class Jdt2Ecore {
 	/** Type parameter builder.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	@FunctionalInterface
@@ -1084,9 +1084,9 @@ public class Jdt2Ecore {
 	/** Action builder.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface ActionBuilder {
@@ -1101,9 +1101,9 @@ public class Jdt2Ecore {
 	/** Constructor builder.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	@FunctionalInterface
 	public interface ConstructorBuilder {
@@ -1117,9 +1117,9 @@ public class Jdt2Ecore {
 	/** The interface permits to characterize the context of the JDT 2 Ecore conversion.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	public interface ConversionContext {
@@ -1154,9 +1154,9 @@ public class Jdt2Ecore {
 	 * current package and imported types.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	@FunctionalInterface
@@ -1176,9 +1176,9 @@ public class Jdt2Ecore {
 	 * current package and imported types.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	protected static class TypeBasedLocalTypeResolver  implements LocalTypeResolver, Serializable {
@@ -1214,9 +1214,9 @@ public class Jdt2Ecore {
 	/** A conversion context that enables to add local declarations of type parameters.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	protected static class LocalConversionContext implements ConversionContext, Serializable {
@@ -1271,9 +1271,9 @@ public class Jdt2Ecore {
 	/** A conversion context based on an Ecore type declaration.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	protected static class EcoreTypeConversionContext implements ConversionContext, Serializable {

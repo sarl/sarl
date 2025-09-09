@@ -26,9 +26,9 @@ import java.util.Collection
 /** List of all the issue codes that are related to the SARL core SDK.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 3.0.12.0 in Janus SRE
  * @since 0.15 in SARL SDK
  */

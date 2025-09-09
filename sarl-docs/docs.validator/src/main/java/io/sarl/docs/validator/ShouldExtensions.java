@@ -68,9 +68,9 @@ import io.sarl.lang.core.util.SarlUtils;
 /** Should functions for the documentation facts.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 public final class ShouldExtensions {
@@ -943,9 +943,9 @@ public final class ShouldExtensions {
 	/** Iterator on array.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 */
 	private static class ArrayIterator implements Iterator<Object> {
 
@@ -997,9 +997,9 @@ public final class ShouldExtensions {
 	/** Major exception in a should function.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 */
 	public static class ShouldException extends RuntimeException {
 

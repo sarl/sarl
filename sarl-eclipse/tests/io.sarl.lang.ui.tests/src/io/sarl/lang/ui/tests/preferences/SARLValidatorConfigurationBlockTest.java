@@ -41,9 +41,9 @@ import io.sarl.lang.validation.StandardSarlConfigurableIssueCodesProvider;
 /** This class tests the {@link SarlUtils} for SARL.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui.tests 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui.tests
  * @since 0.15
  */
 @SuppressWarnings("all")
@@ -90,9 +90,9 @@ public class SARLValidatorConfigurationBlockTest extends AbstractSarlTest {
 	 * for aving a direct access to the tested functions.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui.tests 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui.tests
 	 * @since 0.15
 	 */
 	private static class MockSARLValidatorConfigurationBlock extends SARLValidatorConfigurationBlock {

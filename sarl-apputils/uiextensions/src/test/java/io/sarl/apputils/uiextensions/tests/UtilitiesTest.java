@@ -41,9 +41,9 @@ import io.sarl.apputils.uiextensions.Utilities;
 /** Tests for {@link Utilities}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 @SuppressWarnings("all")

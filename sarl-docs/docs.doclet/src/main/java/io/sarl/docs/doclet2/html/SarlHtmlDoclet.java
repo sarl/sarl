@@ -136,9 +136,9 @@ import jdk.javadoc.doclet.Taglet;
  * previous SARL doclet (for Java 8) to Java 11 and higher API.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class SarlHtmlDoclet extends AbstractDoclet {
@@ -1178,9 +1178,9 @@ public class SarlHtmlDoclet extends AbstractDoclet {
 	/** Abstract definition of a CLI option.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	public static abstract class Option implements Doclet.Option, Comparable<Option> {

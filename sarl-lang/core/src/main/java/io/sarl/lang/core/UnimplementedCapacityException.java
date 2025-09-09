@@ -31,9 +31,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * {@link Agent#setSkill(Skill, Class...)} or {@link Agent#setSkillIfAbsent(Skill, Class...)}.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public class UnimplementedCapacityException extends RuntimeException {
 

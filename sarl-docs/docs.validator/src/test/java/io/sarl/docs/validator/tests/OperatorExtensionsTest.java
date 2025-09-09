@@ -35,9 +35,9 @@ import io.sarl.docs.validator.OperatorExtensions;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.15
  */
 @SuppressWarnings("all")

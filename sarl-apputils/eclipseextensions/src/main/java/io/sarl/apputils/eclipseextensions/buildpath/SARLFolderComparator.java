@@ -29,9 +29,9 @@ import org.eclipse.core.runtime.IPath;
 /** Comparator of folders according to the standard SARL project structure.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public class SARLFolderComparator implements Comparator<IFolder> {

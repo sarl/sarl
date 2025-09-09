@@ -37,9 +37,9 @@ import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
  * SRE.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfiguration {
@@ -58,9 +58,9 @@ public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfig
 	 * making easier the cancellation.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @sincec 0.7
 	 */
 	private class LaunchProcess extends AbstractLaunchProcess<SARLApplicationLaunchConfiguration> {

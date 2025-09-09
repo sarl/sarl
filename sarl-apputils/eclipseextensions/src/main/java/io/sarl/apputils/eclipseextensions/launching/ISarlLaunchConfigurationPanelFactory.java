@@ -30,9 +30,9 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
  * Interface that is implemented a factory of launch configurations panels dedicated to SARL.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.12
  */
 public interface ISarlLaunchConfigurationPanelFactory {

@@ -48,9 +48,9 @@ import io.sarl.eclipse.natures.SARLProjectConfigurator;
  * Action for enabling a maven-based SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  * @since 0.9
  */
 @SuppressWarnings("restriction")

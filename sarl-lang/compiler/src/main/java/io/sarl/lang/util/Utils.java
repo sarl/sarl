@@ -114,9 +114,9 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * Utilities functions on JvmElements.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public final class Utils {
 
@@ -1574,9 +1574,9 @@ public final class Utils {
 	 * function.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.5
 	 */
 	public enum SarlLibraryErrorCode {
@@ -2301,9 +2301,9 @@ public final class Utils {
 	 * Status of parsing the type parameters.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	public enum TypeParameterStatus {

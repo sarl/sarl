@@ -25,9 +25,9 @@ package io.sarl.eclipse.launching.config;
  * Type of the root context identifier in the multiagent system.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public enum RootContextIdentifierType {
 

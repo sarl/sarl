@@ -25,9 +25,9 @@ package io.sarl.eclipse.runtime;
  * Constants that are representing elements in the manifest for the SRE preferences.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public final class SREManifestPreferenceConstants {
 

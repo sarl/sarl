@@ -44,9 +44,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>https://github.com/sarl/sarl/issues/1159
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/1159"
  */
 @DisplayName("Bug #1159")

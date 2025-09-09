@@ -30,9 +30,9 @@ import io.sarl.docs.sarldoc.modules.internal.SarldocApplicationModuleProvider;
 /** Main entry point for the SARL API documentation generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public final class Main {

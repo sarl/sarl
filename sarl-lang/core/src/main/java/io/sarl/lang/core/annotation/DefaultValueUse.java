@@ -29,9 +29,9 @@ import java.lang.annotation.Target;
 /** Annotation for marking a function that is using default parameter values.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @see DefaultValue
  * @see SarlSourceCode
  */

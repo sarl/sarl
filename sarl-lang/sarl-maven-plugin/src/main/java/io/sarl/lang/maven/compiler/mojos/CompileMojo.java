@@ -39,9 +39,9 @@ import io.sarl.lang.maven.compiler.abstractmojos.AbstractCompileMojo;
 /** Mojo for compiling SARL.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 @Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE,
 		requiresDependencyResolution = ResolutionScope.COMPILE)

@@ -36,9 +36,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * 
  * @param <T> the type of the probed value.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 abstract class AbstractProbe<T> implements Probe<T> {

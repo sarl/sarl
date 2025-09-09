@@ -43,9 +43,9 @@ import io.sarl.docs.generator.parser.SarlDocumentationParser.Tag;
 /** Abstract parser for all the marker languages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 public abstract class AbstractMarkerLanguageParser {
@@ -331,9 +331,9 @@ public abstract class AbstractMarkerLanguageParser {
 	/** Validation handler.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	private static class ValidationHandler implements Procedure1<Map<Tag, List<ValidationComponentData>>> {
@@ -395,9 +395,9 @@ public abstract class AbstractMarkerLanguageParser {
 	/** Context that describes the references.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.7
 	 */
 	public static class ReferenceContext {

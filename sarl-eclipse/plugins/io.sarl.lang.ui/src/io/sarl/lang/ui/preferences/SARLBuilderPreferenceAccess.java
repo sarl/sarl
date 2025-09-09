@@ -31,9 +31,9 @@ import io.sarl.lang.compiler.GeneratorConfig2;
 /** Accessors to the preferences for the SARL builder.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class SARLBuilderPreferenceAccess {
 
@@ -123,9 +123,9 @@ public class SARLBuilderPreferenceAccess {
 	/** Initializer of the preference store.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	public static class Initializer implements IPreferenceStoreInitializer {
 

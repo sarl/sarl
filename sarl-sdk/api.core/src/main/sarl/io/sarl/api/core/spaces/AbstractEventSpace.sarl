@@ -46,9 +46,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.1 in Janus SRE
  * @since 0.15 in SARL SDK
  */

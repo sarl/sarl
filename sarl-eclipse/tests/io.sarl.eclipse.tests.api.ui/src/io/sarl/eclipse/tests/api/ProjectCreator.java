@@ -32,9 +32,9 @@ import org.eclipse.xtext.util.JavaVersion;
 /** Factory of a project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.tests.api.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.tests.api.ui
  */
 public interface ProjectCreator {
 

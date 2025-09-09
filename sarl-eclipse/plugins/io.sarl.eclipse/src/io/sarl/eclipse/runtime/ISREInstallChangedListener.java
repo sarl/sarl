@@ -35,9 +35,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * Listeners register with {@code SARLRuntime}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public interface ISREInstallChangedListener extends EventListener {
 

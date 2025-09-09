@@ -32,9 +32,9 @@ import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
  * Most part of the code of this class comes from {@code JavaProjectWizard}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.8
  */
 public class ExportSarlApplicationWizard extends FixedFatJarExportWizard {

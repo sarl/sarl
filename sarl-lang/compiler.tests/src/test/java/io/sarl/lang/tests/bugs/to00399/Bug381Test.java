@@ -42,9 +42,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @DisplayName("Bug #381")
 @SuppressWarnings("all")

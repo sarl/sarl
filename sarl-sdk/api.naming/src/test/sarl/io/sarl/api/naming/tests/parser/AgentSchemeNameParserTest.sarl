@@ -40,9 +40,9 @@ import io.sarl.api.naming.parser.UriBasedNameParser
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),

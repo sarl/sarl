@@ -33,9 +33,9 @@ import io.sarl.lang.core.Capacity;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 @SuppressWarnings("all")
 @DisplayName("Schedules")

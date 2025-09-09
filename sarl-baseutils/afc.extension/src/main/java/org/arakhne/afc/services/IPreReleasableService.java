@@ -27,9 +27,9 @@ package org.arakhne.afc.services;
  * full stopping process is run.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  */
 public interface IPreReleasableService extends IService {
 

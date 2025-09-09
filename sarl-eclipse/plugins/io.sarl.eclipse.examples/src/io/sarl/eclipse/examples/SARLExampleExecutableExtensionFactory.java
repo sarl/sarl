@@ -28,9 +28,9 @@ import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
 /** Factory for injecting SARL instances.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples
  * @since 0.10
  */
 public class SARLExampleExecutableExtensionFactory extends SARLEclipseExecutableExtensionFactory {

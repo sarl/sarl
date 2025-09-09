@@ -35,9 +35,9 @@ import com.google.inject.Singleton;
  * <p>The contributions are obtained from the definitions of Java plugins.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 @Singleton

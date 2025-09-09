@@ -46,9 +46,9 @@ import io.sarl.tests.api.Nullable;
 /** This class is inspired from AbstractXbaseUITestCase of Xtext.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.tests.api.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.tests.api.ui
  */
 @InjectWith(ExtendedSARLUIInjectorProvider.class)
 @SuppressWarnings("all")
@@ -364,9 +364,9 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	/** Factory of a Java project.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse.tests.api.ui 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.tests.api.ui
 	 */
 	@Singleton
 	private class JavaProjectCreator implements ProjectCreator {

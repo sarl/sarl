@@ -33,9 +33,9 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 /** Helper for running the SARL compiler during unit tests.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.12
  */
 public class SarlCompilationTestHelper extends CompilationTestHelper {

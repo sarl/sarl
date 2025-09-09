@@ -48,9 +48,9 @@ import io.sarl.lang.util.Utils;
  * yet generated the JVM elements for the SARL elements.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class InheritanceHelper {

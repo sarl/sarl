@@ -104,9 +104,9 @@ import io.sarl.lang.sarl.SarlSpace;
  * An implementation of a validator to deal with annotations.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public class SARLAnnotationValidator extends AbstractSARLSubValidatorWithParentLink {

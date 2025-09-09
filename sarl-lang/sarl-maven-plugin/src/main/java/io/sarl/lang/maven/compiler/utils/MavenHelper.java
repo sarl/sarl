@@ -61,9 +61,9 @@ import org.slf4j.Logger;
  * from the same Mojo code (says 3.0 and 3.1 APIs).
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 public class MavenHelper {
 

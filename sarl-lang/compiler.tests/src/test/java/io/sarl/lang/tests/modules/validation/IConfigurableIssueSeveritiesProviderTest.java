@@ -41,9 +41,9 @@ import io.sarl.lang.validation.IssueCodes;
 /** This class tests the not-ui implementation {@link IConfigurableIssueSeveritiesProvider}.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.5
  */
 @SuppressWarnings("all")

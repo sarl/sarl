@@ -26,9 +26,9 @@ import org.eclipse.osgi.util.NLS;
 /** Localized Messages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")

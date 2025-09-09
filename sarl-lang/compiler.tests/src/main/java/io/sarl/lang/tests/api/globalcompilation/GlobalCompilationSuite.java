@@ -31,9 +31,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 /** Annotation for attaching a global compilation test suite to the annoted type.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.11
  */
 @Retention(RetentionPolicy.RUNTIME)

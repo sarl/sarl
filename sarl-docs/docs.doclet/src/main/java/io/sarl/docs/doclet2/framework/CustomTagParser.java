@@ -53,9 +53,9 @@ package io.sarl.docs.doclet2.framework;
 /** Parser of description of custom tags. 
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public interface CustomTagParser {

@@ -30,9 +30,9 @@ import java.util.Set
  * Registry of all {@code IBehaviorGuardEvaluator}.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 interface IBehaviorGuardEvaluatorRegistry {

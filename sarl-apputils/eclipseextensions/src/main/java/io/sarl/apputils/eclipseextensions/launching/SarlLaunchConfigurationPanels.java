@@ -32,9 +32,9 @@ import io.sarl.apputils.eclipseextensions.Extensions;
  * Tools for the UI panels dedicated to the launch configurations.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public final class SarlLaunchConfigurationPanels {

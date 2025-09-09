@@ -32,9 +32,9 @@ import org.arakhne.afc.services.IService
  * Module for the time services that are based on the operating system time.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class TimeServiceModule implements BQModule {
 
@@ -49,9 +49,9 @@ class TimeServiceModule implements BQModule {
 /** Provider of the module for the time services.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class TimeServiceModuleProvider implements BQModuleProvider {

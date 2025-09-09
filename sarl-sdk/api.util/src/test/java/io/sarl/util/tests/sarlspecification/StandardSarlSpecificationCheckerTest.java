@@ -42,9 +42,9 @@ import io.sarl.lang.core.annotation.SarlSpecification;
 
 /**
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.util 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  */
 @SuppressWarnings("all")
 @DisplayName("StandardSarlSpecificationChecker")

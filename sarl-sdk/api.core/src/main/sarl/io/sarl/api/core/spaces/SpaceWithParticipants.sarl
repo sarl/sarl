@@ -30,9 +30,9 @@ import java.util.UUID
  * Space with participants that exhibits the participants' list.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.14
  */
 @SuppressWarnings("use_reserved_sarl_annotation")

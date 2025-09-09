@@ -28,9 +28,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * goal-oriented behavior.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.gametgob 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.gametgob
  * @since 0.13
  */
  class BaseAction extends AbstractGob implements Action {

@@ -24,9 +24,9 @@ package io.sarl.lang.compiler.batch;
 /** A for the Eclipse Compiler for Java (ECJ), aka. JDT.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.12
  */
 public class EcjBatchCompilerFactory implements IJavaBatchCompilerFactory {

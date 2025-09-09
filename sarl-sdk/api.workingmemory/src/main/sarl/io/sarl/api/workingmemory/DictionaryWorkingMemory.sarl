@@ -38,9 +38,9 @@ import java.util.TreeMap
  *
  * @author $Author: stedeschi$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.workingmemory 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.workingmemory
  * @since 0.15
  */
 skill DictionaryWorkingMemory extends AbstractWorkingMemory {

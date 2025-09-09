@@ -34,9 +34,9 @@ import org.eclipse.xtext.xbase.ui.contentassist.XbaseContentProposalPriorities;
  * </ul>
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 @SuppressWarnings("restriction")

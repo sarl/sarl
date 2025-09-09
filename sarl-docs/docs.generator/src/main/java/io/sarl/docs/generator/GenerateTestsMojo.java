@@ -81,9 +81,9 @@ import io.sarl.lang.util.Utils;
 /** Maven MOJO that is generating the documentation tests for the SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 @Mojo(name = "generatetests", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,

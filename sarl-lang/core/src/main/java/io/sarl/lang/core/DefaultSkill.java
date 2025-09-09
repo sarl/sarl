@@ -40,9 +40,9 @@ import java.lang.annotation.Target;
  * <p>This annotation is supported by an implementation of {@link DynamicSkillProvider}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.7
  * @see DynamicSkillProvider
  */

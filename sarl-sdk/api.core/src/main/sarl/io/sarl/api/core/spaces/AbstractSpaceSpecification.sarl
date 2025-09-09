@@ -41,9 +41,9 @@ import org.eclipse.xtext.xbase.lib.Pure
  *
  * @param <S> type of the spaces that may be created by this specification.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.15
  */
 abstract class AbstractSpaceSpecification<S extends Space> implements SpaceSpecification<S> {

@@ -38,9 +38,9 @@ import org.eclipse.xtext.util.Strings;
  * indentation for the first comment in a block.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class BugMultilineCommentIndentation {
@@ -95,9 +95,9 @@ public class BugMultilineCommentIndentation {
 	/** Comment fixer.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private static class FixedReplacementContext implements ITextReplacerContext {
 

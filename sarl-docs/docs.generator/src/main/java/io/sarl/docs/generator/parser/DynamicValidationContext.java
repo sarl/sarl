@@ -43,9 +43,9 @@ import org.junit.jupiter.api.Assertions;
 /** Context for building a dynamic validation component.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 public class DynamicValidationContext {

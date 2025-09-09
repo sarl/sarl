@@ -25,9 +25,9 @@ import org.eclipse.osgi.util.NLS
 
 /** Messages.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.javafx 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.javafx
  * @ExcludeFromApidoc
  * @since 0.7
  */

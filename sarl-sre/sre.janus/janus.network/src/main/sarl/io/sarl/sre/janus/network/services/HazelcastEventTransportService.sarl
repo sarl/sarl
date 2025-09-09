@@ -63,9 +63,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * </ul>
  *
  * @author $Author: ngaud$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 @Singleton
@@ -142,9 +142,9 @@ class HazelcastEventTransportService implements EventTransportService {
 	/** Envelope for Hazelcast messages.
 	 *
 	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.network 3.0.15.0 20250909-115749
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.network
 	 * @since 0.12
 	 */
 	static class TopicMessage implements Serializable {
@@ -165,9 +165,9 @@ class HazelcastEventTransportService implements EventTransportService {
 	/** Listener on Hazelcast events.
 	 *
 	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.network 3.0.15.0 20250909-115749
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.network
 	 * @since 0.12
 	 */
 	protected static class TopicNameListener implements ItemListener<String> {
@@ -225,9 +225,9 @@ class HazelcastEventTransportService implements EventTransportService {
 	/** Envelope for Hazelcast topic messages.
 	 *
 	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.network 3.0.15.0 20250909-115749
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.network
 	 * @since 0.12
 	 */
 	protected static class TopicMessageListener implements MessageListener<TopicMessage> {

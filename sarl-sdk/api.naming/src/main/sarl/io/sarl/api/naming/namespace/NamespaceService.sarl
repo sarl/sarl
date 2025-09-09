@@ -31,9 +31,9 @@ import org.arakhne.afc.services.IService
  * <p>Each object within the SRE may be identified by a name, stored into an {@link SarlName}.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 interface NamespaceService extends IService {

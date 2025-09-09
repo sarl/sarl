@@ -41,9 +41,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>See: https://github.com/sarl/sarl/issues/864
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @see "https://github.com/sarl/sarl/issues/864"
  */
 @DisplayName("run: Bug #864")

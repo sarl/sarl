@@ -30,9 +30,9 @@ import org.eclipse.xtext.generator.IGeneratorContext;
  * <p>The generators will be used to generate extra-language files form the SARL resources.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 @ImplementedBy(NullExtraLanguageGeneratorProvider.class)

@@ -37,9 +37,9 @@ import org.arakhne.afc.services.IService
  * 
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface ContextService extends IService {
 
@@ -101,9 +101,9 @@ interface ContextService extends IService {
  * Listener on events related to the members of an external context.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface ExternalContextMemberListener extends EventListener {
 
@@ -137,9 +137,9 @@ interface ExternalContextMemberListener extends EventListener {
  * Listener on events related to the membership within a context.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 interface InternalContextMembershipListener extends EventListener {
 
@@ -166,9 +166,9 @@ interface InternalContextMembershipListener extends EventListener {
  * Factory of the listeners on events related to the membership within a context.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.7.0
  */
 interface InternalContextMembershipListenerFactory {

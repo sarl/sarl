@@ -42,9 +42,9 @@ import io.sarl.api.experienceindex.SarlExperienceIndex.SEI;
  * Dialog that shows the results for the SARL experience index.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.experienceindex 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.experienceindex
  * @since 0.6
  */
 public class SarlExperienceIndexResultDialog extends IconAndMessageDialog {

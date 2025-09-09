@@ -25,9 +25,9 @@ package io.sarl.lang.validation;
  * List of issues codes related to SARL.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @see org.eclipse.xtend.core.validation.IssueCodes
  */
 public final class IssueCodes {

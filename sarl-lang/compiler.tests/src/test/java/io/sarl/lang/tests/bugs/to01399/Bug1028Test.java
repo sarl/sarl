@@ -44,9 +44,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>See similar tests in the Janus SRE.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/1028"
  */
 @DisplayName("Bug #1028")

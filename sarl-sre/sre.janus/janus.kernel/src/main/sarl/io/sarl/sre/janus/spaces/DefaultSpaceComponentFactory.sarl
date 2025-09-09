@@ -36,9 +36,9 @@ import java.util.concurrent.ConcurrentMap
  * <p>This implementation provides standard collections from the Java SDK.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.15
  */
 class DefaultSpaceComponentFactory implements SpaceComponentFactory {

@@ -37,9 +37,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
  * <p>https://github.com/sarl/sarl/issues/929
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/929"
  */
 @DisplayName("Bug #929")

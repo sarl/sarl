@@ -37,9 +37,9 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * Remove an extended type.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public final class ExtendedTypeRemoveModification extends SARLSemanticModification {
@@ -141,9 +141,9 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 	/** Type of the removal of an extended type.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	public enum RemovalType {
 		/** Remove to the previous separator.

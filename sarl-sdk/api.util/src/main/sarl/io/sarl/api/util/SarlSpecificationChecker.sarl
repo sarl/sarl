@@ -28,9 +28,9 @@ import org.osgi.framework.Version
 /** Check if a given agent class follows a specific version of the SARL specifications.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.util 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  * @since 0.5
  */
 interface SarlSpecificationChecker {
@@ -102,9 +102,9 @@ interface SarlSpecificationChecker {
  * <p>This implementation uses the default implementation given by the interface.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.util 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  * @since 0.5
  */
 final class StandardSarlSpecificationChecker implements SarlSpecificationChecker {

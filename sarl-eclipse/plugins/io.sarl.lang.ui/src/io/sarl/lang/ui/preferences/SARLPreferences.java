@@ -44,9 +44,9 @@ import io.sarl.lang.ui.internal.LangActivator;
 /** Utilities related to the preferences related to SARL.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public final class SARLPreferences {

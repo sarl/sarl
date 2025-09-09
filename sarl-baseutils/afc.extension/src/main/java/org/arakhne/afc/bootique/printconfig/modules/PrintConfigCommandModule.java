@@ -36,9 +36,9 @@ import jakarta.inject.Singleton;
 /** Module for the command that prints out the configuration values.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 15.0
  */
 public class PrintConfigCommandModule implements BQModule {

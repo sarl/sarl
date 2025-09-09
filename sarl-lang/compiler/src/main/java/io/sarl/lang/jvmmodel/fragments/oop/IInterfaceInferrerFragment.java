@@ -32,9 +32,9 @@ import io.sarl.lang.jvmmodel.fragments.oop.impl.InterfaceInferrerFragment;
 /** Fragment for inferred the interfaces to the JVM model.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 @ImplementedBy(InterfaceInferrerFragment.class)

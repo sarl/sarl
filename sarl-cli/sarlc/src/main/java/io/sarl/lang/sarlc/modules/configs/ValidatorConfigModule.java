@@ -35,9 +35,9 @@ import io.bootique.meta.application.OptionMetadata;
 /** Module for creating and configuring the sarlc validator's configuration.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class ValidatorConfigModule implements BQModule {

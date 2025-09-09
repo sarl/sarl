@@ -30,9 +30,9 @@ import java.lang.annotation.Target;
 /** Mark as nullable field.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

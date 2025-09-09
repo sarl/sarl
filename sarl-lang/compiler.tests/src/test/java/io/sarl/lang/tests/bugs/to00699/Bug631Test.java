@@ -40,9 +40,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>https://github.com/sarl/sarl/issues/631
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @DisplayName("Bug #631")
 @SuppressWarnings("all")

@@ -48,9 +48,9 @@ import io.sarl.tests.api.tools.TestAssertions;
 /** Tests for {@code SARLClasspathEntryComparator}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 @SuppressWarnings("all")

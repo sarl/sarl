@@ -96,9 +96,9 @@ import io.sarl.lang.util.Utils;
  * It also assumes that "equals", "hashCode", "clone" and "toString" are also pure functions.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 @Singleton
@@ -1147,9 +1147,9 @@ public class SARLOperationHelper implements IOperationHelper {
 	/** Context for the side effect.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	public static final class SideEffectContext implements ISideEffectContext {
@@ -1360,9 +1360,9 @@ public class SARLOperationHelper implements IOperationHelper {
 		/** A context.
 		 *
 		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version compiler 0.15.0 20250909-115746
+		 * @mavengroupid io.sarl.lang
+		 * @mavenartifactid compiler
 		 * @since 0.6
 		 */
 		private static class InternalContext {
@@ -1477,9 +1477,9 @@ public class SARLOperationHelper implements IOperationHelper {
 	/** Adapter that enables to adda annotation when generating the Java code.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	public static class AnnotationJavaGenerationAdapter extends AdapterImpl {
@@ -1546,9 +1546,9 @@ public class SARLOperationHelper implements IOperationHelper {
 	/** Internal sub helper. This helper forces the use of a specific side effect context.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	private static class SubHelper implements IOperationHelper {

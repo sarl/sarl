@@ -46,9 +46,9 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
  * </ul>
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 @Singleton
@@ -77,9 +77,9 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 	 * </ul>
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.9
 	 */
 	protected static class ObjectAndPrimitiveBasedSelector implements ISelector {

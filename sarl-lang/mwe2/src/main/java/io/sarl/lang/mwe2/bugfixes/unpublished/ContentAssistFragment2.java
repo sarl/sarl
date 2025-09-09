@@ -29,9 +29,9 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
  * Fixing the invalid package name for the Xtend proposal provider.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class ContentAssistFragment2 extends org.eclipse.xtext.xtext.generator.ui.contentAssist.ContentAssistFragment2 {
 

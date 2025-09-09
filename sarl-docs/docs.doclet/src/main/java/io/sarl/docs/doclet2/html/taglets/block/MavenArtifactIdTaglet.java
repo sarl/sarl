@@ -63,9 +63,9 @@ import io.sarl.docs.doclet2.html.taglets.AbstractSarlTaglet;
 /** Taglet for {@code @mavenartifactid} tag.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class MavenArtifactIdTaglet extends AbstractSarlTaglet {

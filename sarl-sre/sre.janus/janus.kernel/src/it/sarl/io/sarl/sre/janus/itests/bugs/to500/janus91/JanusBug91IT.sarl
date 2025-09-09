@@ -41,9 +41,9 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
  * Unit test for the issue #91: Stop agent on initialization failure?
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/janus-project/janusproject/issues/91
  */
 @ExtendWith(#[

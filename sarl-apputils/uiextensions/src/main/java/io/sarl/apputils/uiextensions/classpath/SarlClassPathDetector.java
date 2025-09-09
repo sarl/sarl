@@ -70,9 +70,9 @@ import io.sarl.lang.core.util.SarlUtils;
  * most of its logic is defined in protected methods.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  * @see ClassPathDetector
  */

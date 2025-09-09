@@ -28,9 +28,9 @@ import org.osgi.framework.BundleContext;
  * Bundle activator for the SARL language module.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLLangActivator implements BundleActivator {
 

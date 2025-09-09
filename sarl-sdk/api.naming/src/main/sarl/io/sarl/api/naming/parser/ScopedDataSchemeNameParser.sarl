@@ -34,9 +34,9 @@ import java.net.URI
  * 
  * @author $Author: sgalland$
  * @author $Author: stedeschi$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.15
  */
 class ScopedDataSchemeNameParser extends AbstractSchemeNameParser<ScopedDataName> {

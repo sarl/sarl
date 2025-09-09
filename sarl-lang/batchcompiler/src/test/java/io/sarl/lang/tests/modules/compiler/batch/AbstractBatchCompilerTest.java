@@ -45,9 +45,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  */
 @SuppressWarnings("all")
 public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {

@@ -100,9 +100,9 @@ import io.sarl.lang.core.annotation.PerceptGuardEvaluator;
 /** Abstract implementation of a generator for the documentation for a type.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public abstract class AbstractTypeDocumentationGenerator extends AbstractDocumentationGenerator implements TypeDocumentationGenerator {

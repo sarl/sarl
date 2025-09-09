@@ -31,9 +31,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
  * JUnit 5 extension that is saving and restoring system properties.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 @SuppressWarnings("all")

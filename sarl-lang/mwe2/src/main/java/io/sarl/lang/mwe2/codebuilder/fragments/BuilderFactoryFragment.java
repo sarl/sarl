@@ -52,9 +52,9 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
 /** Generator of the script builder types.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 

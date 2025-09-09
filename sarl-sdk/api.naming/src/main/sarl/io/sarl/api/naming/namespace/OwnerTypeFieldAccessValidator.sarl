@@ -30,9 +30,9 @@ import java.lang.reflect.Field
  * If the owner of another type, the field is observable.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 class OwnerTypeFieldAccessValidator implements IFieldAccessValidator {

@@ -32,9 +32,9 @@ import io.bootique.meta.module.ModulesMetadata;
  * <p>This file is copied from the Bootique's original file in order to change the visibility.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 18.0
  */
 public final class DeclaredVariableMetaCompiler {

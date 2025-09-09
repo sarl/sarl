@@ -26,9 +26,9 @@ import java.util.Comparator
  * Comparators.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.util 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  * @since 0.6.0
  */
 final class Comparators {

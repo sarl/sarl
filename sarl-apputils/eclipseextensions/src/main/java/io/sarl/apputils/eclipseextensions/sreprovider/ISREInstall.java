@@ -40,9 +40,9 @@ import org.w3c.dom.Element;
  * This is typically done by the user interactively in the UI.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public interface ISREInstall extends Cloneable {

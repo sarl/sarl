@@ -36,9 +36,9 @@ import io.sarl.lang.maven.compiler.utils.MavenHelper;
  * Type of Java compielr to use by the SARL compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  * @since 0.8
  */
 public enum JavaCompiler {

@@ -32,9 +32,9 @@ import org.eclipse.xtend.core.macro.declaration.CompilationUnitImpl;
  * <p>This processor ensures that SARL type declarations are supported by the compilation unit.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 @Singleton

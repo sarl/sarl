@@ -39,9 +39,9 @@ import jakarta.inject.Singleton;
 /** Module for the sarldoc command.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$compiler
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.0 20250909-115750compiler
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocCommandModule implements BQModule {

@@ -26,9 +26,9 @@ import com.google.common.base.Strings;
 /** Utilities classes for the output configurations that are dedicated to the extra language generators.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public final class ExtraLanguageOutputConfigurations {

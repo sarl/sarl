@@ -40,9 +40,9 @@ import org.eclipse.xtext.validation.CheckType;
  * A specialized validator to deal with SARL documentation (similar to Javadoc).
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public class SARLDocumentationValidator extends AbstractSARLSubValidator {

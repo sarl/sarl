@@ -29,9 +29,9 @@ import io.sarl.api.naming.namespace.Observable
 /** Mock of a space.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 @Observable
 class MySpace3 implements Space {

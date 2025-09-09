@@ -32,9 +32,9 @@ import org.eclipse.core.runtime.Status;
  * UI plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 public class UiExtensionsPlugin extends Plugin {

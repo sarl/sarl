@@ -31,9 +31,9 @@ import org.eclipse.xtext.xtext.generator.util.GrammarUtil2;
  * Fixing the invalid package name for the Xtend configurable issue provider.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.8
  */
 public class ValidatorFragment2 extends org.eclipse.xtext.xtext.generator.validation.ValidatorFragment2 {

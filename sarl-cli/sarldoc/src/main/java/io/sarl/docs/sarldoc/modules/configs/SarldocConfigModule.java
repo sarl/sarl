@@ -54,9 +54,9 @@ import jakarta.inject.Singleton;
  * Module for creating and configuring the configuration that is specific to sarldoc.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocConfigModule implements BQModule {

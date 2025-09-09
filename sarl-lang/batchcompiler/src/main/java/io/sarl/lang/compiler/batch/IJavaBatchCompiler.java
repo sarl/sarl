@@ -35,9 +35,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * is used as the default implementation of this interface.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.8
  */
 @ImplementedBy(EcjBatchCompiler.class)

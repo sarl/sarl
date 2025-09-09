@@ -27,9 +27,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /** Utilities for executing a timeout.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public class TestTimeout {
@@ -152,9 +152,9 @@ public class TestTimeout {
 	/** An object for managing the time out of operations.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	@FunctionalInterface
@@ -170,9 +170,9 @@ public class TestTimeout {
 	/** An object for managing the time out of operations.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.9
 	 */
 	public static class TimeOutHandler implements Runnable {

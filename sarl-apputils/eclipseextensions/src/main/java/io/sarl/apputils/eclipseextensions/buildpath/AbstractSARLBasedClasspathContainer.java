@@ -34,9 +34,9 @@ import org.eclipse.jdt.launching.JavaRuntime;
 /** Classpath container dedicated to the SARL environment.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public abstract class AbstractSARLBasedClasspathContainer implements IClasspathContainer {

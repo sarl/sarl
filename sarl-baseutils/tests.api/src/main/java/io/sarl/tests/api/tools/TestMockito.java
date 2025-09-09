@@ -33,9 +33,9 @@ import io.sarl.tests.api.ManualMocking;
 /** Set of additional utility related to Mockito.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public final class TestMockito {

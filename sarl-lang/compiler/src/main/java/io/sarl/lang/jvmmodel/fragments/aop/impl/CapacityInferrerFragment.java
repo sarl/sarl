@@ -44,9 +44,9 @@ import io.sarl.lang.util.Utils;
 /** Fragment for inferred the capacities to the JVM model.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 public class CapacityInferrerFragment extends AbstractJvmModelInferrerTypeFragment implements ICapacityInferrerFragment {

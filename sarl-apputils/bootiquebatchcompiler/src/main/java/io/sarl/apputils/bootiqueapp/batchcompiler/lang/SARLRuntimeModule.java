@@ -36,9 +36,9 @@ import jakarta.inject.Singleton;
  * from command-line tools when their CLI options should be computed.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiquebatchcompiler 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiquebatchcompiler
  * @since 0.12
  */
 public final class SARLRuntimeModule implements BQModule {

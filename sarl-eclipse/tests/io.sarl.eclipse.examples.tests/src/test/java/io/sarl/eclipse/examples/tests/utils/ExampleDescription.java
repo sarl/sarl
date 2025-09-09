@@ -30,9 +30,9 @@ import org.eclipse.xtend.lib.annotations.Data;
 /** Utilities for the example's tests.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples.tests 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples.tests
  * @since 0.11
  */
 @Data

@@ -57,9 +57,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * Wizard for submiting an issue to the SARL community.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.5
  */
 public class SubmitEclipseLogWizard extends Wizard {
@@ -343,9 +343,9 @@ public class SubmitEclipseLogWizard extends Wizard {
 	/** Definition of the Json entries for creating a Github issue.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.5
 	 */
 	public static class GithubIssueJson {

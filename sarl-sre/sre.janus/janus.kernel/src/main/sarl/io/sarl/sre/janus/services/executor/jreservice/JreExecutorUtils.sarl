@@ -31,9 +31,9 @@ import io.sarl.sre.janus.services.executor.tasks.SreRunnable
  * Utilities for running tasks on the standard JRE executor service.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 final class JreExecutorUtils {

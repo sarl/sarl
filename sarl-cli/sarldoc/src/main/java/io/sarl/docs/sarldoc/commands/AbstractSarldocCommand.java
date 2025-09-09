@@ -61,9 +61,9 @@ import jakarta.inject.Provider;
  * between the real sarldoc command and its fake version.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public abstract class AbstractSarldocCommand extends CommandWithMetadata {

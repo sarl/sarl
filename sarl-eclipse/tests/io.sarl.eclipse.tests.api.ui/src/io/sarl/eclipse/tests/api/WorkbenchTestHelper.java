@@ -78,9 +78,9 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  * @author $Author: sgalland$
  * @author $Author: ngaud$
  * @author Jan Koehnlein - Xtend contributor
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.tests.api.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.tests.api.ui
  */
 @Singleton
 @SuppressWarnings("static-method")

@@ -25,9 +25,9 @@ package org.arakhne.afc.services;
  * State of a service in a SRE implementation. 
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  */
 public enum ServiceState {
 

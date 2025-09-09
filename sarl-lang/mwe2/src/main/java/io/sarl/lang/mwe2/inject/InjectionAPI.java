@@ -30,9 +30,9 @@ import com.google.inject.name.Named;
  * Type of injection mechanism.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.15
  */
 public enum InjectionAPI {

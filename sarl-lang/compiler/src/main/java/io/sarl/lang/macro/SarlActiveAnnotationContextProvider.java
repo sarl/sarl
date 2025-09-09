@@ -37,9 +37,9 @@ import io.sarl.lang.sarl.SarlSkill;
  * <p>This provider supports the SARL type declarations.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContextProvider {

@@ -75,9 +75,9 @@ import jdk.javadoc.doclet.Reporter;
  * <p>This doclet also ignore the hidden features according to the SARL specification.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class Doclet implements jdk.javadoc.doclet.Doclet {

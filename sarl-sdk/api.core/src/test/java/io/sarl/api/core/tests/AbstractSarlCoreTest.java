@@ -35,9 +35,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
  *
  * @param <T> - the type of the expected loaded class.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 

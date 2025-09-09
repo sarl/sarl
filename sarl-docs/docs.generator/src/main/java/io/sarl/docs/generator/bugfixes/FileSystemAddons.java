@@ -34,9 +34,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <p>Each function inside this class is marked with the AFC issue that is associated to.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  */
 public final class FileSystemAddons {
 

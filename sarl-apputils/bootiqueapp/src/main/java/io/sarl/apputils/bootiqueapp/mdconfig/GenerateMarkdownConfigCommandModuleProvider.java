@@ -29,9 +29,9 @@ import io.bootique.BQModuleProvider;
  * on the standard output using a Markdown format.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.12
  */
 @SuppressWarnings("removal")

@@ -28,9 +28,9 @@ import java.util.logging.Logger;
 /** Extended Functions for obtaining information on SARL issues.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.12
  */
 public final class DocumentationLogger {

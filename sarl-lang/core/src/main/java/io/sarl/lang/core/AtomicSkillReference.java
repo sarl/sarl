@@ -38,9 +38,9 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  * we don't want to exhibit several of its public functions.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.11
  */
 public class AtomicSkillReference implements Serializable, Cloneable {

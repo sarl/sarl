@@ -36,9 +36,9 @@ import jakarta.inject.Provider;
  * Command for showing up the list of extra languages that are available on the classpath.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class ExtraLanguageListCommand extends CommandWithMetadata {

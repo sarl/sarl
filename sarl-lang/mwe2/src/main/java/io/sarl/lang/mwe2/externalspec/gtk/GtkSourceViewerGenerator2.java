@@ -37,9 +37,9 @@ import io.sarl.lang.mwe2.externalspec.IXmlStyleAppendable;
  * the GTK source viewer.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @see "https://wiki.gnome.org/Projects/GtkSourceView"
  */
 public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 {

@@ -23,9 +23,9 @@ package io.sarl.sre.janus.itests.bugs.to1000.bug794.mocks
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/794
  */
 agent SpawnerAgent2 extends AbstractSpawnerAgent {

@@ -72,9 +72,9 @@ import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 /** Emit the space platform events.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class SpaceEventEmitter implements SpaceRepositoryListener {
 
@@ -114,9 +114,9 @@ class SpaceEventEmitter implements SpaceRepositoryListener {
 /** Factory for a space event emitter.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.7.0
  */
 class SpaceEventEmitterFactory implements SpaceRepositoryListenerFactory {
@@ -130,9 +130,9 @@ class SpaceEventEmitterFactory implements SpaceRepositoryListenerFactory {
 /** Emit the space participant platform events.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class SpaceParticipantEventEmitter implements SpaceParticipantListener {
@@ -185,9 +185,9 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 /** Factory for a space participant event emitter.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class SpaceParticipantEventEmitterFactory implements SpaceParticipantListenerFactory {
@@ -202,9 +202,9 @@ class SpaceParticipantEventEmitterFactory implements SpaceParticipantListenerFac
 /** Emit the agent platform events.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class AgentEventEmitter implements LifecycleServiceListener {
 
@@ -273,9 +273,9 @@ class AgentEventEmitter implements LifecycleServiceListener {
 /** Emit the context member platform events.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class ContextMemberEventEmitter implements ExternalContextMemberListener {
 
@@ -324,9 +324,9 @@ class ContextMemberEventEmitter implements ExternalContextMemberListener {
 /** Emit the context member platform events.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
 @PrivateAPI(isCallerOnly = true)
@@ -402,9 +402,9 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
  * Factory of the listeners on events related to the membership within a context.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.7.0
  */
 class SubHolonContextEventEmitterFactory implements InternalContextMembershipListenerFactory {
@@ -429,9 +429,9 @@ class SubHolonContextEventEmitterFactory implements InternalContextMembershipLis
  * Events related to agent tasks' failures.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
@@ -468,9 +468,9 @@ class TaskAgentFailureEventEmitter implements FailureListener {
  * Factory of listener for events related to agent tasks' failures.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class TaskAgentFailureEventEmitterFactory implements FailureListenerFactory {

@@ -52,9 +52,9 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 /** Generator of the builder for formal parameters.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragment {
 
@@ -938,9 +938,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Description of a formal parameter.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	public static class FormalParameterDescription {
 

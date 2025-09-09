@@ -30,9 +30,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * Configurator for a SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @ImplementedBy(SARLProjectConfigurator.class)
 public interface IProjectUnconfigurator {

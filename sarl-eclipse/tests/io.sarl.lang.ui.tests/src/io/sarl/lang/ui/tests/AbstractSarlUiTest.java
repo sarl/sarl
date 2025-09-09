@@ -34,9 +34,9 @@ import io.sarl.tests.api.extensions.SarlInjectionExtension;
 /** Abstract implementation of a test for UI.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui.tests 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui.tests
  * @since 0.15
  */
 @SuppressWarnings("all")

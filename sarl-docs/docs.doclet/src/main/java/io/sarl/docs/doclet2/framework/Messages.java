@@ -55,9 +55,9 @@ import org.eclipse.osgi.util.NLS;
 /** Localized Messages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @ExcludeFromApidoc
  * @since 0.13
  */

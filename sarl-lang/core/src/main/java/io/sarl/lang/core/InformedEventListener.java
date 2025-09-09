@@ -34,9 +34,9 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  * <p>This specific listening entity knows its owner and provides access to it.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.10 in Janus SRE
  * @since 0.15 in SARL lang core
  */

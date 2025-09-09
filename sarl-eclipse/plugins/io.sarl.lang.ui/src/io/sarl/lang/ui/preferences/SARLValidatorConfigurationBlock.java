@@ -58,9 +58,9 @@ import org.eclipse.xtend.ide.validator.preferences.XtendValidatorConfigurationBl
 /** Preference page that permits to configure the SARL validator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public class SARLValidatorConfigurationBlock extends XtendValidatorConfigurationBlock {

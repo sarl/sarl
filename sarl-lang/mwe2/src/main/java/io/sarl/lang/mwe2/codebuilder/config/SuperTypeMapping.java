@@ -28,9 +28,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * A container that describes a child type and a super type.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class SuperTypeMapping {
 

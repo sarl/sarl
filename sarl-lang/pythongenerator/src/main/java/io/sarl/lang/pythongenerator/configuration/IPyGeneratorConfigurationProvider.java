@@ -28,9 +28,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 /** Provider of a configuration for the SARL-to-Python generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.8
  */
 @FunctionalInterface

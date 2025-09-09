@@ -36,9 +36,9 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * the Google prettify library.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @see "https://github.com/google/code-prettify"
  */
 public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragment2 {

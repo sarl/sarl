@@ -39,9 +39,9 @@ import jakarta.inject.Singleton;
  * Module for creating and configuring the loggers.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.12
  */
 public class LogConfigModule implements BQModule {

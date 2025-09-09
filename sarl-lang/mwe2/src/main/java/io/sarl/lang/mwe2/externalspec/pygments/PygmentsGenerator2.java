@@ -34,9 +34,9 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * the Python syntax highlighted, aka. Pygments.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @see "http://pygments.org/"
  */
 public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {

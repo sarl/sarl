@@ -39,9 +39,9 @@ import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
  * Abstract implementation of a page for the SRE installation wizard.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  */
 public abstract class AbstractSREInstallPage extends WizardPage {
 

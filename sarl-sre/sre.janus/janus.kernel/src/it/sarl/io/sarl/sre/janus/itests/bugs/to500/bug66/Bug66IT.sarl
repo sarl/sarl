@@ -40,9 +40,9 @@ import static extension org.junit.jupiter.api.Assertions.*
  * Unit test for the issue #66: Injection of the default space in a Space implementation.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/66
  */
 @ExtendWith(#[

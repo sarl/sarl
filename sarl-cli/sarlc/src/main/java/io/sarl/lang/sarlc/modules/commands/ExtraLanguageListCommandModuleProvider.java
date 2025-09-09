@@ -28,9 +28,9 @@ import io.bootique.BQModuleProvider;
 /** Provider of the module for printing out the available extra-language generators.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 @SuppressWarnings("removal")

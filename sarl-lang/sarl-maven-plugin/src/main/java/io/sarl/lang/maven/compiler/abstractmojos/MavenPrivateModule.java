@@ -34,9 +34,9 @@ import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 /** Child injection module for the SARL maven plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  * @since 0.8
  */
 public class MavenPrivateModule implements Module {

@@ -27,9 +27,9 @@ import com.google.common.base.Strings;
  * A configuration related to a named scope for the accessor to the grammar keywords.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.15
  */
 public class NamedGrammarKeywordAccessConfig extends GrammarKeywordAccessKeywordConfig {

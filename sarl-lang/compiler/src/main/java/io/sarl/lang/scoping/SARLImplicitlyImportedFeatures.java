@@ -37,9 +37,9 @@ import io.sarl.lang.core.scoping.extensions.uuid.UUIDExtensions;
 /** Provider of the implicitly imported features in the SARL language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {

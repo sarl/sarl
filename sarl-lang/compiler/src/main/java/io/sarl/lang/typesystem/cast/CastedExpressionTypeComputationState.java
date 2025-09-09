@@ -45,9 +45,9 @@ import io.sarl.lang.util.ReflectMethod;
 /** State for type computation associated to the cast operator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 public class CastedExpressionTypeComputationState extends ExpressionTypeComputationState {

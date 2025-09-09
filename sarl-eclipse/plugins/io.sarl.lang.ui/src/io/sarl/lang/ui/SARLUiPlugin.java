@@ -35,9 +35,9 @@ import io.sarl.lang.ui.internal.LangActivator;
  * Utility functions for the plugin. The plugin activator is an instance of {@link LangActivator}.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.12
  * @see LangActivator
  */

@@ -37,9 +37,9 @@ import io.sarl.lang.sarl.SarlEvent;
 /** Provide the default visibility modifier for elements.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @ImplementedBy(DefaultVisibilityProvider.class)
 public interface IDefaultVisibilityProvider {
@@ -309,9 +309,9 @@ public interface IDefaultVisibilityProvider {
 	/** Test the types of the elements.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.13
 	 */
 	interface Tester {

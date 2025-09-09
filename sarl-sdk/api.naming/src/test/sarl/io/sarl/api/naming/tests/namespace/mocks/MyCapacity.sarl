@@ -24,9 +24,9 @@ package io.sarl.api.naming.tests.namespace.mocks
 /** Mock of an agent capacity.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 @SuppressWarnings("discouraged_capacity_definition")
 capacity MyCapacity {

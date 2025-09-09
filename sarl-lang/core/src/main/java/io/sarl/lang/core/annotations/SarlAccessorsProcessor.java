@@ -44,9 +44,9 @@ import jakarta.inject.Singleton;
  * </ul>
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.9
  */
 @Singleton
@@ -93,9 +93,9 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 	/** Utilities for the accessor processor. This class is overridden for fixing Issue #1073.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.12
 	 */
 	public class Util extends AccessorsProcessor.Util {

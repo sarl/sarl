@@ -35,9 +35,9 @@ import io.sarl.lang.tests.api.globalcompilation.ResourceSetGlobalCompilationCont
 
 /**
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.9
  */
 @SuppressWarnings("all")
@@ -49,9 +49,9 @@ public class ManyDefinitionsTest {
 	/** This class enables to test the linking decision to multiple getter functions.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.9
 	 */
 	@GlobalCompilationSuite
@@ -400,9 +400,9 @@ public class ManyDefinitionsTest {
 	 * <p>The cases are the same as inside {@link StandardFunctionCalls} but applied to cast operators.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.9
 	 */
 	@GlobalCompilationSuite

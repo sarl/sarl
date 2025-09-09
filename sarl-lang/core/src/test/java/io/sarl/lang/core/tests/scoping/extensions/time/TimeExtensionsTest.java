@@ -32,9 +32,9 @@ import io.sarl.lang.core.scoping.extensions.time.TimeExtensions;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SuppressWarnings("all")
 @DisplayName("TimeExtensions")

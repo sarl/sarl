@@ -28,9 +28,9 @@ import jakarta.inject.Singleton;
 /** Provide static functions related to the casting of numbers.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.7
  * @see "https://github.com/sarl/sarl/issues/767"
  */

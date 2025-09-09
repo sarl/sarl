@@ -36,9 +36,9 @@ import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
  * the GNU source-highlight.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @see "https://www.gnu.org/software/src-highlite/"
  */
 public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragment2 {

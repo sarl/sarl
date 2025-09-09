@@ -33,9 +33,9 @@ import static io.sarl.sre.janus.itests.bugs.to1000.bug546.Constants.*
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see https://github.com/sarl/sarl/issues/546
  */
 @SuppressWarnings("potential_field_synchronization_problem")

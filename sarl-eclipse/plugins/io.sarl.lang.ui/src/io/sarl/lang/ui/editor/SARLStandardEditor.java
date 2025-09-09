@@ -29,9 +29,9 @@ import io.sarl.lang.ui.codemining.SARLCodeminingPreferenceAccess;
 /** Editor for SARL code.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.8
  */
 @SuppressWarnings("restriction")

@@ -28,9 +28,9 @@ import io.bootique.di.BQModule
  * Mock of an injection module.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sre.tests.api 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  */
 class ModuleMock implements BQModule {
 

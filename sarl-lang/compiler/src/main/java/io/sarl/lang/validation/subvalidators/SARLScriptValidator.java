@@ -49,9 +49,9 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
  * A specialized validator to deal with SARL script without considering the defined elements inside.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public class SARLScriptValidator extends AbstractSARLSubValidatorWithParentLink {

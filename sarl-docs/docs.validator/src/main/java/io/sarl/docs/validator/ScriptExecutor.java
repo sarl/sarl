@@ -35,9 +35,9 @@ import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 /** Represents an code executor.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 @ImplementedBy(SarlScriptExecutor.class)
@@ -140,9 +140,9 @@ public interface ScriptExecutor {
 	/** Represents a compiled file.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.validator 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.validator
 	 * @since 0.7
 	 */
 	public final class CompiledFile {

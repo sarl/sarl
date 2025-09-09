@@ -28,9 +28,9 @@ import java.util.TreeSet;
 /** Classpath dedicated to the SARL environment that is independent of the UI.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.13
  */
 public class SARLBundleBuildPath {

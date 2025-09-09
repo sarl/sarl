@@ -31,9 +31,9 @@ import org.apache.log4j.spi.LoggerFactory;
 /** Apache logger that is converting info messages to debug messages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.7
  */
 final class InternalXtextLogger extends org.apache.log4j.Logger {
@@ -86,9 +86,9 @@ final class InternalXtextLogger extends org.apache.log4j.Logger {
 	/** Factory of internal logger.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version batchcompiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid batchcompiler
 	 * @since 0.7
 	 */
 	public static class InternalXtextLoggerFactory implements LoggerFactory {

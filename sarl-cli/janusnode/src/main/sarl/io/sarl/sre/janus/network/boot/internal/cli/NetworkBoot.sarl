@@ -29,9 +29,9 @@ import org.arakhne.afc.bootique.variables.VariableNames
  * Command status Janus with networking feature turned on.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janusnode 3.0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janusnode
  * @since 0.12
  */
 class NetworkBoot {

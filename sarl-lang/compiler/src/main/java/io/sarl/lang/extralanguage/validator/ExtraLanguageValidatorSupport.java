@@ -40,9 +40,9 @@ import org.eclipse.xtext.xtype.XtypePackage;
 /** The validator from SARL to the extra target languages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public class ExtraLanguageValidatorSupport extends AbstractDeclarativeValidator {

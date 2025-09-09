@@ -66,9 +66,9 @@ import io.sarl.lang.util.Utils;
 /** Abstract implementation of a fragment that may be used for inferring executable to JVM model.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 public abstract class AbstractJvmModelInferrerExecutableFragment extends AbstractJvmModelInferrerFragment {

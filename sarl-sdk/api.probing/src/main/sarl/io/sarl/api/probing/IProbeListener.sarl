@@ -26,9 +26,9 @@ import java.util.EventListener
  * Listener on probe changes.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.probing 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.probing
  * @since 0.12
  */
 interface IProbeListener extends EventListener {

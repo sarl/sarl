@@ -37,9 +37,9 @@ import io.sarl.lang.util.Utils;
  * in Java or Xtend, by the same example with the SARL syntax.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.5
  */
 @SuppressWarnings("restriction")

@@ -29,9 +29,9 @@ import org.eclipse.xtext.validation.Issue;
 /** Comparator of issues.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  */
 public class DefaultIssueComparator implements Comparator<Issue> {
 

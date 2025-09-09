@@ -48,9 +48,9 @@ import io.sarl.lang.tests.api.ExtendedSARLInjectorProvider;
  * {@link GlobalCompilationTestContribution} annotation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.11
  * @see GlobalCompilationTestContribution
  */
@@ -90,9 +90,9 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.11
 	 */
 	private class DynamicParameterResolver implements ParameterResolver {
@@ -113,9 +113,9 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.11
 	 */
 	private class DynamicContext implements TestTemplateInvocationContext {

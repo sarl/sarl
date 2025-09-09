@@ -46,9 +46,9 @@ import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 /** Abstract implementation for extracting elements from the backtracking grammar.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public abstract class AbstractCodeElementExtractor implements CodeElementExtractor {
 

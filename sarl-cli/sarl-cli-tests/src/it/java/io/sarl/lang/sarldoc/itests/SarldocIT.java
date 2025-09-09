@@ -39,9 +39,9 @@ import io.sarl.tests.api.tools.TestShell;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-cli-tests 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarl-cli-tests
  */
 @SuppressWarnings("all")
 @DisplayName("Sarldoc")

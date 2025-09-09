@@ -27,9 +27,9 @@ import java.util.logging.Logger
 /** Factory for a space participant event sender.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.15
  */
 interface SpaceParticipantListenerFactory {

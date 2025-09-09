@@ -35,9 +35,9 @@ import org.eclipse.core.runtime.SubMonitor;
  * Tools related to the Eclipse project natures.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 public final class ProjectNatures {

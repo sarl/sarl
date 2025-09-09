@@ -32,9 +32,9 @@ import java.util.concurrent.ConcurrentMap;
  * @param <K> the type of the keys in the map.
  * @param <V> the type of the values in the map.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.15
  */
 class NoConcurrentTreeMap<K, V> extends TreeMap<K, V> implements ConcurrentMap<K, V> {

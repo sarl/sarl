@@ -29,9 +29,9 @@ import io.sarl.tests.api.tools.TestUtils;
 /** JUnit 5 extension that for reseting the context of a test.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public class ContextInitExtension implements BeforeEachCallback {

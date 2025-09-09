@@ -34,9 +34,9 @@ import java.util.Set
  * Injectable implementation of the name parser.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class InjectedNameParser extends UriBasedNameParser {
@@ -53,9 +53,9 @@ class InjectedNameParser extends UriBasedNameParser {
  * Module for the base name parser.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class NameParserModule implements BQModule {
@@ -69,9 +69,9 @@ class NameParserModule implements BQModule {
 /** Provider of the module for the base name parser.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class NameParserModuleProvider implements BQModuleProvider {

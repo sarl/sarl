@@ -41,9 +41,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>https://github.com/sarl/sarl/issues/1021
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/1021"
  */
 @DisplayName("Bug #1021")
@@ -55,9 +55,9 @@ public class Bug1021Test {
 	/** Inner class.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @see "https://github.com/sarl/sarl/issues/1021"
 	 */
 	@Nested
@@ -100,9 +100,9 @@ public class Bug1021Test {
 	/** Inner generic class, Inner-Inner class.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @see "https://github.com/sarl/sarl/issues/1021"
 	 */
 	@Nested
@@ -130,9 +130,9 @@ public class Bug1021Test {
 	/** Inner not-generic class, Inner-Inner class.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @see "https://github.com/sarl/sarl/issues/1021"
 	 */
 	@Nested
@@ -161,9 +161,9 @@ public class Bug1021Test {
 	/** Functions.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @see "https://github.com/sarl/sarl/issues/1021"
 	 */
 	@Nested

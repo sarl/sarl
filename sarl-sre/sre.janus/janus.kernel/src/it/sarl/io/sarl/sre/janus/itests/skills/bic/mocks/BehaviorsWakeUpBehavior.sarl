@@ -28,9 +28,9 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 behavior BehaviorsWakeUpBehavior {

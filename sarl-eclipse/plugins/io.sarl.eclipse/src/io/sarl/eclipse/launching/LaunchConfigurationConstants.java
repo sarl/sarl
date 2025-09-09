@@ -27,9 +27,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * Constants for a SARL launch configurations.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.8
  */
 public final class LaunchConfigurationConstants {

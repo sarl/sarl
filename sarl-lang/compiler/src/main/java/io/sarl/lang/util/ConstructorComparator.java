@@ -30,9 +30,9 @@ import io.sarl.lang.sarl.SarlConstructor;
  * Comparator of Constructors.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class ConstructorComparator implements Comparator<SarlConstructor>, Serializable {
 	private static final long serialVersionUID = 1517387787287634067L;

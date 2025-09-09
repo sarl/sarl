@@ -26,9 +26,9 @@ import org.eclipse.osgi.util.NLS;
 /** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")

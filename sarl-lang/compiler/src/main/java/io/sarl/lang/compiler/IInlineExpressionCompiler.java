@@ -32,9 +32,9 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * to the SARL code with the {@link org.eclipse.xtext.xbase.lib.Inline @Inline} annotation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.4
  * @see org.eclipse.xtext.xbase.lib.Inline
  */

@@ -46,9 +46,9 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /** The modifier validator for constructs.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLModifierValidator {
 
@@ -334,9 +334,9 @@ public class SARLModifierValidator {
 	/** Registerer of error.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.15
 	 */
 	@FunctionalInterface
@@ -359,9 +359,9 @@ public class SARLModifierValidator {
 	/** Registerer of issue (no specification of the type of issue).
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.15
 	 */
 	@FunctionalInterface

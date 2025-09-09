@@ -26,9 +26,9 @@ import org.eclipse.xtext.xbase.ui.launching.JavaElementDelegateMainLaunch;
 /** Delegate dedicated to SARL for breaking down the multiple adapter (from SARL and Xtend) issue.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public class SarlJavaElementDelegateMainLaunch extends JavaElementDelegateMainLaunch {

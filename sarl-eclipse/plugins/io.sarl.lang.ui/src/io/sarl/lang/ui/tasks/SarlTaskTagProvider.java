@@ -33,9 +33,9 @@ import org.eclipse.xtext.tasks.TaskTags;
 /** Provider for task tags.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public class SarlTaskTagProvider implements ITaskTagProvider {

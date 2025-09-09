@@ -23,9 +23,9 @@ package io.sarl.sre.janus.spaces
 /** Factory for a space participant event emitter.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 3.0.10
  * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceParticipantListenerFactory}.
  */

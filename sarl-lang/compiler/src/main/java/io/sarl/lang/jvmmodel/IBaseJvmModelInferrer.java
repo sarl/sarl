@@ -43,9 +43,9 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 /** Provide the base functions and context used for inferring JVM elements from SARL element.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 public interface IBaseJvmModelInferrer {

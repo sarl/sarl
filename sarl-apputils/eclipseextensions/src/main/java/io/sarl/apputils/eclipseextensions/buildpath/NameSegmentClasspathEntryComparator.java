@@ -28,9 +28,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 /** Comparator of classpath entries based on the lexicographic order of the names' segments.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public class NameSegmentClasspathEntryComparator implements Comparator<IClasspathEntry> {

@@ -30,9 +30,9 @@ import java.lang.ref.WeakReference
  * Abstract implementation of a space.
  * 
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.15
  */
 abstract class AbstractSpace extends SRESpecificDataContainer implements Space {

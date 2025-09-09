@@ -29,9 +29,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 /** Abstract test of a SARL formatter.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @SuppressWarnings("all")
 public abstract class AbstractFormatterTest extends AbstractSarlTest {

@@ -37,9 +37,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: @PrivateAPIAccess")

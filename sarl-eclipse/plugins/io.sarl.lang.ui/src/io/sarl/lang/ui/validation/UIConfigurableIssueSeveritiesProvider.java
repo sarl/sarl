@@ -46,9 +46,9 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  * The contract is to have internal overriding of the preferences in this provider.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.5
  */
 @Singleton

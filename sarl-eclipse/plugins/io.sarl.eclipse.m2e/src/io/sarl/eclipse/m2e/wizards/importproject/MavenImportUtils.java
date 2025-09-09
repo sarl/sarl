@@ -54,9 +54,9 @@ import io.sarl.eclipse.natures.SARLProjectConfigurator;
  * Utilities for importing a Maven project with SARL plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  * @since 0.8
  */
 public final class MavenImportUtils {

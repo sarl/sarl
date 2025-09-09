@@ -42,9 +42,9 @@ import io.sarl.lang.SARLConfig;
 /** Utilities.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 public final class Utilities {
@@ -324,9 +324,9 @@ public final class Utilities {
 	/** Define a mapping from bundles to URLs.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version uiextensions 0.15.0 20250909-115749
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid uiextensions
 	 */
 	@FunctionalInterface
 	public interface BundleURLMappings {
@@ -343,9 +343,9 @@ public final class Utilities {
 	/** Define a mapping from bundles to URLs.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version uiextensions 0.15.0 20250909-115749
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid uiextensions
 	 */
 	public static class SARLBundleJavadocURLMappings implements BundleURLMappings {
 

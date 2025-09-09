@@ -58,9 +58,9 @@ import io.sarl.lang.maven.compiler.utils.MavenHelper;
 /** Abstract mojo for SARL.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 public abstract class AbstractSarlMojo extends AbstractMojo {
 

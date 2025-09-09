@@ -30,9 +30,9 @@ import org.eclipse.xtend.lib.annotations.ToString
  * Object that enables to wait for a specific thing.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sre.tests.api 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  * @since 0.11
  */
 @ToString

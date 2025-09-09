@@ -43,9 +43,9 @@ import java.text.MessageFormat
  * Factory of space specification for SRE. 
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @Singleton
 class SreSpaceSpecificationFactory {
@@ -128,9 +128,9 @@ class SreSpaceSpecificationFactory {
 	 * An injection module that is able to inject the default space instance into a space specification instance.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.0 20250909-115749
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.15
 	 */
 	private static class JustInTimeDefaultSpaceInjectionModule implements BQModule {

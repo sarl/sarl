@@ -54,9 +54,9 @@ import com.google.inject.Injector;
  * A {@link AbstractXtextGeneratorFragment} that enables to create tools for type system.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.15
  */
 public class TypeSystemToolsFragment2 extends AbstractXtextGeneratorFragment {

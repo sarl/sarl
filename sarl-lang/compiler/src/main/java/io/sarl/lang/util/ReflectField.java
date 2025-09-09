@@ -29,9 +29,9 @@ import java.lang.reflect.Field;
  * @param <RT> the type of the receiver.
  * @param <T> the type of the returned value.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.13
  */
 public final class ReflectField<RT, T> {

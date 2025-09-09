@@ -32,9 +32,9 @@ import io.sarl.lang.core.Agent;
 /** Converter from Jvm type to the extra language type.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public final class ExtraLanguageTypeConverter {
@@ -179,9 +179,9 @@ public final class ExtraLanguageTypeConverter {
 	/** Reader of the conversion rules.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	public static class TypeConverterRuleReader {

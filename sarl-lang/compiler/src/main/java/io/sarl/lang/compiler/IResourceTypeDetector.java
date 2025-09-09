@@ -33,9 +33,9 @@ import org.eclipse.emf.ecore.resource.Resource;
  * <p>The way how a folder is detected as a test folder depends on the implementation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 @ImplementedBy(DefaultResourceTypeDetector.class)

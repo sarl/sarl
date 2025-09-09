@@ -27,9 +27,9 @@ import java.util.function.Predicate;
 /** Tool for obtaining all the contributions as an extra-language components.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 public interface IExtraLanguageContributions {

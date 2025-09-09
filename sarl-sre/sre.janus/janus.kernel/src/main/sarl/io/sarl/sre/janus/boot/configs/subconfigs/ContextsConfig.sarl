@@ -43,9 +43,9 @@ import static extension io.bootique.BQCoreModule.extend
  * Configuration of the SRE context repository.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 @BQConfig("Configuration of the context repository inside the SRE")
@@ -90,9 +90,9 @@ class ContextsConfig {
  * Module for the context repository's configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class ContextsConfigModule implements BQModule {
@@ -113,9 +113,9 @@ class ContextsConfigModule implements BQModule {
 /** Provider of the module for the context repository's configuration.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class ContextsConfigModuleProvider implements BQModuleProvider {

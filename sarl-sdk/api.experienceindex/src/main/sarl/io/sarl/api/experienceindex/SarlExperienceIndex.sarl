@@ -99,9 +99,9 @@ import javax.crypto.spec.SecretKeySpec
  * to an index number is set up in a way that all modern disks will score at least 2.0.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.experienceindex 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.experienceindex
  * @since 0.6
  */
 final class SarlExperienceIndex {
@@ -206,9 +206,9 @@ final class SarlExperienceIndex {
 	/** This class contains the different SEI of your machine.
 	 * 
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version api.experienceindex 0.15.0 20250909-115748
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.experienceindex
 	 */
 	static class SEI {
 
@@ -634,9 +634,9 @@ final class SarlExperienceIndex {
 /** This interace is a tool for canceling the SEI computation.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.experienceindex 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.experienceindex
  */
 interface SeiCanceler {
 	/**

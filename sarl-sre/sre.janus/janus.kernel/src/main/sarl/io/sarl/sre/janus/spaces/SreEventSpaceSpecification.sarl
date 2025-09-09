@@ -29,9 +29,9 @@ import io.sarl.lang.core.SpaceID
  * Specification for standard event spaces into the SRE. 
  * 
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class SreEventSpaceSpecification extends AbstractSreEventSpaceSpecification<EventSpace> implements EventSpaceSpecification {
 

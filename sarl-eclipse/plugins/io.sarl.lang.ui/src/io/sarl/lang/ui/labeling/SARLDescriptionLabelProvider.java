@@ -47,9 +47,9 @@ import io.sarl.lang.sarl.SarlSkill;
  * Provides labels for a IEObjectDescriptions and IResourceDescriptions.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
 @Singleton

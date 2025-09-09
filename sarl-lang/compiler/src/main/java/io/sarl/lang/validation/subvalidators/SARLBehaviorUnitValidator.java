@@ -61,9 +61,9 @@ import io.sarl.lang.util.Utils;
  * A specialized validator to deal with behavior units and event handlers.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public class SARLBehaviorUnitValidator extends AbstractSARLSubValidator {

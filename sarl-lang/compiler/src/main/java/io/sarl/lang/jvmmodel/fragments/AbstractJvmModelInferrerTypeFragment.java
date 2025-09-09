@@ -96,9 +96,9 @@ import io.sarl.lang.util.Utils.TypeParameterStatus;
 /** Abstract implementation of a fragment that may be used for inferring type to JVM model.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmModelInferrerFragment {
@@ -1561,9 +1561,9 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	/** Informations about the behavior units and the guards.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	protected static class BehaviorUnitDefinitions implements Serializable {
@@ -1608,9 +1608,9 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	/** Functions about an event for the behavior units.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	protected static class BehaviorUnitFunctions implements Serializable {
@@ -1663,9 +1663,9 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	 * @param name the name of the function.
 	 * @param bounds the upper bounds for generic type parameters.
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	protected record BehaviorUnitFunction(String name, List<JvmTypeReference> bounds) {

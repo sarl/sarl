@@ -41,9 +41,9 @@ import java.lang.annotation.Target
  * Module for the scheme name parsers.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class SchemeNameParserModule implements BQModule {
@@ -68,9 +68,9 @@ class SchemeNameParserModule implements BQModule {
  * Annotation to mark the set of scheme name parsers.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 @Target(PARAMETER, FIELD)
@@ -83,9 +83,9 @@ annotation SchemeNameParsers {
 /** Provider of the module for the scheme name parser.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.10
  */
 class SchemeNameParserModuleProvider implements BQModuleProvider {

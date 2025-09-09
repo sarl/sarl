@@ -45,9 +45,9 @@ import com.google.inject.Injector;
 /** Set of utilities for validating SARL code.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public class TestValidator {
@@ -85,9 +85,9 @@ public class TestValidator {
 	/** Validation helper on a specific resource. This validator keep track of all the resources.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 */
 	public interface Validator {
 
@@ -223,9 +223,9 @@ public class TestValidator {
 	/** Wrapper for the validation helper on a specific resource.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 */
 	public static class XtextValidator implements Validator {
 

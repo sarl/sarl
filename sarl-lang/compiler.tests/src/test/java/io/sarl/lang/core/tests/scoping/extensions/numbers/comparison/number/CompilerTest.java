@@ -35,9 +35,9 @@ import io.sarl.lang.tests.api.globalcompilation.ResourceSetGlobalCompilationCont
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @GlobalCompilationSuite

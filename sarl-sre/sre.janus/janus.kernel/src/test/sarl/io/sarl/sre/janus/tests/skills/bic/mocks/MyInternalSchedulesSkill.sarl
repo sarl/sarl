@@ -31,9 +31,9 @@ import org.arakhne.afc.vmutil.json.JsonBuffer
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 skill MyInternalSchedulesSkill implements InternalSchedules {
 

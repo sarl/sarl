@@ -32,9 +32,9 @@ import io.sarl.lang.ui.compiler.ProjectAdapter;
 /** Reader of the type conversion rules from the preferences.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 public class PreferenceBasedTypeConverterRuleReader extends TypeConverterRuleReader {

@@ -37,9 +37,9 @@ import io.sarl.eclipse.sre.janus.JanusEclipsePlugin;
 /** Initializer of the classpath container dedicated to the Janus platform.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.sre.janus 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  */
 public class JanusClasspathContainerInitializer extends ClasspathContainerInitializer {
 

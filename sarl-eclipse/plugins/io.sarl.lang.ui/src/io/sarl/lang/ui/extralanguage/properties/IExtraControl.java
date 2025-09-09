@@ -24,9 +24,9 @@ package io.sarl.lang.ui.extralanguage.properties;
 /** Control wrapper that may be automatically considered in the optiona dialog.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 public interface IExtraControl {

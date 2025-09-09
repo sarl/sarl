@@ -29,9 +29,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * SRE.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 public final class SREClassLoader {

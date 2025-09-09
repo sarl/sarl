@@ -37,9 +37,9 @@ import org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator;
  * <p>It is overridden in order to enable warning suppression with {@link SuppressWarnings} annotation.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLJvmTypeReferencesValidator extends JvmTypeReferencesValidator {
 

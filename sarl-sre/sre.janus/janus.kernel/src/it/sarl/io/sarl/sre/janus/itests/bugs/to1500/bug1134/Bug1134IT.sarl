@@ -43,9 +43,9 @@ import static extension org.junit.jupiter.api.Assertions.*
  * <p>https://github.com/sarl/sarl/issues/1134
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see "https://github.com/sarl/sarl/issues/1134"
  */
 @DisplayName("run: Bug #1134")

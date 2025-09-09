@@ -31,9 +31,9 @@ import jakarta.inject.Qualifier;
  * Annotation for marking a String value in order to define the detailed description of the application.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 15.0
  */
 @Target({ElementType.PARAMETER, ElementType.FIELD})

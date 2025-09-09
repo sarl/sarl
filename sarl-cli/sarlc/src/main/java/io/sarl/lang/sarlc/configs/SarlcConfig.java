@@ -34,9 +34,9 @@ import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
  * Configuration for the sarl tool.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 @BQConfig("Configuration of the SARLC tool")

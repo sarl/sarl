@@ -29,9 +29,9 @@ import org.osgi.framework.BundleContext;
  * Utility functions for the plugin.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  */
 public class PyGeneratorPlugin implements BundleActivator {
 

@@ -29,9 +29,9 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 /** Implementation of the provider of the extra language generators that replies no generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public class NullExtraLanguageGeneratorProvider implements IExtraLanguageGeneratorProvider {

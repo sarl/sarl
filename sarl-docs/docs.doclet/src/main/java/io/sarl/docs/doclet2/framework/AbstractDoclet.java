@@ -75,9 +75,9 @@ import jdk.javadoc.doclet.Reporter;
 /** An abstract implementation of a Doclet.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public abstract class AbstractDoclet implements Doclet {
@@ -287,9 +287,9 @@ public abstract class AbstractDoclet implements Doclet {
 	/** Reporter that does nothing.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	private static class IddleReporter implements Reporter {

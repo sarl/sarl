@@ -28,9 +28,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 /** Provide the default class path libraries for a SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 @FunctionalInterface

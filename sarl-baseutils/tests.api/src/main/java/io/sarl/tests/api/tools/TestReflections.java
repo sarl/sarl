@@ -38,9 +38,9 @@ import io.sarl.tests.api.TestPluginActivator;
 /** Utilities that are related to Java reflection.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public class TestReflections {

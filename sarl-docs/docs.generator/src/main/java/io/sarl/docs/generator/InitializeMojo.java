@@ -41,9 +41,9 @@ import io.sarl.docs.validator.ShellExtensions;
 /** Initialization mojo for the SARL Maven compiler.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 @Mojo(name = "initialize", defaultPhase = LifecyclePhase.INITIALIZE,
@@ -191,9 +191,9 @@ public class InitializeMojo extends AbstractDocumentationMojo {
 	/** Description of a shell command that is provided by a Maven artifact.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.0 20250909-115750
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.13
 	 */
 	public static class ShellCommand {

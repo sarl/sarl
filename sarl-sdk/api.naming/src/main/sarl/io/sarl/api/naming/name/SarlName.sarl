@@ -37,9 +37,9 @@ import java.net.URI
  * {@code SName} should lock the object.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 @SuppressWarnings("io.sarl.lang.validation.IssueCodes.manual_inline_definition")

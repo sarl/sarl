@@ -33,9 +33,9 @@ import org.eclipse.xtext.util.JavaVersion;
 /** Abstract implementation for the Java batch compilers.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.12
  */
 public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {

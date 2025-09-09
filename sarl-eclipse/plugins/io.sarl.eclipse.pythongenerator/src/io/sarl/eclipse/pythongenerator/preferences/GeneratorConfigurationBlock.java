@@ -34,9 +34,9 @@ import io.sarl.lang.ui.extralanguage.properties.AbstractGeneratorConfigurationBl
 /** Configuration block for the Python generator.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.pythongenerator 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.pythongenerator
  * @since 0.6
  */
 @SuppressWarnings("restriction")

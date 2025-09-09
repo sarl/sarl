@@ -31,9 +31,9 @@ import java.util.Iterator
 /** Utilities on collections.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.util 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.util
  */
 final class Collections3 {
 
@@ -58,9 +58,9 @@ final class Collections3 {
 	 * 
 	 * @param <E> the type of the elements in the collection.
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version api.util 0.15.0 20250909-115748
+	 * @mavengroupid io.sarl.sdk
+	 * @mavenartifactid api.util
 	 * @since 0.8.6
 	 */
 	private static class SerializableCollectionWrapper<E> extends AbstractCollection<E> implements Serializable {

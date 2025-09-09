@@ -27,9 +27,9 @@ import org.eclipse.xtext.validation.Issue;
 /** Formatter for the issue messages.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  */
 @FunctionalInterface
 public interface IssueMessageFormatter {

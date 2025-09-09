@@ -65,9 +65,9 @@ import org.eclipse.xtext.xbase.lib.Pair;
 /** Options provided on the CLI to the doclet.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class DefaultDocletOptions implements DocletOptions {

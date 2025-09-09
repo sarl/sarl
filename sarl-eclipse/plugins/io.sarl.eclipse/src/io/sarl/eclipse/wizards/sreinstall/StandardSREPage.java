@@ -56,9 +56,9 @@ import io.sarl.eclipse.runtime.SREException;
  * Standard implementation of a page for the SRE installation wizard.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public class StandardSREPage extends AbstractSREInstallPage {

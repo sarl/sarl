@@ -59,9 +59,9 @@ import io.sarl.lang.mwe2.typesystem.TypeSystemToolsConfig;
 /** Generator of the builder for XExpressions.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 
@@ -1400,9 +1400,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Description of the expression context.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	public static class ExpressionContextDescription {
 

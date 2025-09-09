@@ -26,9 +26,9 @@ import org.eclipse.osgi.util.NLS;
 /** Messages for the quick fix objects.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")

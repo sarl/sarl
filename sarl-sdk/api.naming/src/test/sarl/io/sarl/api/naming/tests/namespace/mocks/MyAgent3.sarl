@@ -26,9 +26,9 @@ import io.sarl.api.naming.namespace.Observable
 /** Mock of an agent.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  */
 @Observable
 agent MyAgent3 {

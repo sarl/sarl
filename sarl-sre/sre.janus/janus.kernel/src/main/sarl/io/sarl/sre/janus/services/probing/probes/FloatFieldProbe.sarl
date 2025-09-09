@@ -34,9 +34,9 @@ import java.net.URI
  * from the associated field, and the probe listeners are notified.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class FloatFieldProbe extends AbstractFieldProbe<Float> {

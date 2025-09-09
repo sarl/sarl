@@ -83,9 +83,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 /** Test the builders of {@code CodeBuilderFactory}.
  *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.15
  */
 @DisplayName("Component builders of CodeBuilderFactory")

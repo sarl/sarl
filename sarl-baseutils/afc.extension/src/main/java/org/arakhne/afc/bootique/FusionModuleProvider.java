@@ -31,9 +31,9 @@ import io.bootique.BQModule;
 /** Temporary module to avoid exception related to the multiple overriding of the BQCoreModule.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  */
 @SuppressWarnings({"removal", "deprecation"})
 public class FusionModuleProvider implements BQModuleProvider {

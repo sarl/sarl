@@ -70,9 +70,9 @@ import io.sarl.lang.validation.IssueCodes;
  * has issues with error reporting when the validator is dynamically added (as it is in the support class).
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public abstract class AbstractExtraLanguageValidator {
@@ -492,9 +492,9 @@ public abstract class AbstractExtraLanguageValidator {
 	/** Comparator of feature calls.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	private static final class FeatureCallComparator implements Comparator<XAbstractFeatureCall> {
@@ -518,9 +518,9 @@ public abstract class AbstractExtraLanguageValidator {
 	/** Validation context.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	protected static class Context {
@@ -617,9 +617,9 @@ public abstract class AbstractExtraLanguageValidator {
 	/** Method wrapper.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.6
 	 */
 	protected static class MethodWrapper {

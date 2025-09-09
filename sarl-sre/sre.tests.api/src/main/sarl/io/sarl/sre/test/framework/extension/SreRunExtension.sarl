@@ -39,9 +39,9 @@ import static extension java.lang.Boolean.*
  * JUnit 5 extension that is running the SRE.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sre.tests.api 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre
+ * @mavenartifactid sre.tests.api
  * @since 0.11
  */
 class SreRunExtension implements ParameterResolver, InvocationInterceptor {

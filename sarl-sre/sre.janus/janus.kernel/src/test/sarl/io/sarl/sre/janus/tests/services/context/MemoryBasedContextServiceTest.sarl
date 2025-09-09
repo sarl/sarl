@@ -30,9 +30,9 @@ import org.junit.jupiter.api.Tag
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @DisplayName("unit: MemoryBasedContextService test")
 @Tag("unit")

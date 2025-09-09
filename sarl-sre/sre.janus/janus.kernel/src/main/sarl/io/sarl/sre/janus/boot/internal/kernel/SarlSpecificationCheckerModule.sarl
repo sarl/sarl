@@ -31,9 +31,9 @@ import io.sarl.api.util.StandardSarlSpecificationChecker
  * Module for configuring the SARL specification checker.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class SarlSpecificationCheckerModule implements BQModule {
 
@@ -46,9 +46,9 @@ class SarlSpecificationCheckerModule implements BQModule {
 /** Provider of the module for configuring the SARL specification checker.
  * 
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class SarlSpecificationCheckerModuleProvider implements BQModuleProvider {

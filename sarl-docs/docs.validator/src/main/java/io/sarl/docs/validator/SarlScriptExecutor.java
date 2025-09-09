@@ -58,9 +58,9 @@ import io.sarl.lang.sarl.SarlScript;
 /** Sarl script executor.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.6
  */
 public class SarlScriptExecutor implements ScriptExecutor {

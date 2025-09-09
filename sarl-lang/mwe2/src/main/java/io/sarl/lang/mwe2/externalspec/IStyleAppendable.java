@@ -28,9 +28,9 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 /** Appendable that provides high level methods.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  * @since 0.6
  */
 public interface IStyleAppendable extends ISourceAppender {

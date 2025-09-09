@@ -66,9 +66,9 @@ import io.sarl.lang.sarl.SarlScript;
  * @param <ET> the type of the valid objects that are supported by this shortcut.
  * @param <JT> the type of the valid objects that are supported by this shortcut.
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 @SuppressWarnings("restriction")
@@ -338,9 +338,9 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	/** Description of an element to launch.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.7
 	 */
 	public static class ElementDescription {
@@ -379,9 +379,9 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	/** Label provider.
 	 *
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.0 20250909-115751
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class LabelProvider implements ILabelProvider {
 

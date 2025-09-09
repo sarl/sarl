@@ -34,9 +34,9 @@ import io.sarl.lang.core.SARLVersion;
  * Dynamic splash screen that add the "BETA" picture when the product is in unstable state.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @see io.sarl.lang.SARLConfig
  */
 @SuppressWarnings("restriction")

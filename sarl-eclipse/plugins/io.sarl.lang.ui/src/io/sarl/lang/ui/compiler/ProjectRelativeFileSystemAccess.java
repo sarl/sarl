@@ -32,9 +32,9 @@ import org.eclipse.xtext.util.RuntimeIOException;
  * the source folder when ensuring the file system folder is existing.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.0 20250909-115751
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class ProjectRelativeFileSystemAccess extends JDTAwareEclipseResourceFileSystemAccess2 {
 

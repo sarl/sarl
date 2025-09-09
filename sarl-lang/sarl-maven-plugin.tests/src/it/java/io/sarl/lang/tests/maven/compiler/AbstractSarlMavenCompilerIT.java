@@ -50,9 +50,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin.tests 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin.tests
  */
 @SuppressWarnings("all")
 public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
@@ -109,9 +109,9 @@ public abstract class AbstractSarlMavenCompilerIT extends AbstractSarlTest {
 	
 	/**
 	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version sarl-maven-plugin.tests 0.15.0 20250909-115746
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid sarl-maven-plugin.tests
 	 */
 	protected interface Callback {
 

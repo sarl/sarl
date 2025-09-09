@@ -40,9 +40,9 @@ import jakarta.inject.Inject;
  * Default implementation of a path detector.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.0 20250909-115750
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class DefaultPathDetector implements PathDetector {

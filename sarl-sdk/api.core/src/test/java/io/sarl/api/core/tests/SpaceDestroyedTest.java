@@ -33,9 +33,9 @@ import io.sarl.lang.core.SpaceID;
 
 /**
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.0 20250909-115748
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 @DisplayName("SpaceDestroyed")
 @Tag("unit")

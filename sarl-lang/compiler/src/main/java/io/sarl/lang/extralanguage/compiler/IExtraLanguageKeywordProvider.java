@@ -26,9 +26,9 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 /** Provider of keywords for the extra language.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 public interface IExtraLanguageKeywordProvider {

@@ -29,9 +29,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 /** Comparator of classpath entries according tothe typical structure of a SARL project.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.0 20250909-115749
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public class SARLClasspathEntryComparator implements Comparator<IClasspathEntry> {

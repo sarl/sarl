@@ -25,9 +25,9 @@ package io.sarl.sre.janus.spaces
  * Abstract implementation of a space.
  *
  * @author $Author: srodriguez$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AbstractSpace}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
@@ -39,9 +39,9 @@ abstract class AbstractSpace extends io.sarl.api.core.spaces.AbstractSpace {
  * Listener on events related to the space.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.0 20250909-115749
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceListener}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")

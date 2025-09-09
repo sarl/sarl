@@ -30,9 +30,9 @@ import com.google.inject.ImplementedBy;
 /** Tool for obtaining all the fragment contributions to the JVM model inferrer.
  *
  * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.0 20250909-115746
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 @ImplementedBy(JavaPluginInferrerFragmentContributions.class)
