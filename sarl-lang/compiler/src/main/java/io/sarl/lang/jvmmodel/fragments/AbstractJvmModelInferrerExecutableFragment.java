@@ -340,11 +340,6 @@ public abstract class AbstractJvmModelInferrerExecutableFragment extends Abstrac
 
 	/** Copy the type parameters from a JvmOperation.
 	 *
-	 * <p>This function differs from {@link #copyAndFixTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
-	 * and {@link #copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
-	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable)}.
-	 *
 	 * @param fromOperation the operation from which the type parameters are copied.
 	 * @param toOperation the operation that will receives the new type parameters.
 	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.

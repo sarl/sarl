@@ -716,7 +716,6 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 * @since 0.6
-	 * @see #appendCloneFunction(IBaseJvmModelInferrer, GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendCloneFunctionIfCloneable(
 			IBaseJvmModelInferrer baseInferrer,
@@ -736,7 +735,6 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 * @since 0.6
-	 * @see #appendCloneFunctionIfCloneable(IBaseJvmModelInferrer, GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	private void appendCloneFunction(
 			IBaseJvmModelInferrer baseInferrer, GenerationContext context,
@@ -987,7 +985,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	 * @param context the current generation context.
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
-	 * @see #appendSerialNumber(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 * @see #appendSerialNumber(IBaseJvmModelInferrer, GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendSerialNumberIfSerializable(IBaseJvmModelInferrer baseInferrer,
 			GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
@@ -1007,7 +1005,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	 * @param context the current generation context.
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
-	 * @see #appendSerialNumberIfSerializable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 * @see #appendSerialNumberIfSerializable(IBaseJvmModelInferrer, GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendSerialNumber(IBaseJvmModelInferrer baseInferrer, GenerationContext context,
 			XtendTypeDeclaration source, JvmGenericType target) {
@@ -1196,10 +1194,10 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 
 	/** Copy the type parameters from a JvmOperation.
 	 *
-	 * <p>This function differs from {@link #copyAndFixTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
-	 * and {@link #copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * <p>This function differs from {@link io.sarl.lang.jvmmodel.SARLJvmModelInferrer#copyAndFixTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * and {@link io.sarl.lang.jvmmodel.SARLJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable)}.
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable, IBaseJvmModelInferrer)}.
 	 *
 	 * @param baseInferrer the inferrer that is the considered as the base (starting point) of inferring process.
 	 * @param fromOperation the operation from which the type parameters are copied.

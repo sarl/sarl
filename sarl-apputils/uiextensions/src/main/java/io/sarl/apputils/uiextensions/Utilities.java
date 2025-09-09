@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.ClasspathEntry;
+import org.eclipse.ui.internal.util.BundleUtility;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
@@ -189,7 +190,7 @@ public final class Utilities {
 	 *
 	 * @param bundle the bundle to point to. Never {@code null}.
 	 * @param precomputedBundlePath the path to the bundle that is already available. If {@code null},
-	 *      the path is computed from the bundle with {@link BundleUtil}.
+	 *      the path is computed from the bundle with {@link BundleUtility}.
 	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
 	 *      the bundle platform does not know the Javadoc file. If {@code null}, no mapping is defined.
 	 * @return the classpath entry.
@@ -240,7 +241,7 @@ public final class Utilities {
 	 *
 	 * @param bundle the bundle to point to. Never {@code null}.
 	 * @param precomputedBundlePath the path to the bundle that is already available. If {@code null},
-	 *      the path is computed from the bundle with {@link BundleUtil}.
+	 *      the path is computed from the bundle with {@link BundleUtility}.
 	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
 	 *      the bundle platform does not know the Javadoc file. If {@code null}, no mapping is defined.
 	 * @return the classpath entry.
@@ -352,6 +353,12 @@ public final class Utilities {
 
 		private static final String WRAPPED_SARL_PREFIX = "wrapped.io.sarl."; //$NON-NLS-1$
 
+		/** Constructor.
+		 */
+		public SARLBundleJavadocURLMappings() {
+			//
+		}
+		
 		@Override
 		public String getURLForBundle(Bundle bundle) {
 			final var name = bundle.getSymbolicName();

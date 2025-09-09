@@ -145,7 +145,7 @@ public interface ISARLValidator {
 
 	/** Replies the generator configuration that is used for creating the JVM objects.
 	 * 
-	 * @param element
+	 * @param element the metamodel elements for which the generator configuration must be retrieved.
 	 * @return the general configuration.
 	 */
 	GeneratorConfig getGeneratorConfig(EObject element);

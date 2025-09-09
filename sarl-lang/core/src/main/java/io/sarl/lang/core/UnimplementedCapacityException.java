@@ -39,8 +39,12 @@ public class UnimplementedCapacityException extends RuntimeException {
 
 	private static final long serialVersionUID = -6286153666879425064L;
 
+	/** Type of the capacity that is the source of the error.
+	 */
 	private final Class<? extends Capacity> unimplementedCapacity;
 
+	/** Identifier of the agent that tries to invoke the capacity.
+	 */
 	private final UUID callingAgent;
 
 	/**

@@ -51,6 +51,7 @@ public final class Extensions {
 
 	/** Replies the extensions that are defined in the given Eclipse plugin.
 	 *
+	 * @param <T> the type of the extension.
 	 * @param pluginId the identifier of the plugin that defines the extension.
 	 * @param extensionId the identifier of the extension.
 	 * @param fieldName the name of the field that describes the type of the extension to be created.

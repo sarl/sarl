@@ -35,7 +35,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl type parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 101
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 101"
  */
 @SuppressWarnings("all")
 public interface ITypeParameterBuilder {
@@ -43,7 +43,7 @@ public interface ITypeParameterBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 239
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 239"
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -51,7 +51,7 @@ public interface ITypeParameterBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 267
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 267"
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -59,7 +59,7 @@ public interface ITypeParameterBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 297
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 297"
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -67,7 +67,7 @@ public interface ITypeParameterBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 329
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 329"
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -76,7 +76,7 @@ public interface ITypeParameterBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 363
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 363"
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
@@ -89,7 +89,7 @@ public interface ITypeParameterBuilder {
 	 * @param declarator the container of the type parameter.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 408
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 408"
 	 */
 	void eInit(XtendTypeDeclaration context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext);
 
@@ -102,20 +102,20 @@ public interface ITypeParameterBuilder {
 	 * @param declarator the container of the type parameter.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 455
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 455"
 	 */
 	void eInit(XtendExecutable context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 533
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 533"
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 565
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 565"
 	 */
 	@Pure
 	JvmTypeParameter getJvmTypeParameter();
@@ -123,47 +123,47 @@ public interface ITypeParameterBuilder {
 	/** Replies a reference to the created parameter.
 	 *
 	 * @return the reference to the parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 602
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 602"
 	 */
 	@Pure
 	JvmTypeReference getJvmTypeParameterReference();
 
 	/** Replies the resource to which the type parameter is attached.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 635
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 635"
 	 */
 	@Pure
 	Resource eResource();
 
 	/** Dispose the resource.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 689
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 689"
 	 */
 	void dispose();
 
 	/** Add upper type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 716
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 716"
 	 */
 	ITypeParameterBuilder addUpperConstraint(String type);
 
 	/** Add upper type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 749
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 749"
 	 */
 	ITypeParameterBuilder addUpperConstraint(JvmTypeReference type);
 
 	/** Add lower type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 801
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 801"
 	 */
 	ITypeParameterBuilder addLowerConstraint(String type);
 
 	/** Add lower type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 834
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 834"
 	 */
 	ITypeParameterBuilder addLowerConstraint(JvmTypeReference type);
 

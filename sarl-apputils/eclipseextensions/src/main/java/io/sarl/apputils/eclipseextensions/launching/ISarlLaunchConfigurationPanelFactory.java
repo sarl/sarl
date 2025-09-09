@@ -49,7 +49,7 @@ public interface ISarlLaunchConfigurationPanelFactory {
 	ILaunchConfigurationTab newLaunchConfigurationPanel(ILaunchConfigurationDialog dialog, String mode,
 			List<ILaunchConfigurationTab> list, ISarlRuntimeEnvironmentTab runtimeTab);
 
-	/** Determine if the panel should be created with {@link #newLaunchConfigurationPanel()}.
+	/** Determine if the panel should be created with {@link #newLaunchConfigurationPanel(ILaunchConfigurationDialog, String, List, ISarlRuntimeEnvironmentTab)}.
 	 *
 	 * @param dialog the launch configuration panel.
 	 * @param mode the running mode.

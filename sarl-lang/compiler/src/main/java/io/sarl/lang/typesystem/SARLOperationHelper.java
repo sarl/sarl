@@ -1132,7 +1132,6 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @param context the context of the purity evaluation.
 	 * @return {@code true} if the operation is marked as pure; otherwise {@code false}.
 	 * @see org.eclipse.xtext.xbase.lib.Pure
-	 * @see #isPurableOperation(XtendFunction, ISideEffectContext)
 	 * @since 0.13
 	 */
 	public boolean isPureOperation(JvmOperation operation, ISideEffectContext context) {

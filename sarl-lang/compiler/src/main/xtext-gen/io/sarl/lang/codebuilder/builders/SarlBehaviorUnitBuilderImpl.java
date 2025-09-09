@@ -51,29 +51,29 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISarlBehaviorUnitBuilder {
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 336
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 336"
 	 */
 	@Inject
 	private Provider<IBlockExpressionBuilder> blockExpressionProvider;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 349
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 349"
 	 */
 	@Inject
 	private Provider<IExpressionBuilder> expressionProvider;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 361
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 361"
 	 */
 	private EObject container;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 367
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 367"
 	 */
 	private SarlBehaviorUnit sarlBehaviorUnit;
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 376
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 376"
 	 */
 	private IBlockExpressionBuilder internalBlockExpression;
 
@@ -81,7 +81,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 632
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 632"
 	 */
 	public void eInit(EObject container, String name, IJvmTypeProvider context) {
 		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 666
@@ -101,7 +101,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container the container of the SarlBehaviorUnit.
 	 * @param name the type of the SarlBehaviorUnit.
 	 * @param context the context in which type resolution must be applied.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 816
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 816"
 	 */
 	public void eInit(EObject container, JvmParameterizedTypeReference name, IJvmTypeProvider context) {
 		// Generator code: AbstractMemberBuilderFragment.java : appendTo : 846
@@ -125,7 +125,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the generated element.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 962
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 962"
 	 */
 	@Pure
 	public SarlBehaviorUnit getSarlBehaviorUnit() {
@@ -133,7 +133,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Replies the resource.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 996
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 996"
 	 */
 	@Pure
 	public Resource eResource() {
@@ -146,7 +146,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
+	 * @see "AbstractSubCodeBuilderFragment.java : appendTo : 603"
 	 */
 	public ISarlBehaviorUnitBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -169,7 +169,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Create the block of code.
 	 * @return the block builder.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1445
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 1445"
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.internalBlockExpression;
@@ -184,7 +184,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/**
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1638
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 1638"
 	 */
 	@Override
 	@Pure
@@ -194,7 +194,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 
 	/** Replies the guard.
 	 * @return the value of the guard. It may be {@code null}.
-	 * @see AbstractMemberBuilderFragment.java : appendTo : 1729
+	 * @see "AbstractMemberBuilderFragment.java : appendTo : 1729"
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {

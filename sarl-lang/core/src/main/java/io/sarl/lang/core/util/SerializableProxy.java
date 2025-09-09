@@ -41,8 +41,12 @@ public class SerializableProxy implements Serializable {
 
 	private static final long serialVersionUID = -2601677585237973795L;
 
+	/** Type of the serialized type.
+	 */
 	private final Class<?> proxyType;
 
+	/** The values that are serialized.
+	 */
 	private final Object[] values;
 
 	/** Construct a proxy.
@@ -68,6 +72,8 @@ public class SerializableProxy implements Serializable {
 	}
 
 	/** This function enables to deserialize an instance of this proxy.
+	 *
+	 * @return the deserialized object.
 	 * @throws ObjectStreamException if the deserialization fails
 	 */
 	private Object readResolve() throws ObjectStreamException {

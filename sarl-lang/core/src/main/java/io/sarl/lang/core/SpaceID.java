@@ -41,10 +41,16 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 
 	private static final long serialVersionUID = 8764568066583474825L;
 
+	/** Identifier of the space.
+	 */
 	private final UUID id;
 
+	/** Identifier of the context in which the space is located.
+	 */
 	private final UUID contextID;
 
+	/** Concrete type of the space specification.
+	 */
 	private final transient Class<? extends SpaceSpecification<?>> spaceSpec;
 
 	/** Constructs a space ID.

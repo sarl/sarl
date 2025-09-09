@@ -33,7 +33,7 @@ import io.sarl.lang.core.EventListener
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.OpenLocalEventSpace}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.OpenLocalEventSpace}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 class OpenLocalEventSpace extends io.sarl.api.core.spaces.OpenLocalEventSpace {

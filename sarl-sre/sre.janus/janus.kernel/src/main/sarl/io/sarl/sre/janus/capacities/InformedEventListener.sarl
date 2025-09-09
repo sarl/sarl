@@ -40,7 +40,7 @@ import io.sarl.lang.core.Space
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 3.0.10
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.lang.core.InformedEventListener}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.lang.core.InformedEventListener}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 interface InformedEventListener extends io.sarl.lang.core.InformedEventListener {

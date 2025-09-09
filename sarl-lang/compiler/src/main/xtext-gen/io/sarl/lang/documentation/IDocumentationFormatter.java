@@ -29,34 +29,34 @@ import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Format a documentation string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 290
+	 * @see "DocumentationBuilderFragment.java : appendTo : 290"
  */
 public interface IDocumentationFormatter {
 
 	/** Replies the characters that must be used as prefix of each line in a multiline comment.
 	 * @return the prefix.
-	 * @see DocumentationBuilderFragment.java : appendTo : 302
+	 * @see "DocumentationBuilderFragment.java : appendTo : 302"
 	 */
 	@Pure
 	String getMultilineCommentLinePrefix();
 
 	/** Replies the characters that must be used to start a comment.
 	 * @return the symbols.
-	 * @see DocumentationBuilderFragment.java : appendTo : 315
+	 * @see "DocumentationBuilderFragment.java : appendTo : 315"
 	 */
 	@Pure
 	String getMultilineCommentStartSymbols();
 
 	/** Replies the characters that must be used to end a comment.
 	 * @return the symbols.
-	 * @see DocumentationBuilderFragment.java : appendTo : 328
+	 * @see "DocumentationBuilderFragment.java : appendTo : 328"
 	 */
 	@Pure
 	String getMultilineCommentEndSymbols();
 
 	/** Replies the string that must be used as prefix of a singleline comment.
 	 * @return the prefix.
-	 * @see DocumentationBuilderFragment.java : appendTo : 341
+	 * @see "DocumentationBuilderFragment.java : appendTo : 341"
 	 */
 	@Pure
 	String getSinglelineCommentPrefix();
@@ -64,7 +64,7 @@ public interface IDocumentationFormatter {
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @return the formatted comment.
-	 * @see DocumentationBuilderFragment.java : appendTo : 356
+	 * @see "DocumentationBuilderFragment.java : appendTo : 356"
 	 */
 	@Pure
 	String formatMultilineComment(String doc);
@@ -73,7 +73,7 @@ public interface IDocumentationFormatter {
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param indentation the string to put for indenting the comment.
 	 * @return the formatted comment.
-	 * @see DocumentationBuilderFragment.java : appendTo : 373
+	 * @see "DocumentationBuilderFragment.java : appendTo : 373"
 	 */
 	@Pure
 	String formatMultilineComment(String doc, String indentation);
@@ -81,7 +81,7 @@ public interface IDocumentationFormatter {
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param appendable the receiver of the formatted string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 388
+	 * @see "DocumentationBuilderFragment.java : appendTo : 388"
 	 */
 	@Pure
 	void formatMultilineComment(String doc, IAppendable appendable);
@@ -90,7 +90,7 @@ public interface IDocumentationFormatter {
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param indentation the string to put for indenting the comment.
 	 * @param appendable the receiver of the formatted string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 407
+	 * @see "DocumentationBuilderFragment.java : appendTo : 407"
 	 */
 	@Pure
 	void formatMultilineComment(String doc, String indentation, IAppendable appendable);
@@ -99,7 +99,7 @@ public interface IDocumentationFormatter {
 	 *
 	 * @param context the formatting context.
 	 * @param comment the comment to format out.
-	 * @see DocumentationBuilderFragment.java : appendTo : 426
+	 * @see "DocumentationBuilderFragment.java : appendTo : 426"
 	 */
 	@Pure
 	public void formatMultilineComment(ITextReplacerContext context, IComment comment);
@@ -107,7 +107,7 @@ public interface IDocumentationFormatter {
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @return the formatted comment.
-	 * @see DocumentationBuilderFragment.java : appendTo : 445
+	 * @see "DocumentationBuilderFragment.java : appendTo : 445"
 	 */
 	@Pure
 	String formatSinglelineComment(String doc);
@@ -116,7 +116,7 @@ public interface IDocumentationFormatter {
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param indentation the string to put for indenting the comment.
 	 * @return the formatted comment.
-	 * @see DocumentationBuilderFragment.java : appendTo : 462
+	 * @see "DocumentationBuilderFragment.java : appendTo : 462"
 	 */
 	@Pure
 	String formatSinglelineComment(String doc, String indentation);
@@ -124,7 +124,7 @@ public interface IDocumentationFormatter {
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param appendable the receiver of the formatted string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 477
+	 * @see "DocumentationBuilderFragment.java : appendTo : 477"
 	 */
 	@Pure
 	void formatSinglelineComment(String doc, IAppendable appendable);
@@ -133,7 +133,7 @@ public interface IDocumentationFormatter {
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param indentation the string to put for indenting the comment.
 	 * @param appendable the receiver of the formatted string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 496
+	 * @see "DocumentationBuilderFragment.java : appendTo : 496"
 	 */
 	@Pure
 	void formatSinglelineComment(String doc, String indentation, IAppendable appendable);
@@ -142,7 +142,7 @@ public interface IDocumentationFormatter {
 	 *
 	 * @param context the formatting context.
 	 * @param comment the comment to format out.
-	 * @see DocumentationBuilderFragment.java : appendTo : 515
+	 * @see "DocumentationBuilderFragment.java : appendTo : 515"
 	 */
 	@Pure
 	void formatSinglelineComment(ITextReplacerContext context, IComment comment);

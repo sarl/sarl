@@ -205,7 +205,7 @@ public abstract class AbstractJvmModelInferrerFragment {
 	 * to the resource of the original reference.
 	 *
 	 * <p>This function calls {@link org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder#cloneWithProxies(JvmTypeReference)} or
-	 * {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable)} if the
+	 * {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable, IBaseJvmModelInferrer)} if the
 	 * {@code target} is {@code null} for the first, and not {@code null} for the second.
 	 *
 	 * @param type the source type.

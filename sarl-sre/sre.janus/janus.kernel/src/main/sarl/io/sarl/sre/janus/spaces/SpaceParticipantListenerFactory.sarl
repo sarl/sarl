@@ -27,7 +27,7 @@ package io.sarl.sre.janus.spaces
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 3.0.10
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceParticipantListenerFactory}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceParticipantListenerFactory}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 interface SpaceParticipantListenerFactory extends io.sarl.api.core.spaces.SpaceParticipantListenerFactory {

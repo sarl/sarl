@@ -44,7 +44,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlCapacity.
-	 * @see TopElementBuilderFragment.java : appendTo : 410
+	 * @see "TopElementBuilderFragment.java : appendTo : 410"
  */
 @SuppressWarnings("all")
 public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCapacityBuilder {
@@ -52,7 +52,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	private SarlCapacity sarlCapacity;
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1625
+	 * @see "TopElementBuilderFragment.java : appendTo : 1625"
 	 */
 	@Override
 	@Pure
@@ -64,7 +64,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	 * @param script the SARL script in which this SarlCapacity is added.
 	 * @param name the simple name of the SarlCapacity.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1662
+	 * @see "TopElementBuilderFragment.java : appendTo : 1662"
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -77,7 +77,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Replies the generated SarlCapacity.
-	 * @see TopElementBuilderFragment.java : appendTo : 1798
+	 * @see "TopElementBuilderFragment.java : appendTo : 1798"
 	 */
 	@Pure
 	public SarlCapacity getSarlCapacity() {
@@ -86,7 +86,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1838
+	 * @see "TopElementBuilderFragment.java : appendTo : 1838"
 	 */
 	@Pure
 	public JvmTypeReference getSarlCapacityReference() {
@@ -97,7 +97,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Replies the JVM declared type for this generated SarlCapacity.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1893
+	 * @see "TopElementBuilderFragment.java : appendTo : 1893"
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -105,7 +105,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Replies the resource to which the SarlCapacity is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1928
+	 * @see "TopElementBuilderFragment.java : appendTo : 1928"
 	 */
 	@Pure
 	public Resource eResource() {
@@ -118,7 +118,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
+	 * @see "AbstractSubCodeBuilderFragment.java : appendTo : 603"
 	 */
 	public ISarlCapacityBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -142,7 +142,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Add the super type.
 	 * @param superType the qualified name of the super type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 1966
+	 * @see "TopElementBuilderFragment.java : appendTo : 1966"
 	 */
 	public ISarlCapacityBuilder addExtends(String superType) {
 		if (!Strings.isEmpty(superType)) {
@@ -159,7 +159,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Add the super type.
 	 * @param superType the super type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 2065
+	 * @see "TopElementBuilderFragment.java : appendTo : 2065"
 	 */
 	public ISarlCapacityBuilder addExtends(JvmParameterizedTypeReference superType) {
 		if (superType instanceof JvmParameterizedTypeReference psuperType && !Capacity.class.getName().equals(superType.getType().getIdentifier())) {
@@ -175,7 +175,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2492
+	 * @see "TopElementBuilderFragment.java : appendTo : 2492"
 	 */
 	public ISarlCapacityBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -185,7 +185,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 523
+	 * @see "TopElementBuilderFragment.java : appendTo : 523"
 	 */
 	@Inject
 	private Provider<ISarlActionBuilder> iSarlActionBuilderProvider;
@@ -193,7 +193,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -204,7 +204,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
@@ -216,7 +216,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 706
+	 * @see "TopElementBuilderFragment.java : appendTo : 706"
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		return this.addDefSarlAction(name);

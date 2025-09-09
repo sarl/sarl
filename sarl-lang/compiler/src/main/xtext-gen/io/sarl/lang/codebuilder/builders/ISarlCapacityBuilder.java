@@ -35,7 +35,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlCapacity.
-	 * @see TopElementBuilderFragment.java : appendTo : 303
+	 * @see "TopElementBuilderFragment.java : appendTo : 303"
  */
 @SuppressWarnings("all")
 public interface ISarlCapacityBuilder {
@@ -43,7 +43,7 @@ public interface ISarlCapacityBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1426
+	 * @see "TopElementBuilderFragment.java : appendTo : 1426"
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -51,7 +51,7 @@ public interface ISarlCapacityBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1454
+	 * @see "TopElementBuilderFragment.java : appendTo : 1454"
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -59,7 +59,7 @@ public interface ISarlCapacityBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1484
+	 * @see "TopElementBuilderFragment.java : appendTo : 1484"
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -67,7 +67,7 @@ public interface ISarlCapacityBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1516
+	 * @see "TopElementBuilderFragment.java : appendTo : 1516"
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -76,18 +76,18 @@ public interface ISarlCapacityBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see TopElementBuilderFragment.java : appendTo : 1550
+	 * @see "TopElementBuilderFragment.java : appendTo : 1550"
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see TopElementBuilderFragment.java : appendTo : 1582
+	 * @see "TopElementBuilderFragment.java : appendTo : 1582"
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Dispose the resource.
-	 * @see TopElementBuilderFragment.java : appendTo : 1604
+	 * @see "TopElementBuilderFragment.java : appendTo : 1604"
 	 */
 	void dispose();
 
@@ -95,19 +95,19 @@ public interface ISarlCapacityBuilder {
 	 * @param script the SARL script in which this SarlCapacity is added.
 	 * @param name the simple name of the SarlCapacity.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1662
+	 * @see "TopElementBuilderFragment.java : appendTo : 1662"
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);
 
 	/** Replies the generated SarlCapacity.
-	 * @see TopElementBuilderFragment.java : appendTo : 1798
+	 * @see "TopElementBuilderFragment.java : appendTo : 1798"
 	 */
 	@Pure
 	SarlCapacity getSarlCapacity();
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1838
+	 * @see "TopElementBuilderFragment.java : appendTo : 1838"
 	 */
 	@Pure
 	public JvmTypeReference getSarlCapacityReference();
@@ -115,13 +115,13 @@ public interface ISarlCapacityBuilder {
 	/** Replies the JVM declared type for this generated SarlCapacity.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1893
+	 * @see "TopElementBuilderFragment.java : appendTo : 1893"
 	 */
 	@Pure
 	JvmDeclaredType getJvmDeclaredType();
 
 	/** Replies the resource to which the SarlCapacity is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1928
+	 * @see "TopElementBuilderFragment.java : appendTo : 1928"
 	 */
 	@Pure
 	Resource eResource();
@@ -132,42 +132,42 @@ public interface ISarlCapacityBuilder {
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
+	 * @see "AbstractSubCodeBuilderFragment.java : appendTo : 603"
 	 */
 	ISarlCapacityBuilder setDocumentation(String doc);
 
 	/** Add the super type.
 	 * @param superType the qualified name of the super type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 1966
+	 * @see "TopElementBuilderFragment.java : appendTo : 1966"
 	 */
 	ISarlCapacityBuilder addExtends(String superType);
 
 	/** Add the super type.
 	 * @param superType the super type.
 	 * @return {@code this}
-	 * @see TopElementBuilderFragment.java : appendTo : 2065
+	 * @see "TopElementBuilderFragment.java : appendTo : 2065"
 	 */
 	ISarlCapacityBuilder addExtends(JvmParameterizedTypeReference superType);
 
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2492
+	 * @see "TopElementBuilderFragment.java : appendTo : 2492"
 	 */
 	ISarlCapacityBuilder addModifier(String modifier);
 
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	ISarlActionBuilder addDefSarlAction(String name);
 
 	/** Create a SarlAction.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	ISarlActionBuilder addOverrideSarlAction(String name);
 
@@ -175,7 +175,7 @@ public interface ISarlCapacityBuilder {
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
 	 * @param name the name of the SarlAction.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 706
+	 * @see "TopElementBuilderFragment.java : appendTo : 706"
 	 */
 	ISarlActionBuilder addSarlAction(String name);
 

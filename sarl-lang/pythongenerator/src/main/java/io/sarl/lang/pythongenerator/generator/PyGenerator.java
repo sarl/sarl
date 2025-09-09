@@ -1001,8 +1001,6 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param uses the capacity uses.
 	 * @param it the target for the generated content.
 	 * @param context the context.
-	 * @see #computeCapacityFunctionMarkers(JvmDeclaredType)
-	 * @see #markCapacityFunctions(PyAppendable)
 	 * @see #_before(SarlCapacityUses, IExtraLanguageGeneratorContext)
 	 * @see #createAppendable(JvmDeclaredType, IExtraLanguageGeneratorContext)
 	 */

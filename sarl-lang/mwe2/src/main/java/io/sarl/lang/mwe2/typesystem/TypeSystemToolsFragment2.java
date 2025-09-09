@@ -838,7 +838,7 @@ public class TypeSystemToolsFragment2 extends AbstractXtextGeneratorFragment {
 			it.newLine();
 			it.append("\t/** Replies the XExpression for the default value that is associated to the given type."); //$NON-NLS-1$
 			it.newLine();
-			it.append("\t * @param type the type to consider."); //$NON-NLS-1$
+			it.append("\t * @param typeName the type to consider."); //$NON-NLS-1$
 			it.newLine();
 			it.append("\t * @param notifier the context from whic a type must be loaded if needed."); //$NON-NLS-1$
 			it.newLine();

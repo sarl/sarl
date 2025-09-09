@@ -30,7 +30,8 @@ import io.sarl.lang.SARLConfig;
 /** Comparator of paths according to the standard SARL project structure.
  *
  * <p>The order assumed by this comparator is based on:
- * <p><table>
+ * <table>
+ * <caption>Order index per category of resource</caption>
  * <thead><tr><th>Category</th><th>Description</th></tr></thead>
  * <tr><td>0</td><td>Regular source code</td></tr>
  * <tr><td>20</td><td>Regular resource</td></tr>

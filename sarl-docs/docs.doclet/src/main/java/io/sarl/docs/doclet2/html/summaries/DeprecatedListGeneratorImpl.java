@@ -244,7 +244,7 @@ public class DeprecatedListGeneratorImpl extends AbstractSummaryGenerator implem
 		final var constructorName = getSARLGrammarKeywordAccess().getNewKeyword();
 		createSummaryBox2(Messages.DeprecatedListGeneratorImpl_22, Messages.DeprecatedListGeneratorImpl_9,  Messages.DeprecatedListGeneratorImpl_10,
 				null, parent, allElements,
-				getElementUtils().getVariableElementComparator(),
+				getElementUtils().getExecutableElementComparator(),
 				element -> {
 					final var nodes = new ArrayList<Node>();
 					final var label = element.getEnclosingElement().getSimpleName().toString() + "." + constructorName; //$NON-NLS-1$

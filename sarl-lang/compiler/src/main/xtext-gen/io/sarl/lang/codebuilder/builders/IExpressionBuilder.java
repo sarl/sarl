@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl XExpression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 122
+	 * @see "ExpressionBuilderFragment.java : appendTo : 122"
  */
 @SuppressWarnings("all")
 public interface IExpressionBuilder {
@@ -43,7 +43,7 @@ public interface IExpressionBuilder {
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 262
+	 * @see "ExpressionBuilderFragment.java : appendTo : 262"
 	 */
 	JvmTypeReference newTypeRef(String typeName);
 
@@ -51,7 +51,7 @@ public interface IExpressionBuilder {
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 290
+	 * @see "ExpressionBuilderFragment.java : appendTo : 290"
 	 */
 	JvmTypeReference newTypeRef(Notifier context, String typeName);
 
@@ -59,7 +59,7 @@ public interface IExpressionBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 320
+	 * @see "ExpressionBuilderFragment.java : appendTo : 320"
 	 */
 	JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args);
 
@@ -67,7 +67,7 @@ public interface IExpressionBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 352
+	 * @see "ExpressionBuilderFragment.java : appendTo : 352"
 	 */
 	JvmTypeReference newTypeRef(Class type, JvmTypeReference... args);
 
@@ -76,13 +76,13 @@ public interface IExpressionBuilder {
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 386
+	 * @see "ExpressionBuilderFragment.java : appendTo : 386"
 	 */
 	JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args);
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see ExpressionBuilderFragment.java : appendTo : 418
+	 * @see "ExpressionBuilderFragment.java : appendTo : 418"
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -90,20 +90,20 @@ public interface IExpressionBuilder {
 	 * @param context the context of the expressions.
 	 * @param setter the object that permits to assign the expression to the context.
 	 * @param typeContext the context for type resolution.
-	 * @see ExpressionBuilderFragment.java : appendTo : 452
+	 * @see "ExpressionBuilderFragment.java : appendTo : 452"
 	 */
 	void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext);
 
 	/** Replies the last created expression.
 	 *
 	 * @return the last created expression.
-	 * @see ExpressionBuilderFragment.java : appendTo : 495
+	 * @see "ExpressionBuilderFragment.java : appendTo : 495"
 	 */
 	@Pure
 	XExpression getXExpression();
 
 	/** Replies the resource to which the XExpression is attached.
-	 * @see ExpressionBuilderFragment.java : appendTo : 524
+	 * @see "ExpressionBuilderFragment.java : appendTo : 524"
 	 */
 	@Pure
 	Resource eResource();
@@ -112,7 +112,7 @@ public interface IExpressionBuilder {
 	 *
 	 * @param expression the textual representation of the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 567
+	 * @see "ExpressionBuilderFragment.java : appendTo : 567"
 	 */
 	IExpressionBuilder setExpression(String expression);
 
@@ -120,7 +120,7 @@ public interface IExpressionBuilder {
 	 *
 	 * @param expression the expression.
 	 * @return {@code this}
-	 * @see ExpressionBuilderFragment.java : appendTo : 603
+	 * @see "ExpressionBuilderFragment.java : appendTo : 603"
 	 */
 	IExpressionBuilder setXExpression(XExpression expression);
 
@@ -128,7 +128,7 @@ public interface IExpressionBuilder {
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 857
+	 * @see "ExpressionBuilderFragment.java : appendTo : 857"
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(String type);
@@ -136,7 +136,7 @@ public interface IExpressionBuilder {
 	/** Replies the XExpression for the default value associated to the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 890
+	 * @see "ExpressionBuilderFragment.java : appendTo : 890"
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(JvmTypeReference type);
@@ -144,7 +144,7 @@ public interface IExpressionBuilder {
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 925
+	 * @see "ExpressionBuilderFragment.java : appendTo : 925"
 	 */
 	@Pure
 	String getDefaultValueForType(String type);
@@ -152,7 +152,7 @@ public interface IExpressionBuilder {
 	/** Replies the default value for the given type.
 	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
-	 * @see ExpressionBuilderFragment.java : appendTo : 957
+	 * @see "ExpressionBuilderFragment.java : appendTo : 957"
 	 */
 	@Pure
 	String getDefaultValueForType(JvmTypeReference type);
@@ -163,26 +163,26 @@ public interface IExpressionBuilder {
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
+	 * @see "AbstractSubCodeBuilderFragment.java : appendTo : 603"
 	 */
 	IExpressionBuilder setDocumentation(String doc);
 
 	/** Create a reference to "this" object or to the current type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1016
+	 * @see "ExpressionBuilderFragment.java : appendTo : 1016"
 	 */
 	XFeatureCall createReferenceToThis();
 
 	/** Create a reference to "super" object or to the super type.
 	 *
 	 * @return the reference.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1074
+	 * @see "ExpressionBuilderFragment.java : appendTo : 1074"
 	 */
 	XFeatureCall createReferenceToSuper();
 
 	/** Dispose the resource.
-	 * @see ExpressionBuilderFragment.java : appendTo : 1164
+	 * @see "ExpressionBuilderFragment.java : appendTo : 1164"
 	 */
 	void dispose();
 

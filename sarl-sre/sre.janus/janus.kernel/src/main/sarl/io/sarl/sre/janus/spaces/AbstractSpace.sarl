@@ -28,7 +28,7 @@ package io.sarl.sre.janus.spaces
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AbstractSpace}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AbstractSpace}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 abstract class AbstractSpace extends io.sarl.api.core.spaces.AbstractSpace {
@@ -42,7 +42,7 @@ abstract class AbstractSpace extends io.sarl.api.core.spaces.AbstractSpace {
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceListener}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceListener}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 interface SpaceListener extends io.sarl.api.core.spaces.SpaceListener {

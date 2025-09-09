@@ -7,6 +7,7 @@
   <name>API Documentation for SARL</name>
   <properties>
     <sarl.version>0.15.0-SNAPSHOT</sarl.version>
+    <java.version>21</java.version>
   </properties>
   <modules>
     <module>sarl-lang</module>
@@ -29,6 +30,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.11.2</version>
           <configuration>
+            <version>${java.version}</version>
             <doclint>all,-missing</doclint>
             <failOnError>false</failOnError>
             <useStandardDocletOptions>false</useStandardDocletOptions>
@@ -50,24 +52,25 @@
             <excludePackageNames />
             <use>false</use>
             <bottom>&lt;small&gt;Copyright &amp;copy; ${sarl.inception.year}-${sarl.last.year} ${sarl.copyrighters}.</bottom>
-            <groups>
-              <group>
-                <title>SARL Standard Development Kit</title>
-                <packages>io.sarl.lang.core*:io.sarl.api*</packages>
-              </group>
-              <group>
-                <title>SARL Runtime Environment (SRE)</title>
-                <packages>io.sarl.sre*</packages>
-              </group>
-              <group>
-                <title>SARL Compiler</title>
-                <packages>io.sarl.lang*</packages>
-              </group>
-              <group>
-                <title>Tools for building SARL-based applications</title>
-                <packages>io.sarl.apputils*</packages>
-              </group>
-            </groups>
+		<groups>
+		    <group>
+		      <title>SARL Standard Development Kit - SDK</title>
+		      <packages>io.sarl.api*:io.sarl.lang.core*</packages>
+		    </group>
+		    <group>
+		      <title>SARL Runtime Environment - Janus</title>
+		      <packages>io.sarl.sre*</packages>
+		    </group>
+		    <group>
+		      <title>SARL Compiler</title>
+		      <packages>
+		      io.sarl.lang:io.sarl.lang.async*:io.sarl.lang.bugfixes*:io.sarl.lang.codebuilder*:io.sarl.lang.compiler*:io.sarl.lang.controlflow*:io.sarl.lang.documentation*:io.sarl.lang.extralanguage*:io.sarl.lang.formatting2*:io.sarl.lang.interpreter*:io.sarl.lang.jvmmodel*:io.sarl.lang.macro*:io.sarl.lang.parser*:io.sarl.lang.pythongenerator*io.sarl.lang.sarl*:io.sarl.lang.scoping*:io.sarl.lang.serializer*:io.sarl.lang.services*:io.sarl.lang.typesystem*:io.sarl.lang.util*:io.sarl.lang.validation*</packages>
+		    </group>
+		    <group>
+		      <title>Base SARL-based Application API</title>
+		      <packages>io.sarl.apputils*</packages>
+		    </group>
+		  </groups>
             <tags>
               <tag>
                 <name>mavengroupid</name>

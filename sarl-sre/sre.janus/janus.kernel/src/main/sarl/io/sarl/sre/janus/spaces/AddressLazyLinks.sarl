@@ -32,7 +32,7 @@ package io.sarl.sre.janus.spaces
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 3.0.7.0
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AddressLazyLinks}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AddressLazyLinks}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 class AddressLazyLinks extends io.sarl.api.core.spaces.AddressLazyLinks {

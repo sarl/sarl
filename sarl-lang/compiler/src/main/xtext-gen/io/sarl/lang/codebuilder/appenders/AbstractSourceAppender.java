@@ -52,7 +52,7 @@ import org.eclipse.xtext.xbase.scoping.batch.DelegatingScopes;
 import org.eclipse.xtext.xbase.scoping.batch.TypeScopes;
 
 /** Abstract implementation of an appender for the Sarl language.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 144
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 144"
  */
 @SuppressWarnings("all")
 public abstract class AbstractSourceAppender {
@@ -60,33 +60,33 @@ public abstract class AbstractSourceAppender {
 	public static final String OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME = "io.sarl.lang.codebuilder.appenders.SourceAppender.providerType";
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 159
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 159"
 	 */
 	@Inject
 	private Injector originalInjector;
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 168
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 168"
 	 */
 	@Inject
 	@Named(OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME)
 	private AbstractTypeScopeProvider scopeProvider;
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 181
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 181"
 	 */
 	@Inject
 	private TypeScopes typeScopes;
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 190
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 190"
 	 */
 	private boolean isFormatting;
 
 	/** Set if this building is formatting the generated code.
 	 *
 	 * @param formatting {@code true} if the appender is formatting the generated code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 200
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 200"
 	 */
 	public void setFormatting(boolean formatting) {
 		this.isFormatting = formatting;
@@ -95,7 +95,7 @@ public abstract class AbstractSourceAppender {
 	/** Replies if this building is formatting the generated code.
 	 *
 	 * @return {@code true} if the appender is formatting the generated code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 216
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 216"
 	 */
 	public boolean isFormatting() {
 		return this.isFormatting;
@@ -103,20 +103,20 @@ public abstract class AbstractSourceAppender {
 
 	/** Replies the context for type resolution.
 	 * @return the context, or {@code null} if the Ecore object is the context.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 230
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 230"
 	 */
 	protected abstract IJvmTypeProvider getTypeResolutionContext();
 
 	/** Build the source code and put it into the given appender.
 	 * @param appender the object that permits to create the source code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 242
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 242"
 	 */
 	public abstract void build(ISourceAppender appender) throws IOException;
 
 	/** Build the source code and put it into the given appender.
 	 * @param object the object to serialize
 	 * @param appender the object that permits to create the source code.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 258
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 258"
 	 */
 	public void build(EObject object, ISourceAppender appender) throws IOException {
 		resolvesTypes(object);
@@ -147,7 +147,7 @@ public abstract class AbstractSourceAppender {
 	/** Resolves the pending types in the resource associated to the associated Ecore element.
 	 * @param object the object to resolve
 	 * @since 0.15
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 351
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 351"
 	 */
 	protected void resolvesTypes(EObject object) {
 		if (object != null) {
@@ -176,31 +176,31 @@ public abstract class AbstractSourceAppender {
 	}
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 425
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 425"
 	 */
 	private static class AppenderBasedTokenStream extends AbstractTokenStream {
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 431
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 431"
 	 */
 		private final ISourceAppender appender;
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 437
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 437"
 	 */
 		public AppenderBasedTokenStream(ISourceAppender appender) {
 			this.appender = appender;
 		}
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 447
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 447"
 	 */
 		public String toString() {
 			return this.appender.toString();
 		}
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 455
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 455"
 	 */
 		public void writeHidden(EObject grammarElement, String value) throws IOException {
 			if (!Strings.isEmpty(value)) {
@@ -209,7 +209,7 @@ public abstract class AbstractSourceAppender {
 		}
 
 	/**
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 473
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 473"
 	 */
 		public void writeSemantic(EObject grammarElement, String value) throws IOException {
 			if (!Strings.isEmpty(value)) {
@@ -219,17 +219,17 @@ public abstract class AbstractSourceAppender {
 	}
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 495
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 495"
 	 */
 	public abstract JvmTypeReference newTypeRef(String typeName);
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 505
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 505"
 	 */
 	public abstract JvmTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractAppenderBuilderFragment.java : appendTo : 517
+	 * @see "AbstractAppenderBuilderFragment.java : appendTo : 517"
 	 */
 	public abstract JvmTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args);
 

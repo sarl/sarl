@@ -336,7 +336,7 @@ public abstract class AbstractSARLSubValidator extends AbstractDeclarativeValida
 	/** Replies if the given member has a valid EMF name.
 	 *
 	 * @param member the member to text.
-	 * @return
+	 * @return [@code true} if the provided member has a valid EMF name.
 	 */
 	protected boolean doCheckValidMemberName(XtendMember member) {
 		final var nameAttribute = member.eClass().getEStructuralFeature("name"); //$NON-NLS-1$

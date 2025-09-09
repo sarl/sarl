@@ -64,82 +64,82 @@ import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 /** Abstract implementation of a builder for the Sarl language.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 88
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 88"
  */
 @SuppressWarnings("all")
 public abstract class AbstractBuilder {
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 98
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 98"
 	 */
 	@Inject
 	private IQualifiedNameProvider qualifiedNameProvider;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 107
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 107"
 	 */
 	@Inject
 	private JvmModelAssociator associations;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 116
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 116"
 	 */
 	@Inject
 	private CommonTypeComputationServices services;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 125
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 125"
 	 */
 	@Inject
 	private ImportManager importManager;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 134
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 134"
 	 */
 	@Inject
 	private JvmTypeReferenceBuilder.Factory typeReferenceBuilderFactory;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 143
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 143"
 	 */
 	private JvmTypeReferenceBuilder typeReferenceBuilder;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 149
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 149"
 	 */
 	@Inject
 	private TypeReferences typeReferences;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 158
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 158"
 	 */
 	@Inject
 	private Primitives primitives;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 167
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 167"
 	 */
 	@Inject
 	private IImportsConfiguration importsConfiguration;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 176
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 176"
 	 */
 	@Inject
 	private IResourceFactory resourceFactory;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 185
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 185"
 	 */
 	private String fileExtension;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 189
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 189"
 	 */
 	private IJvmTypeProvider typeResolutionContext;
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 195
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 195"
 	 */
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
@@ -147,7 +147,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 212
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 212"
 	 */
 	protected <T> T getAssociatedElement(Class<T> expectedType, EObject dslObject, Resource resource, boolean failIfNotFound) {
 		for (final EObject obj : this.associations.getJvmElements(dslObject)) {
@@ -167,21 +167,21 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 256
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 256"
 	 */
 	protected void setTypeResolutionContext(IJvmTypeProvider context) {
 		this.typeResolutionContext = context;
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 266
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 266"
 	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.typeResolutionContext;
 	}
 
 	/** Replies the script's file extension.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 278
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 278"
 	 */
 	@Pure
 	public String getScriptFileExtension() {
@@ -191,7 +191,7 @@ public abstract class AbstractBuilder {
 	/** Replies the builder of type references.
 	 *
 	 * @return the type reference builder.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 297
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 297"
 	 */
 	@Pure
 	protected JvmTypeReferenceBuilder getTypeReferenceBuilder() {
@@ -202,7 +202,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 318
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 318"
 	 */
 	protected TypeReferences getTypeReferences() {
 		return this.typeReferences;
@@ -211,7 +211,7 @@ public abstract class AbstractBuilder {
 	/** Replies the primitive type tools.
 	 *
 	 * @return the primitive type tools.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 334
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 334"
 	 */
 	@Pure
 	protected Primitives getPrimitiveTypes() {
@@ -219,7 +219,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 349
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 349"
 	 */
 	private JvmTypeReference innerFindType(Notifier context, String typeName) {
 		final IJvmTypeProvider provider = getTypeResolutionContext();
@@ -237,7 +237,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 387
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 387"
 	 */
 	protected JvmTypeReference findType(Notifier context, String typeName) {
 		final JvmTypeReference type = innerFindType(context, typeName);
@@ -255,14 +255,14 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 429
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 429"
 	 */
 	protected static XtextResource toResource(Notifier context) {
 		return (XtextResource) (context instanceof Resource ? context : ((EObject) context).eResource());
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 447
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 447"
 	 */
 	private void addImport(JvmTypeReference reference) {
 		if (reference != null) {
@@ -274,14 +274,14 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 473
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 473"
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return newTypeRef(eResource(), typeName);
 	}
 
 	/** Replies the type reference for the given name in the given context.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 487
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 487"
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		JvmTypeReference typeReference;
@@ -324,7 +324,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 603
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 603"
 	 */
 	public JvmTypeReference newTypeRef(JvmType typeName, JvmTypeReference... args) {
 		final JvmTypeReference ref;
@@ -338,14 +338,14 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 637
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 637"
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return newTypeRef(eResource(), type, args);
 	}
 
 	/** Replies the type reference for the given type and type parameters.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 655
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 655"
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		final JvmType type0 = getTypeReferences().findDeclaredType(type, context);
@@ -365,7 +365,7 @@ public abstract class AbstractBuilder {
 	 * @param subType the subtype to test.
 	 * @param superType the expected super type.
 	 * @return the type reference.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 705
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 705"
 	 */
 	@Pure
 	protected boolean isSubTypeOf(EObject context, JvmTypeReference subType, JvmTypeReference superType) {
@@ -379,7 +379,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies if the given object is a valid type reference.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 748
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 748"
 	 */
 	@Pure
 	protected boolean isTypeReference(JvmTypeReference typeReference) {
@@ -390,7 +390,7 @@ public abstract class AbstractBuilder {
 	/** Replies the import's configuration.
 	 *
 	 * @return the import's configuration.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 771
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 771"
 	 */
 	@Pure
 	protected IImportsConfiguration getImportsConfiguration() {
@@ -400,7 +400,7 @@ public abstract class AbstractBuilder {
 	/** Compute a unused URI for a synthetic resource.
 	 * @param resourceSet the resource set in which the resource should be located.
 	 * @return the uri.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 792
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 792"
 	 */
 	@Pure
 	protected URI computeUnusedUri(ResourceSet resourceSet) {
@@ -417,7 +417,7 @@ public abstract class AbstractBuilder {
 	/** Replies the resource factory.
 	 *
 	 * @return the resource factory.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 833
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 833"
 	 */
 	@Pure
 	protected IResourceFactory getResourceFactory() {
@@ -425,7 +425,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Replies if the type could contains functions with a body.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 850
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 850"
 	 */
 	@Pure
 	protected boolean isActionBodyAllowed(XtendTypeDeclaration type) {
@@ -438,7 +438,7 @@ public abstract class AbstractBuilder {
 	/** Replies the import manager that stores the imported types.
 	 *
 	 * @return the import manager.
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 889
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 889"
 	 */
 	@Pure
 	protected ImportManager getImportManager() {
@@ -446,20 +446,20 @@ public abstract class AbstractBuilder {
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 904
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 904"
 	 */
 	protected String getQualifiedName(EObject object) {
 		return this.qualifiedNameProvider.getFullyQualifiedName(object).toString();
 	}
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 914
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 914"
 	 */
 	@Pure
 	public abstract Resource eResource();
 
 	/**
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 923
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 923"
 	 */
 	public void dispose() {
 		Resource resource = eResource();
@@ -471,7 +471,7 @@ public abstract class AbstractBuilder {
 	 * @param ecoreObject the object to get a reference to.
 	 * @param args the generic type arguments to put inside the reference.
 	 * @since 0.15
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 947
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 947"
 	 */
 	@Pure
 	protected JvmTypeReference getTypeReferenceFor(EObject ecoreObject, JvmTypeReference... args) {
@@ -496,7 +496,7 @@ public abstract class AbstractBuilder {
 	/** Replies the reference to the generated Ecore element.
 	 * @param ecoreObject the object to get a reference to.
 	 * @since 0.15
-	 * @see AbstractBuilderBuilderFragment.java : appendTo : 1006
+	 * @see "AbstractBuilderBuilderFragment.java : appendTo : 1006"
 	 */
 	@Pure
 	protected JvmExecutable getExecutableReferenceFor(EObject ecoreObject) {

@@ -44,7 +44,7 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlAnnotationType.
-	 * @see TopElementBuilderFragment.java : appendTo : 410
+	 * @see "TopElementBuilderFragment.java : appendTo : 410"
  */
 @SuppressWarnings("all")
 public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements ISarlAnnotationTypeBuilder {
@@ -54,7 +54,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	private EObject container;
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 1625
+	 * @see "TopElementBuilderFragment.java : appendTo : 1625"
 	 */
 	@Override
 	@Pure
@@ -66,7 +66,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 * @param script the SARL script in which this SarlAnnotationType is added.
 	 * @param name the simple name of the SarlAnnotationType.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1662
+	 * @see "TopElementBuilderFragment.java : appendTo : 1662"
 	 */
 	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -83,7 +83,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 * @param container the Ecore type that must contain this new SarlAnnotationType.
 	 * @param name the simple name of the SarlAnnotationType.
 	 * @param context the context in which the resolution of types must be done.
-	 * @see TopElementBuilderFragment.java : appendTo : 1741
+	 * @see "TopElementBuilderFragment.java : appendTo : 1741"
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -96,7 +96,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	}
 
 	/** Replies the generated SarlAnnotationType.
-	 * @see TopElementBuilderFragment.java : appendTo : 1798
+	 * @see "TopElementBuilderFragment.java : appendTo : 1798"
 	 */
 	@Pure
 	public SarlAnnotationType getSarlAnnotationType() {
@@ -105,7 +105,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 
 	/** Replies the reference to the generated SarlAgent.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1838
+	 * @see "TopElementBuilderFragment.java : appendTo : 1838"
 	 */
 	@Pure
 	public JvmTypeReference getSarlAnnotationTypeReference() {
@@ -116,7 +116,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Replies the JVM declared type for this generated SarlAnnotationType.
 	 * @return the type, never {@code null}.
 	 * @since 0.15
-	 * @see TopElementBuilderFragment.java : appendTo : 1893
+	 * @see "TopElementBuilderFragment.java : appendTo : 1893"
 	 */
 	@Pure
 	public JvmDeclaredType getJvmDeclaredType() {
@@ -124,7 +124,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	}
 
 	/** Replies the resource to which the SarlAnnotationType is attached.
-	 * @see TopElementBuilderFragment.java : appendTo : 1928
+	 * @see "TopElementBuilderFragment.java : appendTo : 1928"
 	 */
 	@Pure
 	public Resource eResource() {
@@ -137,7 +137,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 *
 	 * @param doc the documentation.
 	 * @return {@code this}.
-	 * @see AbstractSubCodeBuilderFragment.java : appendTo : 602
+	 * @see "AbstractSubCodeBuilderFragment.java : appendTo : 603"
 	 */
 	public ISarlAnnotationTypeBuilder setDocumentation(String doc) {
 		if (Strings.isEmpty(doc)) {
@@ -161,7 +161,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Add a modifier.
 	 * @param modifier the modifier to add.
 	 * @return {@code this}.
-	 * @see TopElementBuilderFragment.java : appendTo : 2492
+	 * @see "TopElementBuilderFragment.java : appendTo : 2492"
 	 */
 	public ISarlAnnotationTypeBuilder addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -171,7 +171,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 523
+	 * @see "TopElementBuilderFragment.java : appendTo : 523"
 	 */
 	@Inject
 	private Provider<ISarlFieldBuilder> iSarlFieldBuilderProvider;
@@ -179,7 +179,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -190,7 +190,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Create a SarlField.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
@@ -202,14 +202,14 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
 	 * @param name the name of the SarlField.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 706
+	 * @see "TopElementBuilderFragment.java : appendTo : 706"
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
 		return this.addVarSarlField(name);
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 523
+	 * @see "TopElementBuilderFragment.java : appendTo : 523"
 	 */
 	@Inject
 	private Provider<ISarlClassBuilder> iSarlClassBuilderProvider;
@@ -217,7 +217,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Create a SarlClass.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.iSarlClassBuilderProvider.get();
@@ -226,7 +226,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 523
+	 * @see "TopElementBuilderFragment.java : appendTo : 523"
 	 */
 	@Inject
 	private Provider<ISarlInterfaceBuilder> iSarlInterfaceBuilderProvider;
@@ -234,7 +234,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Create a SarlInterface.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.iSarlInterfaceBuilderProvider.get();
@@ -243,7 +243,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 523
+	 * @see "TopElementBuilderFragment.java : appendTo : 523"
 	 */
 	@Inject
 	private Provider<ISarlEnumerationBuilder> iSarlEnumerationBuilderProvider;
@@ -251,7 +251,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Create a SarlEnumeration.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.iSarlEnumerationBuilderProvider.get();
@@ -260,7 +260,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	}
 
 	/**
-	 * @see TopElementBuilderFragment.java : appendTo : 523
+	 * @see "TopElementBuilderFragment.java : appendTo : 523"
 	 */
 	@Inject
 	private Provider<ISarlAnnotationTypeBuilder> iSarlAnnotationTypeBuilderProvider;
@@ -268,7 +268,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	/** Create a SarlAnnotationType.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
-	 * @see TopElementBuilderFragment.java : appendTo : 564
+	 * @see "TopElementBuilderFragment.java : appendTo : 564"
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();

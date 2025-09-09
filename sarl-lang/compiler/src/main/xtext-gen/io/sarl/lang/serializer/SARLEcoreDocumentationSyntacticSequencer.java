@@ -49,44 +49,44 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
 /** Syntactic sequencer which supports documentations of Ecore elements.
-	 * @see DocumentationBuilderFragment.java : appendTo : 2669
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2669"
  */
 public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSequencer {
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2679
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2679"
 	 */
 	private final Set<EObject> documentedSemanticObjects = new HashSet<>();
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2689
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2689"
 	 */
 	private final Set<EObject> indocumentedSemanticObjects = new HashSet<>();
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2699
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2699"
 	 */
 	private InnerBlockDocumentationAdapter lastInnerBlock;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2705
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2705"
 	 */
 	@Inject
 	private IEcoreDocumentationBuilder documentationBuilder;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2714
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2714"
 	 */
 	@Inject
 	private SARLGrammarKeywordAccess keywords;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2723
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2723"
 	 */
 	private ISequenceAcceptor trailingSequenceAcceptor;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2729
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2729"
 	 */
 	public void init(ISerializationContext context, EObject semanticObject,
 				ISyntacticSequenceAcceptor sequenceAcceptor, ISerializationDiagnostic.Acceptor errorAcceptor) {
@@ -100,7 +100,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2761
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2761"
 	 */
 	protected ISequenceAcceptor getTrailingSequenceAcceptor() {
 		if (this.trailingSequenceAcceptor == null) {
@@ -116,7 +116,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2795
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2795"
 	 */
 	protected void emitDocumentation(Class<?> semanticObjectType, String comment) {
 		final String fmtcomment = this.documentationBuilder.build(comment, semanticObjectType);
@@ -127,7 +127,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2815
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2815"
 	 */
 	protected void emitDocumentation(EObject semanticObject) {
 		if (this.documentedSemanticObjects.add(semanticObject)) {
@@ -139,7 +139,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2843
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2843"
 	 */
 	protected void emitInnerDocumentation(EObject semanticObject) {
 		if (this.indocumentedSemanticObjects.add(semanticObject)) {
@@ -151,7 +151,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2871
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2871"
 	 */
 	private InnerBlockDocumentationAdapter getInnerDocumentation(EObject semanticObject) {
 		if (this.indocumentedSemanticObjects.add(semanticObject)) {
@@ -161,7 +161,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2891
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2891"
 	 */
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition,
 				INode fromNode, INode toNode) {
@@ -173,7 +173,7 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2919
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2919"
 	 */
 	protected void accept(ISynState emitter, INode node, RuleCallStack stack) {
 		super.accept(emitter, node, stack);

@@ -36,6 +36,8 @@ public class OwnerNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = -6286153666879425064L;
 
+	/** The associated trait object.
+	 */
 	private final AgentTrait trait;
 
 	/**

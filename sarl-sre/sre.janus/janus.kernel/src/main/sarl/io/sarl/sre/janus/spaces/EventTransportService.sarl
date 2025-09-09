@@ -31,7 +31,7 @@ import jakarta.inject.Singleton
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 3.0.8
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.EventTransportService}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.EventTransportService}.
  */
 @Deprecated(forRemoval = true, since = "3.0.15")
 interface EventTransportService extends io.sarl.api.core.spaces.EventTransportService {
@@ -47,7 +47,7 @@ interface EventTransportService extends io.sarl.api.core.spaces.EventTransportSe
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 3.0.8
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.LocalEventTransportService}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.LocalEventTransportService}.
  */
 @Singleton
 @Deprecated(forRemoval = true, since = "3.0.15")

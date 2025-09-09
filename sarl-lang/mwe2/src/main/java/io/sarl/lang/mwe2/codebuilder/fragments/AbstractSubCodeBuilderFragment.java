@@ -137,8 +137,9 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @see #appendEmptyComment(TargetStringConcatenation)
 	 */
 	protected static void appendFileLineComment(TargetStringConcatenation it, int shift) {
-		it.append("\t * @see "); //$NON-NLS-1$
+		it.append("\t * @see \""); //$NON-NLS-1$
 		it.append(getFileAndLineNumber(shift));
+		it.append("\""); //$NON-NLS-1$
 		it.newLine();
 	}
 

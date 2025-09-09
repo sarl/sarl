@@ -52,9 +52,9 @@ public final class ExtraLanguageTypeConverter {
 
 	private Map<String, String> mapping;
 
-	private boolean isImplicitSarlTypes = true;
+	private boolean implicitSarlTypes = true;
 
-	private boolean isImplicitJvmTypes;
+	private boolean implicitJvmTypes;
 
 	static {
 		final var basePackage = Agent.class.getPackage().getName().split(Pattern.quote(PACKAGE_SEPARATOR));
@@ -79,10 +79,10 @@ public final class ExtraLanguageTypeConverter {
 	 *
 	 * @return {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
 	 * @since 0.8
-	 * @see #isImplicitSarlTypes()
+	 * @see #isImplicitJvmTypes()
 	 */
 	public boolean isImplicitSarlTypes() {
-		return this.isImplicitSarlTypes;
+		return this.implicitSarlTypes;
 	}
 
 	/** Set if the SARL types ({@code io.sarl.*}) are implicitly supported by this converter.
@@ -92,7 +92,7 @@ public final class ExtraLanguageTypeConverter {
 	 * @see #setImplicitJvmTypes(boolean)
 	 */
 	public void setImplicitSarlTypes(boolean enable) {
-		this.isImplicitSarlTypes = enable;
+		this.implicitSarlTypes = enable;
 	}
 
 	/** Replies if the JVM types (not in {@code io.sarl.*}) are implicitly supported by this converter.
@@ -102,7 +102,7 @@ public final class ExtraLanguageTypeConverter {
 	 * @see #isImplicitSarlTypes()
 	 */
 	public boolean isImplicitJvmTypes() {
-		return this.isImplicitJvmTypes;
+		return this.implicitJvmTypes;
 	}
 
 	/** Set if the JVM types (not in {@code io.sarl.*}) are implicitly supported by this converter.
@@ -112,7 +112,7 @@ public final class ExtraLanguageTypeConverter {
 	 * @see #setImplicitSarlTypes(boolean)
 	 */
 	public void setImplicitJvmTypes(boolean enable) {
-		this.isImplicitJvmTypes = enable;
+		this.implicitJvmTypes = enable;
 	}
 
 	/** Reset the mapping definition to its default content.

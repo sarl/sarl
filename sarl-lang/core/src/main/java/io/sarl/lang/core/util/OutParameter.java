@@ -34,7 +34,7 @@ import java.util.Objects;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.5
- * @see {@link MutableOptional}
+ * @see MutableOptional
  */
 public class OutParameter<T> implements Cloneable {
 

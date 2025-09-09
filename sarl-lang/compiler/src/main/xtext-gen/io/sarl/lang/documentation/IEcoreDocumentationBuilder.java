@@ -27,27 +27,27 @@ import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Build a documentation string for specific objects.
-	 * @see DocumentationBuilderFragment.java : appendTo : 547
+	 * @see "DocumentationBuilderFragment.java : appendTo : 547"
  */
 public interface IEcoreDocumentationBuilder {
 
 	/** Replies the grammar rule that corresponds to multiline comments.
 	 * @return the ML grammar rule.
-	 * @see DocumentationBuilderFragment.java : appendTo : 559
+	 * @see "DocumentationBuilderFragment.java : appendTo : 559"
 	 */
 	@Pure
 	AbstractRule getMLCommentRule();
 
 	/** Replies the grammar rule that corresponds to singleline comments.
 	 * @return the SL grammar rule.
-	 * @see DocumentationBuilderFragment.java : appendTo : 574
+	 * @see "DocumentationBuilderFragment.java : appendTo : 574"
 	 */
 	@Pure
 	AbstractRule getSLCommentRule();
 
 	/** Replies the documentation formatter used by this builder.
 	 * @return documentation formatter.
-	 * @see DocumentationBuilderFragment.java : appendTo : 589
+	 * @see "DocumentationBuilderFragment.java : appendTo : 589"
 	 */
 	@Pure
 	IDocumentationFormatter getDocumentationFormatter();
@@ -56,7 +56,7 @@ public interface IEcoreDocumentationBuilder {
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param objectType the type of the object for which the document must be built.
 	 * @return the formatted comment.
-	 * @see DocumentationBuilderFragment.java : appendTo : 608
+	 * @see "DocumentationBuilderFragment.java : appendTo : 608"
 	 */
 	@Pure
 	String build(String doc, Class<?> objectType);
@@ -65,7 +65,7 @@ public interface IEcoreDocumentationBuilder {
 	 * @param type the type of objects.
 	 * @return {@code true} if multiline comment is the default.
 	 *      Otherwise singleline comment is the default.
-	 * @see DocumentationBuilderFragment.java : appendTo : 625
+	 * @see "DocumentationBuilderFragment.java : appendTo : 625"
 	 */
 	@Pure
 	boolean isMultilineCommentFor(Class<?> type);

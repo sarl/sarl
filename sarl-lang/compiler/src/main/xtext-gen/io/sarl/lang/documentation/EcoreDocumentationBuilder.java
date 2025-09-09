@@ -35,46 +35,46 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Build a documentation string.
-	 * @see DocumentationBuilderFragment.java : appendTo : 2289
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2289"
  */
 public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2299
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2299"
 	 */
 	private AbstractRule mlRule;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2305
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2305"
 	 */
 	private AbstractRule slRule;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2311
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2311"
 	 */
 	private String mlStartSymbols;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2315
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2315"
 	 */
 	private String mlEndTagSymbols;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2319
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2319"
 	 */
 	private String slStartSymbols;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2323
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2323"
 	 */
 	@Inject
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2327
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2327"
 	 */
 	private IDocumentationFormatter documentationFormatter;
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2333
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2333"
 	 */
 	@Inject
 	public void setGrammarAccess(SARLGrammarAccess access) {
@@ -97,7 +97,7 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2398
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2398"
 	 */
 	@Pure
 	public AbstractRule getMLCommentRule() {
@@ -105,7 +105,7 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2411
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2411"
 	 */
 	@Pure
 	public AbstractRule getSLCommentRule() {
@@ -113,7 +113,7 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2424
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2424"
 	 */
 	@Pure
 	public IDocumentationFormatter getDocumentationFormatter() {
@@ -121,7 +121,7 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2437
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2437"
 	 */
 	@Pure
 	public boolean isMultilineCommentFor(Class<?> type) {
@@ -129,7 +129,7 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2466
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2466"
 	 */
 	@Pure
 	public String build(String doc, Class<?> objectType) {
@@ -158,7 +158,7 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 	}
 
 	/**
-	 * @see DocumentationBuilderFragment.java : appendTo : 2523
+	 * @see "DocumentationBuilderFragment.java : appendTo : 2523"
 	 */
 	private static boolean isNewLine(char character) {
 		if (character == '\n' || character == '\r' || character == '\f') {

@@ -200,7 +200,7 @@ public class TypeDefaultValueProviderImpl implements ITypeDefaultValueProvider {
 	}
 
 	/** Replies the XExpression for the default value that is associated to the given type.
-	 * @param type the type to consider.
+	 * @param typeName the type to consider.
 	 * @param notifier the context from whic a type must be loaded if needed.
 	 * @return the XExpression for the default value
 	 */

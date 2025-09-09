@@ -47,20 +47,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Appender of Sarl scripts.
  *
-	 * @see ScriptBuilderFragment.java : appendTo : 602
+	 * @see "ScriptBuilderFragment.java : appendTo : 602"
  */
 @SuppressWarnings("all")
 public class ScriptSourceAppender extends AbstractSourceAppender implements IScriptBuilder {
 
 	/**
-	 * @see ScriptBuilderFragment.java : appendTo : 688
+	 * @see "ScriptBuilderFragment.java : appendTo : 688"
 	 */
 	private IScriptBuilder builder;
 
 	/** Find the reference to the type with the given name.
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see ScriptBuilderFragment.java : appendTo : 702
+	 * @see "ScriptBuilderFragment.java : appendTo : 702"
 	 */
 	public JvmTypeReference newTypeRef(String typeName) {
 		return this.builder.newTypeRef(typeName);
@@ -70,7 +70,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 * @param context the context for the type reference use
 	 * @param typeName the fully qualified name of the type
 	 * @return the type reference.
-	 * @see ScriptBuilderFragment.java : appendTo : 730
+	 * @see "ScriptBuilderFragment.java : appendTo : 730"
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, String typeName) {
 		return this.builder.newTypeRef(context, typeName);
@@ -80,7 +80,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ScriptBuilderFragment.java : appendTo : 760
+	 * @see "ScriptBuilderFragment.java : appendTo : 760"
 	 */
 	public JvmTypeReference newTypeRef(JvmType type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -90,7 +90,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ScriptBuilderFragment.java : appendTo : 792
+	 * @see "ScriptBuilderFragment.java : appendTo : 792"
 	 */
 	public JvmTypeReference newTypeRef(Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(type, args);
@@ -101,7 +101,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 * @param type the type to reference
 	 * @param args the type parameters to add to the to reference to the given type
 	 * @return the type reference.
-	 * @see ScriptBuilderFragment.java : appendTo : 826
+	 * @see "ScriptBuilderFragment.java : appendTo : 826"
 	 */
 	public JvmTypeReference newTypeRef(Notifier context, Class type, JvmTypeReference... args) {
 		return this.builder.newTypeRef(context, type, args);
@@ -109,21 +109,21 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 
 	/** Replies the context for type resolution.
 	 * @return the context or {@code null} if the Ecore object is the context.
-	 * @see ScriptBuilderFragment.java : appendTo : 871
+	 * @see "ScriptBuilderFragment.java : appendTo : 871"
 	 */
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}
 
 	/**
-	 * @see ScriptBuilderFragment.java : appendTo : 885
+	 * @see "ScriptBuilderFragment.java : appendTo : 885"
 	 */
 	public ScriptSourceAppender(IScriptBuilder builder) {
 		this.builder = builder;
 	}
 
 	/**
-	 * @see ScriptBuilderFragment.java : appendTo : 897
+	 * @see "ScriptBuilderFragment.java : appendTo : 897"
 	 */
 	public void build(ISourceAppender appender) throws IOException {
 		if (!isFinalized()) {
@@ -136,14 +136,14 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 * @param resource the Ecore resource in which the SARL script is located.
 	 * @param packageName the fully-qualified name of the package of the script.
 	 * @param context the context in which all the type resolutions must be done.
-	 * @see ScriptBuilderFragment.java : appendTo : 924
+	 * @see "ScriptBuilderFragment.java : appendTo : 924"
 	 */
 	public void eInit(Resource resource, String packageName, IJvmTypeProvider context) {
 		this.builder.eInit(resource, packageName, context);
 	}
 
 	/** Replies the Sarl script.
-	 * @see ScriptBuilderFragment.java : appendTo : 985
+	 * @see "ScriptBuilderFragment.java : appendTo : 985"
 	 */
 	@Pure
 	public SarlScript getScript() {
@@ -151,7 +151,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	}
 
 	/** Replies the resource to which the script is attached.
-	 * @see ScriptBuilderFragment.java : appendTo : 1014
+	 * @see "ScriptBuilderFragment.java : appendTo : 1014"
 	 */
 	@Pure
 	public Resource eResource() {
@@ -163,21 +163,21 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 * <p>The finalization includes: <ul>
 	 * <li>The import section is created.</li>
 	 * </ul>
-	 * @see ScriptBuilderFragment.java : appendTo : 1047
+	 * @see "ScriptBuilderFragment.java : appendTo : 1047"
 	 */
 	public void finalizeScript() {
 		this.builder.finalizeScript();
 	}
 
 	/** Replies if the script was finalized.
-	 * @see ScriptBuilderFragment.java : appendTo : 1148
+	 * @see "ScriptBuilderFragment.java : appendTo : 1148"
 	 */
 	public boolean isFinalized() {
 		return this.builder.isFinalized();
 	}
 
 	/**
-	 * @see ScriptBuilderFragment.java : appendTo : 1172
+	 * @see "ScriptBuilderFragment.java : appendTo : 1172"
 	 */
 	@Override
 	@Pure
@@ -188,7 +188,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlEvent builder.
 	 * @param name the name of the SarlEvent.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlEventBuilder addSarlEvent(String name) {
 		 return this.builder.addSarlEvent(name);
@@ -197,7 +197,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlCapacity builder.
 	 * @param name the name of the SarlCapacity.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlCapacityBuilder addSarlCapacity(String name) {
 		 return this.builder.addSarlCapacity(name);
@@ -206,7 +206,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlAgent builder.
 	 * @param name the name of the SarlAgent.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlAgentBuilder addSarlAgent(String name) {
 		 return this.builder.addSarlAgent(name);
@@ -215,7 +215,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlBehavior builder.
 	 * @param name the name of the SarlBehavior.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlBehaviorBuilder addSarlBehavior(String name) {
 		 return this.builder.addSarlBehavior(name);
@@ -224,7 +224,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlSkill builder.
 	 * @param name the name of the SarlSkill.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlSkillBuilder addSarlSkill(String name) {
 		 return this.builder.addSarlSkill(name);
@@ -233,7 +233,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlSpace builder.
 	 * @param name the name of the SarlSpace.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlSpaceBuilder addSarlSpace(String name) {
 		 return this.builder.addSarlSpace(name);
@@ -242,7 +242,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlArtifact builder.
 	 * @param name the name of the SarlArtifact.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlArtifactBuilder addSarlArtifact(String name) {
 		 return this.builder.addSarlArtifact(name);
@@ -251,7 +251,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlClass builder.
 	 * @param name the name of the SarlClass.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		 return this.builder.addSarlClass(name);
@@ -260,7 +260,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlInterface builder.
 	 * @param name the name of the SarlInterface.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		 return this.builder.addSarlInterface(name);
@@ -269,7 +269,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlEnumeration builder.
 	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		 return this.builder.addSarlEnumeration(name);
@@ -278,7 +278,7 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	/** Create a SarlAnnotationType builder.
 	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
-	 * @see ScriptBuilderFragment.java : appendTo : 490
+	 * @see "ScriptBuilderFragment.java : appendTo : 490"
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		 return this.builder.addSarlAnnotationType(name);

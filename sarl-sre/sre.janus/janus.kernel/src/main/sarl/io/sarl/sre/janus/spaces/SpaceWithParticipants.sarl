@@ -30,7 +30,7 @@ import io.sarl.lang.core.annotation.PrivateAPI
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 3.0.10
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceWithParticipants}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.SpaceWithParticipants}.
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
 @PrivateAPI

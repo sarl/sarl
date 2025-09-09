@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function run_mvn {
-	CCDIR=$1
+	CCDIR="$1"
 	shift
 	cd "$CCDIR"
 	BLOCKNAME=$1
@@ -19,6 +19,7 @@ set -e
 
 CDIR=`dirname "$0"`
 CDIR=`realpath "$CDIR"`
+echo "CDIR=$CDIR"
 
 # Show tools versions
 mvn --version

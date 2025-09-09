@@ -42,7 +42,7 @@ import java.util.function.Supplier;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.15
- * @see {@link OutParameter}
+ * @see OutParameter
  */
 public final class MutableOptional<T> {
 
@@ -183,8 +183,8 @@ public final class MutableOptional<T> {
 	}
 
 	/**
-	 * If a value is present, returns an {@code MutableOptional} describing (as if by
-	 * {@link #ofNullable}) the result of applying the given mapping function to
+	 * If a value is present, returns an {@code MutableOptional} describing
+	 * the result of applying the given mapping function to
 	 * the value, otherwise returns an empty {@code Optional}.
 	 *
 	 * <p>If the mapping function returns a {@code null} result then this method
@@ -319,7 +319,6 @@ public final class MutableOptional<T> {
 	 * If a value is present, returns the value, otherwise throws an exception
 	 * produced by the exception supplying function.
 	 *
-	 * @apiNote
 	 * A method reference to the exception constructor with an empty argument
 	 * list can be used as the supplier. For example,
 	 * {@code IllegalStateException::new}
@@ -379,7 +378,6 @@ public final class MutableOptional<T> {
 	 * suitable for debugging.  The exact presentation format is unspecified and
 	 * may vary between implementations and versions.
 	 *
-	 * @implSpec
 	 * If a value is present the result must include its string representation
 	 * in the result.  Empty and present {@code Optional}s must be unambiguously
 	 * differentiable.

@@ -39,29 +39,29 @@ import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl type parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 132
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 132"
  */
 @SuppressWarnings("all")
 public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypeParameterBuilder {
 
 	/**
-	 * @see TypeParameterBuilderFragment.java : appendTo : 207
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 207"
 	 */
 	private EObject context;
 
 	/**
-	 * @see TypeParameterBuilderFragment.java : appendTo : 213
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 213"
 	 */
 	private JvmTypeParameter parameter;
 
 	/**
-	 * @see TypeParameterBuilderFragment.java : appendTo : 219
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 219"
 	 */
 	@Inject
 		private TypesFactory jvmTypesFactory;
 
 	/**
-	 * @see TypeParameterBuilderFragment.java : appendTo : 228
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 228"
 	 */
 	private boolean hasDefaultConstraint = true;
 
@@ -74,7 +74,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	 * @param declarator the container of the type parameter.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 408
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 408"
 	 */
 	public void eInit(XtendTypeDeclaration context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext) {
 		internalEInit(context, declarator, name, typeContext);
@@ -89,14 +89,14 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	 * @param declarator the container of the type parameter.
 	 * @param name the name of the type parameter.
 	 * @param typeContext the provider of types or null.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 455
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 455"
 	 */
 	public void eInit(XtendExecutable context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext) {
 		internalEInit(context, declarator, name, typeContext);
 	}
 
 	/**
-	 * @see TypeParameterBuilderFragment.java : appendTo : 485
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 485"
 	 */
 	protected void internalEInit(EObject context, JvmTypeParameterDeclarator declarator, String name, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);
@@ -114,7 +114,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Replies the created parameter.
 	 *
 	 * @return the parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 565
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 565"
 	 */
 	@Pure
 	public JvmTypeParameter getJvmTypeParameter() {
@@ -124,7 +124,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Replies a reference to the created parameter.
 	 *
 	 * @return the reference to the parameter.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 602
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 602"
 	 */
 	@Pure
 	public JvmTypeReference getJvmTypeParameterReference() {
@@ -132,7 +132,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	}
 
 	/** Replies the resource to which the type parameter is attached.
-	 * @see TypeParameterBuilderFragment.java : appendTo : 635
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 635"
 	 */
 	@Pure
 	public Resource eResource() {
@@ -140,7 +140,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	}
 
 	/**
-	 * @see TypeParameterBuilderFragment.java : appendTo : 661
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 661"
 	 */
 	@Override
 	@Pure
@@ -151,7 +151,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Add upper type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 716
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 716"
 	 */
 	public ITypeParameterBuilder addUpperConstraint(String type) {
 		addUpperConstraint(newTypeRef(this.context, type));
@@ -161,7 +161,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Add upper type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 749
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 749"
 	 */
 	public ITypeParameterBuilder addUpperConstraint(JvmTypeReference type) {
 		if (this.hasDefaultConstraint) {
@@ -177,7 +177,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Add lower type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 801
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 801"
 	 */
 	public ITypeParameterBuilder addLowerConstraint(String type) {
 		addLowerConstraint(newTypeRef(this.context, type));
@@ -187,7 +187,7 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Add lower type bounds.
 	 * @param type the type.
 	 * @return {@code this}
-	 * @see TypeParameterBuilderFragment.java : appendTo : 834
+	 * @see "TypeParameterBuilderFragment.java : appendTo : 834"
 	 */
 	public ITypeParameterBuilder addLowerConstraint(JvmTypeReference type) {
 		if (this.hasDefaultConstraint) {

@@ -80,7 +80,7 @@ For using this version, you must add the Maven Repository Server of SARL in your
 	  <dependency>
 	    <groupId>io.sarl.sdk</groupId>
 	    <artifactId>sdk</artifactId>
-	    <version>0.16.0-SNAPSHOT</version>
+	    <version>1.0.0-SNAPSHOT</version>
 	  </dependency>
 	<dependencies>
 	...

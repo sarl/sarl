@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentMap
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @Deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AbstractEventSpace}.
+ * @deprecated Since 3.0.15. Replaced by {@code io.sarl.api.core.spaces.AbstractEventSpace}.
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
 @PrivateAPI(isCallerOnly = true)

@@ -341,9 +341,12 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 				.toList();
 	}
 
-	/** Replies the fields declared in the given event.
+	/** Replies the inherited constructors in a given type.
 	 *
-	 * @param event the event to analyze.
+	 * @param superGenericType the type that is the super type from which
+	 *     inherited functions are defined.
+	 * @param container the type from which the inherited constructors must be
+	 *     determined.
 	 * @return the list of inherited synthetic constructors in the super type; or {@code null} if a not-synthetic
 	 *     constructor was found and no default constructor defined in the super type.
 	 */

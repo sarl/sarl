@@ -39,10 +39,6 @@ import org.w3c.dom.Element;
  * SRE instances can be created and configured dynamically at run-time.
  * This is typically done by the user interactively in the UI.
  *
- * <p>Rather than implementing this interface directly, it is strongly recommended that
- * clients subclass {@link AbstractSREInstall} to be insulated
- * from potential API additions.
- *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -182,7 +178,7 @@ public interface ISREInstall extends Cloneable {
 	/** Replies the available command line options for this SRE.
 	 *
 	 * <p>The replied map describes the CLI options to use in specific use cases.
-	 * The keys are defined in the {@link SREConstants SRE constants}, where
+	 * The keys are defined in {@code SREConstants}, where
 	 * the key names are started by {@code MANIFEST_CLI_}.
 	 *
 	 * @return the program arguments to pass to the SRE (not the Java virtual machine).
