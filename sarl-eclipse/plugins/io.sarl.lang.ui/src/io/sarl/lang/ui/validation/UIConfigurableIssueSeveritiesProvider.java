@@ -45,7 +45,7 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  * But, this configurable issue severity provider should not change the preferences.
  * The contract is to have internal overriding of the preferences in this provider.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.lang.ui 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.lang.ui

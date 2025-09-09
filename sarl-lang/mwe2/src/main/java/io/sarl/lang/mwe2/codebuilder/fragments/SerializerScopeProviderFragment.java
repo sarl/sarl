@@ -49,7 +49,7 @@ import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
  * A {@link AbstractXtextGeneratorFragment} that enables to create a provider of {@code IScope}
  * for the seiralizer of appenders.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version mwe2 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid mwe2

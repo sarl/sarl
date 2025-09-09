@@ -33,7 +33,7 @@ import io.sarl.lang.sarl.SarlSkill;
  *
  * <p>This processor ensures that SARL type declarations are supported by the compilation unit.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -66,7 +66,7 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	/** SARL agent declaration for macro system.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.15.0 20250909-115746
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -78,7 +78,7 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	/** SARL behavior declaration for macro system.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.15.0 20250909-115746
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -90,7 +90,7 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 
 	/** SARL skill declaration for macro system.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.15.0 20250909-115746
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

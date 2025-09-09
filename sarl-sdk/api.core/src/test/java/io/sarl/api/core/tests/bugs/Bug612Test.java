@@ -47,7 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * <p>https://github.com/sarl/sarl/issues/612
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.core 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.core
@@ -60,7 +60,7 @@ public class Bug612Test {
 
 	/** The container is a class. 
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -71,7 +71,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -215,7 +215,7 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -432,7 +432,7 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -539,7 +539,7 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -1116,7 +1116,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -1313,7 +1313,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -1457,7 +1457,7 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -1674,7 +1674,7 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -1781,7 +1781,7 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -1998,7 +1998,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -2195,7 +2195,7 @@ public class Bug612Test {
 
 		/** Referencing a constant from a constructor.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -2668,7 +2668,7 @@ public class Bug612Test {
 
 	/** The container is an interface. 
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -2679,7 +2679,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -2811,7 +2811,7 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -2948,7 +2948,7 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3048,7 +3048,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3229,7 +3229,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3363,7 +3363,7 @@ public class Bug612Test {
 
 		/** Referencing a static field. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3502,7 +3502,7 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3603,7 +3603,7 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3742,7 +3742,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -3928,7 +3928,7 @@ public class Bug612Test {
 
 	/** The container is an agent. 
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -3939,7 +3939,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -4103,7 +4103,7 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -4199,7 +4199,7 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -4836,7 +4836,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -5053,7 +5053,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -5216,7 +5216,7 @@ public class Bug612Test {
 
 		/** Referencing a static function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -5332,7 +5332,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -5548,7 +5548,7 @@ public class Bug612Test {
 
 		/** Referencing a constant from a constructor.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -5864,7 +5864,7 @@ public class Bug612Test {
 
 	/** The container is a behavior. 
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -5875,7 +5875,7 @@ public class Bug612Test {
 
 		/** Referencing a constant. 
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -6023,7 +6023,7 @@ public class Bug612Test {
 
 		/** Referencing an instance field.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -6612,7 +6612,7 @@ public class Bug612Test {
 
 		/** Referencing an instance function.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -6813,7 +6813,7 @@ public class Bug612Test {
 
 		/** Referencing a constant from a constructor.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version api.core 0.15.0 20250909-115748
 		 * @mavengroupid io.sarl.sdk
 		 * @mavenartifactid api.core
@@ -6991,7 +6991,7 @@ public class Bug612Test {
 
 	/** Test specific skill issues
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -7473,7 +7473,7 @@ public class Bug612Test {
 
 	/** Test specific parameter issues
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -7781,7 +7781,7 @@ public class Bug612Test {
 
 	/** Test specific to capacity implementation issues
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core
@@ -7925,7 +7925,7 @@ public class Bug612Test {
 
 	/** Test specific to implementation issues
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.core 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.core

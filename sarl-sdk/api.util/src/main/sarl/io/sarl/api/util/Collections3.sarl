@@ -30,7 +30,7 @@ import java.util.Iterator
 
 /** Utilities on collections.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.util 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.util
@@ -57,7 +57,7 @@ final class Collections3 {
 	/** Unmodifiable synchronized iterable.
 	 * 
 	 * @param <E> the type of the elements in the collection.
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version api.util 0.15.0 20250909-115748
 	 * @mavengroupid io.sarl.sdk
 	 * @mavenartifactid api.util

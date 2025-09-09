@@ -24,7 +24,7 @@ package io.sarl.lang.core;
 /**
  * A behavior maps a collection of perceptions represented by events to a collection of a task.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

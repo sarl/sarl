@@ -26,7 +26,7 @@ import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 /**
  * Listener on the chane of SRE.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version eclipseextensions 0.15.0 20250909-115749
  * @mavengroupid io.sarl.apputils
  * @mavenartifactid eclipseextensions

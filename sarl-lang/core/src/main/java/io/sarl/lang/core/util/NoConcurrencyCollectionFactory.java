@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /** Factory of collections that are not thread-safe.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

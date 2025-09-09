@@ -173,52 +173,6 @@
       <name>SARL Maven Repository</name>
     </snapshotRepository>
   </distributionManagement>
-  <developers>
-    <developer>
-      <id>sgalland</id>
-      <name>St&amp;eacute;phane Galland</name>
-      <email>stephane.galland@utbm.fr</email>
-      <url>http://www.ciad-lab.fr/stephane_galland</url>
-      <organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
-      <organizationUrl>http://www.ciad-lab.fr</organizationUrl>
-      <roles>
-        <role>Co-founder</role>
-        <role>Architect</role>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>srodriguez</id>
-      <name>Sebastian Rodriguez</name>
-      <email>sebastian.rodriguez@rmit.edu.au</email>
-      <url>http://www.sebastianrodriguez.com.ar/</url>
-      <organization>Royal Melbourne Institute of Technology</organization>
-      <organizationUrl>http://www.rmit.edu.au/</organizationUrl>
-      <roles>
-        <role>Co-founder</role>
-        <role>Architect</role>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Mohamed Ezzat</name>
-      <email>mohamed.ezzat@devfactory.com</email>
-      <url>https://github.com/m-ezzat</url>
-      <roles>
-        <role>Code cleaning and optimization</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Thomas Piotrowski</name>
-      <email>thomas.piotrowski@utbm.fr</email>
-      <url>https://github.com/tpiotrow</url>
-      <roles>
-        <role>Maven Configuration</role>
-      </roles>
-    </contributor>
-  </contributors>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>

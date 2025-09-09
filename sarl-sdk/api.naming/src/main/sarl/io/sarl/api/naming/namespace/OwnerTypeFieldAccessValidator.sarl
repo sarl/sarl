@@ -29,7 +29,7 @@ import java.lang.reflect.Field
  * If the owner is an agent or an agent trait, the field is not observable.
  * If the owner of another type, the field is observable.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.naming 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.naming

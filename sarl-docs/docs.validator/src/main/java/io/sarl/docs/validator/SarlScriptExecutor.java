@@ -57,7 +57,7 @@ import io.sarl.lang.sarl.SarlScript;
 
 /** Sarl script executor.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.validator 0.15.0 20250909-115750
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.validator

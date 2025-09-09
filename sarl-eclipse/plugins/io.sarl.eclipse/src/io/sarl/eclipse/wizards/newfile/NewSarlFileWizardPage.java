@@ -39,7 +39,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /**
  * First page of the SARL new file wizard.
  *
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse

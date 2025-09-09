@@ -26,7 +26,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 /** 
  * Default implementation of a goal in the game time-based goal-oriented behavior.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.gametgob 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.gametgob

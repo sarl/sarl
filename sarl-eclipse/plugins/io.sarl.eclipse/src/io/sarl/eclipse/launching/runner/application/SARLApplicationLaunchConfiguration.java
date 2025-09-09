@@ -36,7 +36,7 @@ import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
  * <p>This delegate is in charge of running a SARL application with the specific
  * SRE.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
@@ -57,7 +57,7 @@ public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfig
 	/** Definition of the launching process, split in separated steps for
 	 * making easier the cancellation.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.15.0 20250909-115751
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse

@@ -38,9 +38,9 @@ import static io.sarl.sre.janus.services.lifecycle.AgentLife.*
 /** 
  * Skill that permits to manage the life cycle of the agents.
  * 
- * @author $Author: sgalland$
- * @author $Author: srodriguez$
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

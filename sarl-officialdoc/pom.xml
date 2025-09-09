@@ -314,6 +314,9 @@
     <contributor>
       <name>Thomas Farrenkopf</name>
       <url>https://github.com/ThomasFarrenkopf</url>
+      <properties>
+      	<id>tfarrenkopf</id>
+      </properties>
       <roles>
         <role>Documentation Contributor</role>
       </roles>
@@ -322,6 +325,9 @@
       <name>James Foster</name>
       <email>github@jgfoster.net</email>
       <url>https://github.com/jgfoster</url>
+      <properties>
+      	<id>jfoster</id>
+      </properties>
       <roles>
         <role>Documentation Contributor</role>
       </roles>
@@ -330,6 +336,9 @@
       <name>J&amp;eacute;r&amp;eacute;mie Jost</name>
       <email>jeremiejost@gmail.com</email>
       <url>https://github.com/jjst</url>
+      <properties>
+      	<id>jjost</id>
+      </properties>
       <roles>
         <role>Documentation Contributor</role>
       </roles>
@@ -338,6 +347,9 @@
       <name>Ludovico de Nittis</name>
       <email>aasonykk@gmail.com</email>
       <url>https://github.com/RyuzakiKK</url>
+      <properties>
+      	<id>lnittis</id>
+      </properties>
       <roles>
         <role>Documentation Contributor</role>
       </roles>
@@ -346,6 +358,9 @@
       <name>Sebastian Sardina</name>
       <email>sebastian.sardina@rmit.edu.au</email>
       <url>https://github.com/ssardina</url>
+      <properties>
+      	<id>ssardina</id>
+      </properties>
       <roles>
         <role>Documentation Contributor</role>
       </roles>

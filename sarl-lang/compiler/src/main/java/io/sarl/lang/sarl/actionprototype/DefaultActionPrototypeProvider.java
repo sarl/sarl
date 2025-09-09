@@ -59,7 +59,7 @@ import io.sarl.lang.util.Utils;
  *
  * <p>This implementation is thread-safe.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler
@@ -604,7 +604,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 *
 	 * @param <K> the type of the keys.
 	 * @param <V> the type of the values.
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.15.0 20250909-115746
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler
@@ -636,7 +636,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	/**
 	 * Context for a {@code DefaultActionPrototypeProvider}.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler 0.15.0 20250909-115746
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler

@@ -25,7 +25,7 @@ import org.eclipse.osgi.util.NLS;
 
 /** Messages for the SARL batch compiler.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version bootiquebatchcompiler 0.15.0 20250909-115749
  * @mavengroupid io.sarl.apputils
  * @mavenartifactid bootiquebatchcompiler

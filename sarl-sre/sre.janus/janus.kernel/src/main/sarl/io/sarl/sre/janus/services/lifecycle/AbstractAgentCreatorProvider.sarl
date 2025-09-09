@@ -33,7 +33,7 @@ import java.util.UUID
  * The implementation of an AgentCreatorProvider must be thread safe, i.e. the call
  * to the {@code getAgentCreator} function must not need to be synchronized.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

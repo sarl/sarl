@@ -93,7 +93,7 @@ import io.sarl.lang.validation.subvalidators.SARLCastValidator;
  * <li>{@link CheckType#EXPENSIVE}: is executed by right clicking ANYWHERE in the editor window and chooseing "Validate".</li>
  * </ul>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

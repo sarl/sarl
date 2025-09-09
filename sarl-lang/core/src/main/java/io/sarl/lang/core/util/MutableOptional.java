@@ -36,8 +36,8 @@ import java.util.function.Supplier;
  * synchronized code.
  *
  * @param <T> the type of the data that is stored in the optional.
- * @author $Author: stedeschi$
- * @author $Author: sgalland$
+ * @author <a href="https://github.com/stefanotedeschi">Stefano Tedeschi</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

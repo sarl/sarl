@@ -38,8 +38,8 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
  *
  * <p>https://github.com/sarl/sarl/issues/891
  *
- * @author $Author: sgalland$
- * @author $Author: alombard$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.sarl.io/alexandre_lombard">Alexandre Lombard</a>
  * @version compiler.tests 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler.tests

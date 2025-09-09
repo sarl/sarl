@@ -49,7 +49,7 @@ import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 
 /** Module for creating and configuring the sarlc compiler.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarlc 0.15.0 20250909-115750
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarlc

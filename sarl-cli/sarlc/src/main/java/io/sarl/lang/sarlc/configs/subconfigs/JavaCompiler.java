@@ -34,7 +34,7 @@ import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 /**
  * Type of Java compielr to use by the SARL compiler.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarlc 0.15.0 20250909-115750
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarlc

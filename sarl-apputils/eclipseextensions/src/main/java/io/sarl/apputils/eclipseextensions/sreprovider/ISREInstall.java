@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
  * SRE instances can be created and configured dynamically at run-time.
  * This is typically done by the user interactively in the UI.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version eclipseextensions 0.15.0 20250909-115749
  * @mavengroupid io.sarl.apputils
  * @mavenartifactid eclipseextensions

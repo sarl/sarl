@@ -72,8 +72,8 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  * SARL new project wizard.
  * Most part of the code of this class comes from {@link JavaProjectWizard}.
  *
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse

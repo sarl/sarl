@@ -74,7 +74,7 @@ import jdk.javadoc.doclet.Reporter;
  *
  * <p>This doclet also ignore the hidden features according to the SARL specification.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.15.0 20250909-115750
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet

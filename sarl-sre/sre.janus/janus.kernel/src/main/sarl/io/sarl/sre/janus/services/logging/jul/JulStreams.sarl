@@ -30,7 +30,7 @@ import org.apache.commons.io.output.WriterOutputStream
 
 /** A console handler that supports to be link to the standard output or the standard error output.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -96,7 +96,7 @@ class JulOutputStreamConsoleHandler extends StreamHandler {
 
 /** A console handler that supports to be link to the standard output.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -119,7 +119,7 @@ class JulStandardOutputConsoleHandler extends JulOutputStreamConsoleHandler {
 
 /** A console handler that supports to be link to the standard error output.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>Depending on the implementation of the SRE, an instance of this SRE access point could be injected.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

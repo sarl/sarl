@@ -43,9 +43,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 /** 
  * Abstract implementation of an event space.
  * 
- * @author $Author: srodriguez$
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.core 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.core

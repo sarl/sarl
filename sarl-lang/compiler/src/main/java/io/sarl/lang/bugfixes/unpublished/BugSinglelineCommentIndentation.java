@@ -31,7 +31,7 @@ import org.eclipse.xtext.util.Strings;
 /** FIXME: Xtext upgrade, Fixing a bug in Xtext Formatter2 API that avoid to have a good
  * indentation for the last comment in a block.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

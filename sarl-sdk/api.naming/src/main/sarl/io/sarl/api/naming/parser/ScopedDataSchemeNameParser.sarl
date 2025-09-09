@@ -32,8 +32,8 @@ import java.net.URI
  *     {@code dataName} is the name of the data.</li>
  * </ul>
  * 
- * @author $Author: sgalland$
- * @author $Author: stedeschi$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="https://github.com/stefanotedeschi">Stefano Tedeschi</a>
  * @version api.naming 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.naming

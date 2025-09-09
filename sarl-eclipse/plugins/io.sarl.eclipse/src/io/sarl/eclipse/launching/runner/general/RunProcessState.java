@@ -23,7 +23,7 @@ package io.sarl.eclipse.launching.runner.general;
 
 /** Steps of run in the launching process.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse

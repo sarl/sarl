@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * <p>This annotation is usually used for simulating quickly the "A instanceof B",
  * wheree A is a JvmElement (not an Xbase element), and B is a Xbase type.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

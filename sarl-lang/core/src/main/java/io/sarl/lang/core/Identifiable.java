@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * Represents an entity that can be uniquely identified in the system.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

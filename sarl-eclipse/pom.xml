@@ -314,6 +314,9 @@
     <contributor>
       <name>Antoine Bartuccio</name>
       <url>https://github.com/klmp200</url>
+      <properties>
+      	<id>abartuccio</id>
+      </properties>
       <roles>
         <role>Examples of fireworks and Sierpinski fractal</role>
       </roles>
@@ -321,6 +324,9 @@
     <contributor>
       <name>J&amp;eacute;r&amp;ocirc;me Boulmier</name>
       <url>https://github.com/Lomadriel</url>
+      <properties>
+      	<id>jboulmier</id>
+      </properties>
       <roles>
         <role>Example of Game of Life</role>
       </roles>
@@ -328,6 +334,9 @@
     <contributor>
       <name>Greg Bowering</name>
       <url>https://github.com/gb96</url>
+      <properties>
+      	<id>gbowering</id>
+      </properties>
       <roles>
         <role>Localization support of fireworks example</role>
       </roles>
@@ -335,6 +344,9 @@
     <contributor>
       <name>Mohamed Ezzat</name>
       <url>https://github.com/m-ezzat</url>
+      <properties>
+      	<id>mezzat</id>
+      </properties>
       <roles>
         <role>Cleaning and optimization of source code</role>
       </roles>
@@ -342,6 +354,9 @@
     <contributor>
       <name>Maxime Pinard</name>
       <url>https://github.com/pinam45</url>
+      <properties>
+      	<id>mpinard</id>
+      </properties>
       <roles>
         <role>Example of Game of Life</role>
       </roles>

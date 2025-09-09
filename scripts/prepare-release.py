@@ -51,7 +51,13 @@ def getMavenContributors(root):
 	for contrib in contribs:
 		name = readXml(contrib, "name")
 		if name is not None:
-			contrib_id = buildIdFromName(name)
+			properties_field = contrib.find("xmlns:properties", namespaces=NAMESPACES)
+			if properties_field:
+				contrib_id = readXml(properties_field, "id")
+			else:
+				contrib_id = None
+			if not contrib_id:
+				contrib_id = buildIdFromName(name)
 			if contrib_id:
 				contributors[contrib_id] = {}
 				contributors[contrib_id]['id'] = contrib_id
@@ -67,7 +73,7 @@ def getMavenContributors(root):
 		name = readXml(author, "name")
 		if name is not None:
 			author_id =  readXml(author, "id")
-			if author_id is None:
+			if not author_id:
 				author_id = buildIdFromName(name)
 			if author_id:
 				contributors[author_id] = {}
@@ -493,6 +499,8 @@ if mvn_root is not None:
 		print("> Action: unknow")
 
 	if args.test:
+		if args.author:
+			print("Contributors: " + str(contributors))
 		sys.exit(0)
 
 	if args.changes:

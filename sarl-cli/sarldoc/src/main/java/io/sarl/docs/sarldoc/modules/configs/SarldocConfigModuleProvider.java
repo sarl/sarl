@@ -32,7 +32,7 @@ import io.sarl.docs.sarldoc.configs.SarldocConfig;
 
 /** Provider of the module for the general sarldoc specific configuration.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarldoc 0.15.0 20250909-115750
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarldoc

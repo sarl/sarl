@@ -44,7 +44,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 /** Implementation of a context-space service that is connected to remote SRE with the Hazelcast framework.
  *
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version janus.network 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.network
@@ -159,7 +159,7 @@ class HazelcastContextService extends MemoryBasedContextService {
 
 	/** Listener on Hazelcast's shared map events.
 	 *
-	 * @author $Author: ngaud$
+	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
 	 * @version janus.network 3.0.15.0 20250909-115749
 	 * @mavengroupid io.sarl.sre.janus
 	 * @mavenartifactid janus.network

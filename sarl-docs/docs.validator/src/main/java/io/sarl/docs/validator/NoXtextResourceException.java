@@ -26,7 +26,7 @@ import java.text.MessageFormat;
 
 /** Exception that is generated if an Xtext resource is missed.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.validator 0.15.0 20250909-115750
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.validator

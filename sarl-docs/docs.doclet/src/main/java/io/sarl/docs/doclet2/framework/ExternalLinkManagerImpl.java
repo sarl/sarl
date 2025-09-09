@@ -78,7 +78,7 @@ import com.google.inject.Inject;
 
 /** Manager of external links
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.15.0 20250909-115750
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet
@@ -315,7 +315,7 @@ public class ExternalLinkManagerImpl implements ExternalLinkManager {
 
 	/** External link source.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version docs.doclet 0.15.0 20250909-115750
 	 * @mavengroupid io.sarl.docs
 	 * @mavenartifactid docs.doclet

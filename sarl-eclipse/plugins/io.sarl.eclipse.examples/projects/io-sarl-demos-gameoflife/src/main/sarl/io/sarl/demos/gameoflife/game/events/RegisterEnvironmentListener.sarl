@@ -24,7 +24,7 @@ package io.sarl.demos.gameoflife.game.events
 import io.sarl.demos.gameoflife.game.EnvironmentListener
 
 /**
- * @author $Author: mpinard$
+ * @author <a href="https://github.com/pinam45">Maxime Pinard</a>
  */
 event RegisterEnvironmentListener {
 

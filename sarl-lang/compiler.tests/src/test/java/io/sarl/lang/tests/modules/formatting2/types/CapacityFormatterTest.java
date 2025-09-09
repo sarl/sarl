@@ -31,7 +31,7 @@ import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
 
 /** Tests for formatting capacities.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler.tests 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler.tests
@@ -43,7 +43,7 @@ import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
 public class CapacityFormatterTest {
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version compiler.tests 0.15.0 20250909-115746
 	 * @mavengroupid io.sarl.lang
 	 * @mavenartifactid compiler.tests

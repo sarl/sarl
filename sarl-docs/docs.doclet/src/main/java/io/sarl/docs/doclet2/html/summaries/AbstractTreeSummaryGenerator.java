@@ -62,7 +62,7 @@ import io.sarl.docs.doclet2.html.framework.Navigation.NavigationKind;
 
 /** Abstract generator of the type hierarchy.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.doclet 0.15.0 20250909-115750
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.doclet

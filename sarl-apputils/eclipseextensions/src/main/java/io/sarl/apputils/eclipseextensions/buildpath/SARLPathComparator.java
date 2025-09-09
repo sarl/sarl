@@ -44,7 +44,7 @@ import io.sarl.lang.SARLConfig;
  * <tr><td>250</td><td>Generated source code for integration tests</td></tr>
  * </table>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version eclipseextensions 0.15.0 20250909-115749
  * @mavengroupid io.sarl.apputils
  * @mavenartifactid eclipseextensions

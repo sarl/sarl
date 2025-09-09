@@ -83,7 +83,7 @@ import io.sarl.lang.core.util.SarlUtils;
 
 /** Abstract Maven MOJO for the documentation of the SARL project.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version docs.generator 0.15.0 20250909-115750
  * @mavengroupid io.sarl.docs
  * @mavenartifactid docs.generator

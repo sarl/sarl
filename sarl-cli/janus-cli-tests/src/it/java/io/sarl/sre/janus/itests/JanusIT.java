@@ -41,7 +41,7 @@ import io.sarl.tests.api.tools.TestReflections;
 import io.sarl.tests.api.tools.TestShell;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus-cli-tests 0.15.0 20250909-115750
  * @mavengroupid io.sarl.cli
  * @mavenartifactid janus-cli-tests

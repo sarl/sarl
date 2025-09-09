@@ -40,8 +40,8 @@ import java.util.Random
 /**
  * The main agent able to communicate with the GUI.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 agent LaunchingArea {
 	uses Lifecycle, Behaviors, Logging, InnerContextAccess

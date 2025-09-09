@@ -44,7 +44,7 @@ import io.sarl.lang.validation.ISARLValidator;
  * <p>This validator is not a subtype of the Xtext validator API because it must
  * be directly invoked from the overridden functions in the main {@code SARLValidator}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

@@ -34,7 +34,7 @@ import io.sarl.lang.core.annotation.SarlSpecification;
  * Directly copy from com.google.common.eventbus.DeadEvent
  * </p>
  *
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

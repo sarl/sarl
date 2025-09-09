@@ -27,7 +27,7 @@ import io.bootique.di.BQModule
 
 /** Factory for a Bootique runtime.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -51,7 +51,7 @@ interface BQRuntimeFactory {
  * This factory create the bootique instance with the given modules if they are provided. It also
  * enables the automatic loading of the modules.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

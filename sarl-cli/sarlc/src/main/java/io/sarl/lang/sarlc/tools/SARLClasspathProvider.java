@@ -28,7 +28,7 @@ import io.sarl.apputils.bootiqueapp.utils.SystemPath;
 /**
  * A provider of the class path that must be used for compiling a SARL program.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version sarlc 0.15.0 20250909-115750
  * @mavengroupid io.sarl.cli
  * @mavenartifactid sarlc

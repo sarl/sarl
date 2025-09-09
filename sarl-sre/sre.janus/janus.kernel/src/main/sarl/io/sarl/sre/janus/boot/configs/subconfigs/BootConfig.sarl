@@ -51,7 +51,7 @@ import static extension io.bootique.BQCoreModule.extend
 /** 
  * Configuration for specifying the SRE booting parameters.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -381,7 +381,7 @@ class BootConfig {
 /** 
  * The name of the boot agent is not provided, e.g. on the command line.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -393,7 +393,7 @@ class NoBootAgentNameException extends RuntimeException {
 /** 
  * The name of the boot agent is not a sub-type of {@code Agent}.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -405,7 +405,7 @@ class InvalidAgentNameException extends RuntimeException {
 /** 
  * Module for the SRE booting parameters.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -509,7 +509,7 @@ class BootConfigModule implements BQModule {
 
 /** Provider of the module for the SRE booting parameters.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel

@@ -33,7 +33,7 @@ import io.sarl.api.core.UnknownContextException;
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version api.core 0.15.0 20250909-115748
  * @mavengroupid io.sarl.sdk
  * @mavenartifactid api.core

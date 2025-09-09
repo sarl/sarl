@@ -57,7 +57,7 @@ import io.sarl.lang.util.Utils;
 /**
  * Configuration tab for the JRE and the SARL runtime environment.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
@@ -301,7 +301,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	/** Adapter that permits to provide a reference on a SARL project to the configuration
 	 * tab that is using it.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.15.0 20250909-115751
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse

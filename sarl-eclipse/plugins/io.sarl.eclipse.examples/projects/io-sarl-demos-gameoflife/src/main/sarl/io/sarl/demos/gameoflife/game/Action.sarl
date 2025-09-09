@@ -26,12 +26,12 @@ import org.arakhne.afc.math.geometry.d2.i.Point2i
 import org.arakhne.afc.vmutil.json.JsonBuffer
 
 /** 
- * @author $Author: jboulmier$
+ * @author <a href="https://github.com/Lomadriel">J&eacute;r&ocirc;me Boulmier</a>
  */
 class Action {
 
 	/** 
-	 * @author $Author: jboulmier$
+	 * @author <a href="https://github.com/Lomadriel">J&eacute;r&ocirc;me Boulmier</a>
 	 */
 	enum Type {
 		CREATE,

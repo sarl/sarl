@@ -60,7 +60,7 @@ import io.sarl.lang.util.Utils;
 /**
  * A specialized validator to deal with behavior units and event handlers.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version compiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid compiler

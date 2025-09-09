@@ -41,7 +41,7 @@ import io.sarl.api.experienceindex.SarlExperienceIndex.SEI;
 /**
  * Dialog that shows the results for the SARL experience index.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse.experienceindex 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse.experienceindex

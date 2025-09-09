@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Label;
 
 /** Wizard page that permits to add the Janus libraries into a project.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse.sre.janus 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse.sre.janus

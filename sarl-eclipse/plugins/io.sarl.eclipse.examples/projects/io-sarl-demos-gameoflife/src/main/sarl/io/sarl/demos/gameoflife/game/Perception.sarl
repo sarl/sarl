@@ -25,7 +25,7 @@ import java.util.Set
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
- * @author $Author: mpinard$
+ * @author <a href="https://github.com/pinam45">Maxime Pinard</a>
  */
 event Perception {
 

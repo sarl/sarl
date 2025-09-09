@@ -32,7 +32,7 @@ import org.eclipse.xtext.util.JavaVersion;
 
 /** Abstract implementation for the Java batch compilers.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version batchcompiler 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid batchcompiler

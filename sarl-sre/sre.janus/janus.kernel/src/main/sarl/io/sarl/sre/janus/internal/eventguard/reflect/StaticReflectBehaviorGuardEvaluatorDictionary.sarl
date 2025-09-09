@@ -40,8 +40,8 @@ import java.util.TreeMap
  * 
  * <p>This class is thread-safe.
  * 
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version janus.kernel 3.0.15.0 20250909-115749
  * @mavengroupid io.sarl.sre.janus
  * @mavenartifactid janus.kernel
@@ -116,8 +116,8 @@ final class StaticReflectBehaviorGuardEvaluatorDictionary {
 	/** 
 	 * It stores the prototype of a given method for representing a method's identifier.
 	 * 
-	 * @author $Author: ngaud$
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version janus.kernel 3.0.15.0 20250909-115749
 	 * @mavengroupid io.sarl.sre.janus
 	 * @mavenartifactid janus.kernel

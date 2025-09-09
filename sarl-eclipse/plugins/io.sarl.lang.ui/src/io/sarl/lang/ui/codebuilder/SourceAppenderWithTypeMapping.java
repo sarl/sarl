@@ -29,7 +29,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** A source appender that is mapping the Java function types (Function0...) to the equivalent SARL notation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.lang.ui 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.lang.ui

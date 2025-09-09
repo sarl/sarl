@@ -65,7 +65,7 @@ import io.sarl.lang.sarl.SarlScript;
  *
  * @param <ET> the type of the valid objects that are supported by this shortcut.
  * @param <JT> the type of the valid objects that are supported by this shortcut.
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
@@ -337,7 +337,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 
 	/** Description of an element to launch.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.15.0 20250909-115751
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse
@@ -378,7 +378,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 
 	/** Label provider.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version io.sarl.eclipse 0.15.0 20250909-115751
 	 * @mavengroupid io.sarl.eclipse
 	 * @mavenartifactid io.sarl.eclipse

@@ -30,7 +30,7 @@ import org.eclipse.xtext.validation.Issue;
 
 /** Helper for testing the validation results.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version tests.api 0.15.0 20250909-115746
  * @mavengroupid io.sarl.baseutils
  * @mavenartifactid tests.api

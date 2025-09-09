@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.TestInstancePostProcessor;
  * as the standard Xtext {@link InjectionExtension}. Moreover, this extension does
  * a restore of the injection provider in order to avoid unstable state of the injected components.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version tests.api 0.15.0 20250909-115746
  * @mavengroupid io.sarl.baseutils
  * @mavenartifactid tests.api

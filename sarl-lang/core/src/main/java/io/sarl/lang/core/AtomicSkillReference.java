@@ -37,7 +37,7 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  * <p>This type does not extend the {@code java.util.concurrent.atomic.AtomicReference} because
  * we don't want to exhibit several of its public functions.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version core 0.15.0 20250909-115746
  * @mavengroupid io.sarl.lang
  * @mavenartifactid core

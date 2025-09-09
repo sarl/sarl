@@ -41,7 +41,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * <p>The SARL classpath container is a system library, i.e. it will not be included into the run-time
  * classpath.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version io.sarl.eclipse 0.15.0 20250909-115751
  * @mavengroupid io.sarl.eclipse
  * @mavenartifactid io.sarl.eclipse
