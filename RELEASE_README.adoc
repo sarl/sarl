@@ -135,7 +135,7 @@ Prepare the bundles for Maven Central:
 
      $> ./scripts/prepare-maven-central.sh
 
-NOTE: Copy the bundles from `target/maven-central-bundles/` in a safe folder for being used in Phase 3.
+NOTE: Copy the combined bundle from `target/maven-central-combined-bundles.jar` in a safe folder for being used in Phase 3.
 
 === 2.9) Javadoc Generation
 
@@ -185,7 +185,7 @@ These variables may be defined in the user configuration file `$HOME/.sarlrc`, t
 
 === 3.1) Maven Central Bundles
 
-Upload the Maven Bundle on Maven Central with http://oss.sonatype.org
+Upload the Maven Bundle on Maven Central with https://central.sonatype.com/ (successor of http://oss.sonatype.org)
 
 === 3.2) Debian Packages
 

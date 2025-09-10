@@ -1,40 +1,14 @@
 #!/usr/bin/env python3
 
-# Create bundles for uploaded on the Maven Central Portal
-# Bundle format is valid after June 2025
+# Create bundles for uploaded on the OSS platform for Maven Central
+# Bundle format is valid until June 2025
 
 import sys
 import os
 import os.path
-import shutil
 import argparse
 import subprocess
 import glob
-import hashlib
-from datetime import datetime
-from xml.etree import ElementTree
-
-NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
-NAMESPACES = {'xmlns' : NAMESPACE}
-	
-#########################
-## filename: the path to the POM file.
-def readXMLRootNode(filename):
-	ElementTree.register_namespace('', NAMESPACE)
-	tree = ElementTree.parse(filename)
-	root = tree.getroot()
-	return root
-
-#########################
-## node: the XML node
-## name: the name of the value to read.
-def readXml(node, name):
-	valueNode = node.find("xmlns:" + name, namespaces=NAMESPACES)
-	if valueNode is not None:
-		textValue = valueNode.text
-		if textValue:
-			return textValue
-	return ''
 
 ##############################
 ##
@@ -103,39 +77,13 @@ def create_maven_central_bundles():
 			if filename.endswith(".pom"):
 				parent_dir = os.path.basename(root)
 				if parent_dir == 'target':
-					pom = readXMLRootNode(os.path.join(current_dir, root, filename))
-					packaging_type = readXml(pom, 'packaging')
-					artifact_name = readXml(pom, 'artifactId')
-					group_name = readXml(pom, 'groupId')
-					if not group_name:
-						parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
-						group_name = readXml(parent, 'groupId')
-					version_number = readXml(pom, 'version')
-					if not version_number:
-						parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
-						version_number = readXml(parent, 'version')
-					
-					if not artifact_name:
-						raise Exception("artifactId is missed for " + filename)
-					if not group_name:
-						raise Exception("groupId is missed for " + filename)
-					if not version_number:
-						raise Exception("version is missed for " + filename)
-
+					artifact_name = os.path.splitext(filename)[0]
 					bundle_name = artifact_name + "-bundle.jar"
 					f_bundle_name = os.path.join(current_dir, root, bundle_name)
 					signs = glob.glob(os.path.join(current_dir, root, "*.asc"))
 					if signs:
 						print("Creating " + bundle_name + "...")
-
-						temp_output_folder = os.path.join(current_dir, root, "maven-central-bundles-temp")
-						content_folder = os.path.join(group_name.replace(".", "/"), artifact_name, version_number)
-						writing_output_folder = os.path.join(temp_output_folder, content_folder)
-						if os.path.exists(temp_output_folder):
-							shutil.rmtree(temp_output_folder)
-						os.makedirs(writing_output_folder, exist_ok=True)
-						
-						cmd = ['jar', '-c', '-f', f_bundle_name]
+						cmd = ['jar', 'cf', f_bundle_name]
 						content_files = glob.glob(os.path.join(current_dir, root, "*.pom"))\
 							+ glob.glob(os.path.join(current_dir, root, "*.pom.asc"))\
 							+ glob.glob(os.path.join(current_dir, root, "*.jar"))\
@@ -144,44 +92,14 @@ def create_maven_central_bundles():
 							+ glob.glob(os.path.join(current_dir, root, "*.apklib.asc"))
 						for input_file in content_files:
 							if not input_file.endswith("-bundle.jar") and not input_file.endswith("-bundle.jar.asc"):
-								base_output_filename = os.path.join(writing_output_folder, os.path.basename(input_file))
-								shutil.copyfile(input_file, base_output_filename)
-								with open(input_file, 'rb') as file_to_check:
-									data = file_to_check.read()    
-									md5_value = hashlib.md5(data).hexdigest()
-									sha1_value = hashlib.sha1(data).hexdigest()
-								with open(base_output_filename + '.md5', 'wt') as md5_file:
-									md5_file.write(md5_value)
-								with open(base_output_filename + '.sha1', 'wt') as sha1_file:
-									sha1_file.write(sha1_value)
-								cmd = cmd + ["-C", temp_output_folder, os.path.join(content_folder, os.path.basename(input_file))]
-								cmd = cmd + ["-C", temp_output_folder, os.path.join(content_folder, os.path.basename(input_file) + '.md5')]
-								cmd = cmd + ["-C", temp_output_folder, os.path.join(content_folder, os.path.basename(input_file) + '.sha1')]
-
-						metadata_filename = os.path.join(os.path.dirname(writing_output_folder), "maven-metadata.xml")							
-						timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-						with open(metadata_filename, 'wt') as metadata_file:
-							metadata_file.write("<metadata><groupId>" + group_name + "</groupId><artifactId>" + artifact_name + "</artifactId><versioning><release>" + version_number + "</release><versions><version>" + version_number + "</version></versions><lastUpdated>" + timestamp + "</lastUpdated></versioning></metadata>")
-						with open(metadata_filename, 'rb') as file_to_check:
-							data = file_to_check.read()    
-							md5_value = hashlib.md5(data).hexdigest()
-							sha1_value = hashlib.sha1(data).hexdigest()
-						with open(metadata_filename + '.md5', 'wt') as md5_file:
-							md5_file.write(md5_value)
-						with open(metadata_filename + '.sha1', 'wt') as sha1_file:
-							sha1_file.write(sha1_value)
-						cmd = cmd + ["-C", temp_output_folder, os.path.join(os.path.dirname(content_folder), "maven-metadata.xml")]
-						cmd = cmd + ["-C", temp_output_folder, os.path.join(os.path.dirname(content_folder), "maven-metadata.xml.md5")]
-						cmd = cmd + ["-C", temp_output_folder, os.path.join(os.path.dirname(content_folder), "maven-metadata.xml.sha1")]
-
-    						#print("\t" + str(cmd))
+								cmd = cmd + [os.path.basename(input_file)]
+						#print("\t" + str(cmd))
 						if os.path.exists(f_bundle_name):
 							os.remove(f_bundle_name)
 						r = subprocess.call(cmd, cwd=root)
 						if r == 0 and os.path.isfile(f_bundle_name):
 							nb_bundles = nb_bundles + 1
 							shell_cmd = shell_cmd + [ f_bundle_name ]
-														
 						print("Created " + bundle_name)
 					else:
 						print("Skipping " + bundle_name);

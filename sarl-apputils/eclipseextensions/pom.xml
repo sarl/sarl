@@ -374,4 +374,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <developers>
+    <developer>
+      <name>SARL Authors and Contributors</name>
+      <url>https://www.sarl.io</url>
+    </developer>
+  </developers>
 </project>

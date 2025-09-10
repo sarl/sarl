@@ -193,21 +193,6 @@
       <name>SARL Maven Repository</name>
     </snapshotRepository>
   </distributionManagement>
-  <developers>
-    <developer>
-      <id>sgalland</id>
-      <name>St&amp;eacute;phane Galland</name>
-      <email>stephane.galland@utbm.fr</email>
-      <url>http://www.ciad-lab.fr/stephane_galland</url>
-      <organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
-      <organizationUrl>http://www.ciad-lab.fr</organizationUrl>
-      <roles>
-        <role>Co-founder</role>
-        <role>Architect</role>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -215,4 +200,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <developers>
+    <developer>
+      <name>SARL Authors and Contributors</name>
+      <url>https://www.sarl.io</url>
+    </developer>
+  </developers>
 </project>

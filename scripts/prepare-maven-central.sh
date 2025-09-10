@@ -46,3 +46,18 @@ run_prepare "$CDIR/sarl-apputils" "SARL application utilities" "$OUTDIR" --pwd="
 run_prepare "$CDIR/sarl-sre" "SARL Runtime Environment -SRE" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
 run_prepare "$CDIR/sarl-docs" "documentation tools and doclets" "$OUTDIR" --pwd="$PASS_PHRASE" "$@"
 
+# Merge all bundles
+echo "Combining the bundle files..."
+OUTDIR2="$CDIR/target/maven-central-combined-bundles"
+rm -rf "$OUTDIR2"
+mkdir -p "$OUTDIR2"
+cd "$OUTDIR2"
+for jarfile in "$OUTDIR/"*-bundle.jar
+do
+	echo "   preparing" `basename "$jarfile"`
+	jar -x -f "$jarfile"
+done
+rm -rf "$OUTDIR2/META-INF"
+echo "Creating the combined bundle file"
+tar cfz "$CDIR/target/maven-central-combined-bundles.tar.gz" *
+
