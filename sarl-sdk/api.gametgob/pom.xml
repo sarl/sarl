@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.sdk</groupId>
   <artifactId>api.gametgob</artifactId>
-  <version>0.15.0-SNAPSHOT</version>
+  <version>0.15.1-SNAPSHOT</version>
   <name>Game Time Goal Oriented Behavior</name>
   <description>Time-based goal oriented behavior for games</description>
   <packaging>jar</packaging>
@@ -47,7 +47,7 @@
       <plugin>
         <groupId>io.sarl.lang</groupId>
         <artifactId>sarl-maven-plugin</artifactId>
-        <version>0.15.0-SNAPSHOT</version>
+        <version>0.15.1-SNAPSHOT</version>
         <executions>
           <execution>
             <id>sarl-compiler-init</id>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: io.sarl.lang.ui.tests
 Bundle-SymbolicName: io.sarl.lang.ui.tests;singleton:=true
-Bundle-Version: 0.15.0.qualifier
+Bundle-Version: 0.15.1.qualifier
 Export-Package: io.sarl.lang.ui.tests.preferences,
  io.sarl.lang.ui.tests;x-internal=true
 Require-Bundle: io.sarl.lang.ui;bundle-version="0.15.0",

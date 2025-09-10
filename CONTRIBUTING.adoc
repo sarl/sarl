@@ -37,8 +37,8 @@ This section describes how to set up the Eclipse development environment for con
 The main SARL developpers are using the following development environment:
 
 * *Java Development Kit (JDK) 21* from OpenJDK or Oracle.
-* *Maven 3.9.10* (for shell command-line actions) from Apache.
-* *Eclipse 2025-06*, version "for Java and DSL Developers", and version "for RCP and RAP Developers".
+* *Maven 3.9.11* (for shell command-line actions) from Apache.
+* *Eclipse 2025-09*, version "for Java and DSL Developers", and version "for RCP and RAP Developers".
 
 
 === 2.2. Obtaining the SARL Source Code
