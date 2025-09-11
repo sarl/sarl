@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.docs</groupId>
   <artifactId>sarl-officialdoc</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>0.15.1</version>
   <name>Official SARL Documentation</name>
   <description>All ages that are documenting SARL</description>
   <packaging>jar</packaging>

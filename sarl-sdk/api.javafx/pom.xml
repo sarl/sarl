@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.sdk</groupId>
   <artifactId>api.javafx</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>0.15.1</version>
   <name>SARL JavaFX API</name>
   <description>JavaFX Library for building the SARL applications</description>
   <packaging>jar</packaging>
@@ -74,7 +74,7 @@
       <plugin>
         <groupId>io.sarl.lang</groupId>
         <artifactId>sarl-maven-plugin</artifactId>
-        <version>0.15.1-SNAPSHOT</version>
+        <version>0.15.1</version>
         <executions>
           <execution>
             <id>sarl-compiler-init</id>

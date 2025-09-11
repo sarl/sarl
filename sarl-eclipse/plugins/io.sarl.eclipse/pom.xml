@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl.eclipse</groupId>
 		<artifactId>sarl-eclipse-plugins</artifactId>
-		<version>0.15.1-SNAPSHOT</version>
+		<version>0.15.1</version>
 	</parent>
 
 	<artifactId>io.sarl.eclipse</artifactId>

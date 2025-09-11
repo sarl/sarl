@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.apputils</groupId>
   <artifactId>eclipseextensions</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>0.15.1</version>
   <name>SARL Eclipse Extensions</name>
   <description>Definition of extensions for the SARL Eclipse</description>
   <packaging>jar</packaging>

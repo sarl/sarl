@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.eclipse.features.sarlcompiler"
       label="Coding Tools for SARL Eclipse"
-      version="0.15.1.qualifier"
+      version="0.15.1"
       plugin="io.sarl.eclipse">
 
    <description url="http://www.sarl.io/about/">

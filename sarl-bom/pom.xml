@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.bom</groupId>
   <artifactId>sarl-bom</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>0.15.1</version>
   <packaging>pom</packaging>
   <name>SARL Bill of Materials</name>
   <description>Root pom for all the SARL BOMs</description>

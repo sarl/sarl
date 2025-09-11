@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.sre</groupId>
   <artifactId>sre.tests.api</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>0.15.1</version>
   <name>Test API for SRE</name>
   <packaging>jar</packaging>
   <properties>
@@ -34,7 +34,7 @@
       <plugin>
         <groupId>io.sarl.lang</groupId>
         <artifactId>sarl-maven-plugin</artifactId>
-        <version>0.15.1-SNAPSHOT</version>
+        <version>0.15.1</version>
         <executions>
           <execution>
             <id>sarl-compiler-init</id>

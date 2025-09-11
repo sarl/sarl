@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.cli</groupId>
   <artifactId>janus</artifactId>
-  <version>3.0.15.1-SNAPSHOT</version>
+  <version>3.0.15.1</version>
   <name>Janus Platform</name>
   <description>Command-line version of the Janus framework</description>
   <packaging>jar</packaging>
@@ -11,7 +11,7 @@
     <name>${sarl.vendor}</name>
   </organization>
   <properties>
-    <sarl.version>0.15.1-SNAPSHOT</sarl.version>
+    <sarl.version>0.15.1</sarl.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cliRunnerName>janus</cliRunnerName>
     <cliRunnerMainClass>io.sarl.sre.janus.boot.Boot</cliRunnerMainClass>
@@ -45,7 +45,7 @@
       <plugin>
         <groupId>io.sarl.lang</groupId>
         <artifactId>sarl-maven-plugin</artifactId>
-        <version>0.15.1-SNAPSHOT</version>
+        <version>0.15.1</version>
         <executions>
           <execution>
             <id>sarl-compiler-init</id>
