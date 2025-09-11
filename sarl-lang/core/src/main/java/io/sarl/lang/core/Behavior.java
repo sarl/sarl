@@ -25,9 +25,9 @@ package io.sarl.lang.core;
  * A behavior maps a collection of perceptions represented by events to a collection of a task.
  *
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public abstract class Behavior extends AgentTrait implements IBehaviorGuardEvaluatorReceiver {
 

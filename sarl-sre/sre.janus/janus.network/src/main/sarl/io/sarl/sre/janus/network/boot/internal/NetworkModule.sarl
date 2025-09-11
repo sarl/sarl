@@ -62,9 +62,9 @@ import static io.sarl.sre.janus.network.boot.configs.SreNetworkConfig.PREFIX
  * The module for injected the network features of Janus.
  * 
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class NetworkModule implements BQModule {
@@ -175,9 +175,9 @@ class NetworkModule implements BQModule {
  * Log listener for Hazelcast.
  *
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class HazelcastLogListener implements LogListener {
@@ -204,9 +204,9 @@ class HazelcastLogListener implements LogListener {
  * Bootique module provider for the network features of Janus.
  *
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.network 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.network
  * @since 0.12
  */
 class NetworkModuleProvider implements BQModuleProvider {

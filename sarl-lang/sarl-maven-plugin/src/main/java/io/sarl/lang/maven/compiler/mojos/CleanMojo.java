@@ -35,9 +35,9 @@ import io.sarl.lang.maven.compiler.abstractmojos.AbstractSarlMojo;
 /** Cleaning mojo for compiling SARL.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 @Mojo(name = "clean", defaultPhase = LifecyclePhase.CLEAN,
 		requiresDependencyResolution = ResolutionScope.COMPILE)

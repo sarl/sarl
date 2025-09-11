@@ -30,9 +30,9 @@ import java.util.Set;
  * executed according to the result of the guard evaluation.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 public interface IBehaviorGuardEvaluatorReceiver {

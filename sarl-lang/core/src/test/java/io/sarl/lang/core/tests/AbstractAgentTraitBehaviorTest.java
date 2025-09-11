@@ -49,9 +49,9 @@ import io.sarl.tests.api.Nullable;
 
 /**
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SuppressWarnings("all")
 @DisplayName("AbstractAgentTraitBehavior")
@@ -265,9 +265,9 @@ public abstract class AbstractAgentTraitBehaviorTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class AgentMock extends Agent {
 
@@ -284,9 +284,9 @@ public abstract class AbstractAgentTraitBehaviorTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static interface Capacity1 extends Capacity {
 		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
@@ -298,9 +298,9 @@ public abstract class AbstractAgentTraitBehaviorTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class Skill1 extends Skill implements Capacity1 {
 		public Skill1() {

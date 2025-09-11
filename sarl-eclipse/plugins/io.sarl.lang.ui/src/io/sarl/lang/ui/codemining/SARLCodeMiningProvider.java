@@ -85,9 +85,9 @@ import io.sarl.lang.util.Utils;
  * other kind of meta information.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.8
  * @see "https://blogs.itemis.com/en/code-mining-support-in-xtext"
  */
@@ -559,9 +559,9 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 * <strong>Only for fixing bug 1041.</strong>
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.12
 	 */
 	private static class CombinedCancelIndicator implements CancelIndicator {
@@ -589,9 +589,9 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	/** Region of the code.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.12
 	 */
 	protected static class CodeRegion {

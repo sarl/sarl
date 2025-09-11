@@ -52,9 +52,9 @@ import org.eclipse.ui.IWorkingSet;
  * <p>This class is a copy/paster of {@link ImportMavenProjectsJob}. And, it is fixed for Maven SARL projects.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  * @since 0.8
  * @see ImportMavenProjectsJob
  */

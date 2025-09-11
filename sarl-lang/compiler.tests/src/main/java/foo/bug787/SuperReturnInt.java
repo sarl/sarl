@@ -23,9 +23,9 @@ package foo.bug787;
 
 /**
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @SuppressWarnings("all")
 public class SuperReturnInt {

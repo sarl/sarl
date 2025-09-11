@@ -33,9 +33,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * precisely control/filter the potential recipients of an event.
  *
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public abstract class Event implements Serializable {
 
@@ -154,9 +154,9 @@ public abstract class Event implements Serializable {
 	 * The lower bounds corresponds to the that that a generic type must be a super type.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.14
 	 */
 	public enum BoundType {
@@ -176,9 +176,9 @@ public abstract class Event implements Serializable {
 	 * @param type the type associated to this generic type bound.
 	 * @param direction the type of bound for the record.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 * @since 0.14
 	 */
 	public record Bound(Class<?> type, BoundType direction)  {

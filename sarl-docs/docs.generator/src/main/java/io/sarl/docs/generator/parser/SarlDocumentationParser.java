@@ -66,9 +66,9 @@ import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.sarl.io/alexandre_lombard">Alexandre Lombard</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 public class SarlDocumentationParser {
@@ -1133,9 +1133,9 @@ public class SarlDocumentationParser {
 	/** Exception in parser.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public static class ParsingException extends RuntimeException {
@@ -1192,9 +1192,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public static class ParsingContext {
@@ -1794,9 +1794,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public interface ParserInterceptor {
@@ -1843,9 +1843,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements for the parameters.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public static class DelegateParserInterceptor implements ParserInterceptor {
@@ -1919,9 +1919,9 @@ public class SarlDocumentationParser {
 	/** Interceptor of the parsed elements for the parameters.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	private static class ContentParserInterceptor extends DelegateParserInterceptor {
@@ -1988,9 +1988,9 @@ public class SarlDocumentationParser {
 	/** Definition of the special tags.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public enum Stage {
@@ -2031,9 +2031,9 @@ public class SarlDocumentationParser {
 	/** Definition of the special tags.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.generator 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.generator
 	 * @since 0.6
 	 */
 	public enum Tag {

@@ -60,9 +60,9 @@ import io.sarl.lang.util.Utils;
  * <p>This implementation is thread-safe.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class DefaultActionPrototypeProvider implements IActionPrototypeProvider {
 
@@ -605,9 +605,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 * @param <K> the type of the keys.
 	 * @param <V> the type of the values.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.10
 	 */
 	private static class InnerMap<K, V> extends TreeMap<K, V> {
@@ -637,9 +637,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 * Context for a {@code DefaultActionPrototypeProvider}.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.10
 	 */
 	private static class Context implements IActionPrototypeContext {

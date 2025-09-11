@@ -35,9 +35,9 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  * release all resources in the {@link #uninstall()}.
  *
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 public abstract class Skill extends AgentTrait implements IBehaviorGuardEvaluatorReceiver {
 

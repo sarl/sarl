@@ -28,9 +28,9 @@ import org.arakhne.afc.services.IService
  * This class enables to have access to the time manager of the platform.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 interface TimeService extends IService {
@@ -135,9 +135,9 @@ interface TimeService extends IService {
  * Listener on time changes into the time service.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 interface TimeListener extends EventListener {

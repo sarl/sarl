@@ -25,9 +25,9 @@ import java.io.File;
 /** Factory for verifiers.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.13
  */
 public final class VerifierFactory {

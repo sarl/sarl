@@ -150,9 +150,9 @@ import jdk.javadoc.doclet.Taglet.Location;
 /** Builder of HTML elements.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.doclet 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.doclet
  * @since 0.13
  */
 public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
@@ -1571,9 +1571,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	/** Implementation of the tab factory.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	private class HtmlTabsFactoryImpl implements HtmlTabsFactory {
@@ -1694,9 +1694,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	/** Element in the stack of {@link HtmlFactoryImpl#createCommentText(Element, DocTree, PackageElement, String, io.sarl.docs.doclet2.html.HtmlFactory.HtmlFactoryContext)}.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	private static class StackElement {
@@ -1762,9 +1762,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	/** Taglet is not found.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	public static class NotFoundTagletException extends RuntimeException {
@@ -1784,9 +1784,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	/** Implementation of a visitor of the documentation for extracting a text.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	protected class TextContentExtractor implements DocTreeVisitor<Void, Void>, HtmlFactoryContentExtractor {
@@ -2343,9 +2343,9 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 	/** Memory of the generation of comment text.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version docs.doclet 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.docs
+	 * @mavenartifactid docs.doclet
 	 * @since 0.13
 	 */
 	protected class CommentTextMemoryImpl implements CommentTextMemory {

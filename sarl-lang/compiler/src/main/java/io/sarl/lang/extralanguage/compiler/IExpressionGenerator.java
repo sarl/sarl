@@ -28,9 +28,9 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 /** Generator of XExpression.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public interface IExpressionGenerator {

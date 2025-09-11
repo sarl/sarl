@@ -40,9 +40,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.sarl.io/alexandre_lombard">Alexandre Lombard</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/891"
  */
 @DisplayName("Bug #891")

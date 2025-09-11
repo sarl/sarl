@@ -43,9 +43,9 @@ import io.sarl.lang.validation.SARLValidator;
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 

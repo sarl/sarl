@@ -59,9 +59,9 @@ import static extension org.mockito.Mockito.verify
 
 /**
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -222,9 +222,9 @@ abstract class ReferenceFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test")
 	@Nested
@@ -243,9 +243,9 @@ abstract class ReferenceFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with null field")
 	@Nested
@@ -268,9 +268,9 @@ abstract class ReferenceFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with final object")
 	@Nested
@@ -289,9 +289,9 @@ abstract class ReferenceFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with AtomicReference")
 	@Nested
@@ -310,9 +310,9 @@ abstract class ReferenceFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with null AtomicReference")
 	@Nested
@@ -335,9 +335,9 @@ abstract class ReferenceFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: ReferenceFieldProbe test with final AtomicReference")
 	@Nested

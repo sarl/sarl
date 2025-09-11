@@ -32,9 +32,9 @@ import org.eclipse.core.runtime.Status;
  * UI plugin.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 public class UiExtensionsPlugin extends Plugin {

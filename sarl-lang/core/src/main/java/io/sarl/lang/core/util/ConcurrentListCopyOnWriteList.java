@@ -28,9 +28,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @param <T> the type of the objects in the list.
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.12
  */
 class ConcurrentListCopyOnWriteList<T> extends CopyOnWriteArrayList<T> implements ConcurrentList<T> {

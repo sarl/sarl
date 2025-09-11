@@ -48,9 +48,9 @@ import io.sarl.lang.validation.ISARLValidator;
  * An abstract implementation for all the validators based on JVM metamodel..
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public abstract class AbstractSARLJvmGenericTypeValidator extends JvmGenericTypeValidator {

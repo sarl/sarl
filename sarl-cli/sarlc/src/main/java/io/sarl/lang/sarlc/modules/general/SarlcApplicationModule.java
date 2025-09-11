@@ -46,9 +46,9 @@ import jakarta.inject.Provider;
 /** Module for configuring the sarlc application information.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class SarlcApplicationModule implements BQModule {
@@ -74,9 +74,9 @@ public class SarlcApplicationModule implements BQModule {
 	/** Provider of the long description of the application.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version sarlc 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid sarlc
 	 * @since 0.8
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {

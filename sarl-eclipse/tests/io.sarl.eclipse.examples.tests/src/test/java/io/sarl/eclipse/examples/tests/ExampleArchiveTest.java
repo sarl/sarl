@@ -36,9 +36,9 @@ import org.junit.jupiter.api.TestFactory;
  * <p>Generate the example archive and check the archive's path.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples.tests 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples.tests
  */
 @SuppressWarnings("all")
 @DisplayName("Example archive generation")

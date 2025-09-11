@@ -39,9 +39,9 @@ import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessFragment2;
 /** Extract elements from the grammar.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 @ImplementedBy(NoBacktrackGrammarCodeElementExtractor.class)
 public interface CodeElementExtractor {
@@ -369,9 +369,9 @@ public interface CodeElementExtractor {
 	 * @param appenderType the type for the class that corresponds to this element appender.
 	 * @param annotationInfo indicates if the annotationInfo field is declared for the element.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	record ElementDescription(
 			String name, EObject grammarComponent,

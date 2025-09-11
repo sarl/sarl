@@ -122,9 +122,9 @@ import io.sarl.lang.core.SARLVersion;
  *
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings({"deprecation", "restriction"})
 public class MainProjectWizardPage extends WizardPage implements SarlDefaultClassPathProvider {
@@ -572,8 +572,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	/**
 	 * Request a project name. Fires an event whenever the text field is changed, regardless of its content.
 	 *
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private final class NameGroup extends Observable implements IDialogFieldListener {
 
@@ -625,8 +625,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * field is changed, regardless of whether the change originates from the user
 	 * or has been invoked programmatically.
 	 *
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private final class LocationGroup extends Observable implements Observer, IStringButtonAdapter, IDialogFieldListener {
 
@@ -758,9 +758,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	/** Group that contains the configuration of the JRE.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private final class JREGroup implements Observer, SelectionListener, IDialogFieldListener {
 
@@ -1174,9 +1174,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private final class WorkingSetGroup {
 
@@ -1213,9 +1213,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private final class DetectGroup extends Observable implements Observer, SelectionListener {
 
@@ -1382,9 +1382,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private final class Validator implements Observer {
 
@@ -1538,9 +1538,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 		/** Exception that contains any validation error.
 		 *
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version io.sarl.eclipse 0.15.1 20250911-224827
+		 * @mavengroupid io.sarl.eclipse
+		 * @mavenartifactid io.sarl.eclipse
 		 */
 		private class ValidationException extends Exception {
 
@@ -1564,9 +1564,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * Show the list of project configuration fragments that are available for project creation.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.15
 	 */
 	private final class ProjectConfiguratorsGroup extends Observable implements IDialogFieldListener {

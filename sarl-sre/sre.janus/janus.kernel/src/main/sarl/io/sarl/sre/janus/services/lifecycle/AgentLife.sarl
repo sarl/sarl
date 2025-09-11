@@ -57,9 +57,9 @@ import static extension io.sarl.lang.core.SREutils.*
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 @SuppressWarnings("use_reserved_sarl_annotation")
@@ -777,9 +777,9 @@ final class AgentLife {
  * Describes any information that is required by the SRE for supporting the agent's life. 
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 final class ContextReference implements Comparable<ContextReference>, Cloneable {

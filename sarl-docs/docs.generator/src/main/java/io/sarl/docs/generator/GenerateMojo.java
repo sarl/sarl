@@ -41,9 +41,9 @@ import io.sarl.docs.generator.parser.AbstractMarkerLanguageParser;
 /** Maven MOJO that is generating the documentation for the SARL project.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE)

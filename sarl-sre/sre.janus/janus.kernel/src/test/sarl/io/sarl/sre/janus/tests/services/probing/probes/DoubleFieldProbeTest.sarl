@@ -59,9 +59,9 @@ import static extension org.mockito.Mockito.verify
 
 /**
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 @ExtendWith(#[
 	typeof(ContextInitExtension),
@@ -222,9 +222,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with primitive double")
 	@Nested
@@ -244,9 +244,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with final primitive double")
 	@Nested
@@ -265,9 +265,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with Double")
 	@Nested
@@ -286,9 +286,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with null Double")
 	@Nested
@@ -311,9 +311,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with final Double")
 	@Nested
@@ -332,9 +332,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with AtomicDouble")
 	@Nested
@@ -353,9 +353,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with null AtomicDouble")
 	@Nested
@@ -378,9 +378,9 @@ abstract class DoubleFieldProbeTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	@DisplayName("unit: DoubleFieldProbe test with final AtomicDouble")
 	@Nested

@@ -74,9 +74,9 @@ import io.sarl.docs.validator.ReflectExtensions;
 /** Markdown parser.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.generator 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.generator
  * @since 0.6
  */
 public class MarkdownParser extends AbstractMarkerLanguageParser {

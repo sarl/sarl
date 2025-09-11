@@ -74,9 +74,9 @@ import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
 /** Abstract implementation of a table for conversion definition.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 public abstract class AbstractConversionTable extends AbstractExtraControl {
@@ -719,9 +719,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Definition of the columns in the table of the type conversions.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	private enum Column {
@@ -739,9 +739,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Definition of the conversion mapping.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	protected static class ConversionMapping implements Comparable<ConversionMapping> {
@@ -827,9 +827,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * Label provider for type conversion list.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	protected static class LabelProvider extends BaseLabelProvider implements ITableLabelProvider {
@@ -871,9 +871,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * Content provider to show a list of type conversions.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	protected class ContentProvider implements IStructuredContentProvider {
@@ -905,9 +905,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * Cell modifier.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	protected static class CellModifier implements ICellModifier {
@@ -973,9 +973,9 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Iterator on type conversions.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	private class TypeConversionIterator implements Iterator<String> {

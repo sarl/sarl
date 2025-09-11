@@ -51,9 +51,9 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
  * Class for the configuration tab for the SARL arguments.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public class SARLArgumentsTab extends JavaArgumentsTab {
@@ -182,9 +182,9 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	/** This class redefines the label of the JVM argument block.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private static class JVMArgsBlock extends VMArgumentsBlock {
 

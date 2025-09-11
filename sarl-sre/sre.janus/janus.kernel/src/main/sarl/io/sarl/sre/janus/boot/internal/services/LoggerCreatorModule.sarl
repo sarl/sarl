@@ -36,9 +36,9 @@ import jakarta.inject.Singleton
  * Module for the creator of loggers.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class LoggerCreatorModule implements BQModule {
 
@@ -69,9 +69,9 @@ class LoggerCreatorModule implements BQModule {
 /** Provider of the module for the logging services.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class LoggerCreatorModuleProvider implements BQModuleProvider {

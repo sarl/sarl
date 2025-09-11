@@ -68,9 +68,9 @@ import io.sarl.lang.util.Utils;
 /** Describe generation context.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public abstract class GenerationContext {
 
@@ -736,9 +736,9 @@ public abstract class GenerationContext {
 	 * @param eventType the event type associated to the guard evaluators.
 	 * @param evaluators the codes for evaluating the guards.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.14
 	 */
 	public record BehaviorUnitGuardEvaluators(

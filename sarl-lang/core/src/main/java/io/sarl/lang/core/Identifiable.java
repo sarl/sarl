@@ -29,9 +29,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * Represents an entity that can be uniquely identified in the system.
  *
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @FunctionalInterface
 public interface Identifiable {

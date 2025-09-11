@@ -37,9 +37,9 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 /** A service that enables to do auto-formatting when a document changed.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 
@@ -138,9 +138,9 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 
 	/** Request for formatting a region.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	private static class RegionFormattingRequest {
 

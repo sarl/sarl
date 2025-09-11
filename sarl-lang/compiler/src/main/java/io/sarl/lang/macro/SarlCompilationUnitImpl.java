@@ -34,9 +34,9 @@ import io.sarl.lang.sarl.SarlSkill;
  * <p>This processor ensures that SARL type declarations are supported by the compilation unit.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 public class SarlCompilationUnitImpl extends CompilationUnitImpl {
@@ -67,9 +67,9 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 	/** SARL agent declaration for macro system.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.9
 	 */
 	protected static class SarlAgentDeclarationImpl extends XtendTypeDeclarationImpl<SarlAgent> {
@@ -79,9 +79,9 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 	/** SARL behavior declaration for macro system.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.9
 	 */
 	protected static class SarlBehaviorDeclarationImpl extends XtendTypeDeclarationImpl<SarlBehavior> {
@@ -91,9 +91,9 @@ public class SarlCompilationUnitImpl extends CompilationUnitImpl {
 	/** SARL skill declaration for macro system.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.9
 	 */
 	protected static class SarlSkillDeclarationImpl extends XtendTypeDeclarationImpl<SarlSkill> {

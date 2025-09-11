@@ -29,9 +29,9 @@ import org.eclipse.core.runtime.CoreException;
  * SARL custom project nature.
  *
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public class SARLProjectNature implements IProjectNature {
 

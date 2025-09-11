@@ -32,9 +32,9 @@ import io.sarl.sre.janus.spaces.DefaultSpaceComponentFactory
  * Module for configuring the providers of space components.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.15
  */
 class SpaceComponentFactoryModule implements BQModule {
@@ -48,9 +48,9 @@ class SpaceComponentFactoryModule implements BQModule {
 /** Provider of the module for configuring the space components.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.12
  */
 class SpaceComponentFactoryModuleProvider implements BQModuleProvider {

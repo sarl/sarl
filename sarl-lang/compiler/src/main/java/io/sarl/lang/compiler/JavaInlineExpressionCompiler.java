@@ -62,9 +62,9 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
  * annotation.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.4
  * @see org.eclipse.xtext.xbase.lib.Inline
  */
@@ -478,9 +478,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * @param constantExpressionOperation the JVM operation associated to the record's field {@code constantExpression}.
 	 * @param statementExpressionOperation the JVM operation associated to the record's field {@code statementExpression}.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.4
 	 */
 	public static record AnnotationInformation(JvmOperation valueOperation,
@@ -525,9 +525,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * Appendable for creating an inline expression.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.4
 	 */
 	protected static class InlineAnnotationTreeAppendable extends FakeTreeAppendable {

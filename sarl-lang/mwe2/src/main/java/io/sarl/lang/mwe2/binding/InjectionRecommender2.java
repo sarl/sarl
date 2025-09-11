@@ -44,9 +44,9 @@ import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.Binding;
  * recommendations.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 @Beta
 public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {

@@ -42,9 +42,9 @@ import static extension io.bootique.BQCoreModule.*
  * Module for configuring the janusnode application information.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janusnode 3.0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janusnode
  * @since 3.0.13.0
  */
 class JanusnodeApplicationModule implements BQModule {
@@ -66,9 +66,9 @@ class JanusnodeApplicationModule implements BQModule {
 	/** Provider of the long description of the application.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janusnode 3.0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid janusnode
 	 * @since 3.0.11.0
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {
@@ -85,9 +85,9 @@ class JanusnodeApplicationModule implements BQModule {
 /** Provider of the module for the janusnode application information.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janusnode 3.0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid janusnode
  * @since 3.0.11.0
  */
 class JanusnodeApplicationModuleProvider implements BQModuleProvider {

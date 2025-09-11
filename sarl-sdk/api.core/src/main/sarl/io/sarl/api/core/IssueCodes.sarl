@@ -26,9 +26,9 @@ import java.util.Collection
 /** List of all the issue codes that are related to the SARL core SDK.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 3.0.12.0 in Janus SRE
  * @since 0.15 in SARL SDK
  */

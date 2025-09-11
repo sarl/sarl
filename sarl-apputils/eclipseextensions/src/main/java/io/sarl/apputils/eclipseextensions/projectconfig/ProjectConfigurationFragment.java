@@ -37,9 +37,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
  * <p>This fragment may be used to add specific configuration elements to a SARL project.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15
  */
 public interface ProjectConfigurationFragment {

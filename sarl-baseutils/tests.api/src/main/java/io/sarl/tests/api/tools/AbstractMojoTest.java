@@ -44,9 +44,9 @@ import org.slf4j.LoggerFactory;
 /** Abstract test of Maven Mojo.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  */
 public abstract class AbstractMojoTest {
 
@@ -313,9 +313,9 @@ public abstract class AbstractMojoTest {
 	/** Code to be run.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version tests.api 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid tests.api
 	 * @since 0.11
 	 */
 	@FunctionalInterface

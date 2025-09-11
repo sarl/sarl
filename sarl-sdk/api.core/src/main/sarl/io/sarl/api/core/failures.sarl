@@ -29,9 +29,9 @@ import java.util.UUID
  * Subclasses of this event could be defined in order to specify more in detail the failure.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.12
  */
 event Failure {
@@ -57,9 +57,9 @@ event Failure {
  * Subclasses of this event could be defined in order to specify more in detail the failure.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.12
  */
 event TaskFailure extends Failure {
@@ -87,9 +87,9 @@ event TaskFailure extends Failure {
  * Only the killing agent receives this event.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.12
  */
 event AgentKillFailure extends Failure {
@@ -112,9 +112,9 @@ event AgentKillFailure extends Failure {
  * Only the spawning agent receives this event.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @since 0.12
  */
 event AgentSpawnFailure extends Failure {

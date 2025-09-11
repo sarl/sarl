@@ -26,9 +26,9 @@ import javax.annotation.processing.Generated;
 /** Constants for sarlc.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public final class Constants {

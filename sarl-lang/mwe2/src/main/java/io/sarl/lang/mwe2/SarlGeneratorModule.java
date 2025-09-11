@@ -34,9 +34,9 @@ import io.sarl.lang.mwe2.typesystem.TypeSystemToolsConfig;
  * The generation module for SARL.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public class SarlGeneratorModule extends DefaultGeneratorModule {
 

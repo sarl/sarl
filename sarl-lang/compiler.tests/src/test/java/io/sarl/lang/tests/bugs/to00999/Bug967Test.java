@@ -42,9 +42,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>https://github.com/sarl/sarl/issues/967
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see "https://github.com/sarl/sarl/issues/967"
  */
 @DisplayName("Bug #967")
@@ -55,9 +55,9 @@ public class Bug967Test {
 	/** In agent.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("In agent")
@@ -261,9 +261,9 @@ public class Bug967Test {
 	/** In behavior.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("In behavior")
@@ -443,9 +443,9 @@ public class Bug967Test {
 	/** In skill.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("In skill")
@@ -650,9 +650,9 @@ public class Bug967Test {
 	/** Check field cases.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("Field cases")

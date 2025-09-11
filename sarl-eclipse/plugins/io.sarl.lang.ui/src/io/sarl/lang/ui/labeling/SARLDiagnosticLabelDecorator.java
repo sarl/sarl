@@ -47,9 +47,9 @@ import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
  * A decorator that add the diagnostic results on Ecore elements.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @Singleton
 @SuppressWarnings("restriction")

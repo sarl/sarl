@@ -36,9 +36,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
  * a restore of the injection provider in order to avoid unstable state of the injected components.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  * @see InjectionExtension
  */

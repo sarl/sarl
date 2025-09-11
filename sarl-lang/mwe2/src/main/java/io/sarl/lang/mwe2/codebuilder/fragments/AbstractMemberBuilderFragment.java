@@ -61,9 +61,9 @@ import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 /** Generator of the builder for members.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version mwe2 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid mwe2
  */
 public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuilderFragment {
 	
@@ -1852,9 +1852,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	/** Description of a member.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version mwe2 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid mwe2
 	 */
 	public static class MemberDescription {
 

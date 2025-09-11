@@ -47,9 +47,9 @@ import org.junit.jupiter.api.condition.OS;
  * <p>Verify if the code of the examples could be compiled by the SARL compiler.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.examples.tests 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.examples.tests
  */
 @DisabledOnOs(OS.WINDOWS)
 @SuppressWarnings("all")

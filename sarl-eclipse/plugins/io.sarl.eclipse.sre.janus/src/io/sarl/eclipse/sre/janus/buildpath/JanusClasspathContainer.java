@@ -42,9 +42,9 @@ import io.sarl.apputils.uiextensions.Bundles.IBundleDependencies;
  * <p>The Janus classpath library is an application library, i.e. it is included into the run-time classpath.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.sre.janus 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  */
 public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer {
 

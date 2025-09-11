@@ -27,9 +27,9 @@ import java.text.MessageFormat;
 /** Exception that is generated if an Xtext resource is missed.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version docs.validator 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.docs
+ * @mavenartifactid docs.validator
  * @since 0.12
  */
 public class NoXtextResourceException extends RuntimeException {

@@ -33,9 +33,9 @@ import org.eclipse.emf.common.util.URI;
  * to test code. Detecting in which case a resource is is the purpose of this interface.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.8
  */
 public abstract class AbstractResourceTypeDetector implements IResourceTypeDetector {

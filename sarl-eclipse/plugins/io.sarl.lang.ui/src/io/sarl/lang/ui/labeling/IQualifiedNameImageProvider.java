@@ -32,9 +32,9 @@ import org.eclipse.xtext.xbase.lib.Inline;
  * An image provider that is seaching from a qualified name.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public interface IQualifiedNameImageProvider {

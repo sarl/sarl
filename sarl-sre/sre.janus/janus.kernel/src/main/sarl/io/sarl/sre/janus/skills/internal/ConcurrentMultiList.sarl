@@ -36,9 +36,9 @@ import java.util.concurrent.ConcurrentLinkedDeque
  * @param <E> is the type of elements in the collections.
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class ConcurrentMultiList<E> implements Collection<E> {
 
@@ -166,9 +166,9 @@ class ConcurrentMultiList<E> implements Collection<E> {
 	 *
 	 * @param <E> is the type of elements in the collections.
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	static class MultiIterator<E> implements Iterator<E> {
 

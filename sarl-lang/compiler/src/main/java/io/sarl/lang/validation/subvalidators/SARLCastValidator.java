@@ -45,9 +45,9 @@ import io.sarl.lang.validation.ISARLValidator;
  * be directly invoked from the overridden functions in the main {@code SARLValidator}.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.14
  */
 public class SARLCastValidator {

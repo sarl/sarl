@@ -34,9 +34,9 @@ import io.sarl.lang.core.Event;
  * they indicate the action will never return.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

@@ -63,9 +63,9 @@ import io.sarl.lang.SARLConfig;
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version uiextensions 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid uiextensions
  * @since 0.15
  */
 public final class Bundles {
@@ -320,9 +320,9 @@ public final class Bundles {
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version uiextensions 0.15.1 20250911-224825
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid uiextensions
 	 */
 	public static class BundleDependency {
 
@@ -393,9 +393,9 @@ public final class Bundles {
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version uiextensions 0.15.1 20250911-224825
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid uiextensions
 	 */
 	public interface IBundleDependencies {
 
@@ -484,9 +484,9 @@ public final class Bundles {
 	 * <p>The set entries are sorted in the insertion order.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version uiextensions 0.15.1 20250911-224825
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid uiextensions
 	 */
 	private static class DependencyDefinition {
 
@@ -554,9 +554,9 @@ public final class Bundles {
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version uiextensions 0.15.1 20250911-224825
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid uiextensions
 	 */
 	private static class BundleDependencies implements IBundleDependencies {
 
@@ -999,9 +999,9 @@ public final class Bundles {
 		/** Iterator on symbolic names.
 		 *
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version uiextensions 0.15.1 20250911-224825
+		 * @mavengroupid io.sarl.apputils
+		 * @mavenartifactid uiextensions
 		 */
 		private class SymbolicNameIterator implements Iterator<String> {
 
@@ -1034,9 +1034,9 @@ public final class Bundles {
 		/** Iterator on classpath entries.
 		 *
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version uiextensions 0.15.1 20250911-224825
+		 * @mavengroupid io.sarl.apputils
+		 * @mavenartifactid uiextensions
 		 */
 		private class ClasspathEntryIterator implements Iterator<IClasspathEntry> {
 
@@ -1069,9 +1069,9 @@ public final class Bundles {
 		/** Iterator on runtime classpath entries.
 		 *
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version uiextensions 0.15.1 20250911-224825
+		 * @mavengroupid io.sarl.apputils
+		 * @mavenartifactid uiextensions
 		 */
 		private class RuntimeClasspathEntryIterator implements Iterator<IRuntimeClasspathEntry> {
 
@@ -1104,9 +1104,9 @@ public final class Bundles {
 		/** Iterator on transitive dependencies.
 		 *
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version uiextensions 0.15.1 20250911-224825
+		 * @mavengroupid io.sarl.apputils
+		 * @mavenartifactid uiextensions
 		 */
 		private class TransitiveDependencyIterator implements Iterator<BundleDependency> {
 

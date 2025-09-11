@@ -42,9 +42,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * This implementation is for debugging of SREs.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.12
  */
 @SuppressWarnings("restriction")
@@ -155,9 +155,9 @@ public abstract class AbstractEmbeddedVMRunner implements IVMRunner {
 	/** Finder of the main class.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.12
 	 */
 	protected interface MainClassFinder {

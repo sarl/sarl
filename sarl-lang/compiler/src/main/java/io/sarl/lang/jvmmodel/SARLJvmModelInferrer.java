@@ -117,9 +117,9 @@ import io.sarl.lang.util.JvmVisibilityComparator;
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @Singleton
 public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBaseJvmModelInferrer {
@@ -381,9 +381,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 			/** Safe runnable.
 			 *
 			 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-			 * @version $FullVersion$
-			 * @mavengroupid $GroupId$
-			 * @mavenartifactid $ArtifactId$
+			 * @version compiler 0.15.1 20250911-224823
+			 * @mavengroupid io.sarl.lang
+			 * @mavenartifactid compiler
 			 */
 			final class SafeRunnable implements Runnable {
 
@@ -672,9 +672,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 	/** Internal error.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private abstract static class InternalError extends RuntimeException {
 
@@ -689,9 +689,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer implements IBase
 	/** Internal error.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	private static class GenerationContextNotFoundInternalError extends InternalError {
 

@@ -31,9 +31,9 @@ import org.apache.commons.io.output.WriterOutputStream
 /** A console handler that supports to be link to the standard output or the standard error output.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 class JulOutputStreamConsoleHandler extends StreamHandler {
@@ -97,9 +97,9 @@ class JulOutputStreamConsoleHandler extends StreamHandler {
 /** A console handler that supports to be link to the standard output.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 class JulStandardOutputConsoleHandler extends JulOutputStreamConsoleHandler {
@@ -120,9 +120,9 @@ class JulStandardOutputConsoleHandler extends JulOutputStreamConsoleHandler {
 /** A console handler that supports to be link to the standard error output.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.6.0
  */
 class JulStandardErrorOutputConsoleHandler extends JulOutputStreamConsoleHandler {

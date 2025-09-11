@@ -52,9 +52,9 @@ import io.sarl.lang.util.Utils;
 /** This class tests the {@link SarlUtils} for SARL.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @since 0.10
  */
 @SuppressWarnings("all")
@@ -1731,9 +1731,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class GenericType<X extends Number> {
@@ -1742,9 +1742,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class LoopType<X extends LoopType<X>> {
@@ -1753,9 +1753,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class SubLoopType extends LoopType<SubLoopType> {
@@ -1764,9 +1764,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class SubType<T extends SubType<T>> extends LoopType<T> {
@@ -1775,9 +1775,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class SubSubLoopType0 extends SubLoopType {
@@ -1786,9 +1786,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class SubSubLoopType1 extends SubLoopType {
@@ -1797,9 +1797,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class SubSubType0 extends SubType<SubSubType0> {
@@ -1808,9 +1808,9 @@ public class DefaultSARLTypeCheckerTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 * @since 0.14
 	 */
 	private static class SubSubType1 extends SubType<SubSubType1> {

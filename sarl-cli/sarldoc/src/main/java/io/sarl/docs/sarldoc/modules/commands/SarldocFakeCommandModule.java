@@ -38,9 +38,9 @@ import jakarta.inject.Singleton;
 /** Module for the sarldoc fake command.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$compiler
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.1 20250911-224827compiler
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocFakeCommandModule implements BQModule {

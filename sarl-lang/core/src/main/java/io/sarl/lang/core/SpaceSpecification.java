@@ -32,9 +32,9 @@ package io.sarl.lang.core;
  * @param <S> type of the spaces that may be created by this specification.
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @FunctionalInterface
 public interface SpaceSpecification<S extends Space> {

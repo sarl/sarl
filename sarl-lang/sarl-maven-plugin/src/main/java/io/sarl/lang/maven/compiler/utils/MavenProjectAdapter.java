@@ -28,9 +28,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 /** Adapter for linking Ecore objects to the Maven project.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarl-maven-plugin 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid sarl-maven-plugin
  */
 public final class MavenProjectAdapter extends AdapterImpl {
 

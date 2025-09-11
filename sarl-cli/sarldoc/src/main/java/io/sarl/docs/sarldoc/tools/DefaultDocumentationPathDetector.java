@@ -37,9 +37,9 @@ import jakarta.inject.Inject;
  * Default implementation of a documentation path detector.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.13
  */
 public class DefaultDocumentationPathDetector extends DefaultPathDetector implements DocumentationPathDetector {

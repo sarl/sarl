@@ -49,9 +49,9 @@ import io.sarl.sre.janus.internal.TypeHierarchyDictionary
  * <p>This class is thread-safe.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  */
 class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluatorRegistry<GuardedEvaluator> {
 
@@ -259,9 +259,9 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * Description of an single guard evaluator.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 * @since 0.11
 	 */
 	@Data
@@ -277,9 +277,9 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	 * The iterator goes into the super-types.
 	 * 
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version janus.kernel 3.0.15.1 20250911-224826
+	 * @mavengroupid io.sarl.sre.janus
+	 * @mavenartifactid janus.kernel
 	 */
 	private static class MethodIterator implements Iterator<Evaluator> {
 

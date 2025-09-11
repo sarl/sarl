@@ -28,9 +28,9 @@ import java.net.URI
  * 
  * @param <N> the type of the name that is the result of the decoding.
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.naming 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.naming
  * @since 0.12
  */
 interface ISchemeNameParser<N extends SarlName> {

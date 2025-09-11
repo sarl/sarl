@@ -38,9 +38,9 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /** Test issue #459: Purge task launched by a behavior when unregistering this behavior.
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  * @see https://github.com/sarl/sarl/issues/459
  */
 @DisplayName("Bug #459")

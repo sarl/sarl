@@ -84,9 +84,9 @@ import io.sarl.lang.ui.labeling.SARLImages;
  * </ul>
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  */
 @SuppressWarnings("restriction")
 public class SARLProposalProvider extends AbstractSARLProposalProvider {
@@ -575,9 +575,9 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	/** Filter for "extends".
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 */
 	private class ExtensionFilter extends TypeMatchFilters.AbstractFilter {
 

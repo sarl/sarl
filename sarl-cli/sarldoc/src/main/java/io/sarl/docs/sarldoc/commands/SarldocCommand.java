@@ -56,9 +56,9 @@ import jakarta.inject.Provider;
  * Command for launching sarldoc.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarldoc 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarldoc
  * @since 0.10
  */
 public class SarldocCommand extends AbstractSarldocCommand {
@@ -201,9 +201,9 @@ public class SarldocCommand extends AbstractSarldocCommand {
 	/** Print writer that is able to output message with the logger as severe messages.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version sarldoc 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid sarldoc
 	 * @since 0.10
 	 */
 	private static class ErrorWriter extends Writer {

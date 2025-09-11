@@ -29,9 +29,9 @@ import org.junit.jupiter.api.DisplayName
  * <p>See: https://github.com/sarl/sarl/issues/902
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @see "https://github.com/sarl/sarl/issues/902"
  */
 @DisplayName("run: Bug #902 with reflection-based engine")

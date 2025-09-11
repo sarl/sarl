@@ -52,9 +52,9 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
  * the launching parameters.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.7
  */
 @SuppressWarnings("restriction")
@@ -178,9 +178,9 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab imple
 	/** Listener of events in internal components for refreshing the tab.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.7
 	 */
 	private class WidgetListener implements SelectionListener {

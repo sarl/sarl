@@ -36,9 +36,9 @@ import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
  * </ul>
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 public class SarlActionImplCustom extends SarlActionImpl {
 

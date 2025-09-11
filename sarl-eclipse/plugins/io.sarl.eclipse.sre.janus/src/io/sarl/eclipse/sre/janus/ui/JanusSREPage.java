@@ -44,9 +44,9 @@ import io.sarl.eclipse.sre.janus.sre.JanusSREInstall;
  * Implementation of a page for the SRE installation wizard.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.sre.janus 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.sre.janus
  * @since 0.13
  */
 @SuppressWarnings("restriction")

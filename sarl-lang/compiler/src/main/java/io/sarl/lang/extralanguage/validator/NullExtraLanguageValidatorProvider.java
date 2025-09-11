@@ -29,9 +29,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 /** Implementation of the provider of the extra language validators that replies no generator.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.6
  */
 public class NullExtraLanguageValidatorProvider implements IExtraLanguageValidatorProvider {

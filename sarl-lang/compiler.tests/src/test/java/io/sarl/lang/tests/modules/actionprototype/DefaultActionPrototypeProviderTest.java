@@ -82,9 +82,9 @@ import io.sarl.tests.api.Nullable;
 
 /**
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 @SuppressWarnings("all")
 @DisplayName("DefaultActionPrototypeProvider")
@@ -228,9 +228,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("DefaultActionPrototypeProvider without default values")
@@ -851,9 +851,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	@Nested
 	@DisplayName("DefaultActionPrototypeProvider with default values")

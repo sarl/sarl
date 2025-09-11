@@ -50,9 +50,9 @@ import me.tongfei.progressbar.ProgressBarStyle;
  * Command for compiling with SARL.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version sarlc 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.cli
+ * @mavenartifactid sarlc
  * @since 0.8
  */
 public class CompilerCommand extends CommandWithMetadata {
@@ -205,9 +205,9 @@ public class CompilerCommand extends CommandWithMetadata {
 	/** Progress monitor that outputs on the console.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version sarlc 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.cli
+	 * @mavenartifactid sarlc
 	 * @since 0.8
 	 */
 	private static class ConsoleProgressMonitor implements IProgressMonitor {

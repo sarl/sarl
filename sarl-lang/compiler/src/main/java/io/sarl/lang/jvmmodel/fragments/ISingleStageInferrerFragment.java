@@ -31,9 +31,9 @@ import io.sarl.lang.jvmmodel.IBaseJvmModelInferrer;
  * @param <S> the type of the SARL's Ecore element.
  * @param <T> the type of the JVM's Ecore element.
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 public interface ISingleStageInferrerFragment<S extends EObject, T extends JvmDeclaredType> {

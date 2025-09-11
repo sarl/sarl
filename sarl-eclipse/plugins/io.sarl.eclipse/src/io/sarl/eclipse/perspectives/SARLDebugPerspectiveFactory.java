@@ -33,9 +33,9 @@ import io.sarl.eclipse.SARLEclipseConfig;
  * Factory for the SARL Debug Eclipse perspective.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @see SARLEclipseConfig#ID_SARL_DEBUG_PERSPECTIVE
  */
 @SuppressWarnings("restriction")

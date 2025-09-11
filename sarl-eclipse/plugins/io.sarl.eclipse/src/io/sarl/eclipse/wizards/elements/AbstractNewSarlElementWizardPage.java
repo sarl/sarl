@@ -104,9 +104,9 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  * Abstract implementation of a wizard page for creating new SARL elements.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 @SuppressWarnings("restriction")
 public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage {

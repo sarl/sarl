@@ -90,9 +90,9 @@ import io.sarl.lang.util.Utils;
 /** Generator of XExpression for Python 3.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.6
  */
 public class PyExpressionGenerator extends AbstractExpressionGenerator {
@@ -1052,9 +1052,9 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	/** Feature call generator for Python.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version pythongenerator 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid pythongenerator
 	 * @since 0.6
 	 */
 	public class PyFeatureCallGenerator extends FeatureCallGenerator {

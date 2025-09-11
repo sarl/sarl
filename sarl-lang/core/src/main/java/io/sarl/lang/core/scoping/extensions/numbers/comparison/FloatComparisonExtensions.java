@@ -30,9 +30,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Provide static comparison operators for numbers of type {@code Float}.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.7
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */

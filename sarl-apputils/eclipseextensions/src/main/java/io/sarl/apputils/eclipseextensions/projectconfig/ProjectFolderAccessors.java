@@ -32,9 +32,9 @@ import io.sarl.apputils.eclipseextensions.Extensions;
  * Tools for accessing to the project folders.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version eclipseextensions 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid eclipseextensions
  * @since 0.15.1
  */
 public final class ProjectFolderAccessors {

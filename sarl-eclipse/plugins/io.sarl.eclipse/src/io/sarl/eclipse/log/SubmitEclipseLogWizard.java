@@ -57,9 +57,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * Wizard for submiting an issue to the SARL community.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @since 0.5
  */
 public class SubmitEclipseLogWizard extends Wizard {
@@ -343,9 +343,9 @@ public class SubmitEclipseLogWizard extends Wizard {
 	/** Definition of the Json entries for creating a Github issue.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 * @since 0.5
 	 */
 	public static class GithubIssueJson {

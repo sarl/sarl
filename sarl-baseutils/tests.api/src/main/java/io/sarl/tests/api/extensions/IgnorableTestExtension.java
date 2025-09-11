@@ -34,9 +34,9 @@ import io.sarl.tests.api.tools.TestUtils;
 /** JUnit 5 extension that tests if the test is ignorable.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version tests.api 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid tests.api
  * @since 0.11
  */
 public class IgnorableTestExtension implements ExecutionCondition {

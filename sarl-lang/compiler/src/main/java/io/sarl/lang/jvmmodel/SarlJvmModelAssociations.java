@@ -53,9 +53,9 @@ import io.sarl.lang.sarl.SarlSpace;
 /** Associations between the SARL elements and the JVM elements.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  */
 @ImplementedBy(SarlJvmModelAssociations.Impl.class)
 public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
@@ -216,9 +216,9 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	/** Associations between the SARL elements and the JVM elements.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 */
 	@Singleton
 	class Impl extends IXtendJvmAssociations.Impl implements SarlJvmModelAssociations {

@@ -55,9 +55,9 @@ import io.bootique.meta.module.ModulesMetadata;
  * Command for displaying the help for configuration parameters on the standard output using a Markdown format.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiqueapp 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiqueapp
  * @since 0.12
  */
 public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
@@ -182,9 +182,9 @@ public class GenerateMarkdownConfigCommand extends CommandWithMetadata {
 	 * Command for displaying the help for configuration parameters on the standard output using a Markdown format.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version bootiqueapp 0.15.1 20250911-224825
+	 * @mavengroupid io.sarl.apputils
+	 * @mavenartifactid bootiqueapp
 	 * @since 0.12
 	 */
 	private static class Visitor implements ConfigMetadataVisitor<Void> {

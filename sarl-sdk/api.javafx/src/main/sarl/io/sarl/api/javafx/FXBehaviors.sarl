@@ -33,9 +33,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 /** Specific behavior for an agent that supports killing from a JavaFX application.  
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.javafx 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.javafx
  * @since 0.7
  */
 behavior FXKillSupportBehavior {
@@ -68,9 +68,9 @@ behavior FXKillSupportBehavior {
  * a JavaFX user interface.  
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.javafx 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.javafx
  * @since 0.7
  */
 behavior FXBehavior extends FXKillSupportBehavior {

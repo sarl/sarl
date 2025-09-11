@@ -54,9 +54,9 @@ import io.sarl.lang.core.UnimplementedCapacityException;
 
 /**
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  */
 @SuppressWarnings("all")
 @DisplayName("AbstractSkillContainer")
@@ -523,9 +523,9 @@ public class AbstractSkillContainerTest {
 	/** Only for making public several protected methods.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	public static class AbstractSkillContainerMock extends AbstractSkillContainer {
 
@@ -603,9 +603,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static interface Capacity1 extends Capacity {
 		//
@@ -613,9 +613,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static interface Capacity2 extends Capacity {
 		//
@@ -623,9 +623,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	@DefaultSkill(Skill5.class)
 	private static interface Capacity3 extends Capacity {
@@ -634,9 +634,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill1 extends Skill implements Capacity1 {
 		public Skill1() {
@@ -646,9 +646,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill2 extends Skill implements Capacity2 {
 		public Skill2() {
@@ -658,9 +658,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill3 extends Skill {
 		public Skill3() {
@@ -670,9 +670,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static interface Capacity4 extends Capacity {
 		//
@@ -680,9 +680,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static interface Capacity5 extends Capacity4 {
 		//
@@ -690,9 +690,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill6 extends Skill implements Capacity4 {
 		public Skill6() {
@@ -702,9 +702,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill7 extends Skill implements Capacity5 {
 		public Skill7() {
@@ -714,9 +714,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill4 extends Skill1 implements Capacity2 {
 		private final AtomicInteger installCalls = new AtomicInteger();
@@ -753,9 +753,9 @@ public class AbstractSkillContainerTest {
 
 	/**
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version core 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid core
 	 */
 	private static class Skill5 extends Skill implements Capacity3 {
 		public Skill5() {

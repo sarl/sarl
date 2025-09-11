@@ -46,9 +46,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * <p>Clients implementing SRE installs must subclass this class.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  */
 public abstract class AbstractSREInstall implements ISREInstall {
 

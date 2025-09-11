@@ -39,9 +39,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Provider of a configuration for the SARL-to-Python generator.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.8
  */
 @Singleton
@@ -101,9 +101,9 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 	/** Adapter for providing the SARL generator configuration.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version pythongenerator 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid pythongenerator
 	 */
 	@EmfAdaptable
 	public static class PyGeneratorConfigAdapter {
@@ -169,9 +169,9 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 		/** EMF Adapter.
 		 *
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version pythongenerator 0.15.1 20250911-224823
+		 * @mavengroupid io.sarl.lang
+		 * @mavenartifactid pythongenerator
 		 */
 		public static class PyGeneratorConfigAdapterAdapter extends AdapterImpl {
 

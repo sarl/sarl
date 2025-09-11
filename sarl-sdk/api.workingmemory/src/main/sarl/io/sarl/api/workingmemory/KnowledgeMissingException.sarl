@@ -27,9 +27,9 @@ package io.sarl.api.workingmemory
  *
  * @author <a href="https://github.com/stefanotedeschi">Stefano Tedeschi</a>
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.workingmemory 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.workingmemory
  * @since 0.15
  */
 class KnowledgeMissingException extends Exception {

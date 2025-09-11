@@ -63,9 +63,9 @@ import io.sarl.lang.util.Utils;
  * Standard helper that determine if a field is synchronized or not.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.12
  */
 public class StandardSynchronizedFieldDetector implements ISynchronizedFieldDetector {

@@ -26,9 +26,9 @@ import java.util.UUID
 /** Exception thrown when an agent context is unknown.
  *
  * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  */
 class UnknownContextException extends RuntimeException {
 

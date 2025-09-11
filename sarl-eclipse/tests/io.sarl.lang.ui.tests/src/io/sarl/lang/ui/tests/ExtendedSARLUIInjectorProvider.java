@@ -38,9 +38,9 @@ import io.sarl.lang.ui.internal.LangActivator;
  * we are expecting another version, as described in {@link SARLVersion}.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui.tests 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui.tests
  * @since 0.13
  */
 public class ExtendedSARLUIInjectorProvider extends SARLUiInjectorProvider {

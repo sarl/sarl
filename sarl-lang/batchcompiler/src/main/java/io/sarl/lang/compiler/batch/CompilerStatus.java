@@ -26,9 +26,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** The type of statut that is reached by a Java batch compiler.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version batchcompiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid batchcompiler
  * @since 0.12
  */
 public enum CompilerStatus {

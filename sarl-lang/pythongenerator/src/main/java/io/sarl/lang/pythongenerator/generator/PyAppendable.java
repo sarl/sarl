@@ -30,9 +30,9 @@ import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
 /** Appendable dedicated to Python.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version pythongenerator 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid pythongenerator
  * @since 0.6
  */
 public class PyAppendable extends ExtraLanguageAppendable {

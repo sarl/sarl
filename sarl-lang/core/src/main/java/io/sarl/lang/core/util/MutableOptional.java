@@ -38,9 +38,9 @@ import java.util.function.Supplier;
  * @param <T> the type of the data that is stored in the optional.
  * @author <a href="https://github.com/stefanotedeschi">Stefano Tedeschi</a>
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.15
  * @see OutParameter
  */

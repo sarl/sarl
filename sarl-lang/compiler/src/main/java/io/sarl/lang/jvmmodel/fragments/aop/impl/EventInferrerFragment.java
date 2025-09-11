@@ -67,9 +67,9 @@ import io.sarl.lang.util.Utils;
 /** Fragment for inferred the events to the JVM model.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.15
  */
 public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment implements IEventInferrerFragment {
@@ -373,9 +373,9 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 	/** Generator of synthetic constructors.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.15
 	 */
 	@SuppressWarnings("synthetic-access")
@@ -481,9 +481,9 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 		 * @param parameters list of details for the formal parameters.
 		 * @param body the generator for the constructor body.
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version compiler 0.15.1 20250911-224823
+		 * @mavengroupid io.sarl.lang
+		 * @mavenartifactid compiler
 		 * @since 0.15
 		 */
 		protected record GeneratedSyntheticConstructor(ActionParameterTypes signature, List<GeneratedSyntheticFormalParameter> parameters, Procedure1<ITreeAppendable> body) {
@@ -497,9 +497,9 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 		 * @param source the Ecore object that is the source of the parameter.
 		 * @param isFinal indicates if the parameter is associated to a final field.
 		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
+		 * @version compiler 0.15.1 20250911-224823
+		 * @mavengroupid io.sarl.lang
+		 * @mavenartifactid compiler
 		 * @since 0.15
 		 */
 		protected record GeneratedSyntheticFormalParameter(String name, LightweightTypeReference type, EObject source, boolean isFinal) {
@@ -511,9 +511,9 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 	/** Provider of formal parameters based on declared fields.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.15
 	 */
 	@SuppressWarnings("synthetic-access")
@@ -588,9 +588,9 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 	/** Provider of formal parameters based on inherited constructors and declared fields.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler
 	 * @since 0.15
 	 */
 	@SuppressWarnings("synthetic-access")

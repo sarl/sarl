@@ -39,9 +39,9 @@ import io.sarl.eclipse.runtime.SARLRuntime;
 /** Factory of project SRE provider for the Maven projects.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse.m2e 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse.m2e
  */
 @SuppressWarnings("restriction")
 public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory {
@@ -87,9 +87,9 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 	/** Provider of SRE from a maven project.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse.m2e 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse.m2e
 	 */
 	private static class MavenProjectSREProvider implements ProjectSREProvider {
 

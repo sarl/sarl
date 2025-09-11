@@ -41,9 +41,9 @@ import io.sarl.lang.core.util.SarlUtils;
 /** This class tests the {@link MutableOptional} for SARL.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @since 0.15
  */
 @SuppressWarnings("all")

@@ -43,9 +43,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @author <a href="http://www.sarl.io/alexandre_lombard">Alexandre Lombard</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @see "https://github.com/sarl/sarl/issues/899"
  */
 @DisplayName("Bug #899")

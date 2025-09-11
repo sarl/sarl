@@ -43,9 +43,9 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * <p>https://github.com/sarl/sarl/issues/857
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version api.core 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.sdk
+ * @mavenartifactid api.core
  * @see "https://github.com/sarl/sarl/issues/857"
  */
 @DisplayName("Bug #857")

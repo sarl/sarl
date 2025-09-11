@@ -41,9 +41,9 @@ import org.eclipse.xtext.xbase.validation.IssueCodes;
 /** Ambiguous linking candidate for cast operator.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler
  * @since 0.9
  */
 public class SuspiciousOverloadedCastOperatorLinkingCandidate implements ISuspiciouslyOverloadedCandidate, ICastOperatorLinkingCandidate {

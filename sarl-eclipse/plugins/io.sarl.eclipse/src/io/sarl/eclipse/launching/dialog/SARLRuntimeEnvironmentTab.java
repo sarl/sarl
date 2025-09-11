@@ -58,9 +58,9 @@ import io.sarl.lang.util.Utils;
  * Configuration tab for the JRE and the SARL runtime environment.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.eclipse 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.eclipse
  * @see JavaJRETab
  */
 @SuppressWarnings("restriction")
@@ -302,9 +302,9 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntim
 	 * tab that is using it.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.eclipse 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.eclipse
 	 */
 	private class ProjectAdapter implements ProjectProvider {
 

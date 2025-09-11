@@ -35,9 +35,9 @@ import io.sarl.lang.core.annotation.SarlSpecification;
  * </p>
  *
  * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version core 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid core
  * @deprecated no more used since 0.5.
  */
 @Deprecated(forRemoval = true, since = "0.5")

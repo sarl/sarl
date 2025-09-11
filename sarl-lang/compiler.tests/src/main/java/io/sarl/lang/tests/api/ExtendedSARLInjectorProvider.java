@@ -44,9 +44,9 @@ import io.sarl.lang.tests.SARLInjectorProvider;
  * we are expecting another version, as described in {@link SARLVersion}.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version compiler.tests 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.lang
+ * @mavenartifactid compiler.tests
  */
 public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 
@@ -84,9 +84,9 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 	 * we are expecting another version, as described in {@link SARLVersion}.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	public static class JavaCompilerProvider implements Provider<OnTheFlyJavaCompiler2> {
 
@@ -113,9 +113,9 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 	 * <p>The logger is configured to be not verbose.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version compiler.tests 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.lang
+	 * @mavenartifactid compiler.tests
 	 */
 	public static class LoggerProvider implements Provider<Logger> {
 

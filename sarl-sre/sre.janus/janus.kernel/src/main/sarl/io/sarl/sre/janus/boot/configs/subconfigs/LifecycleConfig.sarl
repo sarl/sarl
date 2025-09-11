@@ -42,9 +42,9 @@ import static extension io.bootique.BQCoreModule.extend
  * Configuration for the agent lifecycle management.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 @BQConfig("Configuration of the lifecycle service")
@@ -185,9 +185,9 @@ class LifecycleConfig {
  * Module for the agent lifecycle configuration.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class LifecycleConfigModule implements BQModule {
@@ -227,9 +227,9 @@ class LifecycleConfigModule implements BQModule {
 /** Provider of the module for the agent lifecycle configuration.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.11
  */
 class LifecycleConfigModuleProvider implements BQModuleProvider {

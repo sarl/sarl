@@ -34,9 +34,9 @@ import io.sarl.lang.SARLStandaloneSetup;
  * with bootique and SARL batch compiler modules.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version bootiquebatchcompiler 0.15.1 20250911-224825
+ * @mavengroupid io.sarl.apputils
+ * @mavenartifactid bootiquebatchcompiler
  * @since 0.12
  */
 @SuppressWarnings("removal")

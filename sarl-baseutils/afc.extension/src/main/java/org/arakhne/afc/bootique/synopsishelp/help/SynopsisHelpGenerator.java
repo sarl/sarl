@@ -30,9 +30,9 @@ import io.bootique.meta.application.ApplicationMetadata;
  * the other sections provided by {@link DefaultHelpGenerator}.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version afc.extension 0.15.1 20250911-224823
+ * @mavengroupid io.sarl.baseutils
+ * @mavenartifactid afc.extension
  * @since 15.0
  */
 public class SynopsisHelpGenerator extends DefaultHelpGenerator {
@@ -131,9 +131,9 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 	/** Appender for the synopsis help.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version afc.extension 0.15.1 20250911-224823
+	 * @mavengroupid io.sarl.baseutils
+	 * @mavenartifactid afc.extension
 	 * @since 15.0
 	 */
 	protected static class SynopsisHelpAppender extends HelpAppender {

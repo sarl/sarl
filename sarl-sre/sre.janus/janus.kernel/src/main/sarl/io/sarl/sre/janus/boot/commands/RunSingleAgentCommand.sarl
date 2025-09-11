@@ -43,9 +43,9 @@ import static extension io.bootique.BQCoreModule.extend
  * as the agent to be launched.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.8
  */
 @Singleton
@@ -102,9 +102,9 @@ class RunSingleAgentCommand extends AbstractRunCommand {
 /** Module for the command for running the SRE with a single agent.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class RunSingleAgentCommandModule implements BQModule {
@@ -121,9 +121,9 @@ class RunSingleAgentCommandModule implements BQModule {
 /** Provider of the module for running the SRE with a single agent.
  * 
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version janus.kernel 3.0.15.1 20250911-224826
+ * @mavengroupid io.sarl.sre.janus
+ * @mavenartifactid janus.kernel
  * @since 0.9
  */
 class RunSingleAgentCommandModuleProvider implements BQModuleProvider {

@@ -40,9 +40,9 @@ import io.sarl.lang.ui.extralanguage.properties.AbstractGeneratorConfigurationBl
 /** Preferences for the extra language generators.
  *
  * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @version io.sarl.lang.ui 0.15.1 20250911-224827
+ * @mavengroupid io.sarl.eclipse
+ * @mavenartifactid io.sarl.lang.ui
  * @since 0.6
  */
 public class ExtraLanguagePreferenceAccess {
@@ -334,9 +334,9 @@ public class ExtraLanguagePreferenceAccess {
 	/** Iterator on conversions.
 	 *
 	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @version io.sarl.lang.ui 0.15.1 20250911-224827
+	 * @mavengroupid io.sarl.eclipse
+	 * @mavenartifactid io.sarl.lang.ui
 	 * @since 0.6
 	 */
 	public static class ConversionIterator implements Iterator<String> {
