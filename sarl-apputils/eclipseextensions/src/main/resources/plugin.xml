@@ -5,4 +5,5 @@
    <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
    <extension-point id="sarlLaunchConfigurationPanels" name="%sarlLaunchConfigurationPanels" schema="schema/sarlLaunchConfigurationPanels.exsd"/>
    <extension-point id="projectConfigurationFragment" name="%projectConfigurationFragment" schema="schema/projectConfigurationFragment.exsd"/>
+   <extension-point id="projectFolderAccessor" name="%projectFolderAccessor" schema="schema/projectFolderAccessor.exsd"/>
 </plugin>

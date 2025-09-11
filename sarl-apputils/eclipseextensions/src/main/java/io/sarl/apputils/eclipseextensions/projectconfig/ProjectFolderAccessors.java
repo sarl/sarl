@@ -29,43 +29,43 @@ import io.sarl.apputils.eclipseextensions.EclipseExtensionsPlugin;
 import io.sarl.apputils.eclipseextensions.Extensions;
 
 /**
- * Tools for the fragments of the configuration for a SARL project.
+ * Tools for accessing to the project folders.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.15
+ * @since 0.15.1
  */
-public final class ProjectConfigurationFragments {
+public final class ProjectFolderAccessors {
 
 	/**
 	 * Name of the extension points for the configuration fragments.
 	 */
-	public static final String EXTENSION_POINT_PROJECT_CONFIGURATION_FRAGMENT = "projectConfigurationFragment"; //$NON-NLS-1$
+	public static final String EXTENSION_POINT_PROJECT_FOLDER_ACCESSOR = "projectFolderAccessor"; //$NON-NLS-1$
 
 	/** Constructor.
 	 */
-	private ProjectConfigurationFragments() {
+	private ProjectFolderAccessors() {
 		//
 	}
 
-	/** Replies the fragments that are defined as extensions in the given Eclipse plugin.
+	/** Replies the accessors that are defined as extensions in the given Eclipse plugin.
 	 *
-	 * @return the list of the fragment.
+	 * @return the list of the accessors.
 	 */
-	public static List<ProjectConfigurationFragment> getConfigurationFragmentsFromExtension() {
-		return getConfigurationFragmentStreamFromExtension().collect(Collectors.toList());
+	public static List<ProjectFolderAccessor> getProjectFolderAccessorsFromExtension() {
+		return getProjectFolderAccessorStreamFromExtension().collect(Collectors.toList());
 	}
 
-	/** Replies the fragments that are defined as extensions in the given Eclipse plugin.
+	/** Replies the accessors that are defined as extensions in the given Eclipse plugin.
 	 *
-	 * @return the list of the fragment.
+	 * @return the list of the accessors.
 	 */
-	public static Stream<ProjectConfigurationFragment> getConfigurationFragmentStreamFromExtension() {
+	public static Stream<ProjectFolderAccessor> getProjectFolderAccessorStreamFromExtension() {
 		return Extensions.getExtensions(
-				EclipseExtensionsPlugin.PLUGIN_ID, EXTENSION_POINT_PROJECT_CONFIGURATION_FRAGMENT,
-				"class", ProjectConfigurationFragment.class); //$NON-NLS-1$
+				EclipseExtensionsPlugin.PLUGIN_ID, EXTENSION_POINT_PROJECT_FOLDER_ACCESSOR,
+				"class", ProjectFolderAccessor.class); //$NON-NLS-1$
 	}
 
 }

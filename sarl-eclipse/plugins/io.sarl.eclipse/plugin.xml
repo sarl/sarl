@@ -743,4 +743,10 @@
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
    </extension>
+   <extension
+         point="io.sarl.apputils.eclipseextensions.projectFolderAccessor">
+      <projectFolderAccessor
+            class="io.sarl.eclipse.natures.DefaultProjectFolderAccessor">
+      </projectFolderAccessor>
+   </extension>
 </plugin>

@@ -68,6 +68,7 @@ import org.eclipse.xtext.Constants;
 
 import io.sarl.apputils.eclipseextensions.buildpath.SARLFolderComparator;
 import io.sarl.apputils.eclipseextensions.projectconfig.ProjectConfigurationFragments;
+import io.sarl.apputils.eclipseextensions.projectconfig.ProjectFolderAccessors;
 import io.sarl.apputils.uiextensions.Bundles;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
@@ -368,21 +369,27 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			OutParameter<IFolder> testingGenerationFolder,
 			OutParameter<IFolder> classOutput,
 			OutParameter<IFolder> testClassOutput) throws CoreException {
-		final var sourceSarlFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
+		final var projectFolderAccessorOpt = ProjectFolderAccessors.getProjectFolderAccessorStreamFromExtension().findAny();
+		if (projectFolderAccessorOpt.isEmpty()) {
+			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, "Unable to acquire a Project Folder Accessor")); //$NON-NLS-1$
+		}
+		final var projectFolderAccessor = projectFolderAccessorOpt.get();
+		
+		final var sourceSarlFolder = projectFolderAccessor.ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_SARL, true, createFolders, monitor.newChild(1));
-		final var sourceJavaFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
+		final var sourceJavaFolder = projectFolderAccessor.ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_JAVA, false, createFolders, monitor.newChild(1));
-		final var resourcesFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
+		final var resourcesFolder = projectFolderAccessor.ensureSourceFolder(project,
 				SARLConfig.FOLDER_RESOURCES, false, createFolders, monitor.newChild(1));
-		final var testSourceSarlFolder = ProjectConfigurationFragments.ensureSourceFolder(project,
+		final var testSourceSarlFolder = projectFolderAccessor.ensureSourceFolder(project,
 				SARLConfig.FOLDER_TEST_SOURCE_SARL, false, createFolders, monitor.newChild(1));
-		final var generationFolder = ProjectConfigurationFragments.ensureGeneratedSourceFolder(project,
+		final var generationFolder = projectFolderAccessor.ensureGeneratedSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_GENERATED, true, createFolders, monitor.newChild(1));
-		final var testGenerationFolder = ProjectConfigurationFragments.ensureGeneratedSourceFolder(project,
+		final var testGenerationFolder = projectFolderAccessor.ensureGeneratedSourceFolder(project,
 				SARLConfig.FOLDER_TEST_SOURCE_GENERATED, false, createFolders, monitor.newChild(1));
-		final var outputFolder = ProjectConfigurationFragments.ensureOutputFolder(project,
+		final var outputFolder = projectFolderAccessor.ensureOutputFolder(project,
 				SARLConfig.FOLDER_BIN, true, createFolders, monitor.newChild(1));
-		final var testOutputFolder = ProjectConfigurationFragments.ensureOutputFolder(project,
+		final var testOutputFolder = projectFolderAccessor.ensureOutputFolder(project,
 				SARLConfig.FOLDER_TEST_BIN, true, createFolders, monitor.newChild(1));
 		if (sourcePaths != null) {
 			assert sourceSarlFolder != null : "sourceSarlFolder must not be null"; //$NON-NLS-1$

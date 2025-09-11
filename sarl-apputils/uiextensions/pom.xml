@@ -17,19 +17,18 @@
       <artifactId>compiler</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.platform</groupId>
-      <artifactId>org.eclipse.core.resources</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>org.eclipse.jdt.ui</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
+		<!-- This dependency is required for running the plugin in Eclipse -->
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.resources</artifactId>
+    </dependency>
+    <dependency>
+		<!-- This dependency is required for running the plugin in Eclipse -->
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.core.runtime</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.sarl.baseutils</groupId>
