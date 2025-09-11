@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.eclipse.examples.helloworld" log="all">
+<launchConfigurations id="io.sarl.eclipse.examples.helloworld" log="info">
 	<agent class="io.sarl.demos.basic.helloworld.HelloAgent" name="Agent 'Hello world'" />
 </launchConfigurations>

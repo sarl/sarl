@@ -22,7 +22,6 @@
 package io.sarl.demos.fireworks.environment
 
 import java.util.HashMap
-import java.util.List
 import java.util.UUID
 import java.util.Vector
 import java.util.function.Consumer

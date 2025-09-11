@@ -20,7 +20,6 @@
  */
 package io.sarl.demos.boids.gui
 
-import io.sarl.api.core.OpenEventSpace
 import io.sarl.demos.boids.Die
 import io.sarl.demos.boids.PerceivedBoidBody
 import java.awt.Color
@@ -35,6 +34,7 @@ import java.util.UUID
 import org.arakhne.afc.math.geometry.d2.d.Vector2d
 
 import static extension java.lang.Math.*
+import io.sarl.api.core.spaces.OpenEventSpace
 
 /** 
  * Graphical user interface for boids.

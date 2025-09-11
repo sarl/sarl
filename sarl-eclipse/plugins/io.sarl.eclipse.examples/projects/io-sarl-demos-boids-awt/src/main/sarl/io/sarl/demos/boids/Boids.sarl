@@ -47,28 +47,36 @@ agent Boid {
 
 	var group : Population
 
+	@SuppressWarnings("constant_condition")
 	on Initialize {
 		// 5 Boids init parameters : UUID envt, Population p, Vector2d initialPosition, Vector2d initialVitesse, String boidName
 		if (occurrence.parameters.size > 4) {
-			if (occurrence.parameters.get(0) instanceof UUID) {
-				environment = occurrence.parameters.get(0) as UUID
+			val param0 = occurrence.parameters.get(0)
+			if (param0 instanceof UUID) {
+				environment = param0
 			}
 
-			if (occurrence.parameters.get(1) instanceof Population) {
-				group = occurrence.parameters.get(1) as Population
+			val param1 = occurrence.parameters.get(1)
+			if (param1 instanceof Population) {
+				group = param1
 			}
 
-			if (occurrence.parameters.get(2) instanceof Vector2d) {
-				position = occurrence.parameters.get(2) as Vector2d
+			val param2 = occurrence.parameters.get(2)
+			if (param2 instanceof Vector2d) {
+				position = param2
 			}
-			if (occurrence.parameters.get(3) instanceof Vector2d) {
-				speed = occurrence.parameters.get(3) as Vector2d
+
+			val param3 = occurrence.parameters.get(3)
+			if (param3 instanceof Vector2d) {
+				speed = param3
 				speed.length = 0.25
 				speed += new Vector2d(0, 0.75)
 				speed.scale(group.maxSpeed)
 			}
-			if (occurrence.parameters.get(4) instanceof String) {
-				loggingName = occurrence.parameters.get(4) as String
+
+			val param4 = occurrence.parameters.get(4)
+			if (param4 instanceof String) {
+				loggingName = param4
 			}
 
 		}
@@ -77,6 +85,7 @@ agent Boid {
 		}
 	}
 
+	@SuppressWarnings("constant_condition")
 	on Perception {
 		var boids = occurrence.perceivedAgentBody
 		var myBody = boids.get(ID)

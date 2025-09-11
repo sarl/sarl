@@ -66,6 +66,7 @@ agent RocketLauncher {
 
 	/** Initialization step invoked with parameters.
 	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize [!occurrence.parameters.empty] {
 		loggingName = "RocketLauncher-" + this.ID
 		x = occurrence.parameters.get(0) as Double

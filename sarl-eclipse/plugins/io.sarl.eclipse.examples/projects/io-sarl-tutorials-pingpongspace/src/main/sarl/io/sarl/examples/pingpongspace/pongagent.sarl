@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  * 
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2025 the original authors or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import io.sarl.api.core.ExternalContextAccess
 import io.sarl.api.core.Initialize
 import io.sarl.api.core.Lifecycle
 import io.sarl.api.core.Logging
-import io.sarl.api.core.OpenEventSpace
-import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.spaces.OpenEventSpace
+import io.sarl.api.core.spaces.OpenEventSpaceSpecification
 import java.util.UUID
 
 /** 
@@ -43,6 +43,7 @@ agent PongAgent {
 
 	var MAX_ITERATION : Integer
 
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize {
 		comspace = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification),
 			occurrence.parameters.get(0) as UUID)

@@ -34,6 +34,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 /** 
  * The environmental agent in charge of collecting boids influences and computing the new state of the virtual world
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 agent Environment {
 
@@ -56,12 +57,14 @@ agent Environment {
 		loggingName = "Environment"
 		// Environment init parameters : An Integer the grid's height, An integer the grid's width
 		if (occurrence.parameters.size > 1) {
-			if (occurrence.parameters.get(0) instanceof Integer) {
-				height = occurrence.parameters.get(0) as Integer
+			val param0 = occurrence.parameters.get(0)
+			if (param0 instanceof Number) {
+				height = param0.intValue
 			}
 
-			if (occurrence.parameters.get(1) instanceof Integer) {
-				width = occurrence.parameters.get(1) as Integer
+			val param1 = occurrence.parameters.get(1)
+			if (param1 instanceof Number) {
+				width = param1.intValue
 			}
 			boids = null
 			influences = new ConcurrentSkipListSet
@@ -75,6 +78,7 @@ agent Environment {
 		new Perception(boids).emit
 	}
 
+	@SuppressWarnings("constant_condition")
 	on Action {
 		synchronized (boids) {
 			synchronized (influences) { // Two very important "synchronized" blocks that prevent the simulation from thread interblocking

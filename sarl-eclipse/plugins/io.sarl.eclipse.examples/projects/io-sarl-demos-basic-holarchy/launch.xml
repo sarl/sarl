@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations id="io.sarl.eclipse.examples.basic.holarchy" log="all">
+<launchConfigurations id="io.sarl.eclipse.examples.basic.holarchy" log="info">
 	<agent class="io.sarl.demos.basic.holarchy.HolarchyManager" name="Basic holarchy demo" />
 </launchConfigurations>

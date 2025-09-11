@@ -33,7 +33,6 @@ import io.sarl.demos.fireworks.environment.Positions
 import io.sarl.demos.fireworks.events.FireReady
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.UpdateFirePosition
-import java.util.List
 import java.util.UUID
 import java.util.Vector
 import java.util.concurrent.CopyOnWriteArrayList
@@ -76,6 +75,7 @@ agent Fire {
 
 	/** Initialization step.
 	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize {
 		loggingName = "Fire-" + this.ID
 		xy = new CopyOnWriteArrayList

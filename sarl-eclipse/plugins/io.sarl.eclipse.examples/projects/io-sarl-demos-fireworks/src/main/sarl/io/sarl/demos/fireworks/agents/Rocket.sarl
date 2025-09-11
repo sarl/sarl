@@ -95,6 +95,7 @@ agent Rocket {
 
 	/* Initialization step.
 	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize {
 		loggingName = "Rocket-" + this.ID
 		info("New rocket launched")

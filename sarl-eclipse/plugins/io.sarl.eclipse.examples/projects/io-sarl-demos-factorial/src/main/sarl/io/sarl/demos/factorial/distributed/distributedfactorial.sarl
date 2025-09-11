@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2025 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,27 +27,32 @@ import io.sarl.api.core.Initialize
 import io.sarl.api.core.Lifecycle
 import io.sarl.api.core.Logging
 import io.sarl.api.core.Schedules
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 event Factorial {
-	var number : Long
-	var value : Long
+	var number : long
+	var value : long
 }
 
 /**
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 event Calculate {
-	var number : Long
+	var number : long
 }
 
 /**
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 event ComputationDone {
-	var result : Long
+	var result : long
 }
 
 /**
@@ -62,13 +67,14 @@ event Die
 
 /**
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 agent DistributedFactorialBootAgent {
 	uses DefaultContextInteractions, Lifecycle
 
 	on Initialize {
-		spawn(FactorialAgent)
-		spawn(FactorialQueryAgent,10l)
+		typeof(FactorialAgent).spawn
+		typeof(FactorialQueryAgent).spawn(10l)
 		killMe
 	}
 }
@@ -79,14 +85,15 @@ agent DistributedFactorialBootAgent {
 agent FactorialQueryAgent {
 	uses Lifecycle, DefaultContextInteractions, Schedules, Logging
 
-	var factValue : Long
+	var factValue = new AtomicLong
 
-	var started = false
+	var started = new AtomicBoolean(false)
 
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize {
 		loggingName = "QueryAgent"
 		if (occurrence.parameters.length > 0) {
-			factValue = (occurrence.parameters.get(0) as String) as long
+			this.factValue.set(occurrence.parameters.get(0) as long)
 
 			info("Auto-detecting Factorial")
 			task("discovery-task").every(1000) [
@@ -100,16 +107,16 @@ agent FactorialQueryAgent {
 
 	}
 
-	on Hello [!isFromMe && !started] {
-		started = true
+	on Hello [!isFromMe && !this.started.get] {
+		started.set(true)
 		task("discovery-task").cancel
 		info("Found Factorial")
-		info("Query sent with number " + factValue)
-		emit(new Calculate => [number = factValue])
+		info("Query sent with number " + this.factValue.get)
+		emit(new Calculate( this.factValue.get))
 	}
 
 	on ComputationDone {
-		info(factValue + "! = " + occurrence.result)
+		info(this.factValue.get + "! = " + occurrence.result)
 		emit(new Die)
 		info("Killing")
 		killMe
@@ -122,7 +129,7 @@ agent FactorialQueryAgent {
 agent FactorialAgent {
 	uses Lifecycle, Behaviors, Logging, DefaultContextInteractions
 
-	var upto : Long
+	var upto = new AtomicLong
 
 	on Initialize {
 		loggingName = "FactorialAgent"
@@ -134,18 +141,20 @@ agent FactorialAgent {
 	}
 
 	on Factorial [occurrence.number < upto] {
-		wake(new Factorial => [number = occurrence.number + 1; value = occurrence.value * (occurrence.number + 1)])
+		wake(new Factorial(
+			occurrence.number + 1,
+			occurrence.value * (occurrence.number + 1)))
 	}
 
 	on Factorial [occurrence.number == upto] {
-		info(this.upto + "! = " + occurrence.value)
-		emit(new ComputationDone => [result = occurrence.value])
+		info(this.upto.get + "! = " + occurrence.value)
+		emit(new ComputationDone(occurrence.value))
 	}
 
 	on Calculate {
-		this.upto = occurrence.number as long
-		info("Query for " + this.upto + "!")
-		wake(new Factorial => [number = 0l; value = 1l])
+		this.upto.set(occurrence.number)
+		info("Query for " + this.upto.get + "!")
+		wake(new Factorial(0l, 1l))
 	}
 
 	on Die {

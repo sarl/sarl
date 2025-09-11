@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2025 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 
 package io.sarl.examples.holonicauction
 
+import com.google.common.util.concurrent.AtomicDouble
 import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.Initialize
 import io.sarl.api.core.Lifecycle
@@ -34,38 +35,40 @@ agent Bidder {
 	
 	uses DefaultContextInteractions, Lifecycle, Logging
 
-	val random = new Random()
-	var maxPrice : float
-	var myLastBid : float
+	val random = new Random
+	var maxPrice = new AtomicDouble
+	var myLastBid = new AtomicDouble
 
 	on Initialize {
+		loggingName = "Bidder"
+
 		info("Bidder created")
-		maxPrice = random.nextFloat() * 1000f + 100f
-		info(maxPrice)
+		this.maxPrice.set(this.random.nextDouble * 1000.0 + 100.0)
+		info(this.maxPrice.get)
 	}
 
 	on Price {
-		if(occurrence.price == myLastBid) {
+		if(occurrence.price == this.myLastBid.get) {
 			info("I do not bet, I am the winner with :" + myLastBid)
 		} else {
-			if(occurrence.price < maxPrice) {
+			if(occurrence.price < this.maxPrice.get) {
 				info("Receiving the price: " + occurrence.price)
-				var priceIncrease = random.nextFloat() * 50f
+				var priceIncrease = this.random.nextDouble() * 50.0
 				if(priceIncrease > 0) {
 					var newPrice = occurrence.price + priceIncrease
 
 					info("My new price is: " + newPrice)
-					if(newPrice <= maxPrice) {
+					if(newPrice <= this.maxPrice.get) {
 						info("Send my bid: " + newPrice)
 						emit(new Bid(newPrice)) [it.ID == defaultContext.getID]
-						myLastBid = newPrice
+						this.myLastBid.set(newPrice)
 					} else {
-						info(" I give up, this is beyond my resources : " + myLastBid)
+						info(" I give up, this is beyond my resources : " + this.myLastBid.get)
 					}
 				}
 			}
 			else {
-				info("I dropped to " + myLastBid)
+				info("I dropped to " + this.myLastBid.get)
 			}
 		}
 	}

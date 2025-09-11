@@ -20,7 +20,6 @@
  */
 package io.sarl.demos.boids
 
-import io.sarl.api.core.OpenEventSpace
 import io.sarl.demos.boids.gui.EnvironmentGui
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
@@ -31,6 +30,7 @@ import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import org.arakhne.afc.math.geometry.d2.d.Vector2d
+import io.sarl.api.core.spaces.OpenEventSpace
 
 /** 
  * The boids simulation launching the SARL environment with the corresponding agent and ensuring the communication between agents and the GUI
@@ -118,7 +118,7 @@ class BoidsSimulation implements EventListener {
 			if (currentBoidCount !== null) {
 				currentBoidCount++
 			} else {
-				currentBoidCount = new Integer(1)
+				currentBoidCount = 1
 			}
 			boidsToLaunch.put(p, currentBoidCount)
 		} else {

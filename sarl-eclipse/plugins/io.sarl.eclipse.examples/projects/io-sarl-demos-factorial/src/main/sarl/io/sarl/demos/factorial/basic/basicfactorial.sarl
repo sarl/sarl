@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2025 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,42 +25,46 @@ import io.sarl.api.core.Behaviors
 import io.sarl.api.core.Initialize
 import io.sarl.api.core.Lifecycle
 import io.sarl.api.core.Logging
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 event Factorial {
-	var number : Long
-	var value : Long
+	var number : long
+	var value : long
 } 
 
 /**
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  */
 agent FactorialAgent {
 
-	var upto : Long = 5l 
-	uses Lifecycle, Behaviors, Logging 
+	uses Lifecycle, Behaviors, Logging
 
+	var upto = new AtomicLong(5l)
+	
 	  
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize {
 		if (occurrence.parameters.length > 0) { /* check the number of parameter specified in the launch configuration */
-			this.upto  = (occurrence.parameters.get(0) as String) as long 
+			this.upto.set(occurrence.parameters.get(0) as long) 
 			info("Received Calculate for " + this.upto)   
-			wake(new Factorial => [ number = 0l ; value = 1l ])
+			wake(new Factorial => [ it.number = 0l ; it.value = 1l ])
 		} else {
-			info("Bad parameter settings, you must specify an integer value to compute the corresponding factorial")
+			info("Bad parameter settings, you must specify an integer value in the arguments of the launching configuration to compute the corresponding factorial")
 			killMe
 		}
 	} 
 
-	on Factorial [ number < upto ] {
-		wake(new Factorial => [ number = occurrence.number + 1 ; value = occurrence.value * (occurrence.number+1) ])
+	on Factorial [ it.number < this.upto.get ] {
+		wake(new Factorial => [ it.number = occurrence.number + 1 ; it.value = occurrence.value * (occurrence.number + 1) ])
 	}
 
-	on Factorial [ occurrence.number == upto ] {  
-		info("Factorial of " + upto + " is " + occurrence.value)
+	on Factorial [ occurrence.number == this.upto.get ] {  
+		info("Factorial of " + this.upto.get + " is " + occurrence.value)
 		killMe
 	}
 }
-

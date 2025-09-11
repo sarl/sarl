@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  * 
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2025 the original authors or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@ agent BootAgent {
 
 	on Initialize {
 		var spaceId = UUID::randomUUID
-		spawn(PingAgent, spaceId, MAX_ITERATION)
-		spawn(PongAgent, spaceId, MAX_ITERATION)
+		typeof(PingAgent).spawn(spaceId, MAX_ITERATION)
+		typeof(PongAgent).spawn(spaceId, MAX_ITERATION)
 		killMe
 	}
 

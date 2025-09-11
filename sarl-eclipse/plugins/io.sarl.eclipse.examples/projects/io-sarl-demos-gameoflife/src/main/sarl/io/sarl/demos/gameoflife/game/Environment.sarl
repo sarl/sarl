@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2025 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ agent Environment {
 
 	val lock = new ReentrantLock
 
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
