@@ -164,6 +164,9 @@
     <contributor>
       <name>Mohamed Ezzat</name>
       <url>https://github.com/m-ezzat</url>
+      <properties>
+      	<id>mezzat</id>
+      </properties>
       <roles>
         <role>Cleaning and optimization of source code</role>
       </roles>
@@ -171,8 +174,22 @@
     <contributor>
       <name>Thomas Piotrowski</name>
       <url>https://github.com/tpiotrow</url>
+      <properties>
+      	<id>tpiotrowski</id>
+      </properties>
       <roles>
         <role>Maven configuration</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Stefano Tedeschi</name>
+      <url>https://github.com/stefanotedeschi</url>
+      <organization>Val Aoste University</organization>
+      <properties>
+      	<id>stedeschi</id>
+      </properties>
+      <roles>
+        <role>Addition of the mutable optional utility class</role>
       </roles>
     </contributor>
   </contributors>

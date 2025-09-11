@@ -85,6 +85,19 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>ngaud</id>
+      <name>Nicolas Gaud</name>
+      <email>nicolas.gaud@utbm.fr</email>
+      <url>http://www.ciad-lab.fr/nicolas_gaud</url>
+      <organization>Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.</organization>
+      <organizationUrl>http://www.ciad-lab.fr</organizationUrl>
+      <roles>
+        <role>Co-founder</role>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <licenses>
     <license>

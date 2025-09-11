@@ -128,6 +128,19 @@
       </roles>
     </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <name>Stefano Tedeschi</name>
+      <url>https://github.com/stefanotedeschi</url>
+      <organization>Val Aoste University</organization>
+      <properties>
+      	<id>stedeschi</id>
+      </properties>
+      <roles>
+        <role>Addition of the mutable optional utility class</role>
+      </roles>
+    </contributor>
+  </contributors>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
