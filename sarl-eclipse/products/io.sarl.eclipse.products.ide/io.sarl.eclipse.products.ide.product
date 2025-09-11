@@ -288,6 +288,8 @@
       <feature id="org.eclipse.epp.package.java.feature" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
       <feature id="org.eclipse.equinox.core.feature" installMode="root"/>
+      <feature id="org.eclipse.epp.mpc" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.discovery.feature" installMode="root"/>
    </features>
 
    <configurations>
