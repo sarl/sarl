@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * @mavenartifactid $ArtifactId$
  * @since 0.15
  */
-@Target(ElementType.CONSTRUCTOR)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SyntheticEventConstructorMandatoryParameter {
 	//
