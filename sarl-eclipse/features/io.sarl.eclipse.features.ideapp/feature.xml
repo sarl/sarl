@@ -234,4 +234,12 @@
          id="io.sarl.eclipse.examples"
          version="0.0.0"/>
 
+   <plugin
+         id="wrapped.io.bootique.bootique"
+         version="0.0.0"/>
+
+   <plugin
+         id="net.sf.jopt-simple.jopt-simple"
+         version="0.0.0"/>
+
 </feature>

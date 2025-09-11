@@ -21,24 +21,21 @@
 
 package io.sarl.apputils.eclipseextensions.tests.buildpath;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyPositive;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.sarl.apputils.eclipseextensions.buildpath.SARLClasspathEntryComparator;
 import io.sarl.apputils.eclipseextensions.buildpath.SARLFolderComparator;
 
 /** Tests for {@code SARLClasspathEntryComparator}.
@@ -54,14 +51,59 @@ import io.sarl.apputils.eclipseextensions.buildpath.SARLFolderComparator;
 @Tag("unit")
 public class SARLFolderComparatorTest {
 
-	private static List<IFolder> entries;
-
-	private static String[] expected;
-
 	private SARLFolderComparator comparator;
 	
-	@BeforeAll
-	public static void globalSetUp() throws Exception {
+	private static IFolder mockEntry(String name) {
+		final var m = mock(IFolder.class);
+		when(m.getFullPath()).thenAnswer(it -> Path.fromPortableString(name));
+		when(m.toString()).thenReturn(name);
+		return m;
+	}
+
+	@BeforeEach
+	public void setUp() throws Exception {
+		this.comparator = new SARLFolderComparator();
+	}
+
+	@Test
+	@DisplayName("Single #1")
+	public void single1() {
+		final var path1 = mockEntry("src/main/resources");
+		final var path2 = mockEntry("src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Single #2")
+	public void single2() {
+		final var path1 = mockEntry("/src/main/resources");
+		final var path2 = mockEntry("/src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Single #3")
+	public void single3() {
+		final var path1 = mockEntry("myprj/src/main/resources");
+		final var path2 = mockEntry("myprj/src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Single #4")
+	public void single4() {
+		final var path1 = mockEntry("/myprj/src/main/resources");
+		final var path2 = mockEntry("/myprj/src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Sort list")
+	public void listSort() {
 		final var basenames = Arrays.asList(
 				"src/main/java",
 				"src/main/resources",
@@ -89,7 +131,7 @@ public class SARLFolderComparatorTest {
 				"src/it/generated-sources/bdi",
 				"src/x/y/z",
 				"x/y/z");
-		expected = Arrays.asList(
+		final var expected = Arrays.asList(
 				"src/main/sarl",
 				"src/main/bdi",
 				"src/main/bspl",
@@ -119,26 +161,10 @@ public class SARLFolderComparatorTest {
 				"src/test/generated-sources/bdi",
 				"src/test/generated-sources/bspl",
 				"src/test/generated-sources/sarl").toArray(size -> new String[size]);
-		entries = basenames.stream()
+		final var entries = basenames.stream()
 				.map(it -> mockEntry(it))
 				.collect(Collectors.toList());
-	}
-	
-	private static IFolder mockEntry(String name) {
-		final var m = mock(IFolder.class);
-		when(m.getFullPath()).thenAnswer(it -> Path.fromPortableString(name));
-		when(m.toString()).thenReturn(name);
-		return m;
-	}
 
-	@BeforeEach
-	public void setUp() throws Exception {
-		this.comparator = new SARLFolderComparator();
-	}
-	
-	@Test
-	@DisplayName("Sort list")
-	public void listSort() {
 		final var actual = entries.toArray(size -> new IFolder[size]);
 		Arrays.sort(actual, this.comparator);
 		final var act = Arrays.asList(actual).stream()

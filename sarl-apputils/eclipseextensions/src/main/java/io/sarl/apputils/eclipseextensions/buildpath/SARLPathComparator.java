@@ -32,16 +32,21 @@ import io.sarl.lang.SARLConfig;
  * <p>The order assumed by this comparator is based on:
  * <table>
  * <caption>Order index per category of resource</caption>
- * <thead><tr><th>Category</th><th>Description</th></tr></thead>
- * <tr><td>0</td><td>Regular source code</td></tr>
- * <tr><td>20</td><td>Regular resource</td></tr>
- * <tr><td>50</td><td>Generated source code</td></tr>
- * <tr><td>100</td><td>Source code for (unit) tests</td></tr>
- * <tr><td>120</td><td>Resource for (unit) tests</td></tr>
- * <tr><td>150</td><td>Generated source code for (unit) tests</td></tr>
- * <tr><td>200</td><td>Source code for integration tests</td></tr>
- * <tr><td>220</td><td>Resource for integration tests</td></tr>
- * <tr><td>250</td><td>Generated source code for integration tests</td></tr>
+ * <thead><tr><th>Category</th><th>Subcategory</th><th>Description</th><th>Example</th></tr></thead>
+ * <tr><td><strong>0</strong></td><td></td><td><strong>Regular code</strong></td><td></td></tr>
+ * <tr><td></td><td>0</td><td>SARL code</td><td><code>.../src/main/sarl</code></td></tr>
+ * <tr><td></td><td>20</td><td>Other code</td><td><code>.../src/main/...</code></td></tr>
+ * <tr><td></td><td>40</td><td>Resources</td><td><code>.../src/main/resources</code></td></tr>
+ * <tr><td><strong>200</strong></td><td></td><td><strong>Unit tests</strong></td><td></td></tr>
+ * <tr><td></td><td>200</td><td>SARL tests</td><td><code>.../src/test/sarl</code></td></tr>
+ * <tr><td></td><td>220</td><td>Other tests</td><td><code>.../src/test/...</code></td></tr>
+ * <tr><td></td><td>240</td><td>Test resources</td><td><code>.../src/test/resources</code></td></tr>
+ * <tr><td><strong>400</strong></td><td></td><td><strong>Integration tests</strong></td><td></td></tr>
+ * <tr><td></td><td>400</td><td>SARL integration tests</td><td><code>.../src/it/sarl</code></td></tr>
+ * <tr><td></td><td>420</td><td>Other integration tests</td><td><code>.../src/it/...</code></td></tr>
+ * <tr><td></td><td>440</td><td>Test integration resources</td><td><code>.../src/it/resources</code></td></tr>
+ * <tr><td><strong>600</strong></td><td></td><td><strong>Generated code</strong></td><td></td></tr>
+ * <tr><td></td><td>600</td><td>Any generated code</td><td><code>.../generated-sources/...</code></td></tr>
  * </table>
  *
  * @author $Author: sgalland$
@@ -107,22 +112,22 @@ public class SARLPathComparator implements Comparator<IPath> {
 	 * @param path the path to analyze. It must not be {@code null}.
 	 * @return the category according to the category table.
 	 */
-	protected static int categorizes(IPath path) {
+	public static int categorizes(IPath path) {
 		assert path != null;
 
 		final var cnt = path.segmentCount();
 
-		if (cnt >= 1 && SARLConfig.FOLDER_MAVEN_SRC_PREFIX.equals(path.segment(0))) {
-			if (cnt >= 3 && SARLConfig.GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME.equals(path.segment(2))) {
-				return GENERATED_SOURCE_SECTION;
-			}
-			if (cnt >= 2) {
-				if (SARLConfig.TEST_FOLDER_SIMPLENAME.equals(path.segment(1))) {
+		if (cnt >= 2) {
+			final var segment0 = path.segment(cnt - 2);
+			if (cnt >= 3 && SARLConfig.FOLDER_MAVEN_SRC_PREFIX.equals(path.segment(cnt - 3))) {
+				// .../src/*/*
+				if (SARLConfig.TEST_FOLDER_SIMPLENAME.equals(segment0)) {
 					return subcategorizes(TEST_SECTION, path);
-				}
-				if (SARLConfig.INTEGRATION_TEST_FOLDER_SIMPLENAME.equals(path.segment(1))) {
+				} else if (SARLConfig.INTEGRATION_TEST_FOLDER_SIMPLENAME.equals(segment0)) {
 					return subcategorizes(INTEGRATION_TEST_SECTION, path);
 				}
+			} else if (SARLConfig.GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME.equals(segment0)) {
+				return GENERATED_SOURCE_SECTION;
 			}
 		}
 		return subcategorizes(CODE_SECTION, path);
@@ -130,11 +135,12 @@ public class SARLPathComparator implements Comparator<IPath> {
 
 	private static int subcategorizes(int section, IPath path) {
 		final var cnt = path.segmentCount();
-		if (cnt >= 3) {
-			if (SARLConfig.SARL_FOLDER_SIMPLENAME.equals(path.segment(2))) {
+		if (cnt >= 0) {
+			final var lastSegment = path.segment(cnt - 1);
+			if (SARLConfig.SARL_FOLDER_SIMPLENAME.equals(lastSegment)) {
 				return section + SARL_SUBSECTION;
 			}
-			if (SARLConfig.RESOURCE_FOLDER_SIMPLENAME.equals(path.segment(2))) {
+			if (SARLConfig.RESOURCE_FOLDER_SIMPLENAME.equals(lastSegment)) {
 				return section + RESOURCE_SUBSECTION;
 			}
 		}

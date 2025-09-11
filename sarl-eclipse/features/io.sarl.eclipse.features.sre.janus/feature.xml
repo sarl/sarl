@@ -245,4 +245,8 @@
          id="io.sarl.sre.janus.janus.network.source"
          version="0.0.0"/>
 
+   <plugin
+         id="com.hazelcast"
+         version="0.0.0"/>
+
 </feature>

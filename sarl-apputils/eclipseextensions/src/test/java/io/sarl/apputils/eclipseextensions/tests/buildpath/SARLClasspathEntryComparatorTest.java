@@ -21,6 +21,7 @@
 
 package io.sarl.apputils.eclipseextensions.tests.buildpath;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyPositive;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -58,14 +60,59 @@ import io.sarl.tests.api.tools.TestAssertions;
 @Tag("unit")
 public class SARLClasspathEntryComparatorTest {
 
-	private static List<IClasspathEntry> entries;
-
-	private static String[] expected;
-
 	private SARLClasspathEntryComparator comparator;
 	
-	@BeforeAll
-	public static void globalSetUp() throws Exception {
+	private static IClasspathEntry mockEntry(String name) {
+		final var m = mock(IClasspathEntry.class);
+		when(m.getPath()).thenAnswer(it -> Path.fromPortableString(name));
+		when(m.toString()).thenReturn(name);
+		return m;
+	}
+
+	@BeforeEach
+	public void setUp() throws Exception {
+		this.comparator = new SARLClasspathEntryComparator();
+	}
+	
+	@Test
+	@DisplayName("Single #1")
+	public void single1() {
+		final var path1 = mockEntry("src/main/resources");
+		final var path2 = mockEntry("src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Single #2")
+	public void single2() {
+		final var path1 = mockEntry("/src/main/resources");
+		final var path2 = mockEntry("/src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Single #3")
+	public void single3() {
+		final var path1 = mockEntry("myprj/src/main/resources");
+		final var path2 = mockEntry("myprj/src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Single #4")
+	public void single4() {
+		final var path1 = mockEntry("/myprj/src/main/resources");
+		final var path2 = mockEntry("/myprj/src/main/sarl");
+		final var actual = this.comparator.compare(path1, path2);
+		assertStrictlyPositive(actual);
+	}
+
+	@Test
+	@DisplayName("Sort list")
+	public void listSort() {
 		final var basenames = Arrays.asList(
 				"src/main/java",
 				"src/main/resources",
@@ -93,7 +140,7 @@ public class SARLClasspathEntryComparatorTest {
 				"src/it/generated-sources/bdi",
 				"src/x/y/z",
 				"x/y/z");
-		expected = Arrays.asList(
+		final var expected = Arrays.asList(
 				"src/main/sarl",
 				"src/main/bdi",
 				"src/main/bspl",
@@ -123,26 +170,10 @@ public class SARLClasspathEntryComparatorTest {
 				"src/test/generated-sources/bdi",
 				"src/test/generated-sources/bspl",
 				"src/test/generated-sources/sarl").toArray(size -> new String[size]);
-		entries = basenames.stream()
+		final var entries = basenames.stream()
 				.map(it -> mockEntry(it))
 				.collect(Collectors.toList());
-	}
-	
-	private static IClasspathEntry mockEntry(String name) {
-		final var m = mock(IClasspathEntry.class);
-		when(m.getPath()).thenAnswer(it -> Path.fromPortableString(name));
-		when(m.toString()).thenReturn(name);
-		return m;
-	}
 
-	@BeforeEach
-	public void setUp() throws Exception {
-		this.comparator = new SARLClasspathEntryComparator();
-	}
-	
-	@Test
-	@DisplayName("Sort list")
-	public void listSort() {
 		final var actual = entries.toArray(size -> new IClasspathEntry[size]);
 		Arrays.sort(actual, this.comparator);
 		final var act = Arrays.asList(actual).stream()

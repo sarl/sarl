@@ -357,4 +357,36 @@
          id="io.sarl.lang.pythongenerator.source"
          version="0.0.0"/>
 
+   <plugin
+         id="io.sarl.apputils.eclipseextensions"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.apputils.uiextensions"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.arakhne.afc.core.util"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-annotations"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-core"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-databind"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.fasterxml.jackson.dataformat.jackson-dataformat-xml"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml"
+         version="0.0.0"/>
+
 </feature>
