@@ -34,7 +34,7 @@ import io.sarl.lang.core.util.CliUtilities;
 
 /** Tools for generating markdown from different sources.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -158,7 +158,7 @@ public final class MarkdownExtensions {
 
 	/** Comparator of command-line options.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

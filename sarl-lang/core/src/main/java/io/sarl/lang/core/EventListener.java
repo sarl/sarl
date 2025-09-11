@@ -29,7 +29,7 @@ package io.sarl.lang.core;
  * any entity implementing the {@link EventListener} can interact inside an
  * {@link EventSpace} (e.g. UI)
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

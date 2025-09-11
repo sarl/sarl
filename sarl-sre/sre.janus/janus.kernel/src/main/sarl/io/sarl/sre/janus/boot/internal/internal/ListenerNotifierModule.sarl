@@ -30,7 +30,7 @@ import io.sarl.api.util.SequenceListenerNotifier
 /** 
  * Module for configuring the methods for notifying the event listeners.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -46,7 +46,7 @@ class ListenerNotifierModule implements BQModule {
 
 /** Provider of the module for configuring the methods for notifying the event listeners..
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

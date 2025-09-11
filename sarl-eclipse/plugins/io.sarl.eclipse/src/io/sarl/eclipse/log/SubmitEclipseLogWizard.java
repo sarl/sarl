@@ -56,7 +56,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 /**
  * Wizard for submiting an issue to the SARL community.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -342,7 +342,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 
 	/** Definition of the Json entries for creating a Github issue.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

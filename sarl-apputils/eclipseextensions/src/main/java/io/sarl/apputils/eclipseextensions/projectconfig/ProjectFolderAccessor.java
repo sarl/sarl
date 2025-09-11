@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 /**
  * Tools for managing the project folders.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

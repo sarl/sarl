@@ -120,8 +120,8 @@ import io.sarl.lang.core.SARLVersion;
  * the source folder of the project with
  * {@link SARLProjectConfigurator#getDefaultSourceClassPathEntries(IPath)}
  *
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -757,7 +757,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 	/** Group that contains the configuration of the JRE.
 	 *
-	 * @author $Author: ngaud$
+	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1172,8 +1172,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 	/** Group of configuration for the working set.
 	 *
-	 * @author $Author: ngaud$
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1211,8 +1211,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	/**
 	 * Show a warning when the project location contains files.
 	 *
-	 * @author $Author: ngaud$
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1380,8 +1380,8 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	/**
 	 * Validate this page and show appropriate warnings and error NewWizardMessages.
 	 *
-	 * @author $Author: ngaud$
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1537,7 +1537,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 		/** Exception that contains any validation error.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1563,7 +1563,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	/**
 	 * Show the list of project configuration fragments that are available for project creation.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

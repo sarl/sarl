@@ -43,7 +43,7 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 
 /** Shortcut for launching a SARL application.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

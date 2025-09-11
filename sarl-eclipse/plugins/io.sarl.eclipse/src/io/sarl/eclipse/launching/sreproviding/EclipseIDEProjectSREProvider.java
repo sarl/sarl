@@ -36,7 +36,7 @@ import io.sarl.eclipse.runtime.SARLRuntime;
  * This provider is reading the Eclipse IDE properties associated to the project and
  * determine the corresponding SRE.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -48,7 +48,7 @@ import io.sarl.lang.core.util.CliUtilities;
  * <p>This delegate is in charge of running a SARL agent with the specific
  * SRE.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -177,7 +177,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	/** Definition of the launching process, split in separated steps for
 	 * making easier the cancellation.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -42,7 +42,7 @@ import static extension io.bootique.BQCoreModule.extend
 /** 
  * Configuration for the parallel executors.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -312,7 +312,7 @@ class ExecutorsConfig {
 /** 
  * Module for the parallel executors' configuration.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -392,7 +392,7 @@ class ExecutorsConfigModule implements BQModule {
 
 /** Provider of the module for the parallel executors' configuration.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

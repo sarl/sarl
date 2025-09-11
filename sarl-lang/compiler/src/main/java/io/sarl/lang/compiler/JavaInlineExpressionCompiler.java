@@ -61,7 +61,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
  * are usually attached to the SARL code with the {@link org.eclipse.xtext.xbase.lib.Inline @Inline}
  * annotation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -477,7 +477,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 * @param importedOperation the JVM operation associated to the record's field {@code imported}.
 	 * @param constantExpressionOperation the JVM operation associated to the record's field {@code constantExpression}.
 	 * @param statementExpressionOperation the JVM operation associated to the record's field {@code statementExpression}.
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -524,7 +524,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	/**
 	 * Appendable for creating an inline expression.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -43,7 +43,7 @@ import com.google.common.collect.Collections2;
 
 /** Set of additional utilities for created testing EObject, except those related to SARL concepts.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -73,7 +73,7 @@ import io.sarl.lang.core.SARLVersion;
  * <p>This wizard extends the EMF wizard with the initialization of the SARL nature on the project,
  * the creation of launch configurations, and the closing of the welcome page of Eclipse.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -389,7 +389,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** Configuration page.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -465,7 +465,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** A file to be opened that is associated to a project.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -539,7 +539,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	/** Description of a launch configuration.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

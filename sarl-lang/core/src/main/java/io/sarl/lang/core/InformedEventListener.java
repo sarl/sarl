@@ -33,7 +33,7 @@ import io.sarl.lang.core.annotation.PrivateAPI;
  *
  * <p>This specific listening entity knows its owner and provides access to it.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

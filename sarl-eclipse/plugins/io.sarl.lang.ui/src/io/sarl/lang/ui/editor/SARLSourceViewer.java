@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  *
  * <p>Based on the Xtend implementation, extended with the auto-formating feature when pasting.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -110,7 +110,7 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 
 	/** Factory of SARL code viewer.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

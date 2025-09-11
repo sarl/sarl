@@ -36,7 +36,7 @@ import io.sarl.lang.core.annotations.SarlAccessorsProcessor;
  *
  * <p>TODO: The macro API should use the injection mechanism into the Xtend library.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

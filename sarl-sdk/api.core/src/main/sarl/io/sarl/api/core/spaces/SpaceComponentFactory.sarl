@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentMap
  * <p>SRE could provide a specific implementation of data structures
  * with or without computer network support.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

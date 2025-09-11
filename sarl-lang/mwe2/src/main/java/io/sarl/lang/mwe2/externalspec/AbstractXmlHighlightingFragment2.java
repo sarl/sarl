@@ -34,7 +34,7 @@ import org.eclipse.xtext.xtext.generator.CodeConfig;
 /**
  * An abstract generator of an XML-based external language specification.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -48,7 +48,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 
 	/** Appendable for xml-based styles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -187,7 +187,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 
 	/** Appendable for xml-based styles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

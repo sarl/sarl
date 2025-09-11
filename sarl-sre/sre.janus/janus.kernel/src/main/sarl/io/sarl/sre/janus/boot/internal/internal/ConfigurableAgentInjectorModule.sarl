@@ -37,7 +37,7 @@ import jakarta.inject.Singleton
 /** 
  * Module for configuring the injector of agents and agent components.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -67,7 +67,7 @@ class ConfigurableAgentInjectorModule implements BQModule {
 
 /** Provider of the module for configuring the agent trait initializer.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

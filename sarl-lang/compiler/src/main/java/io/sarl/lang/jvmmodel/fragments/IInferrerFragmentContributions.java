@@ -29,7 +29,7 @@ import com.google.inject.ImplementedBy;
 
 /** Tool for obtaining all the fragment contributions to the JVM model inferrer.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

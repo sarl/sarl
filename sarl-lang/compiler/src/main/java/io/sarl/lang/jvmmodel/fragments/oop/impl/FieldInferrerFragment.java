@@ -35,7 +35,7 @@ import io.sarl.lang.jvmmodel.fragments.oop.IFieldInferrerFragment;
 
 /** Fragment for inferred the fields to the JVM model.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

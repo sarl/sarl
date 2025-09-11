@@ -55,7 +55,7 @@ import io.sarl.tests.api.Nullable;
 
 /** This class tests the {@link DefaultImmutableTypeValidator} for SARL.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

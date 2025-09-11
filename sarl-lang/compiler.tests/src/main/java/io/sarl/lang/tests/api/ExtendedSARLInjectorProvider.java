@@ -43,7 +43,7 @@ import io.sarl.lang.tests.SARLInjectorProvider;
  * that is used by the testing framework. Indeed, the default Java version for this compiler is Java 6. But,
  * we are expecting another version, as described in {@link SARLVersion}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -83,7 +83,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 	 * that is used by the testing framework. Indeed, the default Java version for this compiler is Java 6. But,
 	 * we are expecting another version, as described in {@link SARLVersion}.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -112,7 +112,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 	 *
 	 * <p>The logger is configured to be not verbose.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

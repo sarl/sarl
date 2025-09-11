@@ -22,14 +22,14 @@
 package io.sarl.examples.pingpongspace
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 event Ping {
 	val index : int
 }
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 event Pong {
 	val index : int

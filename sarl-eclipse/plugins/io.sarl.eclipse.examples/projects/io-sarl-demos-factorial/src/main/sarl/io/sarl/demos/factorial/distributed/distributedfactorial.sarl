@@ -31,8 +31,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 event Factorial {
 	var number : long
@@ -40,34 +40,34 @@ event Factorial {
 }
 
 /**
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 event Calculate {
 	var number : long
 }
 
 /**
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 event ComputationDone {
 	var result : long
 }
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event Hello
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event Die
 
 /**
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  */
 agent DistributedFactorialBootAgent {
 	uses DefaultContextInteractions, Lifecycle
@@ -80,7 +80,7 @@ agent DistributedFactorialBootAgent {
 }
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 agent FactorialQueryAgent {
 	uses Lifecycle, DefaultContextInteractions, Schedules, Logging
@@ -124,7 +124,7 @@ agent FactorialQueryAgent {
 }
 
 /**
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 agent FactorialAgent {
 	uses Lifecycle, Behaviors, Logging, DefaultContextInteractions

@@ -31,8 +31,8 @@ import org.arakhne.afc.services.IService
 /** 
  * This service provides the tools to manage the life-cycle of the agents.
  * 
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -138,8 +138,8 @@ interface LifecycleService extends IService {
 /** 
  * Listener on events related to the life-cycle of an agent.
  * 
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -192,7 +192,7 @@ interface LifecycleServiceListener extends EventListener {
 	/** 
 	 * Event adapter on events related to the life-cycle of an agent.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -221,7 +221,7 @@ interface LifecycleServiceListener extends EventListener {
 /** 
  * Listener on events related to the kernel agent.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

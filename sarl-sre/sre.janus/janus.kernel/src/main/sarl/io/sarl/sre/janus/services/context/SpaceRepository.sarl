@@ -67,8 +67,8 @@ import org.eclipse.xtend.lib.annotations.Data
  * 
  * <p>This repository is thread-safe.
  * 
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -777,7 +777,7 @@ abstract class SpaceRepository implements SpaceListener {
 	/** 
 	 * Description of a space.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -865,7 +865,7 @@ abstract class SpaceRepository implements SpaceListener {
 	/** 
 	 * An injection module that is able to inject the default space instance into another space implementation.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -890,7 +890,7 @@ abstract class SpaceRepository implements SpaceListener {
 	/** 
 	 * Key for a space specification.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -936,7 +936,7 @@ abstract class SpaceRepository implements SpaceListener {
 /** 
  * Listener on events related to the space repository.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -963,7 +963,7 @@ interface SpaceRepositoryListener extends EventListener {
 
 /** Factory for a space event emitter.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

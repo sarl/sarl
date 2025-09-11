@@ -35,7 +35,7 @@ import org.junit.jupiter.api.TestFactory;
  *
  * <p>Generate the example archive and check the archive's path.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

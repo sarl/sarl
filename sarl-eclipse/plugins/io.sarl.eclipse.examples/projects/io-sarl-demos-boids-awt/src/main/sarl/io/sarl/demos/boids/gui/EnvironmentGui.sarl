@@ -39,7 +39,7 @@ import io.sarl.api.core.spaces.OpenEventSpace
 /** 
  * Graphical user interface for boids.
  * 
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 class EnvironmentGui extends Frame {
 
@@ -93,7 +93,7 @@ package class Closer extends WindowAdapter {
 /** 
  * The GUI of the Simulation
  * 
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 package class EnvironmentGuiPanel extends Panel {
 

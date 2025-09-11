@@ -33,7 +33,7 @@ import io.sarl.tests.api.extensions.SarlInjectionExtension;
 
 /** Abstract implementation of a test for UI.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

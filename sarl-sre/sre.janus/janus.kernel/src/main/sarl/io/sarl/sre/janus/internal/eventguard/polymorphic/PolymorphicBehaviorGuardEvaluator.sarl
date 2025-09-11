@@ -38,7 +38,7 @@ import static extension io.sarl.lang.core.SREutils.*
  * <p>The {@code BehaviorGuardEvaluator} is comparable in order to be storable into a collection (usually a sorted set) that
  * needs the elements to be comparable.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

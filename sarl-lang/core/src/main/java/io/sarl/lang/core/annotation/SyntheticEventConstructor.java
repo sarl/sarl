@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 
 /** Annotation for marking a constructor for a SARL event to be created by the SARL compiler.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

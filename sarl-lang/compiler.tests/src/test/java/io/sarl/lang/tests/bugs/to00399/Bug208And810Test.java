@@ -32,7 +32,7 @@ import io.sarl.lang.validation.IssueCodes;
 /** Test for the issue: Manage the mutual exclusion of agent attributes
  * used in different "on" statements or in different behaviors.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

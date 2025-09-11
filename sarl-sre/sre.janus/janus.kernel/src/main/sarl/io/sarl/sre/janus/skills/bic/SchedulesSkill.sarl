@@ -62,8 +62,8 @@ import static extension io.sarl.sre.janus.services.lifecycle.BehaviorLife.*
 /** 
  * Skill that permits to execute tasks with an executor service.
  * 
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -524,7 +524,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** 
 	 * Description of a task.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -585,7 +585,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * as it is provided by the thread manager. Then, any interaction with
 	 * the receiver will be propagated to the real future.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -635,7 +635,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** 
 	 * Type of task termination.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -650,7 +650,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** 
 	 * Implementation of an agent task that is run once time.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -783,7 +783,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** 
 	 * Implementation of an agent task that is run once time.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -799,7 +799,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** 
 	 * Implementation of a periodic agent task.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -815,7 +815,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** 
 	 * Implementation of an agent infinite loop task.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -862,7 +862,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 /** 
  * Listener on events related to the task failures.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -882,7 +882,7 @@ interface FailureListener extends EventListener {
 
 /** Factory for failure listener.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

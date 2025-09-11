@@ -44,7 +44,7 @@ import io.sarl.lang.sarl.SarlPackage;
 
 /** Linking candidate for cast operator.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -263,7 +263,7 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 	 * The result of the comparison of two linking candidates.
 	 * FIXME: Remove when the CandidateCompareResult into the super type is visible.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

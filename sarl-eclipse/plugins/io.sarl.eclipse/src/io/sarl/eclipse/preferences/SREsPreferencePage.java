@@ -91,7 +91,7 @@ import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
 
 /** Preference page for the SARL runtime environments.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -891,7 +891,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Label provider for installed SREs table.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -962,7 +962,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Content provider to show a list of JREs.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -996,7 +996,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 *
 	 * <p>This listener refresh the preference page according to the change in the table.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1044,7 +1044,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	/** Definition of the columns in the table of the installed SREs.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * The most basic Scope is represented by a collection of Addresses (Agent, Role, etc.
  *
  * @param <T> is the type of objects that should be matched by this scope.
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

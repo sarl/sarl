@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.Inline;
 /**
  * Describe the states of an agent.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

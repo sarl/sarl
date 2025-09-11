@@ -36,7 +36,7 @@ import io.sarl.lang.mwe2.externalspec.IXmlStyleAppendable;
  * A {@link IGeneratorFragment} that create the language specification for
  * the GTK source viewer.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

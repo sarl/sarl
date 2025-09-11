@@ -25,7 +25,7 @@ import java.util.UUID
 
 /** Exception thrown when an agent context is unknown.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

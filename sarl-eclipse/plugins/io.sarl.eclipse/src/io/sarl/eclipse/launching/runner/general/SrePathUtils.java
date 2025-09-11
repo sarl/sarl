@@ -51,7 +51,7 @@ import io.sarl.eclipse.runtime.SARLRuntime;
 /**
  * Utilities for building the run [module|class]path of the SRE.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -264,7 +264,7 @@ public final class SrePathUtils {
 
 	/** Accessor to the extra classpath providers.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

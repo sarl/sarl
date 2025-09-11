@@ -28,7 +28,7 @@ import java.util.UUID
  * The event is fired within the default space of the inner context of the failing agent.
  * Subclasses of this event could be defined in order to specify more in detail the failure.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -56,7 +56,7 @@ event Failure {
  * The event is fired within the default space of the inner context of the failing agent.
  * Subclasses of this event could be defined in order to specify more in detail the failure.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -86,7 +86,7 @@ event TaskFailure extends Failure {
  * Subclasses of this event could be defined in order to specify more in detail the failure.
  * Only the killing agent receives this event.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -111,7 +111,7 @@ event AgentKillFailure extends Failure {
  * Subclasses of this event could be defined in order to specify more in detail the failure.
  * Only the spawning agent receives this event.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

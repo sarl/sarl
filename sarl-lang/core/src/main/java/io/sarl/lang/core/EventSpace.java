@@ -29,8 +29,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * Event driven Interaction {@link Space} for agents.
  *
- * @author $Author: srodriguez$
- * @author $Author: sgalland$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -52,7 +52,7 @@ package io.sarl.docs.doclet2.html;
 
 /** Options for the SARL Doclet.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

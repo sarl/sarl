@@ -43,7 +43,7 @@ import jakarta.inject.Singleton;
  * than the visibility allowed into the containing type.</li>
  * </ul>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -92,7 +92,7 @@ public class SarlAccessorsProcessor extends AccessorsProcessor {
 
 	/** Utilities for the accessor processor. This class is overridden for fixing Issue #1073.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

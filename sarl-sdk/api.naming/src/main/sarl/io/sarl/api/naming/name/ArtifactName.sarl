@@ -32,7 +32,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * <li>{@code artifactId} (mandatory) : the identifier of the artifact.</li>
  * </ul>
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

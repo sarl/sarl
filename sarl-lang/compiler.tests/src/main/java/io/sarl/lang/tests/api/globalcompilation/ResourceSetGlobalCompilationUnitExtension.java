@@ -47,7 +47,7 @@ import io.sarl.lang.tests.api.ExtendedSARLInjectorProvider;
  * <p>This extension should not directly be used. It is automatically invoked by the
  * {@link GlobalCompilationTestContribution} annotation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -89,7 +89,7 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -112,7 +112,7 @@ class ResourceSetGlobalCompilationUnitExtension extends AbstractResourceSetGloba
 	}
 
 	/**
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

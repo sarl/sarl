@@ -149,7 +149,7 @@ import jdk.javadoc.doclet.Taglet.Location;
 
 /** Builder of HTML elements.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1570,7 +1570,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Implementation of the tab factory.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1693,7 +1693,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Element in the stack of {@link HtmlFactoryImpl#createCommentText(Element, DocTree, PackageElement, String, io.sarl.docs.doclet2.html.HtmlFactory.HtmlFactoryContext)}.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1761,7 +1761,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Taglet is not found.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1783,7 +1783,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Implementation of a visitor of the documentation for extracting a text.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2342,7 +2342,7 @@ public class HtmlFactoryImpl implements HtmlFactory, HtmlTags {
 
 	/** Memory of the generation of comment text.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

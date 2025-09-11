@@ -62,7 +62,7 @@ import io.sarl.docs.doclet2.html.taglets.AbstractSarlTaglet;
 
 /** Taglet for {@code docRoot} tag that is replaced by the relative path to the root directory.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

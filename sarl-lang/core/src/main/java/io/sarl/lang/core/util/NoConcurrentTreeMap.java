@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @param <K> the type of the keys in the map.
  * @param <V> the type of the values in the map.
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

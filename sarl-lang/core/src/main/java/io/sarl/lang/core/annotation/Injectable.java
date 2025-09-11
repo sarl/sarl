@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 /** Annotation for marking a type as being injectable. An injectable object defines
  * a constructor, a field, or a method that is annotated with {@code @Inject}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

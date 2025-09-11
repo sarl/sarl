@@ -46,7 +46,7 @@ import io.sarl.lang.core.Skill;
 /**
  * Wizard page for creating a new SARL skill.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

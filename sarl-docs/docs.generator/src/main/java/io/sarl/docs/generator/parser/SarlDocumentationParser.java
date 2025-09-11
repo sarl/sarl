@@ -64,8 +64,8 @@ import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 
 /** Generator of the marker language files for the modified marker language for SARL.
  *
- * @author $Author: sgalland$
- * @author $Author: alombard$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.sarl.io/alexandre_lombard">Alexandre Lombard</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1132,7 +1132,7 @@ public class SarlDocumentationParser {
 
 	/** Exception in parser.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1191,7 +1191,7 @@ public class SarlDocumentationParser {
 
 	/** Interceptor of the parsed elements.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1793,7 +1793,7 @@ public class SarlDocumentationParser {
 
 	/** Interceptor of the parsed elements.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1842,7 +1842,7 @@ public class SarlDocumentationParser {
 
 	/** Interceptor of the parsed elements for the parameters.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1918,7 +1918,7 @@ public class SarlDocumentationParser {
 
 	/** Interceptor of the parsed elements for the parameters.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1987,7 +1987,7 @@ public class SarlDocumentationParser {
 
 	/** Definition of the special tags.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2030,7 +2030,7 @@ public class SarlDocumentationParser {
 
 	/** Definition of the special tags.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

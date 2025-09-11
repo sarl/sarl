@@ -33,7 +33,7 @@ import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 /**
  * Provides the labels for the Package Explorer.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -63,7 +63,7 @@ public class DefaultPackageExplorerLabelProviderBuilder implements IPackageExplo
 
 	/** Private injection module.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

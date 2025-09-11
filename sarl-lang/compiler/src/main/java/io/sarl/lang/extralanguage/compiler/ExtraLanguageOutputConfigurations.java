@@ -25,7 +25,7 @@ import com.google.common.base.Strings;
 
 /** Utilities classes for the output configurations that are dedicated to the extra language generators.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

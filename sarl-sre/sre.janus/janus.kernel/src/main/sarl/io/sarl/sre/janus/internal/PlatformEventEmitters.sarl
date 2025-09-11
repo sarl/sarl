@@ -71,7 +71,7 @@ import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 
 /** Emit the space platform events.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -113,7 +113,7 @@ class SpaceEventEmitter implements SpaceRepositoryListener {
 
 /** Factory for a space event emitter.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -129,7 +129,7 @@ class SpaceEventEmitterFactory implements SpaceRepositoryListenerFactory {
 
 /** Emit the space participant platform events.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -184,7 +184,7 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 
 /** Factory for a space participant event emitter.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -201,7 +201,7 @@ class SpaceParticipantEventEmitterFactory implements SpaceParticipantListenerFac
 
 /** Emit the agent platform events.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -272,7 +272,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 
 /** Emit the context member platform events.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -323,7 +323,7 @@ class ContextMemberEventEmitter implements ExternalContextMemberListener {
 
 /** Emit the context member platform events.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -401,7 +401,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 /** 
  * Factory of the listeners on events related to the membership within a context.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -428,7 +428,7 @@ class SubHolonContextEventEmitterFactory implements InternalContextMembershipLis
 /** 
  * Events related to agent tasks' failures.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -467,7 +467,7 @@ class TaskAgentFailureEventEmitter implements FailureListener {
 /** 
  * Factory of listener for events related to agent tasks' failures.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

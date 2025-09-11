@@ -58,7 +58,7 @@ import static extension io.sarl.sre.janus.services.lifecycle.AgentLife.*
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -228,7 +228,7 @@ abstract class AbstractLifecycleService extends AbstractService implements Lifec
 	/** 
 	 * A dynamic provider of UUID for the newly created agents.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -565,7 +565,7 @@ abstract class AbstractLifecycleService extends AbstractService implements Lifec
 	 * A class enables to update the number of "spawn" queries and supporting the
 	 * multiple spawning of agents within a single call to "spawn".
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -602,7 +602,7 @@ abstract class AbstractLifecycleService extends AbstractService implements Lifec
 	/** 
 	 * A class that is runnable into a thread and implements the creation of a single agent.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -714,7 +714,7 @@ abstract class AbstractLifecycleService extends AbstractService implements Lifec
 	/** 
 	 * A class that is looking for stopping the SRE kernel when o more agent is alive.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -753,7 +753,7 @@ abstract class AbstractLifecycleService extends AbstractService implements Lifec
 /** 
  * This exception is thrown when the agent to spawn is not generated according to a valid SARL specification version.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -769,7 +769,7 @@ class InvalidSarlSpecificationException extends RuntimeException {
 /** 
  * This exception is thrown when the spawning service of agents is disabled.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

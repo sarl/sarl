@@ -28,7 +28,7 @@ import org.eclipse.xtext.builder.impl.PersistentDataAwareDirtyResource;
  *
  * <p>This class provides a fix for Issue #1115: Eclipse error on the editor state.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

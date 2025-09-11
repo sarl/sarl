@@ -113,7 +113,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /**
  * Utilities functions on JvmElements.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1573,7 +1573,7 @@ public final class Utils {
 	 * {@link Utils#getSARLLibraryVersionOnClasspath(TypeReferences, Notifier, OutParameter)}
 	 * function.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2300,7 +2300,7 @@ public final class Utils {
 	/**
 	 * Status of parsing the type parameters.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

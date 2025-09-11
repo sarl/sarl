@@ -47,7 +47,7 @@ import io.sarl.tests.api.tools.SarlValidationTestHelper;
  * {@code @Nullable}.
  *
  * @param <S> - the type of the service.
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

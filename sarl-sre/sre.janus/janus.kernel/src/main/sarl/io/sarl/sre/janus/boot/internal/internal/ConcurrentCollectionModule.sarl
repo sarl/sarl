@@ -30,7 +30,7 @@ import io.sarl.lang.core.util.DefaultConcurrentCollectionFactory
 /** 
  * Module for configuring the providers of concurrent collections.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -46,7 +46,7 @@ class ConcurrentCollectionModule implements BQModule {
 
 /** Provider of the module for configuring the providers of concurrent collections.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

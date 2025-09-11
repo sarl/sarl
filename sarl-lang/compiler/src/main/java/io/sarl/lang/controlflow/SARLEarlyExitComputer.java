@@ -40,7 +40,7 @@ import io.sarl.lang.sarl.SarlContinueExpression;
 
 /** Compute the early-exit flag for the SARL statements.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -114,7 +114,7 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 	/**
 	 * Exit point that is specific to SARL, not Xbase/Java.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

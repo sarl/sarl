@@ -34,7 +34,7 @@ import io.sarl.api.core.spaces.OpenEventSpace
 
 /** 
  * The boids simulation launching the SARL environment with the corresponding agent and ensuring the communication between agents and the GUI
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 class BoidsSimulation implements EventListener {
 

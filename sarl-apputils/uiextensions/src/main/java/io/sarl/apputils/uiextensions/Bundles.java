@@ -61,8 +61,8 @@ import io.sarl.lang.SARLConfig;
 /** Utilities around bundles. It should be replaced
  * by the OSGi, Eclipse and Xtext API.
  *
- * @author $Author: sgalland$
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -319,7 +319,7 @@ public final class Bundles {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -392,7 +392,7 @@ public final class Bundles {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -483,7 +483,7 @@ public final class Bundles {
 	 *
 	 * <p>The set entries are sorted in the insertion order.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -553,7 +553,7 @@ public final class Bundles {
 
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -998,7 +998,7 @@ public final class Bundles {
 
 		/** Iterator on symbolic names.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1033,7 +1033,7 @@ public final class Bundles {
 
 		/** Iterator on classpath entries.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1068,7 +1068,7 @@ public final class Bundles {
 
 		/** Iterator on runtime classpath entries.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -1103,7 +1103,7 @@ public final class Bundles {
 
 		/** Iterator on transitive dependencies.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$

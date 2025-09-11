@@ -69,7 +69,7 @@ import io.sarl.lang.core.util.SarlUtils;
  * Unfortunately, the {@link ClassPathDetector} class cannot be overridden because
  * most of its logic is defined in protected methods.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

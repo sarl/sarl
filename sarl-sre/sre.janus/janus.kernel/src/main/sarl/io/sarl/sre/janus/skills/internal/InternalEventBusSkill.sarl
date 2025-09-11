@@ -47,9 +47,9 @@ import static io.sarl.sre.janus.services.lifecycle.AgentLife.*
  * SRE implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
  * agent.
  * 
- * @author $Author: srodriguez$
- * @author $Author: ngaud$
- * @author $Author: sgalland$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -313,7 +313,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an
 	 * agent's behavior.
 	 * 
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

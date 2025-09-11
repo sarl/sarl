@@ -45,7 +45,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
  * <li>{@code E} is assignable from the argument's type.</li>
  * </ul>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -76,7 +76,7 @@ public class ObjectAndPrimitiveBasedCastOperationCandidateSelector implements IC
 	 * <li>{@code E} is assignable from the argument's type.</li>
 	 * </ul>
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

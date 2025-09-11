@@ -73,7 +73,7 @@ import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
 
 /** Abstract implementation of a table for conversion definition.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -718,7 +718,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 	/** Definition of the columns in the table of the type conversions.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -738,7 +738,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 	/** Definition of the conversion mapping.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -826,7 +826,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/**
 	 * Label provider for type conversion list.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -870,7 +870,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/**
 	 * Content provider to show a list of type conversions.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -904,7 +904,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/**
 	 * Cell modifier.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -972,7 +972,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 
 	/** Iterator on type conversions.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

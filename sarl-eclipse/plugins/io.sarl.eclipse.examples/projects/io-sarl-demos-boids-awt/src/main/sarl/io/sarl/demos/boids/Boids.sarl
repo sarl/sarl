@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d
 
 /** 
  * A boid agent evolving according C. Reynolds basic behavioral rules
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 agent Boid {

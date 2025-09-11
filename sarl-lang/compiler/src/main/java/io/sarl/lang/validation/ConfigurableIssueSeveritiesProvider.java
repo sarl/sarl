@@ -46,7 +46,7 @@ import org.eclipse.xtext.validation.SeverityConverter;
  * But, this configurable issue severity provider should not change the preferences.
  * The contract is to have internal overriding of the preferences in this provider.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -97,7 +97,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 	/** Configurable value provider.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -129,7 +129,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 	/** Configurable values.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

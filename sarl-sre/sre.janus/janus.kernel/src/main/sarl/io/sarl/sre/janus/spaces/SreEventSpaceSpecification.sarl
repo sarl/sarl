@@ -28,7 +28,7 @@ import io.sarl.lang.core.SpaceID
 /** 
  * Specification for standard event spaces into the SRE. 
  * 
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

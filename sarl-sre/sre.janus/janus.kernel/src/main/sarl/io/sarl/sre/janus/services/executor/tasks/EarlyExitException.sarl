@@ -30,7 +30,7 @@ import static extension io.sarl.sre.janus.services.executor.tasks.Runnables.*
  * 
  * <p>The executors are supposed to never log this function.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

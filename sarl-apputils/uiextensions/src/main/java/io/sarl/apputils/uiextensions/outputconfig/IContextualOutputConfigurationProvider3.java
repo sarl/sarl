@@ -31,7 +31,7 @@ import org.eclipse.xtext.generator.OutputConfiguration;
 
 /** Contextual provider of output configuration from Eclipse project. 
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

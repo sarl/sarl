@@ -35,7 +35,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 /**
  * Unit test for the issue #458: Thread deadlock problem in agent's destroy function
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -23,78 +23,78 @@ package io.sarl.demos.fireworks.events
 
 /** Trigger the launching area for starting the demo.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event Launch
 
 /** Setup the Area.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event CreateArea
 
 /** Make a rocket explode.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event Explode
 
 /** Ask a rocket to kill itself.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event KillRocket
 
 /** Ask a fire to kill itself.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event KillFire
 
 /** Say that a rocket is ready.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event RocketReady
 
 /** Trigger a rocket to update it's position.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event UpdateRocketPosition
 
 /** Trigger a fire to update it's position.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event UpdateFirePosition
 
 /** Say that a fire is ready.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event FireReady
 
 /** Makes a fire spray everywhere.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event SprayFire
 
 /** Carry all setup informations, send by the GUI.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event SetupSettings {
 	val rocketsQuantity : int
@@ -105,8 +105,8 @@ event SetupSettings {
 
 /** Freeze signal send by the GUI.
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 event Freeze {
 	val value : boolean

@@ -24,7 +24,7 @@ package io.sarl.sre.janus.spaces
 /** 
  * Abstract implementation of a space.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -38,7 +38,7 @@ abstract class AbstractSpace extends io.sarl.api.core.spaces.AbstractSpace {
 /** 
  * Listener on events related to the space.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

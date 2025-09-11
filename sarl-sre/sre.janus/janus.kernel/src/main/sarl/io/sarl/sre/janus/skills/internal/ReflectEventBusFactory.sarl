@@ -29,7 +29,7 @@ import java.util.function.Supplier
 /** 
  * Factory of event bus that is using the reflection method for accessing the event handlers.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

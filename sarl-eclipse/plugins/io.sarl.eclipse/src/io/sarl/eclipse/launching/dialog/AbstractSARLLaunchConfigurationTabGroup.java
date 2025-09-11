@@ -48,7 +48,7 @@ import io.sarl.apputils.eclipseextensions.launching.SarlLaunchConfigurationPanel
  *
  * <p>This class provides the tools for helping to build a tab group for running SARL agents and SARL applications.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

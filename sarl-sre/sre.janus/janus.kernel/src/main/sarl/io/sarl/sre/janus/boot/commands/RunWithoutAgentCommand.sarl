@@ -40,7 +40,7 @@ import static extension io.bootique.BQCoreModule.extend
 /**
  * Command for running the SRE without agent at boot time.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -101,7 +101,7 @@ class RunWithoutAgentCommand extends AbstractRunCommand {
 
 /** Module for the command for running the SRE without an agent.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -117,7 +117,7 @@ class RunWithoutAgentCommandModule implements BQModule {
 
 /** Provider of the module for running the SRE without an agent.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

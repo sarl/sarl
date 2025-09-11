@@ -35,7 +35,7 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 /**
  * Remove an implemented type.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -138,7 +138,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 
 	/** Type of the removal of an implemented type.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

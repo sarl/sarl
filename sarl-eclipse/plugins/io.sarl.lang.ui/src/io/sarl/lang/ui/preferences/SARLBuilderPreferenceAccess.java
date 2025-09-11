@@ -30,7 +30,7 @@ import io.sarl.lang.compiler.GeneratorConfig2;
 
 /** Accessors to the preferences for the SARL builder.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -122,7 +122,7 @@ public class SARLBuilderPreferenceAccess {
 
 	/** Initializer of the preference store.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -68,7 +68,7 @@ import io.sarl.lang.ui.internal.LangActivator;
 
 /** Abstract implementation for the configuration block dedicated to an extra language generator.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -685,7 +685,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 
 	/** Internal data.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

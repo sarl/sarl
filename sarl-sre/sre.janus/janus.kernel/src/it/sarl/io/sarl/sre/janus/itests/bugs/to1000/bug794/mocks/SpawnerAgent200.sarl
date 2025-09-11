@@ -22,7 +22,7 @@
 package io.sarl.sre.janus.itests.bugs.to1000.bug794.mocks
 
 /**
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

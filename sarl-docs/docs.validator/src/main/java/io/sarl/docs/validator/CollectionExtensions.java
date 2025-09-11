@@ -30,7 +30,7 @@ import com.google.common.collect.Iterables;
 
 /** Extended Functions for writing collection-based code within the documentation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

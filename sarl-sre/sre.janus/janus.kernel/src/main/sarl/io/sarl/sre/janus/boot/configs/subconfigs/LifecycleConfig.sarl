@@ -41,7 +41,7 @@ import static extension io.bootique.BQCoreModule.extend
 /** 
  * Configuration for the agent lifecycle management.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -184,7 +184,7 @@ class LifecycleConfig {
 /** 
  * Module for the agent lifecycle configuration.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -226,7 +226,7 @@ class LifecycleConfigModule implements BQModule {
 
 /** Provider of the module for the agent lifecycle configuration.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

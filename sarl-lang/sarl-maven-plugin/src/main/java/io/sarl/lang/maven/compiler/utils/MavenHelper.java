@@ -60,7 +60,7 @@ import org.slf4j.Logger;
 /** This class permits to support the incompatible Maven API
  * from the same Mojo code (says 3.0 and 3.1 APIs).
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 
 /** Suppress warnings programmatically with {@code @SuppressWarnings}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -101,7 +101,7 @@ public class DefaultProgrammaticWarningSuppressor implements IProgrammaticWarnin
 
 	/** The severity provider that supports {@code @SuppressWarnings}.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

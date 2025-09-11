@@ -49,7 +49,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
  * making easier the cancellation.
  *
  * @param <T> the type of the owner.
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

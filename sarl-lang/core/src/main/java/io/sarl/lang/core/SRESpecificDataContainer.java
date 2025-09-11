@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>Any SRE-specific data into this object is assumed to be transient (not serializable).
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -34,7 +34,7 @@ import org.eclipse.xtext.common.types.JvmVisibility;
 
 /** Provide the default visibility modifier for elements.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

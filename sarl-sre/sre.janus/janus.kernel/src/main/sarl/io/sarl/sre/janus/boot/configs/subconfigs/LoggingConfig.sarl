@@ -36,7 +36,7 @@ import static io.sarl.sre.janus.boot.configs.subconfigs.LoggingConfig.*
 /** 
  * Configuration for the agent logging service.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -115,7 +115,7 @@ class LoggingConfig {
 /** 
  * Module for the agent logging service configuration.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -131,7 +131,7 @@ class LoggingConfigModule implements BQModule {
 
 /** Provider of the module for the logging service configuration.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -40,7 +40,7 @@ import io.sarl.lang.validation.StandardSarlConfigurableIssueCodesProvider;
 
 /** This class tests the {@link SarlUtils} for SARL.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -89,7 +89,7 @@ public class SARLValidatorConfigurationBlockTest extends AbstractSarlTest {
 	/** Implementation of a subtype of {@code SARLValidatorConfigurationBlock}
 	 * for aving a direct access to the tested functions.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

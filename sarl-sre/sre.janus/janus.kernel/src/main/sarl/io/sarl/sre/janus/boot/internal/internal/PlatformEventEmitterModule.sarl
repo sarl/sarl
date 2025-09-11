@@ -47,7 +47,7 @@ import jakarta.inject.Singleton
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -106,7 +106,7 @@ class PlatformEventEmitterModule implements BQModule {
 
 /** Provider of the module for configuring the methods for firing the specific events that are defined into the SARL API.
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

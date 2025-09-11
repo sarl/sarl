@@ -26,7 +26,7 @@ import org.arakhne.afc.vmutil.DynamicURLClassLoader
 
 /** Factory for SRE main object.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -46,7 +46,7 @@ interface RunnableSREBootstrapFactory {
 /** Standard factory for the SRE main object.
  * This factory create the main object with the default factories.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -68,7 +68,7 @@ class StandardRunnableSREBootstrapFactory implements RunnableSREBootstrapFactory
  * This factory create the main object inside a dynamic class loader and
  * create all the modules of the SRE in the context of the class loader.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

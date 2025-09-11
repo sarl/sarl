@@ -35,7 +35,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
  *
  * <p>The outline page is expanding the nodes at the startup.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

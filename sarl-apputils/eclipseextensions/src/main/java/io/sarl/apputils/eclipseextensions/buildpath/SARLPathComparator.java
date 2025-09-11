@@ -49,7 +49,7 @@ import io.sarl.lang.SARLConfig;
  * <tr><td></td><td>600</td><td>Any generated code</td><td><code>.../generated-sources/...</code></td></tr>
  * </table>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateProposalProvider;
  *
  * <p>This provider is overridden for provided the correct template's icon.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

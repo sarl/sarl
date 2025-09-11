@@ -29,7 +29,7 @@ import io.sarl.lang.ui.preferences.AbstractPreferenceAccess;
 
 /** Preferences for the SARL Source viewer.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -82,7 +82,7 @@ public class SARLSourceViewerPreferenceAccess extends AbstractPreferenceAccess {
 
 	/** Initializer of the preferences for the SARL Source viewer.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

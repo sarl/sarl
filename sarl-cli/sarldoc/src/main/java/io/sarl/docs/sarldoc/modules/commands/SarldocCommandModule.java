@@ -38,7 +38,7 @@ import jakarta.inject.Singleton;
 
 /** Module for the sarldoc command.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$compiler
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

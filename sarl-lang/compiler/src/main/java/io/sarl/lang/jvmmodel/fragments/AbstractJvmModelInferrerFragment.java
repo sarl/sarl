@@ -89,7 +89,7 @@ import io.sarl.lang.util.Utils;
 
 /** Abstract implementation of a fragment that may be used for inferring the JVM model.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -831,7 +831,7 @@ public abstract class AbstractJvmModelInferrerFragment {
 
 	/** Abstract implementation of a fragment that may be used for inferring the JVM model.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -25,7 +25,7 @@ package io.sarl.eclipse.runtime;
  * Constants that are representing the different command-line options that a
  * SRE may provide and that are supported by the Eclipse tools.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

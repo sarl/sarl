@@ -31,7 +31,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 /** Compiler for creating inline expressions. Inline expressions are usually attached
  * to the SARL code with the {@link org.eclipse.xtext.xbase.lib.Inline @Inline} annotation.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

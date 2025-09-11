@@ -27,7 +27,7 @@ import org.eclipse.xtext.util.Strings;
  *
  * @param text the text.
  * @param conversion is the description of the conversion.
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

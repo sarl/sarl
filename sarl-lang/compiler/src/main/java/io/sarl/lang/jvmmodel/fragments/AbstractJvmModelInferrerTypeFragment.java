@@ -95,7 +95,7 @@ import io.sarl.lang.util.Utils.TypeParameterStatus;
 
 /** Abstract implementation of a fragment that may be used for inferring type to JVM model.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1560,7 +1560,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 
 	/** Informations about the behavior units and the guards.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1607,7 +1607,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 
 	/** Functions about an event for the behavior units.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1662,7 +1662,7 @@ public abstract class AbstractJvmModelInferrerTypeFragment extends AbstractJvmMo
 	 *
 	 * @param name the name of the function.
 	 * @param bounds the upper bounds for generic type parameters.
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

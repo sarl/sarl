@@ -28,7 +28,7 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 
 /** Tests for sequence of documented members.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

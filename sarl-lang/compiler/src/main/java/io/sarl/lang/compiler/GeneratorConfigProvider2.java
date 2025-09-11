@@ -37,7 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Provider of a generator configuration v2.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -90,7 +90,7 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 
 	/** Adapter for providing the SARL generator configuration.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -158,7 +158,7 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 
 		/** EMF Adapter.
 		 *
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$

@@ -82,7 +82,7 @@ import io.sarl.lang.tests.api.AbstractSarlTest;
 
 /** Test the builders of {@code CodeBuilderFactory}.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

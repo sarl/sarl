@@ -40,7 +40,7 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 /**
  * Unit test for the issue #91: Stop agent on initialization failure?
  * 
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

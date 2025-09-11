@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** This provides an implementation of a dynamic skill provider that delegates
  * to the first known dynamic skill provider that is able to provide a skill.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

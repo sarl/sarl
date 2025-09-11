@@ -47,7 +47,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li>it is used in the implementation of the {@link Object#toString()} function.</li>
  * </ul>
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

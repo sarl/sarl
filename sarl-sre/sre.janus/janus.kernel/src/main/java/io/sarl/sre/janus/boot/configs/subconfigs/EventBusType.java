@@ -28,7 +28,7 @@ import com.google.common.base.Strings;
 /**
  * Type of event bus to be created for each agent.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

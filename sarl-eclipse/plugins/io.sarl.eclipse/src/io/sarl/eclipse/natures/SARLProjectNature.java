@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * SARL custom project nature.
  *
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

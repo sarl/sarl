@@ -48,7 +48,7 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 /**
  * A specialized validator to deal with SARL script without considering the defined elements inside.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

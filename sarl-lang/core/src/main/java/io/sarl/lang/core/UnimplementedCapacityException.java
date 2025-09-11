@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * and no implementation has been mapped. To define the skill use
  * {@link Agent#setSkill(Skill, Class...)} or {@link Agent#setSkillIfAbsent(Skill, Class...)}.
  *
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

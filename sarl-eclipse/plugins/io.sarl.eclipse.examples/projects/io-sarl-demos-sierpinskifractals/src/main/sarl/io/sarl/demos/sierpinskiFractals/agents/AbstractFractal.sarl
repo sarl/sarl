@@ -34,8 +34,8 @@ import io.sarl.demos.sierpinskiFractals.objects.Vector2D
 /**
  * Abstract implementation of a fractal agent
  *
- * @author $Author: abartuccio$
- * @author $Author: ngaud$
+ * @author <a href="https://github.com/klmp200">Antoine Bartuccio</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  */
 abstract agent AbstractFractal {
 

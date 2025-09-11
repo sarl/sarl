@@ -25,7 +25,7 @@ import org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProc
 
 /** Provides proposals for the JavaDoc.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

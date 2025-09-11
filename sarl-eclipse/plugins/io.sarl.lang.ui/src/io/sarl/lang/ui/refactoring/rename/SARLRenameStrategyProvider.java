@@ -32,7 +32,7 @@ import io.sarl.lang.sarl.SarlScript;
 
 /** Provider of rename strategies in the SARL context.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

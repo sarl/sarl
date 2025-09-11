@@ -66,7 +66,7 @@ import io.sarl.lang.util.Utils;
 
 /** Fragment for inferred the events to the JVM model.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -372,7 +372,7 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 
 	/** Generator of synthetic constructors.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -480,7 +480,7 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 		 * @param signature the formal definition of the constructor signature.
 		 * @param parameters list of details for the formal parameters.
 		 * @param body the generator for the constructor body.
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -496,7 +496,7 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 		 * @param type the type of the parameter.
 		 * @param source the Ecore object that is the source of the parameter.
 		 * @param isFinal indicates if the parameter is associated to a final field.
-		 * @author $Author: sgalland$
+		 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
@@ -510,7 +510,7 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 
 	/** Provider of formal parameters based on declared fields.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -587,7 +587,7 @@ public class EventInferrerFragment extends AbstractJvmModelInferrerTypeFragment 
 
 	/** Provider of formal parameters based on inherited constructors and declared fields.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

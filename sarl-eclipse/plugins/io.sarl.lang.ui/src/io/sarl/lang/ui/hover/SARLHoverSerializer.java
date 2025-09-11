@@ -36,7 +36,7 @@ import io.sarl.lang.util.Utils;
  * <p>This class extends the standard Xtend serializer by replacing the example of code, written
  * in Java or Xtend, by the same example with the SARL syntax.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

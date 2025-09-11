@@ -42,7 +42,7 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 
 /** Provide the base functions and context used for inferring JVM elements from SARL element.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

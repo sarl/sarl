@@ -75,8 +75,8 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
 /** Provides tools for setting up and managing the Eclipse workspace.
  * This class was adapted from the Xtend test suite.
  *
- * @author $Author: sgalland$
- * @author $Author: ngaud$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
+ * @author <a href="http://www.ciad-lab.fr/nicolas_gaud">Nicolas Gaud</a>
  * @author Jan Koehnlein - Xtend contributor
  * @version $FullVersion$
  * @mavengroupid $GroupId$

@@ -27,7 +27,7 @@ import java.lang.annotation.Target
 /** 
  * Annotation for injection of the kernel.
  * 
- * @author $Author: srodriguez$
+ * @author <a href="http://www.sebastianrodriguez.com.ar/">Sebastian Rodriguez</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

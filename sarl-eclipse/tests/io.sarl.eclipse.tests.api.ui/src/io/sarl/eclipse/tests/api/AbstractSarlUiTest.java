@@ -45,7 +45,7 @@ import io.sarl.tests.api.Nullable;
 
 /** This class is inspired from AbstractXbaseUITestCase of Xtext.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -363,7 +363,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Factory of a Java project.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

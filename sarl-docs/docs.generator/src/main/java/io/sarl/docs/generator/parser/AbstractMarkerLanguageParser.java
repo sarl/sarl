@@ -42,7 +42,7 @@ import io.sarl.docs.generator.parser.SarlDocumentationParser.Tag;
 
 /** Abstract parser for all the marker languages.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -330,7 +330,7 @@ public abstract class AbstractMarkerLanguageParser {
 
 	/** Validation handler.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -394,7 +394,7 @@ public abstract class AbstractMarkerLanguageParser {
 
 	/** Context that describes the references.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

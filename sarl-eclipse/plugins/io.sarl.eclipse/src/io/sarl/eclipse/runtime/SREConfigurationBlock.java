@@ -56,7 +56,7 @@ import io.sarl.eclipse.preferences.SREsPreferencePage;
  * Block of widgets that permits to select and
  * configure a SARL runtime environment.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -687,7 +687,7 @@ public class SREConfigurationBlock {
 
 	/** Listener of changes in the configuration block for SREs.
 	 *
-	 * @author $Author: sgalland$
+	 * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

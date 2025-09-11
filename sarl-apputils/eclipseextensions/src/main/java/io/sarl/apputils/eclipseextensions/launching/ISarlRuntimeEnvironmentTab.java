@@ -24,7 +24,7 @@ package io.sarl.apputils.eclipseextensions.launching;
 /**
  * Interace for representing any tab for the SARL run-time environment configuration.
  *
- * @author $Author: sgalland$
+ * @author <a href="http://www.ciad-lab.fr/stephane_galland">St&eacute;phane Galland</a>
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
