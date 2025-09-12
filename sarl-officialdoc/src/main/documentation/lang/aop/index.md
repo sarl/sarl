@@ -6,6 +6,8 @@ This collection of documentation pages serves as a foundational reference for de
 
 ## Core Concepts and Features
 
+The core concepts of SARL are defined in the [SARL metamodel](./Metamodel.md). It provides fundamental abstractions for implementing the individual, social and collective dimensions of a multi-agent system.
+
 ### Agents
 
 Agents are the fundamental building blocks of SARL applications. They encapsulate state, behavior, and communication capabilities, enabling them to act autonomously and interact with other agents or their environment. The [Agent Reference](./Agent.md) document provides a thorough exploration of agent definition, lifecycle, and the mechanisms for agent interaction and coordination.
