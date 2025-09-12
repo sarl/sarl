@@ -242,6 +242,7 @@
           </execution>
         </executions>
         <configuration>
+          <argLine>-javaagent:${org.mockito:mockito-core:jar} -XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
           <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
             <disable>false</disable>
             <encoding>UTF-8</encoding>
