@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.eclipse.features.sre.janus"
       label="Janus SRE for Eclipse"
-      version="0.15.1.qualifier"
+      version="1.0.0.qualifier"
       plugin="io.sarl.eclipse.sre.janus">
 
    <description url="http://www.sarl.io/about/">
@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2025 SARL.io, the Original Authors and Main Authors
+      Copyright 2014-2026 SARL.io, the original authors and main authors
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -222,7 +222,7 @@
    </url>
 
    <requires>
-      <import feature="io.sarl.eclipse.features.sarlcompiler" version="0.15.1.qualifier"/>
+      <import feature="io.sarl.eclipse.features.sarlcompiler" version="1.0.0.qualifier"/>
    </requires>
 
    <plugin

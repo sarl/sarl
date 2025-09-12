@@ -6,7 +6,7 @@
  *
  * $Id$
  * 
- * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2026 SARL.io, the original authors and main authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

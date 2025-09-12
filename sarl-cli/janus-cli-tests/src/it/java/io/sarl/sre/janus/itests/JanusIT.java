@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2026 SARL.io, the original authors and main authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,9 +71,11 @@ public class JanusIT {
 		final var arguments = TestShell.mergeJarArguments(this.java.getAbsolutePath(), this.janusCmd.getAbsolutePath(), "--help");
 		final var stdout = TestShell.run(arguments);
 		TestAssertions.assertMultiContains(stdout,
-				"Janus is an open-source multi-agent platform fully implemented in SARL",
-				SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + " and Java "
-				+ SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+				"Janus is an open-source multi-agent platform fully",
+				"SARL " + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING,
+				"Java " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
+				"--classpath=path",
+				"SRE_BOOT_ROOT_CONTEXT_BOOT_TYPE");
 	}
 
 

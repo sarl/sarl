@@ -48,12 +48,12 @@
 				<filterset>
 					<filter token="GROUP_ID" value="@{group}"/>
 					<filter token="PROJECT_NAME" value="@{name}"/>
-					<filter token="PROJECT_VERSION" value="0.15.1-SNAPSHOT"/>
-					<filter token="SARL_VERSION" value="0.15.1-SNAPSHOT"/>
+					<filter token="PROJECT_VERSION" value="1.0.0-SNAPSHOT"/>
+					<filter token="SARL_VERSION" value="1.0.0-SNAPSHOT"/>
 					<filter token="AFC_VERSION" value="17.0"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
 					<filter token="JAVA_VERSION" value="21"/>
-					<filter token="RELEASE_YEAR" value="2025"/>
+					<filter token="RELEASE_YEAR" value="2026"/>
 					<filter token="MAVEN_COMPILER_VERSION" value="3.14.0"/>
 					<filter token="OPENJFX_VERSION" value="21.0.8"/>
 				</filterset>
@@ -63,12 +63,12 @@
 				<filterset>
 					<filter token="GROUP_ID" value="@{group}"/>
 					<filter token="PROJECT_NAME" value="@{name}"/>
-					<filter token="PROJECT_VERSION" value="0.15.1-SNAPSHOT"/>
-					<filter token="SARL_VERSION" value="0.15.1-SNAPSHOT"/>
+					<filter token="PROJECT_VERSION" value="1.0.0-SNAPSHOT"/>
+					<filter token="SARL_VERSION" value="1.0.0-SNAPSHOT"/>
 					<filter token="AFC_VERSION" value="17.0"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
 					<filter token="JAVA_VERSION" value="21"/>
-					<filter token="RELEASE_YEAR" value="2025"/>
+					<filter token="RELEASE_YEAR" value="2026"/>
 					<filter token="MAVEN_COMPILER_VERSION" value="3.14.0"/>
 					<filter token="OPENJFX_VERSION" value="21.0.8"/>
 				</filterset>

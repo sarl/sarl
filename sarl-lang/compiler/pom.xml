@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.lang</groupId>
   <artifactId>compiler</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>SARL Compiler</name>
   <description>Main implementation of the SARL compiler</description>
   <packaging>jar</packaging>

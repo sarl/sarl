@@ -262,10 +262,10 @@ Revert step 2.1; and change the following:
 === 4.2) Change the UI resources.
 
 * **Splash screens**
-*** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A9`)
-	to be copied into the module `io.sarl.eclipse`
-*** A file `splash.bmp` for the main SARL DSL application with `R8G8B8` configuration (no `A9`)
-	to be copied into the module `io.sarl.eclipse-dsl4sarl`
+*** A file `splash.bmp` for the main SARL IDE application with `R8G8B8` configuration (no `A8`)
+	to be copied into the module `io.sarl.eclipse.ideapp`
+*** A file `splash.bmp` for the main SARL DSL application with `R8G8B8` configuration (no `A8`)
+	to be copied into the module `io.sarl.eclipse.devapp`
 *** Copy the slash screens into the associated modules
 *** Find the name of the author of the background image, and update the following files to mention this author:
 **** file: `io.sarl.eclipse*/OSGI-INF/l10n/bundle.properties`, field: `about.general.text`
@@ -273,12 +273,16 @@ Revert step 2.1; and change the following:
 *** The file `eclipse-about-banner.png` for both the main SARL IDE and DSL applications with standard PNG configuration
 *** If the author of the background is different than for the splash screen, add the author's name into the properties as explained above
 
-=== 4.3) Compiling locally without error.
+=== 4.3) Update the BOM.
+
+Update the definition of the BOM in `sarl-bom/sarl-properties/sarl-lang.properties`.
+
+=== 4.4) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
-     $> ./build-all.sh
+     $> ./build-all.sh -Dmaven.test.skip=true
 
-=== 4.4) Commit and push to Github:
+=== 4.5) Commit and push to Github:
 
      $> git commit
      $> git push --all

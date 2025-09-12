@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2026 SARL.io, the original authors and main authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ final class SreVersion {
 	/** The version number of the current release of the SRE platform.
 	 */
 	@Generated(value = "maven")
-	public static val RELEASE_VERSION = "3.0.15.1"
+	public static val RELEASE_VERSION = "3.1.0.0"
 
 	/** Flag that indicates if the current SRE platform is a stable release.
 	 *

@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree
 from datetime import datetime
+from pprint import pprint
 
 NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 NAMESPACES = {'xmlns' : NAMESPACE}
@@ -244,32 +245,33 @@ def replaceMaven(filename, generation_date, exclusions):
 ## this_year: the current year
 def doCopyrightReplacement0(source, this_year):
 	prefix = source.group(1)
-	return prefix + str(this_year) + " SARL.io, the Original Authors and Main Authors"
+	return prefix + str(this_year) + " SARL.io, the original authors and main authors"
 
 #########################
 ## source: text to replace
 ## this_year: the current year
 def doCopyrightReplacement1(source, this_year):
 	prefix = source.group(1)
-	return prefix + "-" + str(this_year) + " SARL.io, the Original Authors and Main Authors"
+	return prefix + "-" + str(this_year) + " SARL.io, the original authors and main authors"
 
 #########################
 ## filename: the name of the file to be updated
-def replaceCopyrights(filename):
-	this_year = str(datetime.now().strftime("%Y"))
+## end_year: final year to consider in the copyrights
+def replaceCopyrights(filename, end_year):
 	with open (filename, "r") as myfile:
 		data = myfile.readlines()
 	data2 = []
-	names = [ "SARL.io, the Original Authors and Main Authors",
-		  "the original authors or authors"
-		]
+#		  "the original authors or authors"
 	for line in data:
-		for name in names:
-			line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+-)[0-9]+ " + name,
-				lambda x : doCopyrightReplacement0(x, this_year), line)
-			line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+) " + name,
-				lambda x : doCopyrightReplacement1(x, this_year), line2)
+		# Format Y1-Y2
+		line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+\\-)[0-9]+ SARL.io, the Original Authors and Main Authors", lambda x : doCopyrightReplacement0(x, str(end_year)), line, flags=re.I)
+		line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+\\-)[0-9]+ the original authors or authors", lambda x : doCopyrightReplacement0(x, str(end_year)), line2, flags=re.I)
+		# Format Y1
+		line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+) SARL.io, the Original Authors and Main Authors", lambda x : doCopyrightReplacement1(x, str(end_year)), line2, flags=re.I)
+		line2 = re.sub("(Copyright (?:\\(C\\) )?[0-9]+) the original authors or authors", lambda x : doCopyrightReplacement1(x, str(end_year)), line2, flags=re.I)
 		data2.append(line2)
+	#pprint(data2)
+	#raise Exception(str(end_year))
 	with open (filename, "w") as myfile:
 		myfile.write("".join(data2))
 
@@ -454,6 +456,7 @@ parser.add_argument('--nextstable', help="next stable version number without -SN
 parser.add_argument('--nextdevel', help="next development version number without -SNAPSHOT and .qualifier", type=str)
 parser.add_argument('--changelogfile', help="path to the changelog file. Default is target/changelog.md", type=str)
 parser.add_argument('--addpomfile', help="Add a file in the list of accepted Maven pom files.", action="append")
+parser.add_argument('--endcopyright', help="Year to be considered as the end of copyright (default is this current year).", type=int)
 args = parser.parse_args()
 
 mvn_root = readXMLRootNode(str(args.pom))
@@ -473,6 +476,11 @@ if mvn_root is not None:
 	mvn_next_devel_version = next_devel_version + "-SNAPSHOT"
 	eclipse_next_devel_version = next_devel_version + ".qualifier"
 
+	if args.endcopyright:
+		end_copyright_year = args.endcopyright
+	else:
+		end_copyright_year = str(datetime.now().strftime("%Y"))
+
 	print("> Current stable version: " + current_stable_version)
 	print("> Current devel version: " + mvn_version_number)
 	print("> Next stable version: " + next_stable_version)
@@ -484,6 +492,7 @@ if mvn_root is not None:
 	elif args.maven:
 		print("> Action: update Maven general tags")
 	elif args.copyrights:
+		print("> Copyright end year: " + str(end_copyright_year))
 		print("> Action: update the copyright text")
 	elif args.releaseversion:
 		print("> Action: move to the release version " + next_stable_version)
@@ -517,7 +526,7 @@ if mvn_root is not None:
 				replaceMaven(filename, generation_date, exclusions)
 			if args.copyrights:
 				show_update_file_msg(filename, changed_filenames)
-				replaceCopyrights(filename)
+				replaceCopyrights(filename, end_copyright_year)
 
 		# Maven pom.xml
 		files = buildMavenFileList(args.addpomfile)
@@ -534,7 +543,7 @@ if mvn_root is not None:
 		for filename in files:
 			if args.copyrights:
 				show_update_file_msg(filename, changed_filenames)
-				replaceCopyrights(filename)
+				replaceCopyrights(filename, end_copyright_year)
 			if args.releaseversion:
 				show_update_file_msg(filename, changed_filenames)
 				moveToReleaseVersionInEclipse(eclipse_version_number, next_stable_version, filename)

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.docs</groupId>
   <artifactId>docs.generator</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>Documentation Generator</name>
   <description>Maven plugin for generating the SARL documentation</description>
   <packaging>maven-plugin</packaging>

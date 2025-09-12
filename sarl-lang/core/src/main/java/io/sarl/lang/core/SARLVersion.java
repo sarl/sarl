@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2025 SARL.io, the Original Authors and Main Authors.
+ * Copyright (C) 2014-2026 SARL.io, the original authors and main authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public final class SARLVersion {
 	 * represent the version of the SARL specification and tools.
 	 */
 	@Generated(value = "maven")
-	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.15"; //$NON-NLS-1$
+	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "1.0"; //$NON-NLS-1$
 
 	/** The version number of the current release of the SARL library, e.g. {@code 0.13.0}.
 	 *
@@ -55,7 +55,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
 	@Generated(value = "maven")
-	public static final String SARL_RELEASE_VERSION = "0.15.1"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION = "1.0.0"; //$NON-NLS-1$
 
 	/** The version number in OSGI format of the current release of the SARL library, e.g. {@code 0.13.0.qualifier}.
 	 *
@@ -65,7 +65,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
 	@Generated(value = "maven")
-	public static final String SARL_RELEASE_VERSION_OSGI = "0.15.1.qualifier"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_OSGI = "1.0.0.qualifier"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library, e.g. {@code 0.13.0-SNAPSHOT}.
 	 *
@@ -75,7 +75,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
 	@Generated(value = "maven")
-	public static final String SARL_RELEASE_VERSION_MAVEN = "0.15.1-SNAPSHOT"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_MAVEN = "1.0.0-SNAPSHOT"; //$NON-NLS-1$
 
 	/** The status of the SARL specification, e.g. {@code Draft Release}.
 	 *

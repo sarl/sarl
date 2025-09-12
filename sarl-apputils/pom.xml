@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.sarl.apputils</groupId>
   <artifactId>sarl-apputils</artifactId>
-  <version>0.15.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>SARL Application Utils</name>
   <description>Utilities for building a SARL application</description>

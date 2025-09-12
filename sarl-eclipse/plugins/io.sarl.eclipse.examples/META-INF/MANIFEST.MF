@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.eclipse.examples;singleton:=true
 Automatic-Module-Name: io.sarl.eclipse.examples
-Bundle-Version: 0.15.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: SARL.io
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-21

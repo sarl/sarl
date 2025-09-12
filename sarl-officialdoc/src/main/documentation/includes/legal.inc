@@ -1,6 +1,6 @@
 ## Version Specification
 
-* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")
+* Specification: SARL General-purpose Agent-Oriented Programming Language
 * Version: [:sarl.specification.release_version!]
 * Status: [:sarl.specification.release_status!]
 * Release: [:sarl.specification.release_date!]
