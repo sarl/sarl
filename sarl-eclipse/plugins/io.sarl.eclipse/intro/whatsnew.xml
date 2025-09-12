@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+  	<extensionContent id="iosarleclipsewhatsnew" style="css/whatsnew.css" name="SARL News" path="whatsnew/@">
+		<group style-id="content-group" id="iosarleclipsewhatsnewgroup">
+       		<link id="iosarleclipsewhatsnewlink" style-id="content-link"
+       		      label="Changes in SARL 1.0.0"
+       		      url="http://www.sarl.io/download/changes_1.0.0.html">
+          		<text>The new and noteworthy updates for SARL 1.0.0 can be found here.</text>
+       		</link>
+       	</group>
+  	</extensionContent>
+</introContent>

@@ -749,4 +749,11 @@
             class="io.sarl.eclipse.natures.DefaultProjectFolderAccessor">
       </projectFolderAccessor>
    </extension>
+   <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro/whatsnew.xml">
+      </configExtension>
+   </extension>
 </plugin>

@@ -66,7 +66,10 @@ Require-Bundle: io.sarl.lang.ide;bundle-version="0.15.0",
  com.google.gson;bundle-version="2.13.1",
  org.eclipse.core.net;bundle-version="1.5.800",
  org.eclipse.core.expressions;bundle-version="3.9.500",
- org.eclipse.core.variables;bundle-version="3.6.600"
+ org.eclipse.core.variables;bundle-version="3.6.600",
+ org.eclipse.ui.intro;bundle-version="3.7.700",
+ org.eclipse.ui.intro.universal;bundle-version="3.5.600",
+ org.eclipse.ui;bundle-version="3.207.300"
 Bundle-Activator: io.sarl.eclipse.SARLEclipsePlugin
 Bundle-Vendor: SARL.io
 Bundle-RequiredExecutionEnvironment: JavaSE-21

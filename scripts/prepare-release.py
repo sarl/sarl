@@ -127,6 +127,16 @@ def buildEclipseTargetPlatformList():
 	return fileList
 
 #########################
+##
+def buildWhatsNewXmlFileList():
+	fileList = []
+	for root, dirs, files in os.walk("."):
+		for filename in files:
+			if filename.endswith("whatsnew.xml"):
+				fileList.append(os.path.join(root, filename))
+	return fileList
+
+#########################
 ## enableParent: indicates if the files in the parent folder must be updated also
 def buildReadmeFileList(enableParent):
 	candidates = [
@@ -280,7 +290,7 @@ def replaceCopyrights(filename, end_year):
 def readMavenVersion(root):
 	parent_node = root.find("xmlns:parent", namespaces=NAMESPACES)
 	version = readXml(root, 'version')
-	if not version and parent_node is not None:
+	if not version and parent_node:
 		version = readXml(parent_node, 'version')
 	if not version:
 		raise Exception("Unable to determine the Maven artifact version for: " + filename)
@@ -402,9 +412,15 @@ def buildCurrentStableVersion(current_version, previous_stable):
 	if previous_stable:
 		return previous_stable
 	elements = current_version.split(".")
+	#pprint(current_version)
+	#pprint(previous_stable)
+	#pprint(elements)
 	if int(elements[1]) <= 0:
-		return str(int(elements[0]) - 1) + ".0.0"
-	return str(elements[0]) + "." + str(int(elements[1]) - 1) + ".0"
+		vers = str(int(elements[0]) - 1) + ".0.0"
+	else:
+		vers = str(elements[0]) + "." + str(int(elements[1]) - 1) + ".0"
+	#pprint(vers)
+	return vers
 
 #########################
 ## current_version: the current version (snapshot)
@@ -437,6 +453,25 @@ def generateChanges(current_stable_version, changelog_file):
 		myfile.write(gitoutput.decode("utf-8"))
 
 #########################
+## current_stable_version: the version number of the current stable/development in the what's new xml file
+## current_devel_version: the version number of the current stable/development in the what's new xml file
+## next_version: the version number of the next stable/development in the what's new xml file
+## filename: the filename to change
+def moveToReleaseVersionInWhatsNew(current_stable_version, current_devel_version, next_version, filename):
+	print("> " + current_stable_version + " -> " + next_version)
+	print("> " + current_devel_version + " -> " + next_version)
+	with open (filename, "r") as myfile:
+		data = myfile.readlines()
+	data2 = []
+	for line in data:
+		line2 = line.replace(current_stable_version, next_version)
+		line2 = line2.replace(current_devel_version, next_version)
+		data2.append(line2)
+	with open (filename, "w") as myfile:
+		myfile.write("".join(data2))
+
+
+#########################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument('pom', help="path to the root Maven pom file")
@@ -459,6 +494,7 @@ parser.add_argument('--addpomfile', help="Add a file in the list of accepted Mav
 parser.add_argument('--endcopyright', help="Year to be considered as the end of copyright (default is this current year).", type=int)
 args = parser.parse_args()
 
+print("> Root POM file: " + args.pom)
 mvn_root = readXMLRootNode(str(args.pom))
 
 if mvn_root is not None:
@@ -470,7 +506,8 @@ if mvn_root is not None:
 	mvn_version_number = readMavenVersion(mvn_root)
 	eclipse_version_number = mvn_version_number.replace("-SNAPSHOT", ".qualifier")
 	
-	current_stable_version = buildCurrentStableVersion(mvn_version_number, args.currentstable)
+	current_devel_version = mvn_version_number.replace("-SNAPSHOT", "")
+	current_stable_version = buildCurrentStableVersion(current_devel_version, args.currentstable)
 	next_stable_version = buildNextStableVersion(mvn_version_number, args.nextstable)
 	next_devel_version = buildNextDevelVersion(mvn_version_number, args.nextdevel)
 	mvn_next_devel_version = next_devel_version + "-SNAPSHOT"
@@ -507,14 +544,14 @@ if mvn_root is not None:
 	if args.changes:
 		generateChanges(current_stable_version, args.changelogfile)
 	else:
-		# README
+		 README
 		files = buildReadmeFileList(not args.noparentreadme)
 		for filename in files:
 			if args.releaseversion:
 				show_update_file_msg(filename, changed_filenames)
 				moveToReleaseVersionInReadme(current_stable_version, next_stable_version, mvn_version_number, mvn_next_devel_version, filename)
 			
-		# Java and SARL files
+		 Java and SARL files
 		files = buildCodeFileList()
 		exclusions = []
 		for filename in files:
@@ -528,7 +565,7 @@ if mvn_root is not None:
 				show_update_file_msg(filename, changed_filenames)
 				replaceCopyrights(filename, end_copyright_year)
 
-		# Maven pom.xml
+		 Maven pom.xml
 		files = buildMavenFileList(args.addpomfile)
 		for filename in files:
 			if args.releaseversion:
@@ -538,7 +575,7 @@ if mvn_root is not None:
 				show_update_file_msg(filename, changed_filenames)
 				moveToDevelVersionInMaven(mvn_version_number, mvn_next_devel_version, filename)
 
-		# Eclipse plugins and features
+		 Eclipse plugins and features
 		files = buildEclipseFileList()
 		for filename in files:
 			if args.copyrights:
@@ -551,7 +588,7 @@ if mvn_root is not None:
 				show_update_file_msg(filename, changed_filenames)
 				moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
 
-		# Eclipse target platforms
+		 Eclipse target platforms
 		files = buildEclipseTargetPlatformList()
 		for filename in files:
 			if args.releaseversion:
@@ -562,6 +599,16 @@ if mvn_root is not None:
 				show_update_file_msg(filename, changed_filenames)
 				moveToDevelVersionInEclipse(eclipse_version_number, eclipse_next_devel_version, filename)
 				moveToDevelVersionInMaven(mvn_version_number, mvn_next_devel_version, filename)
+
+		# What's new configuration files
+		files = buildWhatsNewXmlFileList()
+		for filename in files:
+			if args.releaseversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToReleaseVersionInWhatsNew(current_stable_version, current_devel_version, next_stable_version, filename)
+			if args.develversion:
+				show_update_file_msg(filename, changed_filenames)
+				moveToReleaseVersionInWhatsNew(current_stable_version, current_devel_version, next_devel_version, filename)
 
 	sys.exit(0)
 
