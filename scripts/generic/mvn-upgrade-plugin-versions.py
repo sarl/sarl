@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+#
+# Author: Stephane GALLAND
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import os
 import argparse
@@ -9,6 +23,51 @@ from javaproperties import Properties
 
 NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 NAMESPACES = {'xmlns' : NAMESPACE}
+
+##########################################
+##
+class bcolors:
+    HEADER = '\033[34m'
+    OKGREEN = '\033[32m'
+    FAIL = '\033[31m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+##########################################
+##
+def header(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
+
+##########################################
+##
+def info(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]" + msg, file=sys.stdout)
+
+##########################################
+##
+def success(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.OKGREEN}{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
+
+##########################################
+##
+def error(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.FAIL}{bcolors.BOLD}ERROR{bcolors.ENDC}]" + msg, file=sys.stderr)
 
 ##########################################
 ## node: Output a pretty string version for the given node
@@ -31,7 +90,7 @@ def readVersionMappings(version_mapping, filename, properties):
 				if pversion.startswith('$'):
 					key = pversion[1:]
 					if key not in properties:
-						print('Error: no definition for the property $' + key, file=sys.stderr)
+						error('No definition for the property $' + key)
 						sys.exit(255)
 					version_mapping[groupId + ":" + artifactId] = properties[key]
 				else:
@@ -125,12 +184,12 @@ def replacePomNodes(root, version_mapping, ignores, changed, path, namespace="xm
 					pluginKey = groupId + ":" + artifactId
 					if pluginKey not in version_mapping:
 						if not ignores or pluginKey not in ignores:
-							print('Error: no definition for ' + pluginKey + ": current version: " + version, file=sys.stderr)
+							error('No definition for ' + pluginKey + ": current version: " + version)
 							sys.exit(255)
 					else:
 						newVersion = version_mapping[pluginKey]
 						if newVersion != version:
-							print("\t" + pluginKey + ": " + version + " -> " + newVersion)
+							info("\t" + pluginKey + ": " + version + " -> " + newVersion)
 							versionNode.text = newVersion
 							changed_now = True
 	return changed_now or changed
@@ -212,32 +271,32 @@ if args.pom:
 	pom_files = pom_files + args.pom
 
 for pom_file in pom_files:
-	print("Scanning POM: " + pom_file)
+	info("Scanning POM: " + pom_file)
 	xml_root = readXMLRootNode(pom_file)
 	changed = replaceInPom(xml_root, version_mapping, args.ignore, (not args.nodependency))
 	if changed:
-		print("Saving POM: " + pom_file)
+		info("Saving POM: " + pom_file)
 		with open(pom_file, 'wt') as output_file:
 			output_file.write(dumpXML(xml_root))
 
 extension_files = buildMavenExtensionFileList(pom_files)
 
 for extension_file in extension_files:
-	print("Scanning Ext: " + extension_file)
+	info("Scanning Ext: " + extension_file)
 	xml_root = readXMLRootNode(extension_file)
 	changed = replaceInExtension(xml_root, version_mapping, args.ignore)
 	if changed:
-		print("Saving Ext: " + extension_file)
+		info("Saving Ext: " + extension_file)
 		with open(extension_file, 'wt') as output_file:
 			output_file.write(dumpXML(xml_root))
 
 if args.eclipseplatform:
 	for platform_file in args.eclipseplatform:
-		print("Scanning Ecl: " + platform_file)
+		info("Scanning Ecl: " + platform_file)
 		xml_root = readXMLRootNode(platform_file);
 		changed = replaceInEclipsePlatform(xml_root, version_mapping, args.ignore)
 		if changed:
-			print("Saving Ecl: " + platform_file)
+			info("Saving Ecl: " + platform_file)
 			with open(platform_file, 'wt') as output_file:
 				output_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n")
 				output_file.write("<?pde version=\"3.8\"?>\n")

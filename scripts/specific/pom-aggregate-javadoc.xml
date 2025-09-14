@@ -10,10 +10,7 @@
     <java.version>21</java.version>
   </properties>
   <modules>
-    <module>sarl-lang</module>
-    <module>sarl-sdk</module>
-    <module>sarl-apputils</module>
-    <module>sarl-sre</module>
+@@ALL_MODULES@@
   </modules>
   <build>
     <extensions>

@@ -84,43 +84,35 @@ There is two major ways for compiling the SARL components: compile all the subpr
 
 If you want to compile all the subprojects of SARL, you could use one of the shell scripts that are located in the root folder of the SARL project.
 
-* *Linux or MacOS Operating Systems:* in a command-line shell, run the Bash script (with or without tests):
+* *Linux or MacOS Operating Systems:* on a command-line shell, run the Python script (with or without tests):
 
 ```bash
-$> ./build-all.sh
-$> ./build-all.sh -Dmaven.test.skip=true
+$> ./build-all.py
+$> ./build-all.py --notest
 ```
 
-* *Windows Operating System:* a PowerShell script is provided for building all the projects of SARL (with or without tests):
+* *Windows Operating System:* on a command-line shell, run the Python script (with or without tests):
 
 ```bash
-C:> build-all
-C:> build-all -Dmaven.test.skip=true
+C:\> python build-all.py
+C:\> python build-all.py --notest
 ```
 
 ==== Compilation of a single subproject
 
 If you want to compile only one of the subprojects of SARL, you could go inside the subproject folder and use Maven.
 
-* *Linux or MacOS Operating Systems:* in a command-line shell (with or without tests)
+* *Linux or MacOS Operating Systems:* on a command-line shell, run the Python script:
 
 ```bash
-$> cd <subproject_folder>
-$> mvn clean install
-$> mvn clean install -Dmaven.test.skip=true
+$> ./clean-all.py
 ```
 
-where `<subproject_folder>` must be replaced by the name one of the subprojects that are listed above.
-
-* *Windows Operating System:* in a command-line shell (with or without tests)
+* *Windows Operating System:* on a command-line shell, run the Python script:
 
 ```bash
-C:> cd <subproject_folder>
-C:> mvn clean install
-C:> mvn clean install -Dmaven.test.skip=true
+C:\> python clean-all.py
 ```
-
-where `<subproject_folder>` must be replaced by the name one of the subprojects that are listed above.
 
 
 === 2.5. Installing the Eclipse Development Environment

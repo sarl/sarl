@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+#
+# Author: Stephane GALLAND
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # Create bundles for uploaded on the Maven Central Portal
 # Bundle format is valid after June 2025
@@ -17,6 +31,51 @@ from xml.etree import ElementTree
 NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 NAMESPACES = {'xmlns' : NAMESPACE}
 	
+##########################################
+##
+class bcolors:
+    HEADER = '\033[34m'
+    OKGREEN = '\033[32m'
+    FAIL = '\033[31m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+##########################################
+##
+def header(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
+
+##########################################
+##
+def info(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]" + msg, file=sys.stdout)
+
+##########################################
+##
+def success(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.OKGREEN}{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
+
+##########################################
+##
+def error(message):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.FAIL}{bcolors.BOLD}ERROR{bcolors.ENDC}]" + msg, file=sys.stderr)
+
 #########################
 ## filename: the path to the POM file.
 def readXMLRootNode(filename):
@@ -62,9 +121,9 @@ def run_verify():
 				if r == 0:
 					nb_files = nb_files + 1
 				else:
-					print >> sys.stderr, signed_file
+					error(signed_file)
 					ret_code = 255
-	print("Found " + str(nb_files) + " signature files")
+	info("Found " + str(nb_files) + " signature files")
 	return ret_code
 
 ##############################
@@ -89,12 +148,12 @@ def run_fix(pwd, args):
 						nb_files = nb_files + 1
 						os.remove(asc_file)
 						os.system("gpg -ab \"" + signed_file + "\"")
-	print("Found " + str(nb_files) + " signature files that are fixed")
+	info("Found " + str(nb_files) + " signature files that are fixed")
 	return 0
 
 ##############################
 ##
-def create_maven_central_bundles():
+def create_maven_central_bundles(out_directory):
 	current_dir = os.getcwd()
 	nb_bundles = 0
 	shell_cmd = []
@@ -126,7 +185,7 @@ def create_maven_central_bundles():
 					f_bundle_name = os.path.join(current_dir, root, bundle_name)
 					signs = glob.glob(os.path.join(current_dir, root, "*.asc"))
 					if signs:
-						print("Creating " + bundle_name + "...")
+						info("Creating " + bundle_name + "...")
 
 						temp_output_folder = os.path.join(current_dir, root, "maven-central-bundles-temp")
 						content_folder = os.path.join(group_name.replace(".", "/"), artifact_name, version_number)
@@ -182,28 +241,37 @@ def create_maven_central_bundles():
 							nb_bundles = nb_bundles + 1
 							shell_cmd = shell_cmd + [ f_bundle_name ]
 														
-						print("Created " + bundle_name)
+						info("Created " + bundle_name)
 					else:
-						print("Skipping " + bundle_name);
-	print(str(nb_bundles) + " bundles were created.")
+						info("Skipping " + bundle_name);
+	info(str(nb_bundles) + " bundles were created.")
 	if nb_bundles > 0:
-		f = open("copy_bundles.sh", "w")
-		f.write("#!/usr/bin/env bash\n")
-		f.write("if [ -z \"$1\" ]; then\n")
-		f.write("\techo \"expecting target folder\" >&2\n")
-		f.write("\texit 255\n")
-		f.write("fi\n")
-		for bundle in shell_cmd:
-			f.write("cp -v \"")
-			f.write(bundle)
-			f.write("\" \"$1\"\n")
-		f.close()
-		print("Copying command line:")
-		print("$> bash copy_bundles.sh")
+		if out_directory:
+			for bundle in shell_cmd:
+				out_bundle = os.path.join(out_directory, os.path.basename(bundle))
+				if os.path.isfile(out_bundle):
+					error("Existing output bundle: " + out_bundle)
+					sys.exit(255)
+				info("Copying bundle: " + bundle)
+				shutil.copyfile(bundle, out_bundle)
+		else:
+			f = open("copy_bundles.sh", "w")
+			f.write("#!/usr/bin/env bash\n")
+			f.write("if [ -z \"$1\" ]; then\n")
+			f.write("\techo \"expecting target folder\" >&2\n")
+			f.write("\texit 255\n")
+			f.write("fi\n")
+			for bundle in shell_cmd:
+				f.write("cp -v \"")
+				f.write(bundle)
+				f.write("\" \"$1\"\n")
+			f.close()
+			info("Copying command line:")
+			info("$> bash copy_bundles.sh")
 
 ##############################
 ## args: command line arguments
-def run_create(pwd, args):
+def run_create(out_directory, pwd, args):
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
@@ -212,10 +280,10 @@ def run_create(pwd, args):
 	else:
 		pass_phrase = ask_pass()
 	if pass_phrase:
-		print("Assuming 'maven-javadoc-plugin:jar' is activated")
-		print("Assuming 'maven-sources-plugin:jar' is activated")
-		print("Assuming tests are desactivated")
-		print("Have you activated the released profile? -DperformRelease=true")
+		info("Assuming 'maven-javadoc-plugin:jar' is activated")
+		info("Assuming 'maven-sources-plugin:jar' is activated")
+		info("Assuming tests are desactivated")
+		info("Have you activated the released profile? -DperformRelease=true")
 
 		cmdstr = maven_cmd + " -Dgpg.passphrase=\"<hidden>\" -Darguments=-Dgpg.passphrase=\"<hidden>\""
 		cmd = maven_cmd + " -Dgpg.passphrase=\"" + pass_phrase + "\" -Darguments=-Dgpg.passphrase=\"" + pass_phrase + "\""
@@ -224,11 +292,11 @@ def run_create(pwd, args):
 			cmd = cmd + " " + arg
 		cmdstr = cmdstr + " clean install"
 		cmd = cmd + " clean install"
-		print(cmdstr)
+		info(cmdstr)
 
 		r = os.system(cmd)
 		if r == 0:
-			create_maven_central_bundles()
+			create_maven_central_bundles(out_directory)
 			return 0
 		else:
 			return 255
@@ -259,6 +327,7 @@ group.add_argument("--verify", help="verify the signatures of the Central bundle
 group.add_argument("--fix", help="fix the signatures of the Central bundles", action="store_true")
 group.add_argument("--create", help="create the Central bundles", action="store_true")
 parser.add_argument("--pwd", help="Specify the passphrase for signing the files", action="store")
+parser.add_argument("--out", help="Specify the folder in which the generated bundles must be copied", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
 rargs = filterArgs(args.args)
@@ -269,7 +338,7 @@ if args.verify:
 elif args.fix:
 	retcode = run_fix(args.pwd, rargs)
 elif args.create:
-	retcode = run_create(args.pwd, rargs)
+	retcode = run_create(args.out, args.pwd, rargs)
 else:
 	parser.print_help(sys.stderr)
 

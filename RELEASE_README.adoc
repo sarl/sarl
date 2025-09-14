@@ -11,14 +11,17 @@ The steps for releasing SARL are:
 
 === 1.1) Upgrade all the versions in the pom files and the Eclipse platform
 
-** Upgrade the Eclipse target platform
-** Synchronize the versions in the pom files (plugins and dependencies) with the same version numbers as in the Eclipse target platform.
+* Edit the configuration file `sarl-bom/sarl-properties/sarl-lang.properties` and upgrade the Maven dependencies' versions. These versions will be considered immediatly by Maven when compiling the projects.
+* Edit the configuration file `sarl-bom/sarl-properties/plugins.yml` and upgrade the Maven plugins' versions. Unfortunately, these versions cannot be directly considered by Maven when compiling the projects. You must apply the versions in each POM file.
+
+NOTE: The application of the plugin versions in the POM files could be automated by the `./scripts/upgrade-plugin-versions.py` script from the root directory.
+
 
 === 1.2) Update the Copyright texts in the file headers
 
 IF the release is supposed to be the first of a new year, you should change the last years in all the copyright texts.
 
-NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following option: `--copyrights`.
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following option: `--copyrights`.
 
 In the `.sarl` and `.java` files:
 
@@ -45,13 +48,13 @@ If a manual test is failing, fix the problem, and go to step 1.2.
 
 Test the generation of the  bundles for Maven Central:
 
-     $> ./scripts/prepare-maven-central.sh
+     $> ./scripts/prepare-maven-central.py
 
 === 1.8) Javadoc Generation
 
 Test the generation of the Javadoc for the public API (the real generation will be done by the script of the website):
 
-     $> ./scripts/generate-aggregate-javadoc.sh
+     $> ./scripts/generate-aggregate-javadoc.py
 
 == 2) PHASE 2: RELEASE VERSION
 
@@ -82,7 +85,7 @@ If necessary, updates the UI resources:
 
 === 2.3) Change the version numbers
 
-NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--releaseversion`.
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--releaseversion`.
 
 ==== 2.3.1) Remove snapshot markers
 
@@ -103,7 +106,7 @@ Update the content of the files `README.adoc` and `CONTRIBUTING.adoc` for using 
 
 === 2.4) Update the Javadoc Tags
 
-NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--author`, `--maven`.
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--author`, `--maven`.
 
 In the `.sarl` and `.java` files:
 
@@ -133,15 +136,15 @@ Check if the `about.mappings` files and the `SARLVersion.java` file are containi
 
 Prepare the bundles for Maven Central:
 
-     $> ./scripts/prepare-maven-central.sh
+     $> ./scripts/prepare-maven-central.py
 
-NOTE: Copy the combined bundle from `target/maven-central-combined-bundles.jar` in a safe folder for being used in Phase 3.
+NOTE: Copy the combined bundle from `target/combined-maven-central-bundles.jar` in a safe folder for being used in Phase 3.
 
 === 2.9) Javadoc Generation
 
 Generate the Javadoc for the public API (the real generation will be done by the Rake script of the website):
 
-     $> ./scripts/generate-aggregate-javadoc.sh
+     $> ./scripts/generate-aggregate-javadoc.py
 
 NOTE: Copy the generated website from `target/site/apidocs/` in a safe folder for being used in Phase 3.
 
@@ -149,7 +152,7 @@ NOTE: Copy the generated website from `target/site/apidocs/` in a safe folder fo
 
 Generate the changelog that contains the list of all the changes in the released version:
 
-     $> ./scripts/prepare-release.sh --changes
+     $> ./scripts/prepare-release.py --changes
 
 NOTE: Copy the generated changelog from `target/changes.md` in a safe folder for being used in Phase 3.
 
@@ -171,7 +174,7 @@ where `X.X.X` is the version of the release that corresponds to the current bran
 
 For uploading the release files onto the SARL server, you could use the provided script:
 
-     $> ./scripts/release.sh
+     $> ./scripts/release.py
 
 This script needs to have environment variables for defining the SARL server addresses, and the access login.
 
@@ -249,7 +252,7 @@ Announce the new version of SARL on:
 
 === 4.1) Revert versions
 
-NOTE: This task is automated by the `./scripts/prepare-release.sh` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
+NOTE: This task is automated by the `./scripts/prepare-release.py` script when it is called with the following options: `--develversion` when it is invoked from the "master/snapshot" branch of SARL.
 
 Revert step 2.1; and change the following:
 

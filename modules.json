@@ -1,0 +1,114 @@
+{
+	"without-extension": [
+		{
+			"module": "sarl-bom",
+			"name": "build of materials",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"upgrade-mvn-plugins-pom": [ "..", "scripts", "specific", "pom-aggregate-javadoc.xml" ],
+			"in-maven-central": true,
+			"releasable": true,
+			"release-config": {
+				"readme-in-parent": true
+			}
+		},
+		{
+			"module": "sarl-baseutils",
+			"name": "base utilities",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		},
+		{
+			"module": "sarl-lang",
+			"name": "SARL compiler and language tools",
+			"build": true,
+			"clean": true,
+			"apidoc": true,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		},
+		{
+			"module": "sarl-sdk",
+			"name": "SARL Standard Development Kit - SDK",
+			"build": true,
+			"clean": true,
+			"apidoc": true,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		},
+		{
+			"module": "sarl-apputils",
+			"name": "SARL application utilities",
+			"build": true,
+			"clean": true,
+			"apidoc": true,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		},
+		{
+			"module": "sarl-sre",
+			"name": "SARL Runtime Environment - SRE",
+			"build": true,
+			"clean": true,
+			"apidoc": true,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		},
+		{
+			"module": "sarl-docs",
+			"name": "documentation tools and doclets",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		},
+		{
+			"module": "sarl-cli",
+			"name": "SARL command-line tools",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": false,
+			"releasable": true
+		}
+	],
+	"extensions": [
+	],
+	"with-extension": [
+		{
+			"module": "sarl-eclipse",
+			"name": "Eclipse-based tools and development environment",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"upgrade-mvn-plugins-eclipse": [ "sarl-target-platform.target" ],
+			"in-maven-central": false,
+			"releasable": true
+		},
+		{
+			"module": "sarl-officialdoc",
+			"name": "SARL official documentation (Markdown)",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": false,
+			"releasable": true
+		}
+	]
+}
+

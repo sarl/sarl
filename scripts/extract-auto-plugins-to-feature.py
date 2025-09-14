@@ -1,22 +1,38 @@
 #!/usr/bin/env python3
+#
+# Copyright (C) 2014-2026 SARL.io, the original authors and main authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# This script extracts the list of Eclipse plugins and features for a content.jar of
-# a p2 repository to output the list of plugins and features that should be included
-# in a Eclipse feature for completed an Eclipse product.
-
-# This script is used for filling the list of plugins in the feature
-# "io.sarl.eclipse.features.baseplatform". The p2 repository is obtained
-# from the "Export product" feature of the Eclipse product editor.
-# The output of this Eclipse feature is provided to the current script.
-
-# Automatic excluded plugins have one of the following keywords in their names:
-# - ends with ".source"
-# - feature
-# - linux
-# - gtk
-# - cocoa
-# - win32
-# - sarl
+######################################################################################
+# This script extracts the list of Eclipse plugins and features for a content.jar of #
+# a p2 repository to output the list of plugins and features that should be included #
+# in a Eclipse feature for completed an Eclipse product.                             #
+#                                                                                    #
+# This script is used for filling the list of plugins in the feature                 #
+# "io.sarl.eclipse.features.baseplatform". The p2 repository is obtained             #
+# from the "Export product" feature of the Eclipse product editor.                   #
+# The output of this Eclipse feature is provided to the current script.              #
+#                                                                                    #
+# Automatic excluded plugins have one of the following keywords in their names:      #
+# - ends with ".source"                                                              #
+# - feature                                                                          #
+# - linux                                                                            #
+# - gtk                                                                              #
+# - cocoa                                                                            #
+# - win32                                                                            #
+# - sarl                                                                             #
+######################################################################################
 
 import argparse
 import os
@@ -26,8 +42,9 @@ import xml.etree.ElementTree as xml
 from zipfile import *
 
 ##############################
-##
-def read_content_xml(input_stream):
+## input_stream : the stream to read for obtaining the XML tree
+## RETURN: the XML tree
+def read_content_xml(input_stream : object) -> object:
 	"""reads the content of the P2 content XML stream"""
 	tree = xml.parse(input_stream)
 	root = tree.getroot()
@@ -39,16 +56,18 @@ def read_content_xml(input_stream):
 	return plugins
 
 ##############################
-##
-def read_content_jar(input_file):
+## input_file : the path of the P2 content jar file
+## RETURN: the XML tree
+def read_content_jar(input_file : str) -> object:
 	"""reads the content of the P2 content jar file"""
 	with ZipFile(input_file, "r") as z:
 		with z.open("content.xml", "r") as file:
 			return read_content_xml(file)
 
 ##############################
-##
-def build_feature_plugin_list(plugins):
+## plugins: the list of plugins
+## RETURN the plugin definition in XML format
+def build_feature_plugin_list(plugins : list) -> str:
 	"""generates the list of plugins for a feature"""
 	str_out = ""
 	for plugin in plugins:
