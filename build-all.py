@@ -34,8 +34,8 @@ class bcolors:
     BOLD = '\033[1m'
 
 ##########################################
-##
-def info(message):
+## message : the mssage to display
+def info(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -43,8 +43,8 @@ def info(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
 
 ##########################################
-##
-def success(message):
+## message : the mssage to display
+def success(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -52,8 +52,8 @@ def success(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.OKGREEN}{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
 
 ##########################################
-##
-def error(message):
+## message : the mssage to display
+def error(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -61,13 +61,15 @@ def error(message):
 	print(f"[{bcolors.FAIL}{bcolors.BOLD}ERROR{bcolors.ENDC}]" + msg, file=sys.stderr)
 
 ##########################################
-##
-def is_exe(fpath):
+## fpath : the path to test
+## RETURN : True if the path corresponds to a file with execution right
+def is_exe(fpath : str) -> bool:
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 ##########################################
-##
-def run_mvn(args, module):
+## args : the command-line arguments
+## module : the description of the module to be built
+def run_mvn_build(args : dict, module : dict):
 	cmd = [ 'mvn' ]
 	if args.notest:
 		cmd = cmd + [ '-Dmaven.test.skip=true' ]
@@ -81,8 +83,10 @@ def run_mvn(args, module):
 		sys.exit(retcode)
 
 ##########################################
-##
-def run_script(args, module, script):
+## args : the command-line arguments
+## module : the description of the module to run the script for
+## script : the path to the script to be run
+def run_script(args : dict, module : dict, script : str):
 	cmd = [ script ]
 	cmd = cmd + args.args
 	retcode = subprocess.call(cmd)
@@ -91,8 +95,10 @@ def run_script(args, module, script):
 		sys.exit(retcode)
 
 ##########################################
-##
-def build_module(args, current_dir, module):
+## args : the command-line arguments
+## current_dir : the path of this script
+## module : the description of the module to build
+def build_module(args : dict, current_dir : str, module : dict):
 	if module['build']:
 		info("")
 		info("------------------------------------------------------------------------")
@@ -106,7 +112,7 @@ def build_module(args, current_dir, module):
 		ps_build_file = os.path.join(module_dir, 'build-all.ps1')
 		os.chdir(module_dir)
 		if os.path.isfile(pom_file):
-			run_mvn(args, module)
+			run_mvn_build(args, module)
 		elif is_exe(py_build_file):
 			run_script(args, module, py_build_file)
 		elif is_exe(sh_build_file):
@@ -119,23 +125,47 @@ def build_module(args, current_dir, module):
 		os.chdir(current_dir)
 
 ##########################################
+## args : the command-line arguments
+## current_dir : the path of this script
+## RETURN : the dictionnary of defined modules without the ones that are ignored from the command-line arguments
+def read_module_configuration(args : dict, current_dir : str) -> dict:
+	if args.modules:
+		module_json_file = args.modules
+	else:
+		module_json_file = os.path.join(current_dir, 'modules.json')
+
+	with open(module_json_file, 'rt') as json_file:
+		module_configuration = json.load(json_file)
+
+	for key in [ 'without-extension', 'extensions', 'with-extension' ]:
+		if key not in module_configuration:
+			module_configuration[key] = list()
+		elif args.ignore:
+			new_list = list()
+			for module in module_configuration[key]:
+				if 'module' in module and module['module'] and not module['module'] in args.ignore:
+					new_list.append(module)
+			module_configuration[key] = new_list
+
+	if (args.mlist):
+		info(json.dumps(module_configuration, indent=2))
+		sys.exit(0)
+
+	return module_configuration
+
+##########################################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
+parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")
+parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--notest", help="skip all the tests, equivalent to -Dmaven.test.skip=true", action="store_true")
 parser.add_argument("--nop2mirror", help="disable the mirroring to P2 repository, equivalent to -Declipse.p2.mirrors=false", action="store_true")
 parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
-
-if args.modules:
-	module_json_file = args.modules
-else:
-	module_json_file = os.path.join(current_dir, 'modules.json')
-
-with open(module_json_file, 'rt') as json_file:
-	module_configuration = json.load(json_file)
+module_configuration = read_module_configuration(args, current_dir)
 
 for module in module_configuration['without-extension']:
 	build_module(args, current_dir, module)

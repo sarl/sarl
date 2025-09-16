@@ -100,12 +100,7 @@ def delete_outputs(args : dict, current_dir : str):
 ## args : command-line arguments
 ## current_dir : folder of this script
 def create_pom_xml(args : dict, current_dir : str):
-	if args.modules:
-		module_json_file = args.modules
-	else:
-		module_json_file = os.path.join(current_dir, '..', 'modules.json')
-	with open(module_json_file, 'rt') as json_file:
-		module_configuration = json.load(json_file)
+	module_configuration = read_module_configuration(args, current_dir)
 	all_modules = ''
 	for module in module_configuration['without-extension']:
 		if module['apidoc']:
@@ -176,9 +171,40 @@ def generate_api_documentation(args : dict, current_dir : str, pom_filename : st
 		sys.exit(255)
 
 ##########################################
+## args : the command-line arguments
+## current_dir : the path of this script
+## RETURN : the dictionnary of defined modules without the ones that are ignored from the command-line arguments
+def read_module_configuration(args : dict, current_dir : str) -> dict:
+	if args.modules:
+		module_json_file = args.modules
+	else:
+		module_json_file = os.path.join(current_dir, '..', 'modules.json')
+
+	with open(module_json_file, 'rt') as json_file:
+		module_configuration = json.load(json_file)
+
+	for key in [ 'without-extension', 'extensions', 'with-extension' ]:
+		if key not in module_configuration:
+			module_configuration[key] = list()
+		elif args.ignore:
+			new_list = list()
+			for module in module_configuration[key]:
+				if 'module' in module and module['module'] and not module['module'] in args.ignore:
+					new_list.append(module)
+			module_configuration[key] = new_list
+
+	if (args.mlist):
+		info(json.dumps(module_configuration, indent=2))
+		sys.exit(0)
+
+	return module_configuration
+
+##########################################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
+parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")
+parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--offline", help="run the generator off-line", action="store_true")
 parser.add_argument("--pom", help="specify the path to the pom file to use", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER)

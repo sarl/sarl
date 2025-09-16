@@ -784,19 +784,50 @@ def prepare_release(args : dict, current_dir : str, current_processus_dir : str,
 			# Don't loop on modules
 			sys.exit(0)
 		else:
-			#prepare_readme_files(args, current_dir, module_path, module, changed_filenames, current_stable_version, next_stable_version, mvn_version_number, mvn_next_devel_version)
-			#prepare_java_sarl_files(args, current_dir, module_path, module, changed_filenames, generation_date, contributors, end_copyright_year)
-			#prepare_maven_pom_files(args, current_dir, module_path, module, changed_filenames, mvn_version_number, mvn_next_devel_version)
-			#prepare_eclipse_bundle_files(args, current_dir, module_path, module, changed_filenames, eclipse_version_number, next_stable_version, eclipse_next_devel_version, end_copyright_year)
-			#prepare_eclipse_platform_files(args, current_dir, module_path, module, changed_filenames, mvn_version_number, eclipse_version_number, next_stable_version, mvn_next_devel_version, eclipse_next_devel_version)
+			prepare_readme_files(args, current_dir, module_path, module, changed_filenames, current_stable_version, next_stable_version, mvn_version_number, mvn_next_devel_version)
+			prepare_java_sarl_files(args, current_dir, module_path, module, changed_filenames, generation_date, contributors, end_copyright_year)
+			prepare_maven_pom_files(args, current_dir, module_path, module, changed_filenames, mvn_version_number, mvn_next_devel_version)
+			prepare_eclipse_bundle_files(args, current_dir, module_path, module, changed_filenames, eclipse_version_number, next_stable_version, eclipse_next_devel_version, end_copyright_year)
+			prepare_eclipse_platform_files(args, current_dir, module_path, module, changed_filenames, mvn_version_number, eclipse_version_number, next_stable_version, mvn_next_devel_version, eclipse_next_devel_version)
 			prepare_whats_new_files(args, current_dir, module_path, module, changed_filenames, current_stable_version, mvn_version_number, next_stable_version, mvn_next_devel_version)
+
+##########################################
+## args : the command-line arguments
+## current_dir : the path of this script
+## RETURN : the dictionnary of defined modules without the ones that are ignored from the command-line arguments
+def read_module_configuration(args : dict, current_dir : str) -> dict:
+	if args.modules:
+		module_json_file = args.modules
+	else:
+		module_json_file = os.path.join(current_dir, '..', 'modules.json')
+
+	with open(module_json_file, 'rt') as json_file:
+		module_configuration = json.load(json_file)
+
+	for key in [ 'without-extension', 'extensions', 'with-extension' ]:
+		if key not in module_configuration:
+			module_configuration[key] = list()
+		elif args.ignore:
+			new_list = list()
+			for module in module_configuration[key]:
+				if 'module' in module and module['module'] and not module['module'] in args.ignore:
+					new_list.append(module)
+			module_configuration[key] = new_list
+
+	if (args.mlist):
+		info(json.dumps(module_configuration, indent=2))
+		sys.exit(0)
+
+	return module_configuration
 
 #########################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
+parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")
 
 group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument("--mlist", help="list the defined modules", action="store_true")
 group.add_argument('--changes', help="Generate the changelog", action="store_true")
 group.add_argument('--author', help="replace $Author: id$", action="store_true")
 group.add_argument('--maven', help="replace $GroupId$ and $ArtifactId$", action="store_true")
@@ -816,12 +847,7 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 current_processus_dir  = os.getcwd()
 
 # Modules
-if args.modules:
-	module_json_file = args.modules
-else:
-	module_json_file = os.path.join(current_dir, '..', 'modules.json')
-with open(module_json_file, 'rt') as json_file:
-	module_configuration = json.load(json_file)
+module_configuration = read_module_configuration(args, current_dir)
 
 changed_filenames = []
 

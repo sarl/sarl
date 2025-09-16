@@ -135,11 +135,41 @@ def upgrade_plugins(args : dict, current_dir : str, module : dict):
 		error("Expecting pom.xml file for module: " + module['name'])
 		sys.exit(255)
 	
+##########################################
+## args : the command-line arguments
+## current_dir : the path of this script
+## RETURN : the dictionnary of defined modules without the ones that are ignored from the command-line arguments
+def read_module_configuration(args : dict, current_dir : str) -> dict:
+	if args.modules:
+		module_json_file = args.modules
+	else:
+		module_json_file = os.path.join(current_dir, '..', 'modules.json')
+
+	with open(module_json_file, 'rt') as json_file:
+		module_configuration = json.load(json_file)
+
+	for key in [ 'without-extension', 'extensions', 'with-extension' ]:
+		if key not in module_configuration:
+			module_configuration[key] = list()
+		elif args.ignore:
+			new_list = list()
+			for module in module_configuration[key]:
+				if 'module' in module and module['module'] and not module['module'] in args.ignore:
+					new_list.append(module)
+			module_configuration[key] = new_list
+
+	if (args.mlist):
+		info(json.dumps(module_configuration, indent=2))
+		sys.exit(0)
+
+	return module_configuration
 
 ##########################################
 ##
 parser = argparse.ArgumentParser()
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
+parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")
+parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--bomproperties", help="path to the BOM properties", action="store")
 parser.add_argument("--ignoreartifact", help="'group:artifact' of the Maven module to ignore", action="store")
 parser.add_argument("--pluginyml", help="path to the YAML file that contains the plugin versions to be the destination of the upgrades", action="store")
@@ -147,13 +177,7 @@ parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
-
-if args.modules:
-	module_json_file = args.modules
-else:
-	module_json_file = os.path.join(current_dir, '..', 'modules.json')
-with open(module_json_file, 'rt') as json_file:
-	module_configuration = json.load(json_file)
+module_configuration = read_module_configuration(args, current_dir)
 
 for module in module_configuration['without-extension']:
 	if module['upgrade-mvn-plugins']:

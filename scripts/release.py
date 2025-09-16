@@ -204,10 +204,41 @@ def upload_module(args : dict, rargs : dict, current_dir : str, module : dict, p
 	os.chdir(module_path)
 	execute_maven(pass_phrase, rargs)
 
+##########################################
+## args : the command-line arguments
+## current_dir : the path of this script
+## RETURN : the dictionnary of defined modules without the ones that are ignored from the command-line arguments
+def read_module_configuration(args : dict, current_dir : str) -> dict:
+	if args.modules:
+		module_json_file = args.modules
+	else:
+		module_json_file = os.path.join(current_dir, '..', 'modules.json')
+
+	with open(module_json_file, 'rt') as json_file:
+		module_configuration = json.load(json_file)
+
+	for key in [ 'without-extension', 'extensions', 'with-extension' ]:
+		if key not in module_configuration:
+			module_configuration[key] = list()
+		elif args.ignore:
+			new_list = list()
+			for module in module_configuration[key]:
+				if 'module' in module and module['module'] and not module['module'] in args.ignore:
+					new_list.append(module)
+			module_configuration[key] = new_list
+
+	if (args.mlist):
+		info(json.dumps(module_configuration, indent=2))
+		sys.exit(0)
+
+	return module_configuration
+
 ##############################
 ##
 parser = argparse.ArgumentParser(description="Release SARL on the server")
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
+parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")
+parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--pwd", help="Specify the passphrase for connecting to the server", action="store")
 parser.add_argument("--showconfig", help="Show the configuration", action="store_true")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
@@ -233,12 +264,7 @@ if pass_phrase:
 		print_configuration(pass_phrase)
 
 	# Modules
-	if args.modules:
-		module_json_file = args.modules
-	else:
-		module_json_file = os.path.join(current_dir, '..', 'modules.json')
-	with open(module_json_file, 'rt') as json_file:
-		module_configuration = json.load(json_file)
+	module_configuration = read_module_configuration(args, current_dir)
 
 	# Generate bundles
 	for module in module_configuration['without-extension']:
