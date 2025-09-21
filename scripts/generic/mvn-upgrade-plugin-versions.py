@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Author: Stephane GALLAND
+# Author: Stephane GALLAND <galland@arakhne.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import yaml
 from xml.etree import ElementTree
 from javaproperties import Properties
 
+VERSION = '20250916'
 NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 NAMESPACES = {'xmlns' : NAMESPACE}
 
@@ -34,8 +35,8 @@ class bcolors:
     BOLD = '\033[1m'
 
 ##########################################
-##
-def header(message):
+## message : the message to display
+def header(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -43,8 +44,8 @@ def header(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
 
 ##########################################
-##
-def info(message):
+## message : the message to display
+def info(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -52,8 +53,8 @@ def info(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]" + msg, file=sys.stdout)
 
 ##########################################
-##
-def success(message):
+## message : the message to display
+def success(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -61,8 +62,8 @@ def success(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.OKGREEN}{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
 
 ##########################################
-##
-def error(message):
+## message : the message to display
+def error(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -71,7 +72,7 @@ def error(message):
 
 ##########################################
 ## node: Output a pretty string version for the given node
-def dumpXML(node):
+def dump_xml(node : object) -> object:
 	ElementTree.indent(node)
 	return ElementTree.tostring(node, encoding="unicode")
 
@@ -79,28 +80,29 @@ def dumpXML(node):
 ## version_mapping: an associative array that maps a plugin id (groupid:artifactid) to its version
 ## filename: the name of the file in which the mapping is defined (JSON format), with a map for group ids, and inside each a map for artifact ids
 ## properties: the mapping from a property name to its value
-def readVersionMappings(version_mapping, filename, properties):
+def read_version_mappings(version_mapping : dict, filename : str, properties : dict):
 	with open(filename, 'r') as input_file:
 		input_data = yaml.safe_load(input_file)
-	for groupId in input_data:
-		for artifactId in input_data[groupId]:
-			pversion = input_data[groupId][artifactId]
-			if pversion:
-				pversion = str(pversion)
-				if pversion.startswith('$'):
-					key = pversion[1:]
-					if key not in properties:
-						error('No definition for the property $' + key)
-						sys.exit(255)
-					version_mapping[groupId + ":" + artifactId] = properties[key]
-				else:
-					version_mapping[groupId + ":" + artifactId] = pversion
+	if input_data:
+		for groupId in input_data:
+			for artifactId in input_data[groupId]:
+				pversion = input_data[groupId][artifactId]
+				if pversion:
+					pversion = str(pversion)
+					if pversion.startswith('$'):
+						key = pversion[1:]
+						if key not in properties:
+							error('No definition for the property $' + key)
+							sys.exit(255)
+						version_mapping[groupId + ":" + artifactId] = properties[key]
+					else:
+						version_mapping[groupId + ":" + artifactId] = pversion
 
 ##########################################
-##
-def buildMavenFileList():
+## rootpath : path to the root folder in which the files to update are located
+def build_maven_file_list(rootpath : str) -> list:
 	fileList = []
-	for root, dirs, files in os.walk("."):
+	for root, dirs, files in os.walk(rootpath):
 		for filename in files:
 			if filename == "pom.xml":
 				fullpath = os.path.join(root, filename)
@@ -110,7 +112,7 @@ def buildMavenFileList():
 
 ##########################################
 ## pom_files: list of existing pom.xml files
-def buildMavenExtensionFileList(pom_files):
+def build_maven_extension_file_list(pom_files : list) -> list:
 	fileList = []
 	for pom_file in pom_files:
 		dirname = os.path.dirname(pom_file)
@@ -121,7 +123,7 @@ def buildMavenExtensionFileList(pom_files):
 
 #########################
 ## filename: the path to the POM file.
-def readXMLRootNode(filename):
+def read_xml_root_node(filename : str) -> str:
 	ElementTree.register_namespace('', NAMESPACE)
 	tree = ElementTree.parse(filename)
 	root = tree.getroot()
@@ -131,15 +133,15 @@ def readXMLRootNode(filename):
 ## node: the XML node
 ## name: the name of the value to read.
 ## namespace: the namespace for the nodes, default is xmlns:
-def readXmlNode(node, name, namespace='xmlns:'):
+def read_xml_node(node : object, name : str, namespace : str ='xmlns:') -> object:
 	return node.find(namespace + name, namespaces=NAMESPACES)
 
 #########################
 ## node: the XML node
 ## name: the name of the value to read.
 ## namespace: the namespace for the nodes, default is xmlns:
-def readXml(node, name, namespace='xmlns:'):
-	valueNode = readXmlNode(node, name, namespace)
+def read_xml(node : object, name : str, namespace : str ='xmlns:') -> str:
+	valueNode = read_xml_node(node, name, namespace)
 	if valueNode is not None:
 		textValue = valueNode.text
 		if textValue:
@@ -150,7 +152,7 @@ def readXml(node, name, namespace='xmlns:'):
 ## path: the nae to be fixed
 ## namepace: the namespace to add
 ## returns: the fixed path
-def fixPath(path, namespace):
+def fix_path(path : str, namespace : str) -> str:
 	return path.replace('/', '/' + namespace)
 
 #########################
@@ -161,22 +163,22 @@ def fixPath(path, namespace):
 ## path: the xpath to the node that contains "groupId", "artifactId", and "version" tags
 ## namespace: the namespace prefix
 ## returns: True if a node has changed, False otherwise
-def replacePomNodes(root, version_mapping, ignores, changed, path, namespace="xmlns:"):
+def replace_pom_nodes(root : object, version_mapping : dict, ignores : list, changed : bool, path : str, namespace : str ="xmlns:") -> bool:
 	if namespace:
-		fixed_path = fixPath(path, namespace)
+		fixed_path = fix_path(path, namespace)
 	else:
 		fixed_path = path
 	nodes = root.findall(fixed_path, namespaces=NAMESPACES)
 	changed_now = False
 	if nodes:
 		for node in nodes:
-			groupId = readXml(node, "groupId", namespace)
-			artifactId = readXml(node, "artifactId", namespace)
-			versionNode = readXmlNode(node, "version", namespace)
-			#print(dumpXML(node))
+			groupId = read_xml(node, "groupId", namespace)
+			artifactId = read_xml(node, "artifactId", namespace)
+			versionNode = read_xml_node(node, "version", namespace)
+			#print(dump_xml(node))
 			#print("groupId=" + groupId)
 			#print("artigactId=" + artifactId)
-			#print(dumpXML(versionNode))
+			#print(dump_xml(versionNode))
 			#raise Exception("DBG")
 			if groupId and artifactId and versionNode is not None:
 				version = versionNode.text.strip()
@@ -200,24 +202,24 @@ def replacePomNodes(root, version_mapping, ignores, changed, path, namespace="xm
 ## ignores: the list of keys to ignore for replacement
 ## enableDependencies: enables or disables the replacements of Maven dependencies
 ## returns: True if a node has changed, False otherwise
-def replaceInPom(root, version_mapping, ignores, enableDependencies):
+def replace_in_pom(root : object, version_mapping : dict, ignores : list, enableDependencies : bool) -> bool:
 	changed = False
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./build/extensions/extension')
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./build/plugins/plugin')
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./build/plugins/plugin/dependencies/dependency')
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./build/pluginManagement/plugins/plugin')
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./build/pluginManagement/plugins/plugin/dependencies/dependency')
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./profiles/profile/build/plugins/plugin')
 	if enableDependencies:
-		changed = replacePomNodes(root, version_mapping, ignores, changed,
+		changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 			'./dependencies/dependency')
-		changed = replacePomNodes(root, version_mapping, ignores, changed,
+		changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 			'./dependencyManagement/dependencies/dependency')
 	return changed
 
@@ -226,9 +228,9 @@ def replaceInPom(root, version_mapping, ignores, enableDependencies):
 ## version_mapping: the mapping from the plugin id to the plugin version.
 ## ignores: the list of keys to ignore for replacement
 ## returns: True if a node has changed, False otherwise
-def replaceInExtension(root, version_mapping, ignores):
+def replace_in_extension(root : object, version_mapping : dict, ignores : list) -> bool:
 	changed = False
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./extension', '')
 	return changed
 
@@ -237,9 +239,9 @@ def replaceInExtension(root, version_mapping, ignores):
 ## version_mapping: the mapping from the plugin id to the plugin version.
 ## ignores: the list of keys to ignore for replacement
 ## returns: True if a node has changed, False otherwise
-def replaceInEclipsePlatform(root, version_mapping, ignores):
+def replace_in_eclipse_platform(root : object, version_mapping : dict, ignores : list) -> bool:
 	changed = False
-	changed = replacePomNodes(root, version_mapping, ignores, changed,
+	changed = replace_pom_nodes(root, version_mapping, ignores, changed,
 		'./locations/location/dependencies/dependency', '')
 	return changed
 
@@ -248,12 +250,18 @@ def replaceInEclipsePlatform(root, version_mapping, ignores):
 ##
 parser = argparse.ArgumentParser(description="Update Maven plugin versions")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
-parser.add_argument('--pom', help="path to an additional pom file to treat", action='append')
-parser.add_argument('--properties', help="path to the property file", action='append')
-parser.add_argument('--ignore', help="groupId:artifactId to ignore", action='append')
-parser.add_argument('--nodependency', help="ignore Maven dependencies", action='store_true')
-parser.add_argument('--eclipseplatform', help="path to the Eclipse platform file in which the Maven versions must be updated", action='append')
+parser.add_argument("--version", help="Show the version of this script", action="store_true")
+parser.add_argument("--rootpath", help="Path to the root folder", action="store")
+parser.add_argument('--pom', help="Path to an additional pom file to treat", action='append')
+parser.add_argument('--properties', help="Path to the property file", action='append')
+parser.add_argument('--ignore', help="The groupId:artifactId to ignore", action='append')
+parser.add_argument('--nodependency', help="Ignore Maven dependencies", action='store_true')
+parser.add_argument('--eclipseplatform', help="Path to the Eclipse platform file in which the Maven versions must be updated", action='append')
 args = parser.parse_args()
+
+if args.version:
+	info("Version: " + VERSION)
+	sys.exit(0)
 
 properties = Properties()
 if args.properties:
@@ -263,44 +271,48 @@ if args.properties:
 
 version_mapping = {};
 for arg in args.args:
-	readVersionMappings(version_mapping, arg[0], properties)
+	read_version_mappings(version_mapping, arg[0], properties)
 
-pom_files = buildMavenFileList();
+if args.rootpath:
+	rootpath = os.path.realpath(args.rootpath)
+else:
+	rootpath = os.getcwd()
+pom_files = build_maven_file_list(rootpath);
 
 if args.pom:
 	pom_files = pom_files + args.pom
 
 for pom_file in pom_files:
 	info("Scanning POM: " + pom_file)
-	xml_root = readXMLRootNode(pom_file)
-	changed = replaceInPom(xml_root, version_mapping, args.ignore, (not args.nodependency))
+	xml_root = read_xml_root_node(pom_file)
+	changed = replace_in_pom(xml_root, version_mapping, args.ignore, (not args.nodependency))
 	if changed:
 		info("Saving POM: " + pom_file)
 		with open(pom_file, 'wt') as output_file:
-			output_file.write(dumpXML(xml_root))
+			output_file.write(dump_xml(xml_root))
 
-extension_files = buildMavenExtensionFileList(pom_files)
+extension_files = build_maven_extension_file_list(pom_files)
 
 for extension_file in extension_files:
 	info("Scanning Ext: " + extension_file)
-	xml_root = readXMLRootNode(extension_file)
-	changed = replaceInExtension(xml_root, version_mapping, args.ignore)
+	xml_root = read_xml_root_node(extension_file)
+	changed = replace_in_extension(xml_root, version_mapping, args.ignore)
 	if changed:
 		info("Saving Ext: " + extension_file)
 		with open(extension_file, 'wt') as output_file:
-			output_file.write(dumpXML(xml_root))
+			output_file.write(dump_xml(xml_root))
 
 if args.eclipseplatform:
 	for platform_file in args.eclipseplatform:
 		info("Scanning Ecl: " + platform_file)
-		xml_root = readXMLRootNode(platform_file);
-		changed = replaceInEclipsePlatform(xml_root, version_mapping, args.ignore)
+		xml_root = read_xml_root_node(platform_file);
+		changed = replace_in_eclipse_platform(xml_root, version_mapping, args.ignore)
 		if changed:
 			info("Saving Ecl: " + platform_file)
 			with open(platform_file, 'wt') as output_file:
 				output_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n")
 				output_file.write("<?pde version=\"3.8\"?>\n")
-				output_file.write(dumpXML(xml_root))
+				output_file.write(dump_xml(xml_root))
 
 sys.exit(0)
 

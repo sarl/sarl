@@ -18,9 +18,57 @@ import sys
 import os
 import argparse
 
-##############################
+VERSION = '20250916'
+
+##########################################
 ##
-def buildJavaDocPath(modules):
+class bcolors:
+    HEADER = '\033[34m'
+    OKGREEN = '\033[32m'
+    FAIL = '\033[31m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+##########################################
+## message : the message to display
+def header(message : str):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
+
+##########################################
+## message : the message to display
+def info(message : str):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]" + msg, file=sys.stdout)
+
+##########################################
+## message : the message to display
+def success(message : str):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.OKGREEN}{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
+
+##########################################
+## message : the message to display
+def error(message : str):
+	if message:
+		msg = " " + message
+	else:
+		msg = ''
+	print(f"[{bcolors.FAIL}{bcolors.BOLD}ERROR{bcolors.ENDC}]" + msg, file=sys.stderr)
+
+##############################
+## modules : list of the modules to be included in the javadoc path
+## RETURN : the Javadoc path.
+def build_java_doc_path(modules : list) -> str:
 	source_path = []
 	if modules:
 		for module in modules:
@@ -32,12 +80,13 @@ def buildJavaDocPath(modules):
 				print >> sys.stderr, "Module not found: " + module
 				return None
 		source_path = ':'.join(source_path)
-	print("Source Paths = " + str(source_path))
+	info("Source Paths: " + str(source_path))
 	return source_path
 
 ##############################
-##
-def filterArgs(args):
+## args : the command line arguments to filter
+## RETURN : the extra command line arguments in a list
+def filter_args(args : dict) -> list:
 	l = []
 	if args:
 		if isinstance(args, list):
@@ -56,7 +105,8 @@ def filterArgs(args):
 ## pomfile: the path to the root pom file (Unix format)
 ## sourcePaths: the source paths (Unix format)
 ## args: the command line arguments
-def generateDocumentation(offline, pomfile, sourcePaths, args):
+## RETURN : the exit code of the Javadoc command
+def generate_documentation(offline : bool, pomfile : str, sourcePaths : str, args : list) -> int:
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
@@ -72,27 +122,34 @@ def generateDocumentation(offline, pomfile, sourcePaths, args):
 		cmd = cmd + " -Dsourcepath=" + sourcePaths
 	cmd = cmd + " javadoc:aggregate"
 
-	print("Assuming 'maven-javadoc-plugin:jar' is activated")
-	print("Assuming tests are desactivated")
-	print("Have you activated the released profile? -DperformRelease=true")
-	print(cmd)
+	info("Assuming 'maven-javadoc-plugin:jar' is activated")
+	info("Assuming tests are desactivated")
+	info("Have you activated the released profile? -DperformRelease=true")
+	info("")
+	info(cmd)
 	return os.system(cmd)
 	
 ##############################
 ##
 parser = argparse.ArgumentParser(description="Generate the aggregated JavaDoc")
+parser.add_argument("--version", help="Show the version of this script", action="store_true")
 parser.add_argument("--offline", help="run the generator off-line", action="store_true")
 parser.add_argument("--pom", help="specify the path to the pom file to use", action="store")
 parser.add_argument("--module", help="specify the module to be documented", action="append")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
-rargs = filterArgs(args.args)
+
+if args.version:
+	info("Version: " + VERSION)
+	sys.exit(0)
+
+rargs = filter_args(args.args)
 
 retcode = 255
 
-doc_path = buildJavaDocPath(args.module)
+doc_path = build_java_doc_path(args.module)
 
-retcode = generateDocumentation(args.offline, args.pom, doc_path, rargs)
+retcode = generate_documentation(args.offline, args.pom, doc_path, rargs)
 
 sys.exit(retcode)
 

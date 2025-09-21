@@ -28,6 +28,7 @@ import hashlib
 from datetime import datetime
 from xml.etree import ElementTree
 
+VERSION = '20250916'
 NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 NAMESPACES = {'xmlns' : NAMESPACE}
 	
@@ -41,8 +42,8 @@ class bcolors:
     BOLD = '\033[1m'
 
 ##########################################
-##
-def header(message):
+## message : the message to display
+def header(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -50,8 +51,8 @@ def header(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
 
 ##########################################
-##
-def info(message):
+## message : the message to display
+def info(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -59,8 +60,8 @@ def info(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]" + msg, file=sys.stdout)
 
 ##########################################
-##
-def success(message):
+## message : the message to display
+def success(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -68,8 +69,8 @@ def success(message):
 	print(f"[{bcolors.HEADER}{bcolors.BOLD}INFO{bcolors.ENDC}]{bcolors.OKGREEN}{bcolors.BOLD}" + msg + f"{bcolors.ENDC}", file=sys.stdout)
 
 ##########################################
-##
-def error(message):
+## message : the message to display
+def error(message : str):
 	if message:
 		msg = " " + message
 	else:
@@ -78,7 +79,7 @@ def error(message):
 
 #########################
 ## filename: the path to the POM file.
-def readXMLRootNode(filename):
+def read_xml_root_node(filename : str) -> str:
 	ElementTree.register_namespace('', NAMESPACE)
 	tree = ElementTree.parse(filename)
 	root = tree.getroot()
@@ -87,7 +88,7 @@ def readXMLRootNode(filename):
 #########################
 ## node: the XML node
 ## name: the name of the value to read.
-def readXml(node, name):
+def read_xml(node : object, name : str) -> str:
 	valueNode = node.find("xmlns:" + name, namespaces=NAMESPACES)
 	if valueNode is not None:
 		textValue = valueNode.text
@@ -97,7 +98,7 @@ def readXml(node, name):
 
 ##############################
 ##
-def ask_pass():
+def ask_pass() -> str:
 	pass_phrase = subprocess.check_output(['ssh-askpass', 'Please enter your passphrase for signing the files:'])
 	if pass_phrase:
 		pass_phrase = pass_phrase.decode()
@@ -107,11 +108,12 @@ def ask_pass():
 	return None
 
 ##############################
-##
-def run_verify():
+## rootpath : path to the root folder in which the files to update are located
+## RETURN : the exit code for the signature command
+def run_verify(rootpath : str) -> int:
 	ret_code = 0
 	nb_files = 0
-	for root, dirs, files in os.walk("."):
+	for root, dirs, files in os.walk(rootpath):
 		for filename in files:
 			if filename.endswith(".asc"):
 				base_name = os.path.splitext(filename)[0]
@@ -127,15 +129,17 @@ def run_verify():
 	return ret_code
 
 ##############################
-##
-def run_fix(pwd, args):
+## rootpath : path to the root folder in which the files to update are located
+## pwd : the pass phrase for signing the files
+## args : the command-line arguments
+def run_fix(rootpath : str, pwd : str, args : dict):
 	nb_files = 0
 	if (pwd):
 		pass_phrase = pwd
 	else:
 		pass_phrase = ask_pass()
 	if pass_phrase:
-		for root, dirs, files in os.walk("."):
+		for root, dirs, files in os.walk(rootpath):
 			for filename in files:
 				if filename.endswith(".asc"):
 					base_name = os.path.splitext(filename)[0]
@@ -152,27 +156,27 @@ def run_fix(pwd, args):
 	return 0
 
 ##############################
-##
-def create_maven_central_bundles(out_directory):
-	current_dir = os.getcwd()
+## rootpath : path to the root folder in which the files to update are located
+## out_directory : the path to the folder in which the bundles ar ecopied
+def create_maven_central_bundles(root_path : str, out_directory : str):
 	nb_bundles = 0
 	shell_cmd = []
-	for root, dirs, files in os.walk("."):
+	for root, dirs, files in os.walk(root_path):
 		for filename in files:
 			if filename.endswith(".pom"):
 				parent_dir = os.path.basename(root)
 				if parent_dir == 'target':
-					pom = readXMLRootNode(os.path.join(current_dir, root, filename))
-					packaging_type = readXml(pom, 'packaging')
-					artifact_name = readXml(pom, 'artifactId')
-					group_name = readXml(pom, 'groupId')
+					pom = read_xml_root_node(os.path.join(root_path, root, filename))
+					packaging_type = read_xml(pom, 'packaging')
+					artifact_name = read_xml(pom, 'artifactId')
+					group_name = read_xml(pom, 'groupId')
 					if not group_name:
 						parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
-						group_name = readXml(parent, 'groupId')
-					version_number = readXml(pom, 'version')
+						group_name = read_xml(parent, 'groupId')
+					version_number = read_xml(pom, 'version')
 					if not version_number:
 						parent = pom.find("xmlns:parent", namespaces=NAMESPACES)
-						version_number = readXml(parent, 'version')
+						version_number = read_xml(parent, 'version')
 					
 					if not artifact_name:
 						raise Exception("artifactId is missed for " + filename)
@@ -182,12 +186,12 @@ def create_maven_central_bundles(out_directory):
 						raise Exception("version is missed for " + filename)
 
 					bundle_name = artifact_name + "-bundle.jar"
-					f_bundle_name = os.path.join(current_dir, root, bundle_name)
-					signs = glob.glob(os.path.join(current_dir, root, "*.asc"))
+					f_bundle_name = os.path.join(root_path, root, bundle_name)
+					signs = glob.glob(os.path.join(root_path, root, "*.asc"))
 					if signs:
 						info("Creating " + bundle_name + "...")
 
-						temp_output_folder = os.path.join(current_dir, root, "maven-central-bundles-temp")
+						temp_output_folder = os.path.join(root_path, root, "maven-central-bundles-temp")
 						content_folder = os.path.join(group_name.replace(".", "/"), artifact_name, version_number)
 						writing_output_folder = os.path.join(temp_output_folder, content_folder)
 						if os.path.exists(temp_output_folder):
@@ -195,12 +199,12 @@ def create_maven_central_bundles(out_directory):
 						os.makedirs(writing_output_folder, exist_ok=True)
 						
 						cmd = ['jar', '-c', '-f', f_bundle_name]
-						content_files = glob.glob(os.path.join(current_dir, root, "*.pom"))\
-							+ glob.glob(os.path.join(current_dir, root, "*.pom.asc"))\
-							+ glob.glob(os.path.join(current_dir, root, "*.jar"))\
-							+ glob.glob(os.path.join(current_dir, root, "*.jar.asc"))\
-							+ glob.glob(os.path.join(current_dir, root, "*.apklib"))\
-							+ glob.glob(os.path.join(current_dir, root, "*.apklib.asc"))
+						content_files = glob.glob(os.path.join(root_path, root, "*.pom"))\
+							+ glob.glob(os.path.join(root_path, root, "*.pom.asc"))\
+							+ glob.glob(os.path.join(root_path, root, "*.jar"))\
+							+ glob.glob(os.path.join(root_path, root, "*.jar.asc"))\
+							+ glob.glob(os.path.join(root_path, root, "*.apklib"))\
+							+ glob.glob(os.path.join(root_path, root, "*.apklib.asc"))
 						for input_file in content_files:
 							if not input_file.endswith("-bundle.jar") and not input_file.endswith("-bundle.jar.asc"):
 								base_output_filename = os.path.join(writing_output_folder, os.path.basename(input_file))
@@ -270,8 +274,11 @@ def create_maven_central_bundles(out_directory):
 			info("$> bash copy_bundles.sh")
 
 ##############################
+## rootpath : path to the root folder in which the files to update are located
+## out_directory : the path to the folder in which the bundles ar ecopied
+## pwd : the pass phrase for signing the files
 ## args: command line arguments
-def run_create(out_directory, pwd, args):
+def run_create(rootpath : str, out_directory : str, pwd : str, args : dict) -> int:
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if maven_cmd is None:
 		maven_cmd = 'mvn'
@@ -296,7 +303,7 @@ def run_create(out_directory, pwd, args):
 
 		r = os.system(cmd)
 		if r == 0:
-			create_maven_central_bundles(out_directory)
+			create_maven_central_bundles(rootpath, out_directory)
 			return 0
 		else:
 			return 255
@@ -304,8 +311,9 @@ def run_create(out_directory, pwd, args):
 		return 255
 
 ##############################
-##
-def filterArgs(args):
+## args : command-line arguments
+## RETURN : the list of arguments that are not directly supported by this script
+def filter_args(args : dict) -> list:
 	l = []
 	if args:
 		if isinstance(args, list):
@@ -323,22 +331,34 @@ def filterArgs(args):
 ##
 parser = argparse.ArgumentParser(description="Generate the bundles for Maven Central")
 group = parser.add_mutually_exclusive_group()
+group.add_argument("--version", help="Show the version of this script", action="store_true")
 group.add_argument("--verify", help="verify the signatures of the Central bundles", action="store_true")
 group.add_argument("--fix", help="fix the signatures of the Central bundles", action="store_true")
 group.add_argument("--create", help="create the Central bundles", action="store_true")
+parser.add_argument("--rootpath", help="Path to the root folder", action="store")
 parser.add_argument("--pwd", help="Specify the passphrase for signing the files", action="store")
 parser.add_argument("--out", help="Specify the folder in which the generated bundles must be copied", action="store")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
-rargs = filterArgs(args.args)
+
+if args.version:
+	info("Version: " + VERSION)
+	sys.exit(0)
+
+rargs = filter_args(args.args)
+
+if args.rootpath:
+	rootpath = os.path.realpath(args.rootpath)
+else:
+	rootpath = os.getcwd()
 
 retcode = 255
 if args.verify:
-	retcode = run_verify()
+	retcode = run_verify(rootpath)
 elif args.fix:
-	retcode = run_fix(args.pwd, rargs)
+	retcode = run_fix(rootpath, args.pwd, rargs)
 elif args.create:
-	retcode = run_create(args.out, args.pwd, rargs)
+	retcode = run_create(rootpath, args.out, args.pwd, rargs)
 else:
 	parser.print_help(sys.stderr)
 
