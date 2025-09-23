@@ -150,8 +150,9 @@ def filter_args(args : dict) -> list:
 
 ##############################
 ## pass_phrase: the pass phrase that is used for connecting to the remote server
+## definitions: dictionnary of the property definitions
 ## args: command-line arguments
-def execute_maven(pass_phrase : str, args : dict):
+def execute_maven(pass_phrase : str, definitions : dict, args : dict):
 	global MAVENSARLIO_URL
 	global UPDATESSARLIO_URL
 	global MAVENSARLIO_USER
@@ -176,6 +177,9 @@ def execute_maven(pass_phrase : str, args : dict):
 	         "-DUPDATESSARLIO_URL=\"" + UPDATESSARLIO_URL + "\"",
 	         "-DDEPENDENCIESSARLIO_URL=\"" + DEPENDENCIESSARLIO_URL + "\"",
 	         "-PuploadP2Repo" ]
+	if definitions:
+		for prop_key, prop_value in definitions.items():
+			cmd3.append('-D' + str(prop_key) + '=' + str(prop_value))
 	for arg in args:
 		cmd3.append(arg)
 	cmd3.append("clean")
@@ -202,7 +206,7 @@ def upload_module(args : dict, rargs : dict, current_dir : str, module : dict, p
 	header("")
 	module_path = os.path.realpath(os.path.join(current_dir, '..', module['module']))
 	os.chdir(module_path)
-	execute_maven(pass_phrase, rargs)
+	execute_maven(pass_phrase, args.definitions, rargs)
 
 ##########################################
 ## args : the command-line arguments
@@ -241,6 +245,21 @@ parser.add_argument("--ignore", help="add a module in the list of modules to be 
 parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--pwd", help="Specify the passphrase for connecting to the server", action="store")
 parser.add_argument("--showconfig", help="Show the configuration", action="store_true")
+class DefinitionAction(argparse.Action):
+	def __call__(action_self, parser, namespace, value, option_string=None):
+		if '=' in value:
+			params = value.split('=')
+			def_name = str(params[0]).strip()
+			def_value = str(params[1]).strip()
+		else:
+			def_name = value
+			def_value = ''
+		defs = getattr(namespace, 'definitions')
+		if not defs:
+			defs = dict()
+		defs[def_name] = def_value
+		setattr(namespace, 'definitions', defs)
+parser.add_argument("-D", dest='definitions', action=DefinitionAction, metavar='NAME=VALUE', help="define a property <NAME>=<VALUE>")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 args = parser.parse_args()
 rargs = filter_args(args.args)

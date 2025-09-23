@@ -70,11 +70,17 @@ def is_exe(fpath : str) -> bool:
 ## args : the command-line arguments
 ## module : the description of the module to be built
 def run_mvn_build(args : dict, module : dict):
-	cmd = [ 'mvn' ]
+	maven_cmd = os.environ.get('MAVEN_CMD')
+	if not maven_cmd:
+		maven_cmd = 'mvn'
+	cmd = [ maven_cmd ]
 	if args.notest:
 		cmd = cmd + [ '-Dmaven.test.skip=true' ]
 	if args.nop2mirror:
 		cmd = cmd + [ '-Declipse.p2.mirrors=false' ]
+	if args.definitions:
+		for prop_key, prop_value in args.definitions.items():
+			cmd = cmd + [ '-D' + str(prop_key) + '=' + str(prop_value) ]
 	cmd = cmd + args.args
 	cmd = cmd + [ 'clean', 'install' ]
 	retcode = subprocess.call(cmd)
@@ -88,6 +94,10 @@ def run_mvn_build(args : dict, module : dict):
 ## script : the path to the script to be run
 def run_script(args : dict, module : dict, script : str):
 	cmd = [ script ]
+	if args.notest:
+		cmd = cmd + ["--notest", "-Dmaven.test.skip=true"]
+	if args.nop2mirror:
+		cmd = cmd + ["--nop2mirror", "-Declipse.p2.mirrors=false"]
 	cmd = cmd + args.args
 	retcode = subprocess.call(cmd)
 	if retcode != 0:
@@ -161,6 +171,21 @@ parser.add_argument("--ignore", help="add a module in the list of modules to be 
 parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--notest", help="skip all the tests, equivalent to -Dmaven.test.skip=true", action="store_true")
 parser.add_argument("--nop2mirror", help="disable the mirroring to P2 repository, equivalent to -Declipse.p2.mirrors=false", action="store_true")
+class DefinitionAction(argparse.Action):
+	def __call__(action_self, parser, namespace, value, option_string=None):
+		if '=' in value:
+			params = value.split('=')
+			def_name = str(params[0]).strip()
+			def_value = str(params[1]).strip()
+		else:
+			def_name = value
+			def_value = ''
+		defs = getattr(namespace, 'definitions')
+		if not defs:
+			defs = dict()
+		defs[def_name] = def_value
+		setattr(namespace, 'definitions', defs)
+parser.add_argument("-D", dest='definitions', action=DefinitionAction, metavar='NAME=VALUE', help="define a property <NAME>=<VALUE>")
 parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
