@@ -1,0 +1,3 @@
+[submodule "sarl-bspl"]
+	path = sarl-bspl
+	url = https://github.com/sarl/sarl-protocols

@@ -277,6 +277,7 @@
       <feature id="io.sarl.eclipse.features.ideapp" installMode="root"/>
       <feature id="io.sarl.eclipse.features.sarlcompiler" installMode="root"/>
       <feature id="io.sarl.eclipse.features.sre.janus" installMode="root"/>
+      <feature id="io.sarl.extensions.bspl.lang.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>

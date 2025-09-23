@@ -54,6 +54,12 @@ git clone https://github.com/<your_github_login>/sarl
 
 We recommend to use the git tool on command-line until you're becoming expert with the git tools that is embedded in Eclipse.
 
+SARL project may include third-party extensions in separated Git repositories that are linked from the main SARL Git repository. To download the code for the extensions, it is necessary to refresh the Git submodules of the SARL project:
+```bash
+git submodule update
+```
+
+
 === 2.3. Structure of the SARL project
 
 The SARL project is splitted into different sub-projects that may be compiled independently. Each project is dedicated to a specific set of features and tools. **These sub-projects are listed below in the order they should be compiled**:
@@ -125,7 +131,7 @@ Three different types of contributions could be associated to the SARL project:
 
 The following table gives you the best contribution approach according to the SARL subproject. The last column indicates if you could use Maven from the Shell command-line interface.
 
-[%header,format=dsv]
+[%header,format=dsv,cols="1,1,1,1,1"]
 |===
 SARL Subproject:DSL Contribution:RCP Contribution:SARL Contribution:CLI
 `sarl-apputils`:X:::X
@@ -223,4 +229,140 @@ If one point is failing, please follows the steps:
 * Commit on your local repository, compile, and test until you have fixed the issue.
 * Push the changes on the same PR with `git push -f`, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*
 * The GitHub platform will relaunch the CI process automatically.
+
+== 3. Including an extension module in the SARL tools
+
+It may be interesting to include third-party tools in the SARL tools, and more specifically the SARL Eclipse IDE.
+In this case, the SARL project is structured in a way that it is possible to include these external contributions.
+
+=== 3.1. Contraints for creating your extension project
+
+The contraints to follow for being integrated are:
+
+* Having a specific Git repository with public access. In fact, the extension will be included as a link:https://git-scm.com/book/en/v2/Git-Tools-Submodules[Git submodule] when building the SARL tools.
+* In the root folder of the Git repository, a tool must be provided for building the extension code. The supported tools are:
+** A file `pom.xml` that will automatically starts the Maven compilation tool;
+** A python script `build-all.py` that will be used for building your code; 
+** A Shell script `build-all.sh` that will be used for building your code; or
+** A PowerShell script `build-all.ps1` that will be used for building your code.
+* The extension project must depends on the current version of SARL in which it is supposed to be included.
+
+The extension will be compiled *after* all the SARL compiler modules, but *before* the SARL IDE modules.
+
+The extension will be included if it is passing the compilation process **and** its unit tests that are considered as mandatory for avoiding regressions of the extension modules.
+
+=== 3.2. Steps for integrating the extension project in the SARL project
+
+For integrating the extension module in the SARL tools, the following steps could be applied:
+
+==== a) Link the Git repository
+
+**link:https://git-scm.com/book/en/v2/Git-Tools-Submodules[Git submodules]** provide a mechanism for integrating external repositories as nested components within a parent Git repository, enabling hierarchical version control.
+A link:https://git-scm.com/book/en/v2/Git-Tools-Submodules[submodule] operates as a reference to a specific commit within an external repository, recorded in the parent repository’s .gitmodules file. This reference is stored as a gitlink—a special entry in the parent’s tree object that points to the submodule’s commit hash rather than a traditional file or directory. The parent repository tracks the submodule’s state (i.e., its commit hash) but does not store its contents directly, thereby **maintaining separation between the two codebases**.
+
+The following command-line shell commands could be applied to create the submodule of the extension in the SARL project; where:
+
+* `<path_to_sarl_root_folder>` is the path to the root folder of the SARL project.
+* `<extension_git_url>>` is the URL of the public Git repository of the extension project; for example, for BSPL extension, it is `https://github.com/sarl/sarl-protocols`;
+* `<name_of_extension>` is the basename of the subfolder in the SARL project root folder that must contains the extension code; for example, for BSPL extension, it is `sarl-bspl`.
+
+```bash
+$> cd <path_to_sarl_root_folder>
+$> git submodule add <extension_git_url> <name_of_extension>
+$> git submodule init
+$> git submodule update
+```
+
+The four commands are the following:
+
+* `git submodule add` adds an the existing Git repository of the extension project as a submodule of the SARL project repository.
+* `git submodule init` initializes the local configuration file after adding the submodule.
+* `git submodule update` fetches all the data from the extension project and check out the appropriate commit in SARL project.
+
+CAUTION: Changes in the extension project and SARL project are managed separately. Therefore, commit and push actions are limited to the submodule or the SARL project, but not both at the same time.
+
+==== b) Declare the extension module to the developpers tools
+
+The developper tools are Python scripts that are reading a central module definition stored in the `modules.json` file.
+Each extension project that must be included in the compilation, generation or release process of the SARL project must be specified in this JSON file.
+
+For adding an extension project in the `modules.json` file, add an entry in the `extensions` array. Below, there is an example for the BSPL extension:
+
+```json
+...
+	"extensions": [
+		{
+			"module": "sarl-bspl",
+			"name": "BSPL implementation for SARL",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		}
+	],
+...
+```
+
+The attributes to be set are:
+
+[%header,cols="1,3,1"]
+|===
+|Attribute |Explanation |Using Script
+
+|`apidoc`
+|Indicates if the extension project is included in the generation of the API documentation
+|`./scripts/generate-aggregated-javadoc.py`
+
+|`build`
+|Indicates if the extension project is included in the building process of SARL
+|`./build-all.py`
+
+|`clean`
+|Indicates if the extension project is included in the cleaning process of SARL
+|`./clean-all.py`
+
+|`in-maven-central`
+|Indicates if the extension project must be included in the bundles to be uploaded to Maven Central server
+|`./scripts/prepare-maven-central.py`
+
+|`module`
+|The name of the extension project in the SARL root folder. It must be the same as the one specified in the `git submodule add` command
+| all
+
+|`name`
+|The name of the extension project that will appear on the console
+| all
+
+|`releasable`
+|Indicates if the extension project must be including when releasing the SARL project on the remote Maven servers
+|`./scripts/prepare-release.py` and `./scripts/release.py`
+
+|`release-config`
+|Is an associative array that contains the configuration properties for releasing the module. **See below for the subproperties**
+|`./scripts/prepare-release.py`
+
+|`release-config/readme-in-parent`
+|Indicates if the `README` file in the parent folder of the module must be also updated with release version numbers
+|`./scripts/prepare-release.py`
+
+|`upgrade-mvn-plugins`
+|Indicates if the declaration of the versions for the Maven plugins must be upgraded in extension project
+|`./scripts/upgrade-plugin-versions.py`
+
+|`upgrade-mvn-plugins-eclipse`
+|Specifies the relative path to an Eclipse Target Plaform file to be considered when upgrading the versions numbers of the plugins. This property must be an array of the elements of the path. For example, the file `./sarl-target-platform.target` is specified with `["sarl-target-platform.target"]`
+|`./scripts/upgrade-plugin-versions.py`
+
+|`upgrade-mvn-plugins-pom`
+|Specifies the relative path to an additional Maven pom file to be considered when upgrading the versions numbers of the plugins. This property must be an array of the elements of the path. For example, the file `../scripts/specific/pom-aggregate-javadoc.xml` is specified with `["..", "scripts", "specific", "pom-aggregate-javadoc.xml"]`
+|`./scripts/upgrade-plugin-versions.py`
+|===
+
+==== c) Include the extension projet in the SARL Eclipse IDE
+
+For including the Eclipse bundles from the extension project in the SARL Eclipse IDE, that SARL target platform must be updated.
+
+The modules `io.sarl.apputils:eclipseextensions` and `io.sarl.apputils:uiextensions` provides an API for integrating the extension contributions in the SARL Eclipse product.
 

@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.osgi.framework.BundleException;
 
 import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.apputils.uiextensions.Bundles;
@@ -81,7 +82,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 	}
 
 	@Override
-	protected void updateBundleList(Set<String> entries) {
+	protected void updateBundleList(Set<String> entries) throws BundleException {
 		for (final var rootBundleName : getSarlDependencyBundleNames()) {
 			final var bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {
@@ -96,7 +97,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 	}
 
 	@Override
-	protected void updateClasspathEntries(Set<IClasspathEntry> entries) {
+	protected void updateClasspathEntries(Set<IClasspathEntry> entries) throws BundleException {
 		for (final var rootBundleName : getSarlDependencyBundleNames()) {
 			final var bundle = Platform.getBundle(rootBundleName);
 			if (bundle != null) {

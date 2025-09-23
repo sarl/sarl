@@ -51,6 +51,7 @@ import org.eclipse.jdt.internal.core.util.Util;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -127,8 +128,12 @@ public final class Bundles {
 	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
 	 * @return the path to the source folder of the bundle, or {@code null} if undefined.
 	 * @see #getBundlePath(Bundle)
+	 * @throws BundleException if there is some error for retrieving the bundle path.
 	 */
-	public static IPath getSourceBundlePath(Bundle bundle, IPath bundleLocation) {
+	public static IPath getSourceBundlePath(Bundle bundle, IPath bundleLocation) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
@@ -192,8 +197,12 @@ public final class Bundles {
 	 * @param bundle the bundle for which the path must be retreived.
 	 * @return the path to the binaries of the bundle.
 	 * @see #getSourceBundlePath(Bundle, IPath)
+	 * @throws BundleException if there is some error for retrieving the bundle path.
 	 */
-	public static IPath getBundlePath(Bundle bundle) {
+	public static IPath getBundlePath(Bundle bundle) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		var path = getBinFolderPath(bundle);
 		if (path == null) {
 			// common jar file case, no bin folder
@@ -215,8 +224,12 @@ public final class Bundles {
 	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
 	 * @return the path to the javadoc folder of the bundle, or {@code null} if undefined.
 	 * @see #getBundlePath(Bundle)
+	 * @throws BundleException if there is some error for retrieving the bundle path.
 	 */
-	public static IPath getJavadocBundlePath(Bundle bundle, IPath bundleLocation) {
+	public static IPath getJavadocBundlePath(Bundle bundle, IPath bundleLocation) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
@@ -245,8 +258,9 @@ public final class Bundles {
 	 *
 	 * @param bundle the bundle.
 	 * @return the bundle dependencies.
+	 * @throws BundleException if one bundle cannot be resolved.
 	 */
-	public static IBundleDependencies resolveBundleDependencies(Bundle bundle) {
+	public static IBundleDependencies resolveBundleDependencies(Bundle bundle) throws BundleException {
 		return resolveBundleDependencies(bundle, (BundleURLMappings) null);
 	}
 
@@ -255,8 +269,12 @@ public final class Bundles {
 	 * @param bundle the bundle.
 	 * @param javadocURLs the mapping from bundles to the corresponding Javadoc URLs.
 	 * @return the bundle dependencies.
+	 * @throws BundleException if there is some error for retrieving the bundle path.
 	 */
-	public static IBundleDependencies resolveBundleDependencies(Bundle bundle, BundleURLMappings javadocURLs) {
+	public static IBundleDependencies resolveBundleDependencies(Bundle bundle, BundleURLMappings javadocURLs) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		final var docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
 		return new BundleDependencies(bundle, null, null, docMapping);
 	}
@@ -269,8 +287,9 @@ public final class Bundles {
 	 *      are not in this parameter.
 	 * @return the bundle dependencies.
 	 * @since 0.13
+	 * @throws BundleException if one bundle cannot be resolved.
 	 */
-	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, String... directDependencies) {
+	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, String... directDependencies) throws BundleException {
 		return resolveBundleDependenciesWithFilter(bundle, (BundleURLMappings) null, directDependencies);
 	}
 
@@ -283,8 +302,12 @@ public final class Bundles {
 	 *      are not in this parameter.
 	 * @return the bundle dependencies.
 	 * @since 0.13
+	 * @throws BundleException if there is some error for retrieving the bundle path.
 	 */
-	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, BundleURLMappings javadocURLs, String... directDependencies) {
+	public static IBundleDependencies resolveBundleDependenciesWithFilter(Bundle bundle, BundleURLMappings javadocURLs, String... directDependencies) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		final var docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
 		final var deps = directDependencies == null || directDependencies.length == 0 ? null : Arrays.asList(directDependencies);
 		return new BundleDependencies(bundle, deps, null, docMapping);
@@ -297,8 +320,9 @@ public final class Bundles {
 	 *      be considered. There bundles, and their transitive dependencies, are automatically added in the dependencies of the bundle. 
 	 * @return the bundle dependencies.
 	 * @since 0.13
+	 * @throws BundleException if one bundle cannot be resolved.
 	 */
-	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, String... extraDependencies) {
+	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, String... extraDependencies) throws BundleException {
 		return resolveBundleDependenciesWithExtras(bundle, (BundleURLMappings) null, extraDependencies);
 	}
 
@@ -310,8 +334,12 @@ public final class Bundles {
 	 *      be considered. There bundles, and their transitive dependencies, are automatically added in the dependencies of the bundle. 
 	 * @return the bundle dependencies.
 	 * @since 0.13
+	 * @throws BundleException if there is some error for retrieving the bundle path.
 	 */
-	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, BundleURLMappings javadocURLs, String... extraDependencies) {
+	public static IBundleDependencies resolveBundleDependenciesWithExtras(Bundle bundle, BundleURLMappings javadocURLs, String... extraDependencies) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		final var docMapping = javadocURLs == null ? new Utilities.SARLBundleJavadocURLMappings() : javadocURLs;
 		final var deps = extraDependencies == null || extraDependencies.length == 0 ? null : Arrays.asList(extraDependencies);
 		return new BundleDependencies(bundle, null, deps, docMapping);
@@ -339,9 +367,12 @@ public final class Bundles {
 		 * @param bundle the bundle.
 		 * @param classPathEntry the classpath entry for the bundle.
 		 * @param isFragment indicates if the dependency is a fragment or not.
+		 * @throws BundleException if a bundle cannot be resolved.
 		 */
-		BundleDependency(Bundle bundle, IClasspathEntry classPathEntry, boolean isFragment) {
-			assert bundle != null;
+		BundleDependency(Bundle bundle, IClasspathEntry classPathEntry, boolean isFragment) throws BundleException {
+			if (bundle == null) {
+				throw new ExpectingBundleException();
+			}
 			assert classPathEntry != null;
 			this.bundle = bundle;
 			this.classpathEntry = classPathEntry;
@@ -402,80 +433,91 @@ public final class Bundles {
 		/** Replies the name of the bundle that depends on the current dependencies.
 		 *
 		 * @return the bundle name.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		String getBundleSymbolicName();
+		String getBundleSymbolicName() throws BundleException;
 
 		/** Replies the detected binary path for the bundle.
 		 *
 		 * @return the output folder.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		IPath getBundleBinaryPath();
+		IPath getBundleBinaryPath() throws BundleException;
 
 		/** Replies the version of the bundle that is considered for computing the dependencies.
 		 *
 		 * @return the bundle version.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Version getBundleVersion();
+		Version getBundleVersion() throws BundleException;
 
 		/** Replies the symbolic names of the direct dependencies of the bundle (no transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @return the symbolic names of the bundle dependencies.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<String> getDirectSymbolicNames();
+		Iterable<String> getDirectSymbolicNames() throws BundleException;
 
 		/** Replies the classpath entries of the bundle dependencies (no transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @return the classpath entries of the bundle dependencies.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<IClasspathEntry> getDirectClasspathEntries();
+		Iterable<IClasspathEntry> getDirectClasspathEntries() throws BundleException;
 
 		/** Replies the runtime classpath entries of the bundle dependencies (no transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @return the runtime classpath entries of the bundle dependencies.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<IRuntimeClasspathEntry> getDirectRuntimeClasspathEntries();
+		Iterable<IRuntimeClasspathEntry> getDirectRuntimeClasspathEntries() throws BundleException;
 
 		/** Replies the dependencies of the bundle.
 		 * The bundle itself is included in the replied list if it is not a directory (no transitivity).
 		 *
 		 * @return the bundle dependencies, or {@code null} if the dependencies cannot be computed.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Set<BundleDependency> getDirectDependencies();
+		Set<BundleDependency> getDirectDependencies() throws BundleException;
 
 		/** Replies the symbolic names of the bundle dependencies (transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @param includeFragments indicates if bundle fragments should be replied also.
 		 * @return the symbolic names of the bundle dependencies.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<String> getTransitiveSymbolicNames(boolean includeFragments);
+		Iterable<String> getTransitiveSymbolicNames(boolean includeFragments) throws BundleException;
 
 		/** Replies the classpath entries of the bundle dependencies (transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @param includeFragments indicates if bundle fragments should be replied also.
 		 * @return the classpath entries of the bundle dependencies.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<IClasspathEntry> getTransitiveClasspathEntries(boolean includeFragments);
+		Iterable<IClasspathEntry> getTransitiveClasspathEntries(boolean includeFragments) throws BundleException;
 
 		/** Replies the runtime classpath entries of the bundle dependencies (transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @param includeFragments indicates if bundle fragments should be replied also.
 		 * @return the runtime classpath entries of the bundle dependencies.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<IRuntimeClasspathEntry> getTransitiveRuntimeClasspathEntries(boolean includeFragments);
+		Iterable<IRuntimeClasspathEntry> getTransitiveRuntimeClasspathEntries(boolean includeFragments) throws BundleException;
 
 		/** Replies the dependencies of the bundle (transitivity).
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @param includeFragments indicates if bundle fragments should be replied also.
 		 * @return the bundle dependencies, or {@code null} if the dependencies cannot be computed.
+		 * @throws BundleException if one bundle cannot be resolved.
 		 */
-		Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments);
+		Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments) throws BundleException;
 
 	}
 
@@ -581,9 +623,12 @@ public final class Bundles {
 		 * @param extraDependencies the list of the bundle symbolic names that are in the dependencies of the bundle to
 		 *      be considered. There bundles, and their transitive dependencies, are automatically added in the dependencies of the bundle. 
 		 * @param javadocURLs the mapping from bundles to the corresponding Javadoc URLs.
+		 * @throws BundleException if a bundle cannot be resolved.
 		 */
-		BundleDependencies(Bundle bundle, Collection<String> directDependencies, Collection<String> extraDependencies, BundleURLMappings javadocURLs) {
-			assert bundle != null;
+		BundleDependencies(Bundle bundle, Collection<String> directDependencies, Collection<String> extraDependencies, BundleURLMappings javadocURLs) throws BundleException {
+			if (bundle == null) {
+				throw new ExpectingBundleException();
+			}
 			this.bundle = bundle;
 			this.directDependencies = directDependencies;
 			this.extraDependencies = extraDependencies;
@@ -637,17 +682,21 @@ public final class Bundles {
 
 		@Override
 		public String toString() {
-			final var buf = new StringBuilder();
-			final var dependencies = getDependencyDefinition();
-			if (dependencies != null) {
-				toDependencyTree(
-						buf,
-						new String(), new String(),
-						this.bundle,
-						false,
-						dependencies.getDependencies());
+			try {
+				final var dependencies = getDependencyDefinition();
+				final var buf = new StringBuilder();
+				if (dependencies != null) {
+					toDependencyTree(
+							buf,
+							new String(), new String(),
+							this.bundle,
+							false,
+							dependencies.getDependencies());
+				}
+				return buf.toString();
+			} catch (BundleException ex) {
+				return ""; //$NON-NLS-1$
 			}
-			return buf.toString();
 		}
 
 		private void toDependencyTree(StringBuilder builder, String indent1, String indent2, Bundle current,
@@ -675,7 +724,7 @@ public final class Bundles {
 		}
 
 		@Override
-		public IPath getBundleBinaryPath() {
+		public IPath getBundleBinaryPath() throws BundleException {
 			if (this.binaryBundlePath == null) {
 				getDependencyDefinition();
 			}
@@ -683,36 +732,72 @@ public final class Bundles {
 		}
 
 		@Override
-		public Iterable<String> getDirectSymbolicNames() {
-			return () -> new SymbolicNameIterator(getDirectDependencies());
+		public Iterable<String> getDirectSymbolicNames() throws BundleException {
+			return () -> {
+				try {
+					return new SymbolicNameIterator(getDirectDependencies());
+				} catch (BundleException ex) {
+					throw new RuntimeException(ex);
+				}
+			};
 		}
 
 		@Override
-		public Iterable<IClasspathEntry> getDirectClasspathEntries() {
-			return () -> new ClasspathEntryIterator(getDirectDependencies());
+		public Iterable<IClasspathEntry> getDirectClasspathEntries() throws BundleException {
+			return () -> {
+				try {
+					return new ClasspathEntryIterator(getDirectDependencies());
+				} catch (BundleException ex) {
+					throw new RuntimeException(ex);
+				}
+			};
 		}
 
 		@Override
-		public Iterable<IRuntimeClasspathEntry> getDirectRuntimeClasspathEntries() {
-			return () -> new RuntimeClasspathEntryIterator(getDirectDependencies());
+		public Iterable<IRuntimeClasspathEntry> getDirectRuntimeClasspathEntries() throws BundleException {
+			return () -> {
+				try {
+					return new RuntimeClasspathEntryIterator(getDirectDependencies());
+				} catch (BundleException ex) {
+					throw new RuntimeException(ex);
+				}
+			};
 		}
 
 		@Override
-		public Iterable<String> getTransitiveSymbolicNames(boolean includeFragments) {
-			return () -> new SymbolicNameIterator(getTransitiveDependencies(includeFragments));
+		public Iterable<String> getTransitiveSymbolicNames(boolean includeFragments) throws BundleException {
+			return () -> {
+				try {
+					return new SymbolicNameIterator(getTransitiveDependencies(includeFragments));
+				} catch (BundleException ex) {
+					throw new RuntimeException(ex);
+				}
+			};
 		}
 
 		@Override
-		public Iterable<IClasspathEntry> getTransitiveClasspathEntries(boolean includeFragments) {
-			return () -> new ClasspathEntryIterator(getTransitiveDependencies(includeFragments));
+		public Iterable<IClasspathEntry> getTransitiveClasspathEntries(boolean includeFragments) throws BundleException {
+			return () -> {
+				try {
+					return new ClasspathEntryIterator(getTransitiveDependencies(includeFragments));
+				} catch (BundleException ex) {
+					throw new RuntimeException(ex);
+				}
+			};
 		}
 
 		@Override
-		public Iterable<IRuntimeClasspathEntry> getTransitiveRuntimeClasspathEntries(boolean includeFragments) {
-			return () -> new RuntimeClasspathEntryIterator(getTransitiveDependencies(includeFragments));
+		public Iterable<IRuntimeClasspathEntry> getTransitiveRuntimeClasspathEntries(boolean includeFragments) throws BundleException {
+			return () -> {
+				try {
+					return new RuntimeClasspathEntryIterator(getTransitiveDependencies(includeFragments));
+				} catch (BundleException ex) {
+					throw new RuntimeException(ex);
+				}
+			};
 		}
 
-		private DependencyDefinition getDependencyDefinition() {
+		private DependencyDefinition getDependencyDefinition() throws BundleException {
 			var dependencies = getBundleDependencies(this.bundle);
 			if (dependencies == null) {
 				final var bundlePath = Bundles.getBundlePath(this.bundle);
@@ -767,7 +852,7 @@ public final class Bundles {
 		}
 
 		@Override
-		public Version getBundleVersion() {
+		public Version getBundleVersion() throws BundleException {
 			final var dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
@@ -776,12 +861,12 @@ public final class Bundles {
 		}
 
 		@Override
-		public String getBundleSymbolicName() {
+		public String getBundleSymbolicName() throws BundleException {
 			return this.bundle.getSymbolicName();
 		}
 
 		@Override
-		public Set<BundleDependency> getDirectDependencies() {
+		public Set<BundleDependency> getDirectDependencies() throws BundleException {
 			final var dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
@@ -790,7 +875,7 @@ public final class Bundles {
 		}
 
 		@Override
-		public Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments) {
+		public Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments) throws BundleException {
 			final var dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return Collections.emptyList();
@@ -806,8 +891,9 @@ public final class Bundles {
 		 * @param entry the classpath entry to add to. Never {@code null}.
 		 * @param entries the list of entries to add to.
 		 * @return the main added dependency.
+		 * @throws BundleException if a bundle cannot be resolved
 		 */
-		private static BundleDependency updateBundleClassPath(Bundle bundle, IClasspathEntry entry, Set<BundleDependency> entries) {
+		private static BundleDependency updateBundleClassPath(Bundle bundle, IClasspathEntry entry, Set<BundleDependency> entries) throws BundleException {
 			assert bundle != null;
 			assert entry != null;
 			final var rootDep = new BundleDependency(bundle, entry, false);
@@ -831,8 +917,12 @@ public final class Bundles {
 		 * @param firstCall
 		 * 		boolean specifying if we are at the first recursive call, in this case we use the {@link #directDependencies}
 		 *      collections to filter the dependencies that are really useful.
+		 * @throws BundleException if a bundle cannot be resolved.
 		 */
-		private void extractAllBundleDependencies(Bundle bundle, boolean firstCall) {
+		private void extractAllBundleDependencies(Bundle bundle, boolean firstCall) throws BundleException {
+			if (bundle == null) {
+				throw new ExpectingBundleException();
+			}
 			final var bundleWiring = bundle.adapt(BundleWiring.class);
 			final var bundleWires = bundleWiring.getRequiredWires(null);
 
@@ -840,7 +930,9 @@ public final class Bundles {
 				for (final var wire : bundleWires) {
 
 					final var dependency = wire.getProviderWiring().getBundle();
-					assert dependency != null;
+					if (dependency == null) {
+						throw new ExpectingBundleException();
+					}
 					final var dependencyInstallationPath = dependency.getLocation();
 
 					final var existingDependencyCPE = getBundleDependencies(dependency);
@@ -884,8 +976,10 @@ public final class Bundles {
 		 * @param bundle the bundle to explore
 		 * @param bundleInstallURL the URL where the specified bundle is stored
 		 * @return the Path to the output folder used to store .class file if any (if we are in an eclipse project (debug mode))
+		 * @throws BundleException if a bundle cannot be resolved.
 		 */
-		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) {
+		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) throws BundleException {
+			assert bundle != null;
 			IPath outputLocation = null;
 			BundleDependency mainDependency = null;
 			final var cpEntries = createBundleDependencySet();

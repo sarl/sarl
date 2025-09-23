@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.osgi.framework.BundleException;
 
 import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.apputils.eclipseextensions.buildpath.SARLBundleBuildPath;
@@ -129,22 +130,23 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	/** Replies the standard classpath for running the Janus platform.
 	 *
 	 * @return the classpath.
+	 * @throws BundleException if a bundle cannot be resolved.
 	 */
-	public static IBundleDependencies getJanusPlatformClasspath() {
+	public static IBundleDependencies getJanusPlatformClasspath() throws BundleException {
 		final var bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
 		final var resolvedBundles = Bundles.resolveBundleDependencies(bundle);
 		return resolvedBundles;
 	}
 
 	@Override
-	protected void updateBundleList(Set<String> entries) {
+	protected void updateBundleList(Set<String> entries) throws BundleException {
 		for (final var symbolicName : getJanusPlatformClasspath().getTransitiveSymbolicNames(true)) {
 			entries.add(symbolicName);
 		}
 	}
 
 	@Override
-	protected void updateClasspathEntries(Set<IClasspathEntry> entries) {
+	protected void updateClasspathEntries(Set<IClasspathEntry> entries) throws BundleException {
 		for (final var cpe : getJanusPlatformClasspath().getTransitiveClasspathEntries(true)) {
 			entries.add(cpe);
 		}

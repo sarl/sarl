@@ -86,6 +86,16 @@
 		}
 	],
 	"extensions": [
+		{
+			"module": "sarl-bspl",
+			"name": "BSPL implementation for SARL",
+			"build": true,
+			"clean": true,
+			"apidoc": false,
+			"upgrade-mvn-plugins": true,
+			"in-maven-central": true,
+			"releasable": true
+		}
 	],
 	"with-extension": [
 		{

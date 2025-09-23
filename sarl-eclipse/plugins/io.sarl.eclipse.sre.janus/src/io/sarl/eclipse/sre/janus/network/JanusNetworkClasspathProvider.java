@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
+import org.osgi.framework.BundleException;
 
 import io.sarl.apputils.uiextensions.Bundles;
 
@@ -83,14 +84,18 @@ public class JanusNetworkClasspathProvider extends StandardClasspathProvider {
 			for (final var bundleId : JANUS_NETWORK_DEPENDENCY_BUNDLE_NAMES) {
 				final var bundle = Platform.getBundle(bundleId);
 				if (bundle != null) {
-					final var resolvedBundles = Bundles.resolveBundleDependencies(bundle);
-					if (resolvedBundles != null) {
-						for (final var entry : resolvedBundles.getTransitiveRuntimeClasspathEntries(true)) {
-							final var location = entry.getLocation();
-							if (added.add(location)) {
-								entries.add(entry);
+					try {
+						final var resolvedBundles = Bundles.resolveBundleDependencies(bundle);
+						if (resolvedBundles != null) {
+							for (final var entry : resolvedBundles.getTransitiveRuntimeClasspathEntries(true)) {
+								final var location = entry.getLocation();
+								if (added.add(location)) {
+									entries.add(entry);
+								}
 							}
 						}
+					} catch (BundleException ex) {
+						throw new RuntimeException(ex);
 					}
 				}
 			}

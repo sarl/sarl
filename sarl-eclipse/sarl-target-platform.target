@@ -154,5 +154,65 @@
 			  </dependency>
 		  </dependencies>
 	  </location>
+	  <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.extensions.bspl</groupId>
+				  <artifactId>io.sarl.extensions.bspl.lang.feature</artifactId>
+				  <version>1.0.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.extensions.bspl</groupId>
+				  <artifactId>io.sarl.extensions.bspl.lang.ide</artifactId>
+				  <version>1.0.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.extensions.bspl</groupId>
+				  <artifactId>io.sarl.extensions.bspl.lang.ui</artifactId>
+				  <version>1.0.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.extensions.bspl</groupId>
+				  <artifactId>io.sarl.extensions.bspl.eclipse</artifactId>
+				  <version>1.0.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.extensions.bspl</groupId>
+				  <artifactId>bspl.lang.compiler</artifactId>
+				  <version>1.0.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
+	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system" includeSource="true" missingManifest="generate" type="Maven">
+		  <dependencies>
+			  <dependency>
+				  <groupId>io.sarl.extensions.bspl</groupId>
+				  <artifactId>bspl.sdk</artifactId>
+				  <version>1.0.0-SNAPSHOT</version>
+				  <type>jar</type>
+			  </dependency>
+		  </dependencies>
+	  </location>
   </locations>
 </target>

@@ -32,6 +32,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.Version;
 
 import com.google.common.base.Strings;
@@ -193,9 +194,12 @@ public final class Utilities {
 	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
 	 *      the bundle platform does not know the Javadoc file. If {@code null}, no mapping is defined.
 	 * @return the classpath entry.
+	 * @throws BundleException if a bundle cannot be resolved.
 	 */
-	public static IClasspathEntry newLibraryEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) {
-		assert bundle != null;
+	public static IClasspathEntry newLibraryEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		final IPath bundlePath;
 		if (precomputedBundlePath == null) {
 			bundlePath = Bundles.getBundlePath(bundle);
@@ -244,9 +248,12 @@ public final class Utilities {
 	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
 	 *      the bundle platform does not know the Javadoc file. If {@code null}, no mapping is defined.
 	 * @return the classpath entry.
+	 * @throws BundleException if a bundle cannot be resolved
 	 */
-	public static IClasspathEntry newOutputClasspathEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) {
-		assert bundle != null;
+	public static IClasspathEntry newOutputClasspathEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) throws BundleException {
+		if (bundle == null) {
+			throw new ExpectingBundleException();
+		}
 		final IPath bundlePath;
 		if (precomputedBundlePath == null) {
 			bundlePath = Bundles.getBundlePath(bundle);

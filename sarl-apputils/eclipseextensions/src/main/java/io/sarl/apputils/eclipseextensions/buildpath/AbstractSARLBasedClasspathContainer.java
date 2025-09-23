@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.osgi.framework.BundleException;
 
 /** Classpath container dedicated to the SARL environment.
  *
@@ -93,8 +94,9 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	/** Replies the list of the symbolic names of the bundle dependencies.
 	 *
 	 * @return the bundle symbolic names of the dependencies.
+	 * @throws BundleException if a bundle cannot be resolved.
 	 */
-	public final Set<String> getBundleDependencies() {
+	public final Set<String> getBundleDependencies() throws BundleException {
 		final var bundles = new TreeSet<String>();
 		updateBundleList(bundles);
 		return bundles;
@@ -106,14 +108,19 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	 * to update the list of the bundle entries.
 	 *
 	 * @param entries the list of entries to update.
+	 * @throws BundleException if a bundle cannot be resolved.
 	 */
-	protected abstract void updateBundleList(Set<String> entries);
+	protected abstract void updateBundleList(Set<String> entries) throws BundleException;
 
 	@Override
 	public final synchronized IClasspathEntry[] getClasspathEntries() {
 		if (this.entries == null) {
 			final var newEntries = new TreeSet<>(getClasspathEntryComparator());
-			updateClasspathEntries(newEntries);
+			try {
+				updateClasspathEntries(newEntries);
+			} catch (BundleException ex) {
+				throw new RuntimeException(ex);
+			}
 			this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
 		}
 		return this.entries;
@@ -125,8 +132,9 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	 * to update the list of the classpath entries.
 	 *
 	 * @param entries the list of entries to update.
+	 * @throws BundleException if a bundle cannot be resolved.
 	 */
-	protected abstract void updateClasspathEntries(Set<IClasspathEntry> entries);
+	protected abstract void updateClasspathEntries(Set<IClasspathEntry> entries) throws BundleException;
 
 	/** Reset the container.
 	 */

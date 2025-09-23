@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.osgi.framework.BundleException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -68,8 +69,10 @@ public class JanusSREInstall extends AbstractSREInstall {
 
 	/**
 	 * Creates the a JANUS SRE install.
+	 *
+	 * @throws BundleException if a bundle cannot be resolved.
 	 */
-	public JanusSREInstall() {
+	public JanusSREInstall() throws BundleException {
 		super(JanusClasspathContainer.JANUS_MAIN_BUNDLE_ID);
 		final var dependencies = JanusClasspathContainer.getJanusPlatformClasspath();
 		//
