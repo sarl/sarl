@@ -24,6 +24,7 @@ import subprocess
 import sys
 import json
 import shutil
+import re
 
 ##########################################
 ##
@@ -69,8 +70,23 @@ def is_exe(fpath : str) -> bool:
 
 ##########################################
 ## args : the command-line arguments
+## execution_dir : the directory in which the Maven must be run
+def os_execution_dir(args : dict, execution_dir : str) -> str:
+	if os.name == 'nt' and args.uncmapping:
+		dir0 = execution_dir.replace('/', '\\')
+		if dir0.startswith(r'\\'):
+			for map_key, map_value in args.uncmapping.items():
+				dir1 = re.sub('^' + re.escape(map_key), map_value, dir0)
+				if dir0 != dir1:
+					return dir1
+	return execution_dir
+
+##########################################
+## args : the command-line arguments
 ## module : the definition of the module for which the cleaning must be run
-def run_clean(args : dict, module : dict):
+## execution_dir : the directory in which the Maven must be run
+def run_clean(args : dict, module : dict, execution_dir : str):
+	execution_dir = os_execution_dir(args, execution_dir)
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if not maven_cmd:
 		maven_cmd = shutil.which('mvn')
@@ -80,7 +96,7 @@ def run_clean(args : dict, module : dict):
 			cmd = cmd + [ '-D' + str(prop_key) + '=' + str(prop_value) ]
 	cmd = cmd + args.args
 	cmd = cmd + [ 'clean' ]
-	completed = subprocess.run(cmd)
+	completed = subprocess.run(cmd, cwd=execution_dir)
 	if completed and completed.returncode != 0:
 		error("Cannot run mvn for module: " + module['name'])
 		sys.exit(completed.returncode)
@@ -88,11 +104,13 @@ def run_clean(args : dict, module : dict):
 ##########################################
 ## args : the command-line arguments
 ## module : the definition of the module for which the cleaning must be run
+## execution_dir : the directory in which the Maven must be run
 ## script : the name of the script to be run
-def run_script(args : dict, module : dict, script : str):
+def run_script(args : dict, module : dict, execution_dir : str, script : str):
+	execution_dir = os_execution_dir(args, execution_dir)
 	cmd = [ script ]
 	cmd = cmd + args.args
-	completed = subprocess.run(cmd)
+	completed = subprocess.run(cmd, cwd=execution_dir)
 	if completed and completed completed.returncode != 0:
 		error("Cannot run cleaning script for module: " + module['name'])
 		sys.exit(completed.returncode)
@@ -115,13 +133,13 @@ def build_module(args : dict, current_dir : str, module : dict):
 		ps_build_file = os.path.join(module_dir, 'clean-all.ps1')
 		os.chdir(module_dir)
 		if os.path.isfile(pom_file):
-			run_clean(args, module)
+			run_clean(args, module, module_dir)
 		elif is_exe(py_build_file):
-			run_script(args, module, py_build_file)
+			run_script(args, module, module_dir, py_build_file)
 		elif is_exe(sh_build_file):
-			run_script(args, module, sh_build_file)
+			run_script(args, module, module_dir, sh_build_file)
 		elif is_exe(ps_build_file):
-			run_script(args, module, ps_build_file)
+			run_script(args, module, module_dir, ps_build_file)
 		else:
 			error("Nothing to run for module: " + module['name'])
 			sys.exit(255)
@@ -159,6 +177,9 @@ def read_module_configuration(args : dict, current_dir : str) -> dict:
 
 ##########################################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser()
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
 parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")
@@ -178,6 +199,22 @@ class DefinitionAction(argparse.Action):
 		defs[def_name] = def_value
 		setattr(namespace, 'definitions', defs)
 parser.add_argument("-D", dest='definitions', action=DefinitionAction, metavar='NAME=VALUE', help="define a property <NAME>=<VALUE>")
+if os.name == 'nt':
+	class UncAction(argparse.Action):
+		def __call__(action_self, parser, namespace, value, option_string=None):
+			if '=' in value:
+				params = value.split('=')
+				def_name = str(params[0]).strip()
+				def_value = str(params[1]).strip()
+			else:
+				def_name = value
+				def_value = ''
+			defs = getattr(namespace, 'uncmapping')
+			if not defs:
+				defs = dict()
+			defs[def_name] = def_value
+			setattr(namespace, 'uncmapping', defs)
+	parser.add_argument("--unc", dest='uncmapping', action=UncAction, metavar='UNC=PATH', help="define a mapping from an UNC path and a path with drive")
 parser.add_argument('args', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 

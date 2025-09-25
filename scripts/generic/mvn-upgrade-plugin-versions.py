@@ -248,6 +248,9 @@ def replace_in_eclipse_platform(root : object, version_mapping : dict, ignores :
 
 ##############################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser(description="Update Maven plugin versions")
 parser.add_argument('args', nargs=argparse.REMAINDER, action="append")
 parser.add_argument("--version", help="Show the version of this script", action="store_true")

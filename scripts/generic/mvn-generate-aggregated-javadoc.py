@@ -131,6 +131,9 @@ def generate_documentation(offline : bool, pomfile : str, sourcePaths : str, arg
 	
 ##############################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser(description="Generate the aggregated JavaDoc")
 parser.add_argument("--version", help="Show the version of this script", action="store_true")
 parser.add_argument("--offline", help="run the generator off-line", action="store_true")

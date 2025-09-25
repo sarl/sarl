@@ -201,6 +201,9 @@ def read_module_configuration(args : dict, current_dir : str) -> dict:
 
 ##########################################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser()
 parser.add_argument("--modules", help="path to the JSON file defining the modules", action="store")
 parser.add_argument("--ignore", help="add a module in the list of modules to be ignored", action="append")

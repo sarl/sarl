@@ -173,6 +173,9 @@ def read_module_configuration(args : dict, current_dir : str) -> dict:
 
 ##########################################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser()
 parser.add_argument("--version", help="Show the version of this script", action="store_true")
 parser.add_argument("--rootpath", help="path to the root folder where modules are located", action="store")

@@ -329,6 +329,9 @@ def filter_args(args : dict) -> list:
 
 ##############################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser(description="Generate the bundles for Maven Central")
 group = parser.add_mutually_exclusive_group()
 group.add_argument("--version", help="Show the version of this script", action="store_true")

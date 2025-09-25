@@ -82,6 +82,9 @@ def build_feature_plugin_list(plugins : list) -> str:
 
 ##############################
 ##
+# Fix the bug of ANSI colors on terminal for Windows terminals
+os.system('')
+#
 parser = argparse.ArgumentParser(description="Extract plugin definitions from P2 and generate feature definition")
 parser.add_argument("input", metavar="PATH-TO-CONTANT-JAR", help="path to the \"content.jar\" file to analyse", action="store")
 parser.add_argument("--output", help="path to the \"feature.xml\" file to generate", action="store")
