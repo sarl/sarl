@@ -21,7 +21,6 @@
 import os
 import sys
 import argparse
-import subprocess
 import configparser
 import getpass
 import json

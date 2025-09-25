@@ -109,10 +109,10 @@ def generate_central_bundles(args : dict, current_dir : str, module : dict, pwd 
 				"-DpublicSarlApiModuleSet=true" ]
 			cmd = cmd + args.args
 			os.chdir(module_path)
-			retcode = subprocess.call(cmd)
-			if retcode != 0:
+			completed = subprocess.run(cmd)
+			if completed and completed.returncode != 0:
 				error("Cannot run mvn-central-bundles.py for module: " + module['name'])
-				sys.exit(retcode)
+				sys.exit(completed.returncode)
 			os.chdir(current_dir)
 		else:
 			error("Cannot run mvn-central-bundles.py")

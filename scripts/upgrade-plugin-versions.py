@@ -132,10 +132,10 @@ def upgrade_plugins(args : dict, current_dir : str, root_path : str, module : di
 			pluginyaml
 		]
 		os.chdir(module_path)
-		retcode = subprocess.call(cmd)
-		if retcode != 0:
+		completed = subprocess.run(cmd)
+		if completed and completed.returncode != 0:
 			error("Cannot run mvn-upgrade-plugin-versions.py for module: " + module['name'])
-			sys.exit(retcode)
+			sys.exit(completed.returncode)
 		os.chdir(root_path)
 		success("Module " + module['name'] + " was upgraded")
 	else:

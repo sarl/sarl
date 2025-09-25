@@ -99,7 +99,7 @@ def read_xml(node : object, name : str) -> str:
 ##############################
 ##
 def ask_pass() -> str:
-	pass_phrase = subprocess.check_output(['ssh-askpass', 'Please enter your passphrase for signing the files:'])
+	pass_phrase = subprocess.check_output([shutil.which('ssh-askpass'), 'Please enter your passphrase for signing the files:'])
 	if pass_phrase:
 		pass_phrase = pass_phrase.decode()
 		pass_phrase = pass_phrase.strip()
@@ -198,7 +198,7 @@ def create_maven_central_bundles(root_path : str, out_directory : str):
 							shutil.rmtree(temp_output_folder)
 						os.makedirs(writing_output_folder, exist_ok=True)
 						
-						cmd = ['jar', '-c', '-f', f_bundle_name]
+						cmd = [shutil.which('jar'), '-c', '-f', f_bundle_name]
 						content_files = glob.glob(os.path.join(root_path, root, "*.pom"))\
 							+ glob.glob(os.path.join(root_path, root, "*.pom.asc"))\
 							+ glob.glob(os.path.join(root_path, root, "*.jar"))\
@@ -240,8 +240,8 @@ def create_maven_central_bundles(root_path : str, out_directory : str):
     						#print("\t" + str(cmd))
 						if os.path.exists(f_bundle_name):
 							os.remove(f_bundle_name)
-						r = subprocess.call(cmd, cwd=root)
-						if r == 0 and os.path.isfile(f_bundle_name):
+						r = subprocess.run(cmd, cwd=root)
+						if r and r.returncode == 0 and os.path.isfile(f_bundle_name):
 							nb_bundles = nb_bundles + 1
 							shell_cmd = shell_cmd + [ f_bundle_name ]
 														

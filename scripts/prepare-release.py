@@ -24,6 +24,7 @@ import re
 import os
 import subprocess
 import sys
+import shutil
 import json
 from pathlib import Path
 from xml.etree import ElementTree
@@ -539,7 +540,7 @@ def build_next_devel_version(current_version : str, next_devel : str) -> str:
 def generate_changes(args : dict, current_dir : str, current_processus_dir : str, current_stable_version : str, changelog_file : str):
 	if changelog_file and not os.path.isabs(changelog_file):
 		changelog_file = os.path.realpath(os.path.join(current_processus_dir, changelog_file))
-	gitoutput = subprocess.check_output(['git', 'log', '--format=tformat:* %s [[more details](' + GIT_COMMIT_URL + '%H)]', str(current_stable_version) + '..HEAD'])
+	gitoutput = subprocess.check_output([shutil.which('git'), 'log', '--format=tformat:* %s [[more details](' + GIT_COMMIT_URL + '%H)]', str(current_stable_version) + '..HEAD'])
 	if changelog_file:
 		output_filename = changelog_file
 	else:

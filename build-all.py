@@ -22,6 +22,7 @@ import os
 import argparse
 import subprocess
 import sys
+import shutil
 import json
 
 ##########################################
@@ -72,7 +73,7 @@ def is_exe(fpath : str) -> bool:
 def run_mvn_build(args : dict, module : dict):
 	maven_cmd = os.environ.get('MAVEN_CMD')
 	if not maven_cmd:
-		maven_cmd = 'mvn'
+		maven_cmd = shutil.which('mvn')
 	cmd = [ maven_cmd ]
 	if args.notest:
 		cmd = cmd + [ '-Dmaven.test.skip=true' ]
@@ -83,10 +84,10 @@ def run_mvn_build(args : dict, module : dict):
 			cmd = cmd + [ '-D' + str(prop_key) + '=' + str(prop_value) ]
 	cmd = cmd + args.args
 	cmd = cmd + [ 'clean', 'install' ]
-	retcode = subprocess.call(cmd)
-	if retcode != 0:
+	completed = subprocess.run(cmd)
+	if completed and completed.returncode != 0:
 		error("Cannot run mvn for module: " + module['name'])
-		sys.exit(retcode)
+		sys.exit(completed.returncode)
 
 ##########################################
 ## args : the command-line arguments
@@ -99,10 +100,10 @@ def run_script(args : dict, module : dict, script : str):
 	if args.nop2mirror:
 		cmd = cmd + ["--nop2mirror", "-Declipse.p2.mirrors=false"]
 	cmd = cmd + args.args
-	retcode = subprocess.call(cmd)
-	if retcode != 0:
+	completed = subprocess.run(cmd)
+	if completed and completed.returncode != 0:
 		error("Cannot run build script for module: " + module['name'])
-		sys.exit(retcode)
+		sys.exit(completed.returncode)
 
 ##########################################
 ## args : the command-line arguments

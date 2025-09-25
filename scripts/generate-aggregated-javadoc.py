@@ -72,13 +72,13 @@ def is_exe(fpath : str) -> bool:
 ## args : command-line arguments
 ## current_dir : folder of this script
 def update_source_code(args : dict, current_dir : str):
-	binary = os.path.join(current_dir, '..', 'build-all.py')
+	binary = os.path.realpath(os.path.join(current_dir, '..', 'build-all.py'))
 	if is_exe(binary):
 		cmd = [ binary,
 			"--notest" ]
-		retcode = r = subprocess.call(cmd)
-		if retcode != 0:
-			sys.exit(retcode)
+		completed = r = subprocess.run(cmd)
+		if completed and completed.returncode != 0:
+			sys.exit(completed.returncode)
 	else:
 		error("Cannot run build-all.py")
 		sys.exit(255)
@@ -129,7 +129,7 @@ def create_pom_xml(args : dict, current_dir : str):
 ## current_dir : folder of this script
 ## pom_filename : the filename of the POM to use as root POM
 def generate_api_documentation(args : dict, current_dir : str, pom_filename : str):
-	binary = os.path.join(current_dir, 'generic', 'mvn-generate-aggregated-javadoc.py')
+	binary = ols.path.realpath(os.path.join(current_dir, 'generic', 'mvn-generate-aggregated-javadoc.py'))
 	retcode = 255
 	if is_exe(binary):
 		try:
@@ -163,9 +163,9 @@ def generate_api_documentation(args : dict, current_dir : str, pom_filename : st
 			"-Dsarl.clean.skip=true",
 			]
 		cmd = cmd + args.args
-		retcode = r = subprocess.call(cmd)
-		if retcode != 0:
-			sys.exit(retcode)
+		completed = r = subprocess.run(cmd)
+		if completed and completed.returncode != 0:
+			sys.exit(completed.returncode)
 	else:
 		error("Cannot run mvn-generate-aggregated-javadoc.py")
 		sys.exit(255)
