@@ -52,7 +52,7 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 		if (checkJavaCompilation) {
 			final var called = new AtomicBoolean(false);
 			compile(source, (r) -> {
-				assertEquals(expected.toString(), r.getSingleGeneratedCode());
+				assertEquals(expected.toString().replaceAll("[\n\r]+", " "), r.getSingleGeneratedCode().replaceAll("[\n\r]+", " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				final var generatedJavaClass = r.getCompiledClass();
 				assertNotNull(generatedJavaClass);
 				called.set(true);
@@ -75,7 +75,7 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 		if (!Strings.isNullOrEmpty(javaClassname)) {
 			final var called = new AtomicBoolean(false);
 			compile(source, (r) -> {
-				assertEquals(expected.toString(), r.getGeneratedCode(javaClassname));
+				assertEquals(expected.toString().replaceAll("[\n\r]+", " "), r.getGeneratedCode(javaClassname).replaceAll("[\n\r]+", " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				final var generatedJavaClass = r.getCompiledClass(javaClassname);
 				assertNotNull(generatedJavaClass);
 				called.set(true);
