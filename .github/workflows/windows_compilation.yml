@@ -32,7 +32,11 @@ jobs:
     - name: Set up Maven
       uses: stCarolas/setup-maven@v5
       with:
-        maven-version: 3.9.9
+        maven-version: 3.9.11
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: 3.13
     - name: Cache Maven packages
       uses: actions/cache@v4
       continue-on-error: true
@@ -44,5 +48,5 @@ jobs:
           ${{ runner.os }}-maven-
     - run: |
          echo "Run, Build Application using script"
-         ./build-all-no-test.ps1
+         python ./build-all.py --notest
 
