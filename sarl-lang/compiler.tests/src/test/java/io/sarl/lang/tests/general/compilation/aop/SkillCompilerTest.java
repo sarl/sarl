@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.aop;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
@@ -114,7 +114,7 @@ public class SkillCompilerTest {
 					"}",
 					""
 					);
-			getCompileHelper().compile(source, (r) -> assertEquals(expectedS1,r.getGeneratedCode("S1")));
+			getCompileHelper().compile(source, (r) -> assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1")));
 		}
 
 		@Test
@@ -182,7 +182,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -252,7 +252,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -322,7 +322,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -392,7 +392,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -459,7 +459,7 @@ public class SkillCompilerTest {
 					"}",
 					""
 					);
-			getCompileHelper().compile(source, (r) -> assertEquals(expectedS1,r.getGeneratedCode("S1")));
+			getCompileHelper().compile(source, (r) -> assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1")));
 		}
 
 		@Test
@@ -500,7 +500,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -570,7 +570,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -640,7 +640,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -738,8 +738,8 @@ public class SkillCompilerTest {
 					"}"
 					);
 			getCompileHelper().compile(source, (r) -> {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				});
 		}
 
@@ -817,8 +817,8 @@ public class SkillCompilerTest {
 					""
 					);
 			getCompileHelper().compile(source, (r) -> {
-					assertEquals(expectedS1, r.getGeneratedCode("S1"));
-					assertEquals(expectedS2, r.getGeneratedCode("S2"));
+					assertEqualsExceptNewLines(expectedS1, r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS2, r.getGeneratedCode("S2"));
 				});
 		}
 
@@ -858,7 +858,7 @@ public class SkillCompilerTest {
 					"}",
 					""
 					);
-			getCompileHelper().compile(source, (r) -> assertEquals(expectedS1,r.getGeneratedCode("S1")));
+			getCompileHelper().compile(source, (r) -> assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1")));
 		}
 
 		@Test
@@ -900,7 +900,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -944,7 +944,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -988,7 +988,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1032,7 +1032,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1072,7 +1072,7 @@ public class SkillCompilerTest {
 					"}",
 					""
 					);
-			getCompileHelper().compile(source, (r) -> assertEquals(expectedS1,r.getGeneratedCode("S1")));
+			getCompileHelper().compile(source, (r) -> assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1")));
 		}
 
 		@Test
@@ -1113,7 +1113,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1163,7 +1163,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1213,7 +1213,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1257,7 +1257,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1301,7 +1301,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1345,7 +1345,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1468,9 +1468,9 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2,r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1607,10 +1607,10 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-					assertEquals(expectedS2,r.getGeneratedCode("S2"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2,r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS2,r.getGeneratedCode("S2"));
 				}
 			});
 		}
@@ -1741,10 +1741,10 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-					assertEquals(expectedS2,r.getGeneratedCode("S2"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2,r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS2,r.getGeneratedCode("S2"));
 				}
 			});
 		}
@@ -1816,8 +1816,8 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1901,8 +1901,8 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1947,7 +1947,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -1986,7 +1986,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -2025,7 +2025,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -2064,7 +2064,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -2107,7 +2107,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -2146,7 +2146,7 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -2318,9 +2318,9 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("C1"));
-					assertEquals(expectedC2,r.getGeneratedCode("C2"));
-					assertEquals(expectedS1,r.getGeneratedCode("S1"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2,r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("S1"));
 				}
 			});
 		}
@@ -2406,8 +2406,8 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("CapTest1"));
-					assertEquals(expectedC2,r.getGeneratedCode("CapTest2"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("CapTest1"));
+					assertEqualsExceptNewLines(expectedC2,r.getGeneratedCode("CapTest2"));
 				}
 			});
 		}
@@ -2563,9 +2563,9 @@ public class SkillCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1,r.getGeneratedCode("CapTest1"));
-					assertEquals(expectedC2,r.getGeneratedCode("CapTest2"));
-					assertEquals(expectedS1,r.getGeneratedCode("SkillTest"));
+					assertEqualsExceptNewLines(expectedC1,r.getGeneratedCode("CapTest1"));
+					assertEqualsExceptNewLines(expectedC2,r.getGeneratedCode("CapTest2"));
+					assertEqualsExceptNewLines(expectedS1,r.getGeneratedCode("SkillTest"));
 				}
 			});
 		}

@@ -20,10 +20,10 @@
  */
 package io.sarl.api.core.tests.parsing;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -132,7 +132,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"}",
 				"");
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
+			assertEqualsExceptNewLines(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
 

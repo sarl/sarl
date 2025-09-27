@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
@@ -113,8 +113,8 @@ public class PureFunctionTest {
 					""
 					);
 			getCompileHelper().compile(source, (r) -> {
-					assertEquals(expectedC1, r.getGeneratedCode("C1"));
-					assertEquals(expectedC2, r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 				});
 		}
 
@@ -180,8 +180,8 @@ public class PureFunctionTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1, r.getGeneratedCode("C1"));
-					assertEquals(expectedC2, r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 				}
 			});
 		}
@@ -242,8 +242,8 @@ public class PureFunctionTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1, r.getGeneratedCode("C1"));
-					assertEquals(expectedC2, r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 				}
 			});
 		}
@@ -304,8 +304,8 @@ public class PureFunctionTest {
 					""
 					);
 			getCompileHelper().compile(source, (r) -> {
-					assertEquals(expectedC1, r.getGeneratedCode("C1"));
-					assertEquals(expectedC2, r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 				});
 		}
 
@@ -365,8 +365,8 @@ public class PureFunctionTest {
 			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedC1, r.getGeneratedCode("C1"));
-					assertEquals(expectedC2, r.getGeneratedCode("C2"));
+					assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
+					assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 				}
 			});
 		}

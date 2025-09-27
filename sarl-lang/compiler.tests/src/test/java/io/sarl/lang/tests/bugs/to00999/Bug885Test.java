@@ -21,17 +21,18 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestUtils.multilineString2;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.google.inject.Inject;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -147,7 +148,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_PARAMETER, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_PARAMETER, actual);
 		});
 	}
 
@@ -241,7 +242,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_VARIABLE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_VARIABLE, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_VARIABLE, actual);
 		});
 	}
 
@@ -352,7 +353,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_FIELD, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_FIELD, actual);
+			assertEqualsExceptNewLines(EXPECTED_FIELD, actual);
 		});
 	}
 
@@ -446,7 +447,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_SUPER_FIELD, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_SUPER_FIELD, actual);
+			assertEqualsExceptNewLines(EXPECTED_SUPER_FIELD, actual);
 		});
 	}
 
@@ -545,7 +546,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_FUNCTION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_FUNCTION_01, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_FUNCTION_01, actual);
 		});
 	}
 
@@ -645,7 +646,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_FUNCTION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_FUNCTION_02, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_FUNCTION_02, actual);
 		});
 	}
 
@@ -739,7 +740,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_SUPER_FUNCTION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_SUPER_FUNCTION_01, actual);
+			assertEqualsExceptNewLines(EXPECTED_SUPER_FUNCTION_01, actual);
 		});
 	}
 
@@ -834,7 +835,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_SUPER_FUNCTION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_SUPER_FUNCTION_02, actual);
+			assertEqualsExceptNewLines(EXPECTED_SUPER_FUNCTION_02, actual);
 		});
 	}
 
@@ -950,7 +951,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_EXTENSION_FIELD, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_EXTENSION_FIELD, actual);
+			assertEqualsExceptNewLines(EXPECTED_EXTENSION_FIELD, actual);
 		});
 	}
 
@@ -1049,7 +1050,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_EXTENSION_VARIABLE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_EXTENSION_VARIABLE, actual);
+			assertEqualsExceptNewLines(EXPECTED_EXTENSION_VARIABLE, actual);
 		});
 	}
 
@@ -1145,7 +1146,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_EXTENSION_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_EXTENSION_PARAMETER, actual);
+			assertEqualsExceptNewLines(EXPECTED_EXTENSION_PARAMETER, actual);
 		});
 	}
 
@@ -1245,7 +1246,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_INSTANCE_CREATION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_INSTANCE_CREATION_01, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_INSTANCE_CREATION_01, actual);
 		});
 	}
 
@@ -1335,7 +1336,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_INSTANCE_CREATION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_INSTANCE_CREATION_02, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_INSTANCE_CREATION_02, actual);
 		});
 	}
 
@@ -1434,7 +1435,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_ARITHMETIC_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_ARITHMETIC_PARAMETER, actual);
+			assertEqualsExceptNewLines(EXPECTED_ARITHMETIC_PARAMETER, actual);
 		});
 	}
 
@@ -1545,7 +1546,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_IF_THEN_ON_IT, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_IF_THEN_ON_IT, actual);
+			assertEqualsExceptNewLines(EXPECTED_IF_THEN_ON_IT, actual);
 		});
 	}
 
@@ -1659,7 +1660,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_IF_THEN_ON_LOCAL_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_IF_THEN_ON_LOCAL_PARAMETER, actual);
+			assertEqualsExceptNewLines(EXPECTED_IF_THEN_ON_LOCAL_PARAMETER, actual);
 		});
 	}
 
@@ -1781,7 +1782,7 @@ public class Bug885Test extends AbstractSarlTest {
 	public void compilingMultipleLambda() throws Exception {
 		this.compiler.compile(SNIPSET_MULTIPLE_LAMBDA, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_MULTIPLE_LAMBDA, actual);
+			assertEqualsExceptNewLines(EXPECTED_MULTIPLE_LAMBDA, actual);
 		});
 	}
 
@@ -1880,7 +1881,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_STATIC_FUNCTION_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_STATIC_FUNCTION_01, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_STATIC_FUNCTION_01, actual);
 		});
 	}
 
@@ -1980,7 +1981,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_STATIC_FUNCTION_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_STATIC_FUNCTION_02, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_STATIC_FUNCTION_02, actual);
 		});
 	}
 
@@ -2068,7 +2069,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_NO_EXTERNAL_REFERENCE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_NO_EXTERNAL_REFERENCE, actual);
+			assertEqualsExceptNewLines(EXPECTED_NO_EXTERNAL_REFERENCE, actual);
 		});
 	}
 
@@ -2169,7 +2170,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_CLOSURE_VARIABLE, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_CLOSURE_VARIABLE, actual);
+			assertEqualsExceptNewLines(EXPECTED_CLOSURE_VARIABLE, actual);
 		});
 	}
 
@@ -2270,7 +2271,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_LOCAL_VARIABLE_AS_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_LOCAL_VARIABLE_AS_PARAMETER, actual);
+			assertEqualsExceptNewLines(EXPECTED_LOCAL_VARIABLE_AS_PARAMETER, actual);
 		});
 	}
 
@@ -2371,7 +2372,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_MULTIPLE_CALLS_TO_SAME_FUNCTION, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_MULTIPLE_CALLS_TO_SAME_FUNCTION, actual);
+			assertEqualsExceptNewLines(EXPECTED_MULTIPLE_CALLS_TO_SAME_FUNCTION, actual);
 		});
 	}
 
@@ -2471,7 +2472,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_MULTIPLE_CALLS_TO_SAME_PARAMETER, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_MULTIPLE_CALLS_TO_SAME_PARAMETER, actual);
+			assertEqualsExceptNewLines(EXPECTED_MULTIPLE_CALLS_TO_SAME_PARAMETER, actual);
 		});
 	}
 
@@ -2619,7 +2620,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_01, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_COMPLEX_LAMBDA_01, actual);
+			assertEqualsExceptNewLines(EXPECTED_COMPLEX_LAMBDA_01, actual);
 		});
 	}
 
@@ -2745,7 +2746,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_02, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_COMPLEX_LAMBDA_02, actual);
+			assertEqualsExceptNewLines(EXPECTED_COMPLEX_LAMBDA_02, actual);
 		});
 	}
 
@@ -2843,7 +2844,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_03, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_COMPLEX_LAMBDA_03, actual);
+			assertEqualsExceptNewLines(EXPECTED_COMPLEX_LAMBDA_03, actual);
 		});
 	}
 
@@ -3006,7 +3007,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_04, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_COMPLEX_LAMBDA_04, actual);
+			assertEqualsExceptNewLines(EXPECTED_COMPLEX_LAMBDA_04, actual);
 		});
 	}
 
@@ -3112,7 +3113,7 @@ public class Bug885Test extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET_COMPLEX_LAMBDA_05, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug885.Boot");
-			assertEquals(EXPECTED_COMPLEX_LAMBDA_05, actual);
+			assertEqualsExceptNewLines(EXPECTED_COMPLEX_LAMBDA_05, actual);
 		});
 	}
 

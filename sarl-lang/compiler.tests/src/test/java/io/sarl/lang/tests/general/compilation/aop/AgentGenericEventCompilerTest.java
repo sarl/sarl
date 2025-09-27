@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.aop;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -129,7 +129,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -173,7 +173,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1, r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1, r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -271,7 +271,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -371,7 +371,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -469,7 +469,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -567,7 +567,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -665,7 +665,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -763,7 +763,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -877,7 +877,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 
@@ -1083,7 +1083,7 @@ public class AgentGenericEventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+			assertEqualsExceptNewLines(expectedA1,r.getGeneratedCode("A1"));
 		});
 	}
 

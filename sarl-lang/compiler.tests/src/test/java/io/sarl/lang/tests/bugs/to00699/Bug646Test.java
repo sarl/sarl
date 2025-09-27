@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00699;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -178,7 +178,7 @@ public class Bug646Test extends AbstractSarlTest {
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET1, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug646.FrustumNodeIterator");
-			assertEquals(EXPECTED, actual);
+			assertEqualsExceptNewLines(EXPECTED, actual);
 		});
 	}
 

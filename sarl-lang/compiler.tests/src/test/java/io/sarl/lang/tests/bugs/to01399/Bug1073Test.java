@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to01399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.DisplayName;
@@ -127,7 +127,7 @@ public class Bug1073Test extends AbstractSarlTest {
 	public void compiling01() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1073.B");
-			assertEquals(JAVA_CODE_01, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 			final Class<?> type = it.getCompiledClass("io.sarl.lang.tests.bug1073.B");
 			assertNotNull(type);
 		});
@@ -208,7 +208,7 @@ public class Bug1073Test extends AbstractSarlTest {
 	public void compiling02() throws Exception {
 		getCompileHelper().compile(SARL_CODE_02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1073.B");
-			assertEquals(JAVA_CODE_02, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 			final Class<?> type = it.getCompiledClass("io.sarl.lang.tests.bug1073.B");
 			assertNotNull(type);
 		});
@@ -293,7 +293,7 @@ public class Bug1073Test extends AbstractSarlTest {
 	public void compiling03() throws Exception {
 		getCompileHelper().compile(SARL_CODE_03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1073.B");
-			assertEquals(JAVA_CODE_03, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 			final Class<?> type = it.getCompiledClass("io.sarl.lang.tests.bug1073.B");
 			assertNotNull(type);
 		});

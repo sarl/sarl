@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.aop;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -172,8 +172,8 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expectedE1,r.getGeneratedCode("E1"));
-				assertEquals(expectedB1,r.getGeneratedCode("B1"));
+			assertEqualsExceptNewLines(expectedE1,r.getGeneratedCode("E1"));
+			assertEqualsExceptNewLines(expectedB1,r.getGeneratedCode("B1"));
 			});
 	}
 
@@ -236,8 +236,8 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expectedE1, r.getGeneratedCode("E1"));
-				assertEquals(expectedB1, r.getGeneratedCode("B1"));
+			assertEqualsExceptNewLines(expectedE1, r.getGeneratedCode("E1"));
+			assertEqualsExceptNewLines(expectedB1, r.getGeneratedCode("B1"));
 			});
 	}
 
@@ -395,8 +395,8 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expectedE1,r.getGeneratedCode("E1"));
-				assertEquals(expectedB1,r.getGeneratedCode("B1"));
+			assertEqualsExceptNewLines(expectedE1,r.getGeneratedCode("E1"));
+			assertEqualsExceptNewLines(expectedB1,r.getGeneratedCode("B1"));
 			});
 	}
 
@@ -1166,8 +1166,8 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 			);
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expectedB1, r.getGeneratedCode("B1"));
-				assertEquals(expectedB2, r.getGeneratedCode("B2"));
+			assertEqualsExceptNewLines(expectedB1, r.getGeneratedCode("B1"));
+			assertEqualsExceptNewLines(expectedB2, r.getGeneratedCode("B2"));
 			});
 	}
 

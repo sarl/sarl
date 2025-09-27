@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to01399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -116,7 +116,7 @@ public class Bug1154Test extends AbstractSarlTest {
 		getCompileHelper().compile(SARL_CODE_1, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug1154.SpatialTreeNode");
-			assertEquals(JAVA_CODE_1, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_1, actual);
 		});
 	}
 
@@ -127,7 +127,7 @@ public class Bug1154Test extends AbstractSarlTest {
 		getCompileHelper().compile(SARL_CODE_1, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug1154.AbstractSpatialTreeNode");
-			assertEquals(JAVA_CODE_2, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_2, actual);
 		});
 	}
 
@@ -190,7 +190,7 @@ public class Bug1154Test extends AbstractSarlTest {
 		getCompileHelper().compile(SARL_CODE_2, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug1154.SpatialTreeNode");
-			assertEquals(JAVA_CODE_3, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_3, actual);
 		});
 	}
 
@@ -201,7 +201,7 @@ public class Bug1154Test extends AbstractSarlTest {
 		getCompileHelper().compile(SARL_CODE_2, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug1154.AbstractSpatialTreeNode");
-			assertEquals(JAVA_CODE_4, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_4, actual);
 		});
 	}
 

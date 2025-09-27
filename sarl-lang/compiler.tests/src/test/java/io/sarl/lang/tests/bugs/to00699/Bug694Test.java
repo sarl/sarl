@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00699;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -494,7 +494,7 @@ public class Bug694Test extends AbstractSarlTest {
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET1, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug694.X");
-			assertEquals(EXPECTED1, actual);
+			assertEqualsExceptNewLines(EXPECTED1, actual);
 		});
 	}
 
@@ -510,8 +510,8 @@ public class Bug694Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling_02() throws Exception {
 		getCompileHelper().compile(SNIPSET2, (it) -> {
-			assertEquals(EXPECTED2_1, it.getGeneratedCode("io.sarl.lang.tests.bug694.X"));
-			assertEquals(EXPECTED2_2, it.getGeneratedCode("io.sarl.lang.tests.bug694.Y"));
+			assertEqualsExceptNewLines(EXPECTED2_1, it.getGeneratedCode("io.sarl.lang.tests.bug694.X"));
+			assertEqualsExceptNewLines(EXPECTED2_2, it.getGeneratedCode("io.sarl.lang.tests.bug694.Y"));
 		});
 	}
 
@@ -527,7 +527,7 @@ public class Bug694Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling_03() throws Exception {
 		getCompileHelper().compile(SNIPSET3, (it) -> {
-			assertEquals(EXPECTED3, it.getGeneratedCode("io.sarl.lang.tests.bug694.X"));
+			assertEqualsExceptNewLines(EXPECTED3, it.getGeneratedCode("io.sarl.lang.tests.bug694.X"));
 		});
 	}
 
@@ -590,7 +590,7 @@ public class Bug694Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling_04() throws Exception {
 		getCompileHelper().compile(SNIPSET4, (it) -> {
-			assertEquals(EXPECTED4, it.getGeneratedCode("io.sarl.lang.tests.bug694.XXX"));
+			assertEqualsExceptNewLines(EXPECTED4, it.getGeneratedCode("io.sarl.lang.tests.bug694.XXX"));
 		});
 	}
 
@@ -685,7 +685,7 @@ public class Bug694Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling_05() throws Exception {
 		getCompileHelper().compile(SNIPSET5, (it) -> {
-			assertEquals(EXPECTED5, it.getGeneratedCode("io.sarl.lang.tests.bug694.XXX"));
+			assertEqualsExceptNewLines(EXPECTED5, it.getGeneratedCode("io.sarl.lang.tests.bug694.XXX"));
 		});
 	}
 

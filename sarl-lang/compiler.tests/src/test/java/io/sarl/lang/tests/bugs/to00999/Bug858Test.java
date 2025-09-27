@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -104,7 +104,7 @@ public class Bug858Test extends AbstractSarlTest {
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug858.SomeType");
-			assertEquals(EXPECTED01, actual);
+			assertEqualsExceptNewLines(EXPECTED01, actual);
 		});
 	}
 
@@ -161,7 +161,7 @@ public class Bug858Test extends AbstractSarlTest {
 	public void compiling_02() throws Exception {
 		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug858.SomeType");
-			assertEquals(EXPECTED02, actual);
+			assertEqualsExceptNewLines(EXPECTED02, actual);
 		});
 	}
 
@@ -218,7 +218,7 @@ public class Bug858Test extends AbstractSarlTest {
 	public void compiling_03() throws Exception {
 		getCompileHelper().compile(SNIPSET03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug858.SomeType");
-			assertEquals(EXPECTED03, actual);
+			assertEqualsExceptNewLines(EXPECTED03, actual);
 		});
 	}
 

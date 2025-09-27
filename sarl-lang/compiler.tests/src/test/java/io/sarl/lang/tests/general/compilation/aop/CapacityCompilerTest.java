@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.aop;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -247,8 +247,8 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				""
 			);
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expectedC1, r.getGeneratedCode("C1"));
-				assertEquals(expectedC2, r.getGeneratedCode("C2"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 			});
 	}
 

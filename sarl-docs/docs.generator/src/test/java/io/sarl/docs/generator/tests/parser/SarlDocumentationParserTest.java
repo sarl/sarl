@@ -21,6 +21,7 @@
 
 package io.sarl.docs.generator.tests.parser;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -31,13 +32,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
-import com.google.common.io.Resources;
-import com.google.inject.Injector;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.io.Resources;
+import com.google.inject.Injector;
 
 import io.sarl.docs.generator.parser.SarlDocumentationParser;
 import io.sarl.docs.generator.parser.SarlDocumentationParser.ParsingException;
@@ -96,7 +98,7 @@ public class SarlDocumentationParserTest {
 		public void includer01() throws Exception {
 			File file = file("includer.txt");
 			String value = this.parser.transform(file);
-			assertEquals(
+			assertEqualsExceptNewLines(
 					"this is a fake text done for testing. this is a fake text done for testing. this is a fake text done for testing.\n"
 					+ "\nthis is a fake text done for testing. this is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing.\n\nthis is a fake text done for testing. "
@@ -112,7 +114,7 @@ public class SarlDocumentationParserTest {
 		public void saver01() throws Exception {
 			File file = file("saverpredefinition.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake text done "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake text done "
 					+ "for testing.\n\nthis is a fake text done for testing. this is a fake text done for testing. "
 					+ "this is a fake text done for testing. this is a fake text done for testing.\n\nthis is a fake text done "
 					+ "for testing. `this is`this is a fake text done for testing. this is a fake text done for testing. "
@@ -127,7 +129,7 @@ public class SarlDocumentationParserTest {
 		public void saver02() throws Exception {
 			File file = file("saverpostdefinition.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake text "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake text "
 					+ "done for testing.\n\nthis is a fake text done for testing. `this is a fake text`this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\nthis "
 					+ "is a fake text done for testing. this is a fake text done for testing. this is a "
@@ -155,7 +157,7 @@ public class SarlDocumentationParserTest {
 		public void success01() throws Exception {
 			File file = file("success.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
 					+ "\n\nthis is a fake text done for testing. this is a fake text done for testing. this "
@@ -171,7 +173,7 @@ public class SarlDocumentationParserTest {
 		public void failure01() throws Exception {
 			File file = file("failure.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
 					+ "\n\nthis is a fake text done for testing. this is a fake text done for testing. this "
@@ -187,7 +189,7 @@ public class SarlDocumentationParserTest {
 		public void outline01() throws Exception {
 			File file = file("outline.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n[::Outline::]"
 					+ "\n\nthis is a fake text done for testing. this is a fake text done for testing. this "
@@ -203,7 +205,7 @@ public class SarlDocumentationParserTest {
 		public void parameterDelimiters01() throws Exception {
 			File file = file("parameterdelimiters.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake text "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake text "
 					+ "done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text\ndone for testing. this is a fake text "
 					+ "done for testing.\n\n`this`\n`testing`\n`is`\n`done`",
@@ -215,7 +217,7 @@ public class SarlDocumentationParserTest {
 		public void saveInSave01() throws Exception {
 			File file = file("saveinsave.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
 					+ "`this is a fake text`\n`fake`",
@@ -227,7 +229,7 @@ public class SarlDocumentationParserTest {
 		public void saveInSuccess01() throws Exception {
 			File file = file("saveinsuccess.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\n\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
 					+ "`hidden`",
@@ -239,7 +241,7 @@ public class SarlDocumentationParserTest {
 		public void fact01() throws Exception {
 			File file = file("fact.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n\n\nthis "
 					+ "is a fake text done for testing. this is a fake text done for testing. this is a fake text done "
@@ -254,7 +256,7 @@ public class SarlDocumentationParserTest {
 		public void onOff01() throws Exception {
 			File file = file("onOffInSuccess.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
 					+ "\tof code\n\n\nthis is a fake text done for testing. this is a fake text done for "
@@ -270,7 +272,7 @@ public class SarlDocumentationParserTest {
 		public void onOff02() throws Exception {
 			File file = file("onOffInFailure.txt");
 			String value = this.parser.transform(file);
-			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
+			assertEqualsExceptNewLines("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
 					+ "\tof code\n\n\nthis is a fake text done for testing. this is a fake text done for "
@@ -290,7 +292,7 @@ public class SarlDocumentationParserTest {
 			
 			File file = file("htmlhyperref.txt");
 			String value = this.parser.transform(file);
-			assertEquals("<a href=\"https://somewhere.com/path/to/page\">XXX</a>",
+			assertEqualsExceptNewLines("<a href=\"https://somewhere.com/path/to/page\">XXX</a>",
 					value);
 		}
 
@@ -303,7 +305,7 @@ public class SarlDocumentationParserTest {
 			
 			File file = file("htmlhyperref2.txt");
 			String value = this.parser.transform(file);
-			assertEquals("<a href=\"https://somewhere.com/path/to/page\">XXX</a>\n"
+			assertEqualsExceptNewLines("<a href=\"https://somewhere.com/path/to/page\">XXX</a>\n"
 				+ "[:some.url!]/path/to/page",
 				value);
 		}
@@ -334,7 +336,7 @@ public class SarlDocumentationParserTest {
 				List<ValidationComponentData> values = components.get(key);
 				assertNotNull(values);
 				assertEquals(1, values.size());
-				assertEquals("package io.sarl.docs.tests\n"
+				assertEqualsExceptNewLines("package io.sarl.docs.tests\n"
 						+ "		import io.sarl.api.core.Initialize\n"
 						+ "		import io.sarl.api.core.Logging\n"
 						+ "		agent MyAgent {\n"
@@ -358,7 +360,7 @@ public class SarlDocumentationParserTest {
 				List<ValidationComponentData> values = components.get(key);
 				assertNotNull(values);
 				assertEquals(1, values.size());
-				assertEquals("package io.sarl.docs.tests\n"
+				assertEqualsExceptNewLines("package io.sarl.docs.tests\n"
 						+ "		agent MyAgent {\n"
 						+ "			uses Logging\n"
 						+ "			on Initialize {\n"
@@ -399,7 +401,7 @@ public class SarlDocumentationParserTest {
 				values = components.get(Tag.FAILURE);
 				assertNotNull(values);
 				assertEquals(1, values.size());
-				assertEquals("package io.sarl.docs.tests\n"
+				assertEqualsExceptNewLines("package io.sarl.docs.tests\n"
 						+ "		agent MyAgent {\n"
 						+ "			uses Logging\n"
 						+ "			on Initialize {\n"
@@ -412,7 +414,7 @@ public class SarlDocumentationParserTest {
 				values = components.get(Tag.SUCCESS);
 				assertNotNull(values);
 				assertEquals(2, values.size());
-				assertEquals("package io.sarl.docs.tests\n"
+				assertEqualsExceptNewLines("package io.sarl.docs.tests\n"
 						+ "		import io.sarl.api.core.Initialize\n"
 						+ "		import io.sarl.api.core.Logging\n"
 						+ "		agent MyAgent {\n"
@@ -422,7 +424,7 @@ public class SarlDocumentationParserTest {
 						+ "			}\n"
 						+ "		}",
 						values.get(0).code);
-				assertEquals("agent MyAgent {}",
+				assertEqualsExceptNewLines("agent MyAgent {}",
 						values.get(1).code);
 			});
 		}

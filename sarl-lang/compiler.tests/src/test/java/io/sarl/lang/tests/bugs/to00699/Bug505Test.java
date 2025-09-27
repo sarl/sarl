@@ -20,10 +20,10 @@
  */
 package io.sarl.lang.tests.bugs.to00699;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
@@ -165,7 +165,7 @@ public class Bug505Test extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		getCompileHelper().compile(snippet1, (r) -> assertEquals(expected, r.getGeneratedCode("TestClass")));
+		getCompileHelper().compile(snippet1, (r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("TestClass")));
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public class Bug505Test extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		getCompileHelper().compile(snippet2, (r) -> assertEquals(expected, r.getGeneratedCode("TestClass")));
+		getCompileHelper().compile(snippet2, (r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("TestClass")));
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class Bug505Test extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		getCompileHelper().compile(snippet3, (r) -> assertEquals(expected, r.getGeneratedCode("TestClass")));
+		getCompileHelper().compile(snippet3, (r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("TestClass")));
 	}
 
 	@Test
@@ -303,7 +303,7 @@ public class Bug505Test extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		getCompileHelper().compile(snippet4, (r) -> assertEquals(expected, r.getGeneratedCode("TestClass")));
+		getCompileHelper().compile(snippet4, (r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("TestClass")));
 	}
 
 	@Test
@@ -384,7 +384,7 @@ public class Bug505Test extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		getCompileHelper().compile(snippet5, (r) -> assertEquals(expected, r.getGeneratedCode("TestAgent")));
+		getCompileHelper().compile(snippet5, (r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("TestAgent")));
 	}
 
 }

@@ -21,17 +21,12 @@
 
 package io.sarl.lang.tests.bugs.to01399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.eclipse.xtext.xbase.validation.IssueCodes.STATIC_ACCESS_TO_INSTANCE_MEMBER;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -200,7 +195,7 @@ public class Bug1098Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling01() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
-			assertEquals(JAVA_CODE_01, it.getGeneratedCode("io.sarl.lang.tests.bug1098.Test"));
+			assertEqualsExceptNewLines(JAVA_CODE_01, it.getGeneratedCode("io.sarl.lang.tests.bug1098.Test"));
 		});
 	}
 

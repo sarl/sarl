@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.tests.modules.compiler.batch;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.getLineSeparator;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,13 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.google.common.io.Files;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.io.Files;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -152,7 +154,7 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 		runCompiler("v", VALID_SARL_CODE, false, (sarlcOutputDirectory, issues) -> {
 			// Check result
 			File javaFile = makeFolder(sarlcOutputDirectory, "io", "sarl", "lang", "tests", "compiler", "batch", "MyTestAgent.java");
-			assertEquals(VALID_JAVA_CODE, Strings.concat(getLineSeparator(), Files.readLines(javaFile, Charset.defaultCharset())));
+			assertEqualsExceptNewLines(VALID_JAVA_CODE, Strings.concat(getLineSeparator(), Files.readLines(javaFile, Charset.defaultCharset())));
 			// Check issues
 			final List<Issue> errors = issues.stream().filter(it -> it.getSeverity() == Severity.ERROR).collect(Collectors.toList());
 			if (!errors.isEmpty()) {

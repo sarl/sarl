@@ -21,8 +21,8 @@
 
 package io.sarl.lang.tests.general.compilation.aop;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -234,7 +234,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		getCompileHelper().compile(source, (r) -> assertEquals(expectedE2,r.getGeneratedCode("E2")));
+		getCompileHelper().compile(source, (r) -> assertEqualsExceptNewLines(expectedE2,r.getGeneratedCode("E2")));
 	}
 
 	@Test

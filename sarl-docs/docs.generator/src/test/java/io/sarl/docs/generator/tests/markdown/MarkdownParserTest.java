@@ -21,20 +21,21 @@
 
 package io.sarl.docs.generator.tests.markdown;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.net.URL;
 
-import com.google.common.io.Resources;
-import com.google.inject.Injector;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.io.Resources;
+import com.google.inject.Injector;
 
 import io.sarl.docs.generator.markdown.MarkdownParser;
 import io.sarl.lang.SARLStandaloneSetup;
@@ -78,7 +79,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(1, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
-			assertEquals("# 1. Title\n\n## 1.1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
+			assertEqualsExceptNewLines("# 1. Title\n\n## 1.1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
 					+ "for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [1. Title](#1-title)\n"
 					+ "> \t* [1.1. Title 0](#1-1-title-0)\n"
@@ -104,7 +105,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(2, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
-			assertEquals("# Title\n\n## 1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
+			assertEqualsExceptNewLines("# Title\n\n## 1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
 					+ "for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [1. Title 0](#1-title-0)\n"
 					+ "> * [2. Title 2](#2-title-2)\n"
@@ -127,7 +128,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(3, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
-			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text done "
+			assertEqualsExceptNewLines("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text done "
 					+ "for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [1. Title 3](#1-title-3)\n"
 					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\n"
@@ -146,7 +147,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(1, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(false);
 			String value = this.parser.transform(file);
-			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
+			assertEqualsExceptNewLines("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
 					+ "done for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [Title](#title)\n"
 					+ "> \t* [Title 0](#title-0)\n"
@@ -172,7 +173,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(2, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(false);
 			String value = this.parser.transform(file);
-			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
+			assertEqualsExceptNewLines("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
 					+ "done for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [Title 0](#title-0)\n"
 					+ "> * [Title 2](#title-2)\n"
@@ -195,7 +196,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(3, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(false);
 			String value = this.parser.transform(file);
-			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
+			assertEqualsExceptNewLines("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
 					+ "done for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [Title 3](#title-3)\n"
 					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\nthis is a fake "
@@ -212,7 +213,7 @@ public class MarkdownParserTest {
 		public void hrefMapping01() throws Exception {
 			File file = file("hrefmapping.txt");
 			String value = this.parser.transform(file);
-			assertEquals("My link to [local MD file](./outline.html)\n\nMy link to [local file](./outline.txt)\n\n"
+			assertEqualsExceptNewLines("My link to [local MD file](./outline.html)\n\nMy link to [local file](./outline.txt)\n\n"
 					+ "My link to [remote file](http://www.sarl.io)",
 					value);
 		}
@@ -221,7 +222,7 @@ public class MarkdownParserTest {
 		public void image01() throws Exception {
 			File file = file("image.txt");
 			String value = this.parser.transform(file);
-			assertEquals("My link to ![local MD file](./outline.md)", value);
+			assertEqualsExceptNewLines("My link to ![local MD file](./outline.md)", value);
 		}
 
 	}

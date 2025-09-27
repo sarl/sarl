@@ -20,15 +20,17 @@
  */
 package io.sarl.tests.api.tools;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.google.common.base.Strings;
+import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+
+import com.google.common.base.Strings;
 
 /** Helper for running the SARL compiler during unit tests.
  *
@@ -52,7 +54,7 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 		if (checkJavaCompilation) {
 			final var called = new AtomicBoolean(false);
 			compile(source, (r) -> {
-				assertEquals(expected.toString().replaceAll("[\n\r]+", " "), r.getSingleGeneratedCode().replaceAll("[\n\r]+", " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				assertEqualsExceptNewLines(expected.toString(), r.getSingleGeneratedCode());
 				final var generatedJavaClass = r.getCompiledClass();
 				assertNotNull(generatedJavaClass);
 				called.set(true);
@@ -75,7 +77,7 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 		if (!Strings.isNullOrEmpty(javaClassname)) {
 			final var called = new AtomicBoolean(false);
 			compile(source, (r) -> {
-				assertEquals(expected.toString().replaceAll("[\n\r]+", " "), r.getGeneratedCode(javaClassname).replaceAll("[\n\r]+", " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				assertEqualsExceptNewLines(expected.toString(), r.getGeneratedCode(javaClassname));
 				final var generatedJavaClass = r.getCompiledClass(javaClassname);
 				assertNotNull(generatedJavaClass);
 				called.set(true);
@@ -84,6 +86,19 @@ public class SarlCompilationTestHelper extends CompilationTestHelper {
 		} else {
 			super.assertCompilesTo(source, expected);
 		}
+	}
+
+	@Override
+	public void assertCompilesTo(CharSequence source, final CharSequence expected) throws IOException {
+		final var called = new AtomicBoolean(false);
+		compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+			@Override
+			public void accept(Result r) {
+				assertEqualsExceptNewLines(expected.toString(), r.getSingleGeneratedCode());
+				called.set(true);
+			}
+		});
+		assertTrue(called.get(), "Nothing was generated but the expectation was :\n" + expected); //$NON-NLS-1$
 	}
 
 }

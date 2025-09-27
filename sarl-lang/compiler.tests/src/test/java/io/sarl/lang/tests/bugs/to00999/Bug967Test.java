@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -91,7 +91,7 @@ public class Bug967Test {
 		public void compileModifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_MODIFIABLE_FIELD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -155,7 +155,7 @@ public class Bug967Test {
 		public void compileUnmodifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_UNMODIFIABLE_FIELD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -218,7 +218,7 @@ public class Bug967Test {
 		public void compileMethod() throws Exception {
 			getCompileHelper().compile(SARL_CODE_METHOD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -297,7 +297,7 @@ public class Bug967Test {
 		public void compileModifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_MODIFIABLE_FIELD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyBehavior");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -353,7 +353,7 @@ public class Bug967Test {
 		public void compileUnmodifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_UNMODIFIABLE_FIELD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyBehavior");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -408,7 +408,7 @@ public class Bug967Test {
 		public void compileMethod() throws Exception {
 			getCompileHelper().compile(SARL_CODE_METHOD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyBehavior");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -482,7 +482,7 @@ public class Bug967Test {
 		public void compileModifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_MODIFIABLE_FIELD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MySkill");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -544,7 +544,7 @@ public class Bug967Test {
 		public void compileUnmodifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_UNMODIFIABLE_FIELD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MySkill");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -606,7 +606,7 @@ public class Bug967Test {
 		public void compileMethod() throws Exception {
 			getCompileHelper().compile(SARL_CODE_METHOD, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MySkill");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -686,7 +686,7 @@ public class Bug967Test {
 		public void compileModifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_MODIFIABLE_FIELD_NO_INIT, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -754,7 +754,7 @@ public class Bug967Test {
 		public void compileModifiableFieldConstantInit() throws Exception {
 			getCompileHelper().compile(SARL_CODE_MODIFIABLE_FIELD_CONSTANT_INIT, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -823,7 +823,7 @@ public class Bug967Test {
 		public void compileModifiableFieldNoConstantInit() throws Exception {
 			getCompileHelper().compile(SARL_CODE_MODIFIABLE_FIELD_NO_CONSTANT_INIT, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -895,7 +895,7 @@ public class Bug967Test {
 		public void compileUnodifiableField() throws Exception {
 			getCompileHelper().compile(SARL_CODE_UNMODIFIABLE_FIELD_NO_INIT, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyBehavior");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -955,7 +955,7 @@ public class Bug967Test {
 		public void compileUnmodifiableFieldConstantInit() throws Exception {
 			getCompileHelper().compile(SARL_CODE_UNMODIFIABLE_FIELD_CONSTANT_INIT, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",
@@ -1024,7 +1024,7 @@ public class Bug967Test {
 		public void compileUnmodifiableFieldNoConstantInit() throws Exception {
 			getCompileHelper().compile(SARL_CODE_UNMODIFIABLE_FIELD_NO_CONSTANT_INIT, (it) -> {
 				final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug967.MyAgent");
-				assertEquals(multilineString(
+				assertEqualsExceptNewLines(multilineString(
 						"package io.sarl.lang.tests.bug967;",
 						"",
 						"import io.sarl.lang.core.Agent;",

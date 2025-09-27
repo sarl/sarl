@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00699;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -195,7 +195,7 @@ public class Bug459Test {
 		public void singleInheritanceWithoutFunction() throws Exception {
 			getCompileHelper().compile(SNIPSET3,
 					(it) -> {
-						assertEquals(multilineString(
+						assertEqualsExceptNewLines(multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
 							"import io.sarl.lang.core.AgentTrait;",
@@ -225,7 +225,7 @@ public class Bug459Test {
 		public void singleInheritanceWithFunction() throws Exception {
 			getCompileHelper().compile(SNIPSET4,
 					(it) -> {
-						assertEquals(multilineString(
+						assertEqualsExceptNewLines(multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
 							"import io.sarl.lang.core.AgentTrait;",
@@ -298,7 +298,7 @@ public class Bug459Test {
 		public void multiInheritanceWithoutFunction() throws Exception {
 			getCompileHelper().compile(SNIPSET5,
 					(it) -> {
-						assertEquals(multilineString(
+						assertEqualsExceptNewLines(multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
 							"import io.sarl.lang.core.AgentTrait;",
@@ -337,7 +337,7 @@ public class Bug459Test {
 		public void multiInheritanceWithFunction() throws Exception {
 			getCompileHelper().compile(SNIPSET6,
 					(it) -> {
-						assertEquals(multilineString(
+						assertEqualsExceptNewLines(multilineString(
 								"package io.sarl.lang.bug459;",
 								"",
 								"import io.sarl.lang.core.AgentTrait;",

@@ -21,27 +21,25 @@
 
 package io.sarl.lang.tests.bugs.to01399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString2;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.compiler.IAppendable;
-import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
@@ -50,11 +48,9 @@ import org.junit.jupiter.api.Test;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-import foo.ecore.SubEvent;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.appenders.SarlSkillSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
-import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.core.Skill;
@@ -241,7 +237,7 @@ public class Bug1135Test {
 		public void notFormattingSerialization() throws IOException {
 			initSkill();
 			this.appender.build(this.sourceAppender);
-			assertEquals(SKILL_RESULT, this.sourceAppender.getContent());
+			assertEqualsExceptNewLines(SKILL_RESULT, this.sourceAppender.getContent());
 		}
 	
 		@Test
@@ -250,7 +246,7 @@ public class Bug1135Test {
 			initSkill();
 			this.appender.setFormatting(true);
 			this.appender.build(this.sourceAppender);
-			assertEquals(SKILL_RESULT, this.sourceAppender.getContent());
+			assertEqualsExceptNewLines(SKILL_RESULT, this.sourceAppender.getContent());
 		}
 
 	}
@@ -320,7 +316,7 @@ public class Bug1135Test {
 		public void notFormattingSerialization() throws Exception {
 			initSkill();
 			this.scriptAppender.build(this.sourceAppender);
-			assertEquals(SCRIPT_RESULT, this.sourceAppender.getContent());
+			assertEqualsExceptNewLines(SCRIPT_RESULT, this.sourceAppender.getContent());
 		}
 	
 		@Test
@@ -329,7 +325,7 @@ public class Bug1135Test {
 			initSkill();
 			this.scriptAppender.setFormatting(true);
 			this.scriptAppender.build(this.sourceAppender);
-			assertEquals(SCRIPT_RESULT, this.sourceAppender.getContent());
+			assertEqualsExceptNewLines(SCRIPT_RESULT, this.sourceAppender.getContent());
 		}
 
 	}
@@ -373,7 +369,7 @@ public class Bug1135Test {
 		@DisplayName("Serialization")
 		public void serialization() throws Exception {
 			this.scriptAppender.build(this.script, this.sourceAppender);
-			assertEquals(SCRIPT_RESULT, this.sourceAppender.getContent());
+			assertEqualsExceptNewLines(SCRIPT_RESULT, this.sourceAppender.getContent());
 		}
 
 	}

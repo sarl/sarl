@@ -21,14 +21,15 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.google.inject.Inject;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -145,7 +146,7 @@ public class Bug891Test extends AbstractSarlTest {
 		this.compiler.compile(PUBLIC_GETTER_IN_CLASS_SARL, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug891.X");
-			assertEquals(PUBLIC_GETTER_IN_CLASS_JAVA, actual);
+			assertEqualsExceptNewLines(PUBLIC_GETTER_IN_CLASS_JAVA, actual);
 		});
 	}
 
@@ -250,7 +251,7 @@ public class Bug891Test extends AbstractSarlTest {
 		this.compiler.compile(PUBLIC_GETTER_IN_AGENT_SARL, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug891.X");
-			assertEquals(PUBLIC_GETTER_IN_AGENT_JAVA, actual);
+			assertEqualsExceptNewLines(PUBLIC_GETTER_IN_AGENT_JAVA, actual);
 		});
 	}
 

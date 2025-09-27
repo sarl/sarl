@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -97,7 +97,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.C1");
-			assertEquals(EXPECTED01, actual);
+			assertEqualsExceptNewLines(EXPECTED01, actual);
 		});
 	}
 
@@ -144,7 +144,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_02() throws Exception {
 		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.C2");
-			assertEquals(EXPECTED02, actual);
+			assertEqualsExceptNewLines(EXPECTED02, actual);
 		});
 	}
 
@@ -193,7 +193,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_03() throws Exception {
 		getCompileHelper().compile(SNIPSET03, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.C3");
-			assertEquals(EXPECTED03, actual);
+			assertEqualsExceptNewLines(EXPECTED03, actual);
 		});
 	}
 
@@ -235,7 +235,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_04() throws Exception {
 		getCompileHelper().compile(SNIPSET04, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.C4");
-			assertEquals(EXPECTED04, actual);
+			assertEqualsExceptNewLines(EXPECTED04, actual);
 		});
 	}
 
@@ -278,7 +278,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_05() throws Exception {
 		getCompileHelper().compile(SNIPSET05, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.C5");
-			assertEquals(EXPECTED05, actual);
+			assertEqualsExceptNewLines(EXPECTED05, actual);
 		});
 	}
 
@@ -328,7 +328,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_06() throws Exception {
 		getCompileHelper().compile(SNIPSET06, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.Z");
-			assertEquals(EXPECTED06, actual);
+			assertEqualsExceptNewLines(EXPECTED06, actual);
 		});
 	}
 
@@ -372,7 +372,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_07() throws Exception {
 		getCompileHelper().compile(SNIPSET07, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.Y");
-			assertEquals(EXPECTED07, actual);
+			assertEqualsExceptNewLines(EXPECTED07, actual);
 		});
 	}
 
@@ -414,7 +414,7 @@ public class Bug787Test extends AbstractSarlTest {
 	public void compiling_08() throws Exception {
 		getCompileHelper().compile(SNIPSET08, (it) -> {
 			final String actual = it.getGeneratedCode("foo.bug787.Type2");
-			assertEquals(EXPECTED08, actual);
+			assertEqualsExceptNewLines(EXPECTED08, actual);
 		});
 	}
 

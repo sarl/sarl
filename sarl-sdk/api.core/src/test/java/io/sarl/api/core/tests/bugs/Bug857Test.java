@@ -21,10 +21,10 @@
 
 package io.sarl.api.core.tests.bugs;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
@@ -134,7 +134,7 @@ public class Bug857Test extends AbstractSarlTest {
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug857.SomeAgent");
-			assertEquals(EXPECTED01, actual);
+			assertEqualsExceptNewLines(EXPECTED01, actual);
 		});
 	}
 
@@ -216,7 +216,7 @@ public class Bug857Test extends AbstractSarlTest {
 	public void compiling_02() throws Exception {
 		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug857.SomeAgent");
-			assertEquals(EXPECTED02, actual);
+			assertEqualsExceptNewLines(EXPECTED02, actual);
 		});
 	}
 

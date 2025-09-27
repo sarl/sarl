@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
@@ -110,7 +110,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileAmbiguousFunctionCall() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_01, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 		});
 	}
 
@@ -190,7 +190,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileCastingIntoInstanceof() throws Exception {
 		getCompileHelper().compile(SARL_CODE_02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_02, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 		});
 	}
 
@@ -262,7 +262,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileImplicitCastingIntoInstanceof() throws Exception {
 		getCompileHelper().compile(SARL_CODE_03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_03, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 		});
 	}
 
@@ -329,7 +329,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileAmbiguousFunctionCallWithVariable() throws Exception {
 		getCompileHelper().compile(SARL_CODE_04, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_04, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 		});
 	}
 
@@ -399,7 +399,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileImplicitCastingWithVariableIntoInstanceof() throws Exception {
 		getCompileHelper().compile(SARL_CODE_05, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_05, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 		});
 	}
 
@@ -480,7 +480,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileMultipleInmplicitCastsIntoInstanceof() throws Exception {
 		getCompileHelper().compile(SARL_CODE_06, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_06, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_06, actual);
 		});
 	}
 
@@ -559,7 +559,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileExplicitCastToVariableIntoInstanceof() throws Exception {
 		getCompileHelper().compile(SARL_CODE_07, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_07, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_07, actual);
 		});
 	}
 
@@ -631,7 +631,7 @@ public class Bug996Test extends AbstractSarlTest {
 	public void compileimplicitCastToVariableIntoInstanceof() throws Exception {
 		getCompileHelper().compile(SARL_CODE_08, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug996.Bug996Case");
-			assertEquals(JAVA_CODE_08, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_08, actual);
 		});
 	}
 

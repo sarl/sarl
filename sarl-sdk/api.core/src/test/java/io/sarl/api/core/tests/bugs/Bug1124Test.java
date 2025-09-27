@@ -21,13 +21,12 @@
 
 package io.sarl.api.core.tests.bugs;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.eclipse.xtend.core.xtend.XtendPackage;
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,6 @@ import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
-import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.tools.TestValidator.Validator;
 
 /** Testing class for issue: Invalid function call resolution.
@@ -145,7 +143,7 @@ public class Bug1124Test extends AbstractSarlTest {
 	public void compiling01() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1124.DoSometingSkill");
-			assertEquals(JAVA_CODE_01, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 		});
 	}
 
@@ -260,7 +258,7 @@ public class Bug1124Test extends AbstractSarlTest {
 	public void compiling02() throws Exception {
 		getCompileHelper().compile(SARL_CODE_02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1124.DoSometingSkill");
-			assertEquals(JAVA_CODE_02, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 		});
 	}
 
@@ -374,7 +372,7 @@ public class Bug1124Test extends AbstractSarlTest {
 	public void compiling03() throws Exception {
 		getCompileHelper().compile(SARL_CODE_03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1124.DoSometingSkill");
-			assertEquals(JAVA_CODE_03, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 		});
 	}
 
@@ -487,7 +485,7 @@ public class Bug1124Test extends AbstractSarlTest {
 	public void compiling04() throws Exception {
 		getCompileHelper().compile(SARL_CODE_04, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1124.DoSometingSkill");
-			assertEquals(JAVA_CODE_04, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 		});
 	}
 

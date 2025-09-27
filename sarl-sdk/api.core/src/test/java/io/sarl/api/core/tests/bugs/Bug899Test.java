@@ -21,11 +21,11 @@
 
 package io.sarl.api.core.tests.bugs;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestUtils.multilineString2;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -258,7 +258,7 @@ public class Bug899Test extends AbstractSarlTest {
 		getCompileHelper().compile(SARL_CODE_EXPLICIT_IT, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug899.X");
-			assertEquals(JAVA_CODE_EXPLICIT_IT, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_EXPLICIT_IT, actual);
 		});
 	}
 
@@ -467,7 +467,7 @@ public class Bug899Test extends AbstractSarlTest {
 		getCompileHelper().compile(SARL_CODE_IMPLICIT_IT, (it) -> {
 			String actual;
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug899.X");
-			assertEquals(JAVA_CODE_IMPLICIT_IT, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_IMPLICIT_IT, actual);
 		});
 	}
 

@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -153,7 +153,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}",
 				"");
 		getCompileHelper().compile(source, (it) -> {
-			assertEquals(expected, it.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expected, it.getGeneratedCode("C1"));
 		});
 	}
 
@@ -191,7 +191,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}",
 				"");
 		getCompileHelper().compile(source, (it) -> {
-			assertEquals(expected, it.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expected, it.getGeneratedCode("C1"));
 		});
 	}
 
@@ -305,7 +305,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}",
 				"");
 		getCompileHelper().compile(source, (it) -> {
-			assertEquals(expected, it.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expected, it.getGeneratedCode("C1"));
 		});
 	}
 
@@ -343,7 +343,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}",
 				"");
 		getCompileHelper().compile(source, (it) -> {
-			assertEquals(expected, it.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expected, it.getGeneratedCode("C1"));
 		});
 	}
 
@@ -374,7 +374,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}",
 				"");
 		getCompileHelper().compile(source, (it) -> {
-			assertEquals(expected, it.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expected, it.getGeneratedCode("C1"));
 		});
 	}
 

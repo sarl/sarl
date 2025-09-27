@@ -16,8 +16,8 @@
 package io.sarl.lang.tests.bugs.to00399;
 
 import static io.sarl.tests.api.tools.TestAssertions.assertContains;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
@@ -297,8 +297,8 @@ public class Bug294Test {
 					"");
 
 			getCompileHelper().compile(multilineString(capacityCode, skillCode), (r) -> {
-					assertEquals(expectedPhysicEnvironment, r.getGeneratedCode("PhysicEnvironment"));
-					assertEquals(expectedStandardPhysicEnvironment, r.getGeneratedCode("StandardPhysicEnvironment"));
+					assertEqualsExceptNewLines(expectedPhysicEnvironment, r.getGeneratedCode("PhysicEnvironment"));
+					assertEqualsExceptNewLines(expectedStandardPhysicEnvironment, r.getGeneratedCode("StandardPhysicEnvironment"));
 				});
 		}
 

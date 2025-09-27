@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to01399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
@@ -115,7 +115,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -167,7 +167,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -219,7 +219,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -277,7 +277,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -334,7 +334,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -456,7 +456,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_09, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_09, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_09, actual);
 				});
 			}
 
@@ -574,7 +574,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_13, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_13, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_13, actual);
 				});
 			}
 
@@ -641,7 +641,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -705,7 +705,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -769,7 +769,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -833,7 +833,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -907,7 +907,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -1117,7 +1117,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_13, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_13, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_13, actual);
 				});
 			}
 
@@ -1179,7 +1179,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -1238,7 +1238,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -1297,7 +1297,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -1356,7 +1356,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -1420,7 +1420,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -1650,7 +1650,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_14, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_14, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_14, actual);
 				});
 			}
 
@@ -1717,7 +1717,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -1781,7 +1781,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -1845,7 +1845,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -1909,7 +1909,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -1983,7 +1983,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -2193,7 +2193,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_13, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_13, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_13, actual);
 				});
 			}
 
@@ -2255,7 +2255,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -2314,7 +2314,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -2373,7 +2373,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -2432,7 +2432,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -2496,7 +2496,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -2701,7 +2701,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_13, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_13, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_13, actual);
 				});
 			}
 
@@ -2768,7 +2768,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -2832,7 +2832,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -2896,7 +2896,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -2960,7 +2960,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -3034,7 +3034,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -3244,7 +3244,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_13, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_13, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_13, actual);
 				});
 			}
 
@@ -3310,7 +3310,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_01, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_01, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 				});
 			}
 
@@ -3364,7 +3364,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_02, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_02, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 				});
 			}
 
@@ -3418,7 +3418,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_03, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_03, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 				});
 			}
 
@@ -3472,7 +3472,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_04, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_04, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 				});
 			}
 
@@ -3531,7 +3531,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_05, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_05, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 				});
 			}
 
@@ -3585,7 +3585,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_06, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_06, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_06, actual);
 				});
 			}
 
@@ -3645,7 +3645,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_07, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_07, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_07, actual);
 				});
 			}
 
@@ -3706,7 +3706,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_07, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_07, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_07, actual);
 				});
 			}
 
@@ -3760,7 +3760,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_09, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_09, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_09, actual);
 				});
 			}
 
@@ -3836,7 +3836,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_10, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_10, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_10, actual);
 				});
 			}
 
@@ -3890,7 +3890,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_11, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_11, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_11, actual);
 				});
 			}
 
@@ -3944,7 +3944,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_12, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_12, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_12, actual);
 				});
 			}
 
@@ -3998,7 +3998,7 @@ public class Bug1158Test {
 				getCompileHelper().compile(SARL_CODE_13, (it) -> {
 					String actual;
 					actual = it.getGeneratedCode("io.sarl.lang.tests.bug1158.TheProgram");
-					assertEquals(JAVA_CODE_13, actual);
+					assertEqualsExceptNewLines(JAVA_CODE_13, actual);
 				});
 			}
 

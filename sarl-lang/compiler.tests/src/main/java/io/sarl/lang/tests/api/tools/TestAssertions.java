@@ -20,8 +20,7 @@
  */
 package io.sarl.lang.tests.api.tools;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -68,7 +67,7 @@ public final class TestAssertions {
 		for (final var parameter : actualFormalParameters) {
 			if (expectedDefaultValues[i] == null) {
 				if (parameter instanceof SarlFormalParameter cvalue) {
-					assertNull("No default value expected", cvalue.getDefaultValue()); //$NON-NLS-1$
+					assertNull(cvalue.getDefaultValue(), "No default value expected"); //$NON-NLS-1$
 				}
 			} else {
 				assertTrue(parameter instanceof SarlFormalParameter);

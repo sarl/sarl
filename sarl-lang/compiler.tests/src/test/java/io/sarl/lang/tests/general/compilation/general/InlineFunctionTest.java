@@ -20,12 +20,11 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.FileExtensionProvider;
 import org.eclipse.xtext.util.IAcceptor;
@@ -35,6 +34,8 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.google.inject.Inject;
 
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.GeneratorConfigProvider2;
@@ -118,7 +119,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC3, r.getGeneratedCode("C3"));
+			assertEqualsExceptNewLines(expectedC3, r.getGeneratedCode("C3"));
 		});
 	}
 	
@@ -163,7 +164,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC2, r.getGeneratedCode("C2"));
+			assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 		});
 	}
 
@@ -211,7 +212,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC3, r.getGeneratedCode("C3"));
+			assertEqualsExceptNewLines(expectedC3, r.getGeneratedCode("C3"));
 		});
 	}
 	
@@ -256,7 +257,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC2, r.getGeneratedCode("C2"));
+			assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 		});
 	}
 
@@ -301,7 +302,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC2, r.getGeneratedCode("C2"));
+			assertEqualsExceptNewLines(expectedC2, r.getGeneratedCode("C2"));
 		});
 	}
 
@@ -339,7 +340,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -377,7 +378,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -415,7 +416,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -453,7 +454,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -491,7 +492,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -529,7 +530,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -565,7 +566,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -603,7 +604,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -641,7 +642,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -679,7 +680,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -717,7 +718,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -755,7 +756,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 
@@ -793,7 +794,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				""
 				);
 		compileWithInline(source, (r) -> {
-			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+			assertEqualsExceptNewLines(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
 

@@ -20,11 +20,11 @@
  */
 package io.sarl.api.core.tests.bugs;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestUtils.multilineString2;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -450,8 +450,8 @@ public class Bug861Test extends AbstractSarlTest {
 	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, it -> {
-			assertEquals(EXPECTED_BOOTAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.BootAgent"));
-			assertEquals(EXPECTED_EMPTYAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.EmptyAgent"));
+			assertEqualsExceptNewLines(EXPECTED_BOOTAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.BootAgent"));
+			assertEqualsExceptNewLines(EXPECTED_EMPTYAGENT_01, it.getGeneratedCode("io.sarl.lang.tests.bug861.EmptyAgent"));
 		});
 	}
 

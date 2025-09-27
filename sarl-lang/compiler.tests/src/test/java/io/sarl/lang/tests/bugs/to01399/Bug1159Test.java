@@ -21,13 +21,11 @@
 
 package io.sarl.lang.tests.bugs.to01399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -36,7 +34,6 @@ import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
-import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.tools.TestValidator.Validator;
 
 /** Testing class for issue: Automatic generation of constructors for the events.
@@ -171,7 +168,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingVars() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_01, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 		});
 	}
 
@@ -273,7 +270,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingVals() throws Exception {
 		getCompileHelper().compile(SARL_CODE_02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_02, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 		});
 	}
 
@@ -392,7 +389,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingGenericVars() throws Exception {
 		getCompileHelper().compile(SARL_CODE_03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_03, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 		});
 	}
 
@@ -492,7 +489,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingGenericVals() throws Exception {
 		getCompileHelper().compile(SARL_CODE_04, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_04, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 		});
 	}
 
@@ -589,7 +586,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingVarsConstructor() throws Exception {
 		getCompileHelper().compile(SARL_CODE_05, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_05, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_05, actual);
 		});
 	}
 
@@ -690,7 +687,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingValsConstructor() throws Exception {
 		getCompileHelper().compile(SARL_CODE_06, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_06, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_06, actual);
 		});
 	}
 
@@ -743,7 +740,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingEmptyEvent() throws Exception {
 		getCompileHelper().compile(SARL_CODE_07, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_07, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_07, actual);
 		});
 	}
 
@@ -864,7 +861,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingGenericEvent() throws Exception {
 		getCompileHelper().compile(SARL_CODE_08, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_08, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_08, actual);
 		});
 	}
 
@@ -947,9 +944,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInheritanceWoField() throws Exception {
 		getCompileHelper().compile(SARL_CODE_09, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_09_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_09_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_09_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_09_E2, actualE2);
 		});
 	}
 
@@ -1080,9 +1077,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInheritanceFieldE1() throws Exception {
 		getCompileHelper().compile(SARL_CODE_10, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_10_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_10_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_10_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_10_E2, actualE2);
 		});
 	}
 
@@ -1269,9 +1266,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInheritanceFieldE1E2() throws Exception {
 		getCompileHelper().compile(SARL_CODE_11, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_11_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_11_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_11_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_11_E2, actualE2);
 		});
 	}
 
@@ -1427,9 +1424,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInheritanceManualConstructor() throws Exception {
 		getCompileHelper().compile(SARL_CODE_12, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_12_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_12_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_12_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_12_E2, actualE2);
 		});
 	}
 
@@ -1557,9 +1554,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingNoInheritanceVar() throws Exception {
 		getCompileHelper().compile(SARL_CODE_13, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_13_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_13_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_13_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_13_E2, actualE2);
 		});
 	}
 
@@ -1682,9 +1679,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingNoInheritanceVal() throws Exception {
 		getCompileHelper().compile(SARL_CODE_14, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_14_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_14_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_14_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_14_E2, actualE2);
 		});
 	}
 
@@ -1814,9 +1811,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingNoLocal() throws Exception {
 		getCompileHelper().compile(SARL_CODE_15, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_15_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_15_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_15_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_15_E2, actualE2);
 		});
 	}
 
@@ -2051,9 +2048,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInheritanceField2E1E2() throws Exception {
 		getCompileHelper().compile(SARL_CODE_16, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_16_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_16_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_16_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_16_E2, actualE2);
 		});
 	}
 
@@ -2251,9 +2248,9 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInheritanceField2fE1E2() throws Exception {
 		getCompileHelper().compile(SARL_CODE_17, (it) -> {
 			final String actualE1 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E1");
-			assertEquals(JAVA_CODE_17_E1, actualE1);
+			assertEqualsExceptNewLines(JAVA_CODE_17_E1, actualE1);
 			final String actualE2 = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_17_E2, actualE2);
+			assertEqualsExceptNewLines(JAVA_CODE_17_E2, actualE2);
 		});
 	}
 
@@ -2369,7 +2366,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingVarVals() throws Exception {
 		getCompileHelper().compile(SARL_CODE_18, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E");
-			assertEquals(JAVA_CODE_18, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_18, actual);
 		});
 	}
 
@@ -2495,7 +2492,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingGenericVarVals() throws Exception {
 		getCompileHelper().compile(SARL_CODE_19, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.E2");
-			assertEquals(JAVA_CODE_19_E2, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_19_E2, actual);
 		});
 	}
 
@@ -2601,7 +2598,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInitializeVal() throws Exception {
 		getCompileHelper().compile(SARL_CODE_20, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.MyEvent");
-			assertEquals(JAVA_CODE_20, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_20, actual);
 		});
 	}
 
@@ -2712,7 +2709,7 @@ public class Bug1159Test extends AbstractSarlTest {
 	public void compilingInitializeVals() throws Exception {
 		getCompileHelper().compile(SARL_CODE_21, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug1159.MyEvent");
-			assertEquals(JAVA_CODE_21, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_21, actual);
 		});
 	}
 

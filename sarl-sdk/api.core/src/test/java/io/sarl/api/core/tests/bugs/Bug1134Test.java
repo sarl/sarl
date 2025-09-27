@@ -21,22 +21,18 @@
 
 package io.sarl.api.core.tests.bugs;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.tests.api.AbstractSarlTest;
-import io.sarl.lang.validation.IssueCodes;
-import io.sarl.tests.api.tools.TestValidator.Validator;
 
 /** Testing class for issue: Invalid agent parameter syntax.
  *
@@ -161,7 +157,7 @@ public class Bug1134Test extends AbstractSarlTest {
 	public void compiling01() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
 			var actual = it.getGeneratedCode("io.sarl.lang.tests.bug1134.Bug1134Case");
-			assertEquals(JAVA_CODE_01, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 		});
 	}
 

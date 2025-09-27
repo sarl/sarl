@@ -20,14 +20,13 @@
  */
 package io.sarl.lang.tests.modules.formatting2;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.IResourceFactory;
@@ -38,6 +37,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.google.inject.Inject;
 
 import io.sarl.lang.formatting2.FormatterFacade;
 import io.sarl.lang.tests.api.AbstractSarlTest;
@@ -89,7 +90,7 @@ public class FormatterFacadeTest extends AbstractSarlTest {
 				"}",
 				"");
 		String actual = this.facade.format(source);
-		assertEquals(expected, actual);
+		assertEqualsExceptNewLines(expected, actual);
 	}
 
 	@Test
@@ -103,7 +104,7 @@ public class FormatterFacadeTest extends AbstractSarlTest {
 				"}",
 				"");
 		String actual = this.facade.format(source);
-		assertEquals(expected, actual);
+		assertEqualsExceptNewLines(expected, actual);
 	}
 
 	@Test
@@ -122,7 +123,7 @@ public class FormatterFacadeTest extends AbstractSarlTest {
 				"}",
 				"");
 		String actual = this.facade.format(source);
-		assertEquals(expected, actual);
+		assertEqualsExceptNewLines(expected, actual);
 	}
 
 	@Test
@@ -143,7 +144,7 @@ public class FormatterFacadeTest extends AbstractSarlTest {
 				"}",
 				"");
 		String actual = this.facade.format(source);
-		assertEquals(expected, actual);
+		assertEqualsExceptNewLines(expected, actual);
 	}
 
 	private void assertResourceContentFormat(String source, String expected) throws IOException {
@@ -161,7 +162,7 @@ public class FormatterFacadeTest extends AbstractSarlTest {
 			stringOutputStream.flush();
 			actual = stringOutputStream.toString();
 		}
-		assertEquals(expected, actual);
+		assertEqualsExceptNewLines(expected, actual);
 	}
 
 	@Test

@@ -20,8 +20,8 @@
  */
 package io.sarl.lang.tests.general.compilation.oop;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
@@ -455,8 +455,8 @@ public class ClassCompilerTest {
 					""
 					);
 			getCompileHelper().compile(source, (r) -> {
-					assertEquals(expectedPerson, r.getGeneratedCode("io.sarl.docs.reference.oop.Person"));
-					assertEquals(expectedPersonEx, r.getGeneratedCode("io.sarl.docs.reference.oop.PersonEx"));
+					assertEqualsExceptNewLines(expectedPerson, r.getGeneratedCode("io.sarl.docs.reference.oop.Person"));
+					assertEqualsExceptNewLines(expectedPersonEx, r.getGeneratedCode("io.sarl.docs.reference.oop.PersonEx"));
 				});
 		}
 		
@@ -510,8 +510,8 @@ public class ClassCompilerTest {
 			getCompileHelper().compile(source, new IAcceptor<Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expectedPerson, r.getGeneratedCode("io.sarl.docs.reference.oop.Person"));
-					assertEquals(expectedPersonEx, r.getGeneratedCode("io.sarl.docs.reference.oop.PersonEx"));
+					assertEqualsExceptNewLines(expectedPerson, r.getGeneratedCode("io.sarl.docs.reference.oop.Person"));
+					assertEqualsExceptNewLines(expectedPersonEx, r.getGeneratedCode("io.sarl.docs.reference.oop.PersonEx"));
 				}
 			});
 		}

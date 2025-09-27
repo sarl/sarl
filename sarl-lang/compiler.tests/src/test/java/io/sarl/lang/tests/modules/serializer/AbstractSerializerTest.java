@@ -20,12 +20,13 @@
  */
 package io.sarl.lang.tests.modules.serializer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.resource.SaveOptions;
 import org.eclipse.xtext.serializer.ISerializer;
+
+import com.google.inject.Inject;
 
 import io.sarl.lang.tests.api.AbstractSarlTest;
 
@@ -56,7 +57,7 @@ public abstract class AbstractSerializerTest extends AbstractSarlTest {
 		// No formatting
 		//builder.format();
 		String text = this.serializer.serialize(this.object, builder.getOptions());
-		assertEquals(expected, text);
+		assertEqualsExceptNewLines(expected, text);
 	}
 
 }

@@ -20,22 +20,23 @@
  */
 package io.sarl.lang.tests.maven.compiler;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestUtils.getLineSeparator;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.charset.Charset;
 
-import com.google.common.io.Files;
 import org.eclipse.xtext.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+
+import com.google.common.io.Files;
 
 import io.sarl.lang.core.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -111,7 +112,7 @@ public class SarlMavenCompilerIT extends AbstractSarlMavenCompilerIT {
 		runCompiler("v", VALID_SARL_CODE, true, (sarlcOutputDirectory, errorStream) -> {
 			// Check result
 			File javaFile = makeFolder(sarlcOutputDirectory, "io", "sarl", "lang", "tests", "compiler", "maven", "MyTestAgent.java");
-			assertEquals(VALID_JAVA_CODE, Strings.concat(getLineSeparator(), Files.readLines(javaFile, Charset.defaultCharset())));
+			assertEqualsExceptNewLines(VALID_JAVA_CODE, Strings.concat(getLineSeparator(), Files.readLines(javaFile, Charset.defaultCharset())));
 			// Check errors
 			assertTrue(errorStream.isEmpty());
 		});

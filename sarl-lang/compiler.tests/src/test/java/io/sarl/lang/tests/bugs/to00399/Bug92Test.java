@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.tests.bugs.to00399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
@@ -536,9 +537,9 @@ public class Bug92Test extends AbstractSarlTest {
 				"");
 
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
-				assertEquals(expected2,r.getGeneratedCode("DeviceAgent"));
-				assertEquals(expected3,r.getGeneratedCode("EntityAgent"));
+			assertEqualsExceptNewLines(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
+			assertEqualsExceptNewLines(expected2,r.getGeneratedCode("DeviceAgent"));
+			assertEqualsExceptNewLines(expected3,r.getGeneratedCode("EntityAgent"));
 			});
 	}
 
@@ -717,9 +718,9 @@ public class Bug92Test extends AbstractSarlTest {
 				"");
 
 		getCompileHelper().compile(source, (r) -> {
-				assertEquals(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
-				assertEquals(expected2,r.getGeneratedCode("DeviceAgent"));
-				assertEquals(expected3,r.getGeneratedCode("EntityAgent"));
+			assertEqualsExceptNewLines(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
+			assertEqualsExceptNewLines(expected2,r.getGeneratedCode("DeviceAgent"));
+			assertEqualsExceptNewLines(expected3,r.getGeneratedCode("EntityAgent"));
 			});
 	}
 

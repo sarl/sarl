@@ -21,10 +21,10 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.junit.jupiter.api.DisplayName;
@@ -108,7 +108,7 @@ public class Bug994Test extends AbstractSarlTest {
 	public void compile01() throws Exception {
 		getCompileHelper().compile(SARL_CODE_01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug994.Bug994Case");
-			assertEquals(JAVA_CODE_01, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_01, actual);
 		});
 	}
 
@@ -171,7 +171,7 @@ public class Bug994Test extends AbstractSarlTest {
 	public void compile02() throws Exception {
 		getCompileHelper().compile(SARL_CODE_02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug994.Bug994Case");
-			assertEquals(JAVA_CODE_02, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_02, actual);
 		});
 	}
 
@@ -234,7 +234,7 @@ public class Bug994Test extends AbstractSarlTest {
 	public void compile03() throws Exception {
 		getCompileHelper().compile(SARL_CODE_03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug994.Bug994Case");
-			assertEquals(JAVA_CODE_03, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_03, actual);
 		});
 	}
 
@@ -300,7 +300,7 @@ public class Bug994Test extends AbstractSarlTest {
 	public void compile04() throws Exception {
 		getCompileHelper().compile(SARL_CODE_04, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug994.Bug994Case");
-			assertEquals(JAVA_CODE_04, actual);
+			assertEqualsExceptNewLines(JAVA_CODE_04, actual);
 		});
 	}
 

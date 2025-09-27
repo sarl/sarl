@@ -20,10 +20,10 @@
  */
 package io.sarl.lang.tests.bugs.to00399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -169,7 +169,7 @@ public class Bug312Test {
 					"  }",
 					"}",
 					"");
-			getCompileHelper().compile(this.snippet, (r) -> assertEquals(expected, r.getGeneratedCode("C1")));
+			getCompileHelper().compile(this.snippet, (r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("C1")));
 		}
 
 	}

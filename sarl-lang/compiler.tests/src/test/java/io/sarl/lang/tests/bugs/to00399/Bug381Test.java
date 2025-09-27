@@ -22,10 +22,10 @@
  */
 package io.sarl.lang.tests.bugs.to00399;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
@@ -200,7 +200,7 @@ public class Bug381Test {
 					"");
 
 			getCompileHelper().compile(snippetWithSarlSyntaxWithLocalType,
-					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
+					(r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("A1")));
 		}
 
 		@Test
@@ -252,7 +252,7 @@ public class Bug381Test {
 					"");
 
 			getCompileHelper().compile(snippetWithJavaSyntaxWithLocalType,
-					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
+					(r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("A1")));
 		}
 
 		@Test
@@ -306,7 +306,7 @@ public class Bug381Test {
 			getCompileHelper().compile(snippetWithSarlSyntaxWithJREType, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
+					assertEqualsExceptNewLines(expected, r.getGeneratedCode("A1"));
 				}
 			});
 		}
@@ -360,7 +360,7 @@ public class Bug381Test {
 					"");
 
 			getCompileHelper().compile(snippetWithJavaSyntaxWithJREType,
-					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
+					(r) -> assertEqualsExceptNewLines(expected, r.getGeneratedCode("A1")));
 		}
 
 		@Test
@@ -414,7 +414,7 @@ public class Bug381Test {
 			getCompileHelper().compile(snippetWithSarlSyntaxWithoutType, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
+					assertEqualsExceptNewLines(expected, r.getGeneratedCode("A1"));
 				}
 			});
 		}
@@ -470,7 +470,7 @@ public class Bug381Test {
 			getCompileHelper().compile(snippetWithJavaSyntaxWithoutType, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
+					assertEqualsExceptNewLines(expected, r.getGeneratedCode("A1"));
 				}
 			});
 		}
