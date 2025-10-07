@@ -302,6 +302,14 @@
          version="0.0.0"/>
 
    <plugin
+         id="io.sarl.sdk.api.workingmemory"
+         version="0.0.0"/>
+
+   <plugin
+         id="io.sarl.sdk.api.workingmemory.source"
+         version="0.0.0"/>
+
+   <plugin
          id="io.sarl.sdk.api.probing"
          version="0.0.0"/>
 

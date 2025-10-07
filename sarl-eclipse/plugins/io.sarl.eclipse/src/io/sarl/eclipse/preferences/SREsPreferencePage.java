@@ -88,6 +88,7 @@ import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
 import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
+import io.sarl.lang.ui.SARLUiConfig;
 
 /** Preference page for the SARL runtime environments.
  *
@@ -596,7 +597,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return false;
 		}
 		// Check the SARL version.
-		final var bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+		final var bundle = Platform.getBundle(SARLUiConfig.SARL_CORE_LIBRARY_BUNDLE);
 		if (bundle != null) {
 			final var sarlVersion = bundle.getVersion();
 			final var minVersion = Utilities.parseVersion(sre.getMinimalSARLVersion());
@@ -619,6 +620,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				}
 				return false;
 			}
+		} else {
+			setErrorMessage(io.sarl.eclipse.runtime.Messages.AbstractSREInstall_5);
+			return false;
 		}
 		return true;
 	}

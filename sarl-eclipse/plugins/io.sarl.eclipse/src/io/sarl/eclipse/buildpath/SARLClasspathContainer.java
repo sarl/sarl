@@ -75,10 +75,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 		//
 		// In not modular Java (8): Must be K_SYSTEM in order to let the run-configuration launcher to replace the SARL
 		// libraries by the SRE libraries.
-		if (isModular()) {
-			return K_APPLICATION;
-		}
-		return K_SYSTEM;
+		return K_APPLICATION;
 	}
 
 	@Override

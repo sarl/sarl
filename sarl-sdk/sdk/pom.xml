@@ -160,7 +160,8 @@
 						Require-Bundle: io.sarl.sdk.api.core, \
 							io.sarl.sdk.api.util, \
 							io.sarl.sdk.api.naming, \
-							io.sarl.sdk.api.probing
+							io.sarl.sdk.api.probing, \
+							io.sarl.sdk.api.workingmemory
 					</bnd>
         </configuration>
       </plugin>

@@ -25,10 +25,14 @@ import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
 
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -331,18 +335,44 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 	protected void buildClasspathAndModulePath(IProgressMonitor monitor) throws CoreException {
 		monitor.subTask(
 				Messages.AbstractLaunchProcess_0);
-		final var paths = getOwner().getClasspathAndModulepath(this.configuration);
-
 		final var own = getOwner();
+
+		final var paths = own.getClasspathAndModulepath(this.configuration);
+
 		if (own.getConfigurationAccessor().isLaunhcingParametersPrintedOut(this.configuration)) {
 			SARLEclipsePlugin.getDefault().getLog().info(
-					MessageFormat.format(Messages.AbstractLaunchProcess_9, Arrays.toString(paths[0])));
+					MessageFormat.format(Messages.AbstractLaunchProcess_9, formatLibraryPaths(paths[0])));
 			SARLEclipsePlugin.getDefault().getLog().info(
-					MessageFormat.format(Messages.AbstractLaunchProcess_10, Arrays.toString(paths[1])));
+					MessageFormat.format(Messages.AbstractLaunchProcess_10, formatLibraryPaths(paths[1])));
 		}
 
 		setClasspath(paths[0]);
 		setModulepath(paths[1]);
+	}
+	
+	private static String formatLibraryPaths(String[] paths) {
+		final var localProjects = new TreeMap<String, List<String>>();
+		final var libraries = new TreeMap<String, List<String>>();
+		for (final var path : paths) {
+			final var basename = FileSystem.largeBasename(path);
+			Map<String, List<String>> map;
+			if (FileSystem.hasExtension(path, "jar")) { //$NON-NLS-1$
+				map = libraries;
+			} else {
+				map = localProjects;
+			}
+			final var list = map.computeIfAbsent(basename, it -> new ArrayList<>());
+			list.add(path);
+		}
+
+		final var buffer = new JsonBuffer();
+		if (!localProjects.isEmpty()) {
+			buffer.add("localProjects", localProjects); //$NON-NLS-1$
+		}
+		if (!libraries.isEmpty()) {
+			buffer.add("libraries", libraries); //$NON-NLS-1$
+		}
+		return buffer.toString();
 	}
 
 	/** Read the arguments to pass to the launched application.

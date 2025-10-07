@@ -797,48 +797,51 @@ public final class Bundles {
 			};
 		}
 
+		private IPath determineBundleBinaryPath(Bundle bundle) throws BundleException {
+			final var bundlePath = Bundles.getBundlePath(bundle);
+			if (bundlePath.toFile().isDirectory()) {
+				// we have a directory, we assume we are in debug mode of the
+				// product
+				final var bundleSourcePath = Bundles.getSourceBundlePath(bundle, bundlePath);
+
+				// Default value of the output folder for our project but will be
+				// overload later in we find a .classpath precising the output
+				// folder
+				var outputFolder = bundleSourcePath;
+				if (!bundlePath.equals(bundleSourcePath)) {
+					outputFolder = Path.fromPortableString(bundleSourcePath.toPortableString().concat(DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT));
+				}
+				URL bundleURL = null;
+				try {
+					bundleURL = new URI("file://" + bundleSourcePath.toPortableString()).toURL(); //$NON-NLS-1$
+				} catch (Exception e) {
+					return null;
+				}
+				final var classpathOutputFolder = readDotClasspathAndReferencestoClasspath(null, bundle, bundleURL);
+				if (classpathOutputFolder != null) {
+					outputFolder = classpathOutputFolder;
+				}
+				return outputFolder;
+			}
+			return bundlePath;
+		}
+		
 		private DependencyDefinition getDependencyDefinition() throws BundleException {
 			var dependencies = getBundleDependencies(this.bundle);
 			if (dependencies == null) {
-				final var bundlePath = Bundles.getBundlePath(this.bundle);
-				if (bundlePath.toFile().isDirectory()) {
-					// we have a directory, we assume we are in debug mode of the
-					// product
-					final var bundleSourcePath = Bundles.getSourceBundlePath(this.bundle, bundlePath);
-
-					// Default value of the output folder for our project but will be
-					// overload later in we find a .classpath precising the output
-					// folder
-					var outputFolder = bundleSourcePath;
-					if (!bundlePath.equals(bundleSourcePath)) {
-						outputFolder = Path.fromPortableString(bundleSourcePath.toPortableString().concat(DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT));
-					}
-					URL bundleURL = null;
-					try {
-						bundleURL = new URI("file://" + bundleSourcePath.toPortableString()).toURL(); //$NON-NLS-1$
-					} catch (Exception e) {
-						return null;
-					}
-					final var classpathOutputFolder = readDotClasspathAndReferencestoClasspath(null, this.bundle, bundleURL);
-					if (classpathOutputFolder != null) {
-						outputFolder = classpathOutputFolder;
-					}
-					this.binaryBundlePath = outputFolder;
-				} else {
-					this.binaryBundlePath = bundlePath;
-				}
-
-				final var cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
-
 				final var cpEntries = createBundleDependencySet();
-	
+
+				this.binaryBundlePath = determineBundleBinaryPath(this.bundle);
+				final var cpEntry = Utilities.newLibraryEntry(this.bundle, this.binaryBundlePath, null);
 				updateBundleClassPath(this.bundle, cpEntry, cpEntries);
 				
-				if (this.extraDependencies != null) {
+				if (this.extraDependencies != null && !this.extraDependencies.isEmpty()) {
 					for (final var extraBundleName : this.extraDependencies) {
 						final var extraBundle = Platform.getBundle(extraBundleName);
 						if (extraBundle != null) {
-							updateBundleClassPath(extraBundle, cpEntry, cpEntries);
+							final var extraBinaryBundlePath = determineBundleBinaryPath(extraBundle);
+							final var extraCpEntry = Utilities.newLibraryEntry(extraBundle, extraBinaryBundlePath, null);
+							updateBundleClassPath(extraBundle, extraCpEntry, cpEntries);
 						}
 					}
 				}

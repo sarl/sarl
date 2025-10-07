@@ -35,6 +35,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String JanusClasspathContainer_0;
+	public static String JanusClasspathContainer_1;
 	public static String JanusClasspathContainerInitializer_0;
 	public static String JanusContainerWizardPage_0;
 	public static String JanusContainerWizardPage_1;

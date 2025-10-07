@@ -39,6 +39,7 @@ import org.osgi.framework.Version;
 import io.sarl.apputils.eclipseextensions.sreprovider.ISREInstall;
 import io.sarl.apputils.uiextensions.Utilities;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.ui.SARLUiConfig;
 
 /**
  * Abstract implementation of a SRE install.
@@ -222,7 +223,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	private IStatus getSARLVersionValidity(int ignoreCauses) {
-		final var bundle = Platform.getBundle("io.sarl.lang"); //$NON-NLS-1$
+		final var bundle = Platform.getBundle(SARLUiConfig.SARL_CORE_LIBRARY_BUNDLE);
 		if (bundle != null) {
 			final var sarlVersion = bundle.getVersion();
 			final var minVersion = Utilities.parseVersion(getMinimalSARLVersion());
@@ -244,6 +245,9 @@ public abstract class AbstractSREInstall implements ISREInstall {
 								sarlVersion.toString(),
 								maxVersion.toString()));
 			}
+		} else {
+			return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+					CODE_SARL_VERSION, Messages.AbstractSREInstall_5);
 		}
 		return null;
 	}

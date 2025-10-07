@@ -62,7 +62,7 @@ public class JanusContainerWizardPage extends NewElementWizardPage implements IC
 		composite.setLayout(new FillLayout());
 		final var label = new Label(composite, SWT.NONE);
 		final var text = new StringBuilder();
-		for (final var entry : JanusClasspathContainer.JANUS_DEPENDENCY_BUNDLE_NAMES) {
+		for (final var entry : JanusBundleBuildPath.getJanusDependencyBundleNames()) {
 			text.append(entry);
 			text.append("\n"); //$NON-NLS-1$
 		}

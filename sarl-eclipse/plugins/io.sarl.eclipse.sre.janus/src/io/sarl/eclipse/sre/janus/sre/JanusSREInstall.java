@@ -38,7 +38,7 @@ import io.sarl.apputils.bootiqueapp.config.LogConfig;
 import io.sarl.apputils.bootiqueapp.config.LogConfigModule;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
-import io.sarl.eclipse.sre.janus.buildpath.JanusClasspathContainer;
+import io.sarl.eclipse.sre.janus.buildpath.JanusBundleBuildPath;
 import io.sarl.eclipse.sre.janus.buildpath.JanusClasspathContainerInitializer;
 import io.sarl.lang.core.SREBootstrap;
 import io.sarl.lang.core.util.CliUtilities;
@@ -73,16 +73,16 @@ public class JanusSREInstall extends AbstractSREInstall {
 	 * @throws BundleException if a bundle cannot be resolved.
 	 */
 	public JanusSREInstall() throws BundleException {
-		super(JanusClasspathContainer.JANUS_MAIN_BUNDLE_ID);
-		final var dependencies = JanusClasspathContainer.getJanusPlatformClasspath();
+		super(JanusBundleBuildPath.getJanusMainBundleName());
+		final var dependencies = JanusBundleBuildPath.getJanusPlatformClasspath();
+		//
+		setClassPathEntries(dependencies.getTransitiveRuntimeClasspathEntries(true));
 		//
 		this.janusSREInstallPath = dependencies.getBundleBinaryPath();
 		assert this.janusSREInstallPath != null;
 		this.location = this.janusSREInstallPath.toPortableString();
 		setMainClass(Boot.class.getName());
 		setBootstrap(SREBootstrap.class.getName());
-		//
-		setClassPathEntries(dependencies.getTransitiveRuntimeClasspathEntries(true));
 	}
 
 	@Override

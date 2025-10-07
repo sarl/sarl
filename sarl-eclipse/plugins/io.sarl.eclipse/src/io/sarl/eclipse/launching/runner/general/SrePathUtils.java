@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -84,26 +85,27 @@ public final class SrePathUtils {
 		final var filteredEntries = new ArrayList<IRuntimeClasspathEntry>();
 		List<IRuntimeClasspathEntry> sreClasspathEntries = null;
 		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
+		var foundSarlLibraries = false;
 		for (final var entry : entries) {
 			if (entry.getPath().equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
+				foundSarlLibraries = true;
 				if (sreClasspathEntries == null) {
 					sreClasspathEntries = getSREClasspathEntries(configuration, configAccessor, projectAccessor);
 				}
 				for (final var containerEntry : sreClasspathEntries) {
-					final var location = containerEntry.getLocation();
-					if (Strings.isNullOrEmpty(location)) {
-						filteredEntries.add(containerEntry);
-					} else if (addedEntries.add(location)) {
-						filteredEntries.add(containerEntry);
-					}
+					addToFilteredList(containerEntry, filteredEntries, addedEntries);
 				}
 			} else {
-				final var location = entry.getLocation();
-				if (Strings.isNullOrEmpty(location)) {
-					filteredEntries.add(entry);
-				} else if (addedEntries.add(location)) {
-					filteredEntries.add(entry);
-				}
+				addToFilteredList(entry, filteredEntries, addedEntries);
+			}
+		}
+		if (!foundSarlLibraries) {
+			// SARL library was not found in the class path. Add the SARL runtime environment library
+			if (sreClasspathEntries == null) {
+				sreClasspathEntries = getSREClasspathEntries(configuration, configAccessor, projectAccessor);
+			}
+			for (final var containerEntry : sreClasspathEntries) {
+				addToFilteredList(containerEntry, filteredEntries, addedEntries);
 			}
 		}
 		// Get classpath from the extra contributors
@@ -113,12 +115,7 @@ public final class SrePathUtils {
 				final var extraEntries = provider.computeUnresolvedClasspath(configuration);
 				if (extraEntries != null) {
 					for (final var extraEntry : extraEntries) {
-						final var location = extraEntry.getLocation();
-						if (Strings.isNullOrEmpty(location)) {
-							filteredEntries.add(extraEntry);
-						} else if (addedEntries.add(location)) {
-							filteredEntries.add(extraEntry);
-						}
+						addToFilteredList(extraEntry, filteredEntries, addedEntries);
 					}
 				}
 			} else {
@@ -127,6 +124,15 @@ public final class SrePathUtils {
 			}
 		}
 		return filteredEntries.toArray(new IRuntimeClasspathEntry[filteredEntries.size()]);
+	}
+
+	private static void addToFilteredList(IRuntimeClasspathEntry entry, List<IRuntimeClasspathEntry> filteredEntries, Set<String> addedEntries) {
+		final var location = entry.getLocation();
+		if (Strings.isNullOrEmpty(location)) {
+			filteredEntries.add(entry);
+		} else if (addedEntries.add(location)) {
+			filteredEntries.add(entry);
+		}
 	}
 
 	/** Replies the classpath entries associated to the SRE of the given configuration.

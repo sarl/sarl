@@ -21,6 +21,8 @@
 
 package io.sarl.lang.ui;
 
+import javax.annotation.processing.Generated;
+
 /**
  * Provides the constants for the SARL projects.
  *
@@ -38,6 +40,20 @@ public final class SARLUiConfig {
 	/** Extension point for extra language generators.
 	 */
 	public static final String EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS = "extraGenerators"; //$NON-NLS-1$
+
+	/** Name of the bundle that is containing the SARL compiler.
+	 *
+	 * @since 1.0
+	 */
+	@Generated("maven")
+	public static final String SARL_COMPILER_BUNDLE = "io.sarl.lang.compiler"; //$NON-NLS-1$
+
+	/** Name of the bundle that is containing the SARL core library (metamodel).
+	 *
+	 * @since 1.0
+	 */
+	@Generated("maven")
+	public static final String SARL_CORE_LIBRARY_BUNDLE = "io.sarl.lang.core"; //$NON-NLS-1$
 
 	private SARLUiConfig() {
 		//

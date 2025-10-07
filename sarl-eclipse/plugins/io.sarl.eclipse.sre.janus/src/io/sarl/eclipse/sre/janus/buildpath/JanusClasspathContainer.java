@@ -21,12 +21,12 @@
 
 package io.sarl.eclipse.sre.janus.buildpath;
 
+import static io.sarl.eclipse.sre.janus.buildpath.JanusBundleBuildPath.getJanusDependencyBundleNames;
+
+import java.text.MessageFormat;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.ResourceBundle;
 import java.util.Set;
 
-import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -34,9 +34,8 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.osgi.framework.BundleException;
 
 import io.sarl.apputils.eclipseextensions.buildpath.AbstractSARLBasedClasspathContainer;
-import io.sarl.apputils.eclipseextensions.buildpath.SARLBundleBuildPath;
 import io.sarl.apputils.uiextensions.Bundles;
-import io.sarl.apputils.uiextensions.Bundles.IBundleDependencies;
+import io.sarl.eclipse.sre.janus.JanusEclipsePlugin;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -48,60 +47,6 @@ import io.sarl.apputils.uiextensions.Bundles.IBundleDependencies;
  * @mavenartifactid $ArtifactId$
  */
 public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer {
-
-	/** Name of the property file that contains the reference libraries that are required run
-	 * within Eclipse IDE any SARL-based Java code based on Janus.
-	 */
-	public static final String JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE;
-
-	/** Names of the reference libraries that are required to run within Eclipse IDE any SARL-based Java code based on Janus.
-	 */
-	public static final String[] JANUS_DEPENDENCY_BUNDLE_NAMES;
-
-	/** Identifier of the main bundle of the Janus SRE.
-	 */
-	public static final String JANUS_MAIN_BUNDLE_ID;
-
-	private static final String BUNDLE_PROPERTY_BASENAME = "janus-bundles"; //$NON-NLS-1$
-
-	private static final String SLASH = "/"; //$NON-NLS-1$
-
-	private static final String POINT = "."; //$NON-NLS-1$
-
-	private static final String VALUE_SEPARATOR = "[ \\t\\n\\r\\f]*,[ \\\\t\\\\n\\\\r\\\\f]*"; //$NON-NLS-1$
-
-	private static final String MAIN_BUNDLE_PROPERTY_NAME = "JANUS_MAIN_BUNDLE"; //$NON-NLS-1$
-
-	private static final String BUNDLES_PROPERTY_NAME = "JANUS_BUNDLES"; //$NON-NLS-1$
-
-	static {
-		JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = SLASH
-				+ JanusClasspathContainer.class.getPackage().getName().replace(POINT, SLASH)
-				+ SLASH + BUNDLE_PROPERTY_BASENAME;
-		final var bundle = ResourceBundle.getBundle(JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
-
-		final var libs = new HashSet<String>();
-		
-		for (final var lib : SARLBundleBuildPath.getSarlDependencyBundleNames()) {
-			libs.add(lib);
-		}
-
-		JANUS_MAIN_BUNDLE_ID = bundle.getString(MAIN_BUNDLE_PROPERTY_NAME);
-		if (Strings.isNullOrEmpty(JANUS_MAIN_BUNDLE_ID)) {
-			throw new IllegalStateException(MAIN_BUNDLE_PROPERTY_NAME);
-		}
-
-		for (final var lib : bundle.getString(BUNDLES_PROPERTY_NAME).split(VALUE_SEPARATOR)) {
-			libs.add(lib.trim());
-		}
-		if (!libs.contains(JANUS_MAIN_BUNDLE_ID)) {
-			throw new IllegalStateException(BUNDLES_PROPERTY_NAME);
-		}
-
-		var allLibs = new String[libs.size()];
-		allLibs = libs.toArray(allLibs);
-		JANUS_DEPENDENCY_BUNDLE_NAMES = allLibs;
-	}
 
 	/** Constructor.
 	 *
@@ -124,31 +69,41 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 	@Override
 	public int getKind() {
+		// In modular Java (9 or higher): Must be K_APPLICATION in order to be included into the modulepath
+		// or the classpath.
+		//
+		// In not modular Java (8): Must be K_SYSTEM in order to let the run-configuration launcher to replace the SARL
+		// libraries by the SRE libraries.
 		return K_APPLICATION;
-	}
-
-	/** Replies the standard classpath for running the Janus platform.
-	 *
-	 * @return the classpath.
-	 * @throws BundleException if a bundle cannot be resolved.
-	 */
-	public static IBundleDependencies getJanusPlatformClasspath() throws BundleException {
-		final var bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
-		final var resolvedBundles = Bundles.resolveBundleDependencies(bundle);
-		return resolvedBundles;
 	}
 
 	@Override
 	protected void updateBundleList(Set<String> entries) throws BundleException {
-		for (final var symbolicName : getJanusPlatformClasspath().getTransitiveSymbolicNames(true)) {
-			entries.add(symbolicName);
+		for (final var rootBundleName : getJanusDependencyBundleNames()) {
+			final var bundle = Platform.getBundle(rootBundleName);
+			if (bundle != null) {
+				for (final var symbolicName : Bundles.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
+					entries.add(symbolicName);
+				}
+			} else {
+				JanusEclipsePlugin.getDefault().logErrorMessage(MessageFormat.format(
+						Messages.JanusClasspathContainer_1, rootBundleName));
+			}
 		}
 	}
 
 	@Override
 	protected void updateClasspathEntries(Set<IClasspathEntry> entries) throws BundleException {
-		for (final var cpe : getJanusPlatformClasspath().getTransitiveClasspathEntries(true)) {
-			entries.add(cpe);
+		for (final var rootBundleName : getJanusDependencyBundleNames()) {
+			final var bundle = Platform.getBundle(rootBundleName);
+			if (bundle != null) {
+				for (final var entry : Bundles.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {
+					entries.add(entry);
+				}
+			} else {
+				JanusEclipsePlugin.getDefault().logErrorMessage(MessageFormat.format(
+						Messages.JanusClasspathContainer_1, rootBundleName));
+			}
 		}
 	}
 

@@ -100,6 +100,28 @@
 							</replacements>
 						</configuration>
 					</execution>
+					<execution>
+						<id>prepare-constants-class</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/lang/ui/SARLUiConfig.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>(SARL_COMPILER_BUNDLE *= *")([^"]+)(";)</token>
+									<value>$1${sarl.compiler.osgiBundle}$3</value>
+								</replacement>
+								<replacement>
+									<token>(SARL_CORE_LIBRARY_BUNDLE *= *")([^"]+)(";)</token>
+									<value>$1${sarl.corelib.osgiBundle}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>

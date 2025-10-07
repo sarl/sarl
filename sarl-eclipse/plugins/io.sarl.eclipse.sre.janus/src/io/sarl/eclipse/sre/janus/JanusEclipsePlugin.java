@@ -24,6 +24,7 @@ package io.sarl.eclipse.sre.janus;
 import javax.annotation.processing.Generated;
 
 import com.google.common.base.Strings;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -192,6 +193,27 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 			}
 		}
 		return descriptor;
+	}
+
+	/** Replies the logger.
+	 *
+	 * <p>Thus function is a non-final version of {@link #getLog()}.
+	 *
+	 * @return the logger.
+	 * @since 1.0
+	 */
+	public ILog getILog() {
+		return getLog();
+	}
+
+	/**
+	 * Logs an internal error with the specified message.
+	 *
+	 * @param message the error message to log
+	 * @since 1.0
+	 */
+	public void logErrorMessage(String message) {
+		getILog().log(new Status(IStatus.ERROR, PLUGIN_ID, message, null));
 	}
 
 }
