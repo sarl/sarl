@@ -111,7 +111,7 @@ def run_script(args : dict, module : dict, execution_dir : str, script : str):
 	cmd = [ script ]
 	cmd = cmd + args.args
 	completed = subprocess.run(cmd, cwd=execution_dir)
-	if completed and completed completed.returncode != 0:
+	if completed and completed.returncode != 0:
 		error("Cannot run cleaning script for module: " + module['name'])
 		sys.exit(completed.returncode)
 
