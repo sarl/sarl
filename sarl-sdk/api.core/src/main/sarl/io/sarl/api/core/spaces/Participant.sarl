@@ -25,6 +25,7 @@ import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.annotation.PrivateAPI
+import io.sarl.lang.core.InformedEventListener
 
 /** 
  * Description of a participant.
@@ -41,15 +42,28 @@ class Participant {
 
 	val participant : EventListener
 
+	val participantType : String
+
 	/** Create a participant.
 	 * 
 	 * @param address the address of the participant.
 	 * @param eventListener the participant.
+	 * @param participantType the type of the participant.
+	 * @since 3.1
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
-	static def createAndInit(address : Address, eventListener : EventListener) : Participant {
-		var participant = new Participant(address, eventListener)
+	static def createAndInit(address : Address, eventListener : EventListener, participantType : String = null) : Participant {
+		val type = if (participantType === null) {
+			if (eventListener instanceof InformedEventListener) {
+				eventListener.ownerInstance?.class?.name
+			} else {
+				null
+			}
+		} else {
+			participantType
+		}
+		var participant = new Participant(address, eventListener, type)
 		var links = new AddressLazyLinks
 		links.participant = participant
 		SREutils::setSreSpecificData(address, links)
@@ -60,10 +74,13 @@ class Participant {
 	 *
 	 * @param address the address of the participant.
 	 * @param eventListener the participant.
+	 * @param participantType the type of the participant.
+	 * @since 3.1
 	 */
-	protected new (address : Address, eventListener : EventListener) {
+	protected new (address : Address, eventListener : EventListener, participantType : String = null) {
 		this.participantAddress = address
 		this.participant = eventListener
+		this.participantType = participantType
 	}
 
 	/** Replies participant address.
@@ -82,6 +99,16 @@ class Participant {
 		this.participant
 	}
 
+	/** Replies the participant type.
+	 * 
+	 * @return the type of the participant.
+	 * @since 3.1 
+	 */
+	def getParticipantType : String {
+		this.participantType
+	}
+
+	
 	override equals(obj : Object) : boolean {
 		if (obj instanceof Participant) {
 			return obj.address == address

@@ -156,7 +156,7 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 			// a) The first parameter is null because the event has an address.
 			// b) The scope is defined for avoiding the participant to receive the event.
 			this.defaultSpace.emit(null,
-				new ParticipantJoined(addr, participantAddr.spaceID)
+				new ParticipantJoined(addr, participantAddr.spaceID, participant.participantType)
 			) [participantId != it.ID]
 		}
 	}
@@ -171,7 +171,7 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 			// a) The first parameter is null because the event has an address.
 			// b) The scope is defined for avoiding the participant to receive the event.
 			this.defaultSpace.emit(null,
-				new ParticipantLeft(addr, participantAddr.spaceID)
+				new ParticipantLeft(addr, participantAddr.spaceID, participant.participantType)
 			) [participantId != it.ID]
 		}
 	}

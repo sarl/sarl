@@ -21,8 +21,10 @@
 
 package io.sarl.api.core.tests.spaces.mocks;
 
-import io.sarl.api.core.spaces.Participant;
+import java.util.UUID;
+
 import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.EventListener;
 
 /**
@@ -32,10 +34,10 @@ import io.sarl.lang.core.EventListener;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public final class ParticipantMock extends Participant {
+public final class SubAgentMock extends Agent {
 
-	public ParticipantMock(Address address, EventListener eventListener, String participantType) {
-		super(address, eventListener, participantType);
+	public SubAgentMock() {
+		super(UUID.randomUUID(), UUID.randomUUID());
 	}
 
 }

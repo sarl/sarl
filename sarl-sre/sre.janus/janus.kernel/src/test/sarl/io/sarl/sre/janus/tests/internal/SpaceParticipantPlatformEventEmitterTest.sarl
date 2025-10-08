@@ -106,6 +106,7 @@ class SpaceParticipantEventEmitterTest {
 		when(addr.ID).thenReturn(participantId)
 		var participant = typeof(Participant).mock
 		when(participant.address).thenReturn(addr);
+		when(participant.participantType).thenReturn("the.type");
 
 		this.emitter.participantJoined(participant)
 
@@ -121,6 +122,7 @@ class SpaceParticipantEventEmitterTest {
 		this.defaultSpaceId.assertSame(spaceEvent.source.spaceID)
 		participantId.assertEquals(spaceEvent.source.ID)
 		spaceId.assertSame(spaceEvent.spaceID)
+		"the.type".assertEquals(spaceEvent.agentType)
 	}
 
 	@Test
@@ -132,6 +134,7 @@ class SpaceParticipantEventEmitterTest {
 		when(addr.ID).thenReturn(participantId)
 		var participant = typeof(Participant).mock
 		when(participant.address).thenReturn(addr);
+		when(participant.participantType).thenReturn("the.type");
 
 		this.emitter.participantLeft(participant)
 
@@ -147,6 +150,7 @@ class SpaceParticipantEventEmitterTest {
 		this.defaultSpaceId.assertSame(spaceEvent.source.spaceID)
 		participantId.assertEquals(spaceEvent.source.ID)
 		spaceId.assertSame(spaceEvent.spaceID)
+		"the.type".assertEquals(spaceEvent.agentType)
 	}
 
 }

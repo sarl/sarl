@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -124,6 +125,19 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 		} catch (NoSuchMethodException | SecurityException e) {
 			throw new Error(e);
 		}
+	}
+
+	/** Assert the the specified constructor is defined in the loaded class.
+	 *
+	 * @param <T> the type of the element to test.
+	 * @param element the element that must be deprecated.
+	 * @return the {@code element}.
+	 * @since 1.0
+	 */
+	protected <TT extends AnnotatedElement> TT assertDeprecated(TT element) {
+		assertNotNull(element);
+		assertTrue(element.isAnnotationPresent(Deprecated.class), "element must be deprecated");
+		return element;
 	}
 
 }

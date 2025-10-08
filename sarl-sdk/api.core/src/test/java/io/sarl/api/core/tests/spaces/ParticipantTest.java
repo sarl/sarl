@@ -32,8 +32,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.sarl.api.core.spaces.Participant;
 import io.sarl.api.core.tests.spaces.mocks.ParticipantMock;
+import io.sarl.api.core.tests.spaces.mocks.SubAgentMock;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.InformedEventListener;
 import io.sarl.lang.core.annotation.PrivateAPI;
 import io.sarl.lang.tests.api.extensions.JavaVersionCheckExtension;
 import io.sarl.tests.api.extensions.ContextInitExtension;
@@ -66,7 +68,47 @@ public class ParticipantTest {
 	public void setUp() {
 		this.address = mock(Address.class);
 		this.eventListener = mock(EventListener.class);
-		this.test = new ParticipantMock(this.address, this.eventListener);
+		this.test = new ParticipantMock(this.address, this.eventListener, "the.type");
+	}
+
+	@Test
+	@DisplayName("createAndInit(null, null, t)")
+	public void createAndInit_null_null_type() {
+		assertThrows(AssertionError.class, () -> {
+			Participant.createAndInit(null, null, "the.type");
+		});
+	}
+
+	@Test
+	@DisplayName("createAndInit(a, null, t)")
+	public void createAndInit_address_null_type() {
+		var a = mock(Address.class);
+		var p = Participant.createAndInit(a, null, "the.type");
+		assertNotNull(p);
+		assertSame(a, p.getAddress());
+		assertNull(p.getParticipant());
+		assertEquals("the.type", p.getParticipantType());
+	}
+
+	@Test
+	@DisplayName("createAndInit(null, l, t)")
+	public void createAndInit_null_listener_type() {
+		var l = mock(EventListener.class);
+		assertThrows(AssertionError.class, () -> {
+			Participant.createAndInit(null, l, "the.type");
+		});
+	}
+
+	@Test
+	@DisplayName("createAndInit(a, l, t)")
+	public void createAndInit_address_listener_type() {
+		var a = mock(Address.class);
+		var l = mock(EventListener.class);
+		var p = Participant.createAndInit(a, l, "the.type");
+		assertNotNull(p);
+		assertSame(a, p.getAddress());
+		assertSame(l, p.getParticipant());
+		assertEquals("the.type", p.getParticipantType());
 	}
 
 	@Test
@@ -85,6 +127,7 @@ public class ParticipantTest {
 		assertNotNull(p);
 		assertSame(a, p.getAddress());
 		assertNull(p.getParticipant());
+		assertNull(p.getParticipantType());
 	}
 
 	@Test
@@ -105,6 +148,21 @@ public class ParticipantTest {
 		assertNotNull(p);
 		assertSame(a, p.getAddress());
 		assertSame(l, p.getParticipant());
+		assertNull(p.getParticipantType());
+	}
+
+	@Test
+	@DisplayName("createAndInit(a, il)")
+	public void createAndInit_address_informedlistener() {
+		var a = mock(Address.class);
+		var ag = new SubAgentMock();
+		var l = mock(InformedEventListener.class);
+		when(l.getOwnerInstance()).thenReturn(ag);
+		var p = Participant.createAndInit(a, l);
+		assertNotNull(p);
+		assertSame(a, p.getAddress());
+		assertSame(l, p.getParticipant());
+		assertEquals(SubAgentMock.class.getName(), p.getParticipantType());
 	}
 
 	@Test
@@ -117,6 +175,12 @@ public class ParticipantTest {
 	@DisplayName("getParticipant")
 	public void getParticipant() {
 		assertSame(this.eventListener, this.test.getParticipant());
+	}
+
+	@Test
+	@DisplayName("getParticipantType")
+	public void getParticipantType() {
+		assertEquals("the.type", this.test.getParticipantType());
 	}
 
 	@Test

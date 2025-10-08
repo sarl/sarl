@@ -86,6 +86,7 @@ class OnParticipantJoinedIT {
 
 		id2.assertEquals(evt.source.ID)
 		spcid.assertEquals(evt.spaceID)
+		typeof(JoinerAgent0).name.assertEquals(evt.agentType)
 	}
 
 	@Test
@@ -120,6 +121,7 @@ class OnParticipantJoinedIT {
 
 		id2.assertEquals(evt.source.ID)
 		spcid1.assertEquals(evt.spaceID)
+		typeof(JoinerAgent2).name.assertEquals(evt.agentType)
 	}
 
 }

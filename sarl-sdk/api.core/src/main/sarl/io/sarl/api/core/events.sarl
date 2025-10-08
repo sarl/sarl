@@ -21,6 +21,7 @@
 package io.sarl.api.core
 
 import io.sarl.lang.core.Address
+import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.annotation.EarlyExit
 import java.util.UUID
@@ -438,14 +439,34 @@ final event ParticipantJoined {
 	 */
 	val spaceID : SpaceID
 
+	/** The fully qualified name of the type of the agent.
+	 *
+	 * @since 1.0
+	 */
+	val agentType : String
+
 	/** Construct the event.
 	 * 
 	 * @param source the address of the emitter.
 	 * @param spaceID the identifier of the space.
+	 * @param agentType the fully qualified name of the type of the agent
+	 * @since 1.0
 	 */
-	new (source : Address, spaceID : SpaceID) {
+	new (source : Address, spaceID : SpaceID, agentType : String) {
 		this.source = source
 		this.spaceID = spaceID
+		this.agentType = agentType
+	}
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param spaceID the identifier of the space.
+	 * @deprecated since 1.0, use the other constructor.
+	 */
+	@Deprecated(since = "1.0", forRemoval = true)
+	new (source : Address, spaceID : SpaceID) {
+		this(source, spaceID, typeof(Agent).name)
 	}
 
 }
@@ -468,14 +489,35 @@ final event ParticipantLeft {
 	 */
 	val spaceID : SpaceID
 
+	/** The fully qualified name of the type of the agent.
+	 *
+	 * @since 1.0
+	 */
+	val agentType : String
+
 	/** Construct the event.
 	 * 
 	 * @param source the address of the emitter.
 	 * @param spaceID the identifier of the space.
+	 * @param agentType the fully qualified name of the type of the agent
+	 * @since 1.0
 	 */
-	new (source : Address, spaceID : SpaceID) {
+	new (source : Address, spaceID : SpaceID, agentType : String) {
 		this.source = source
 		this.spaceID = spaceID
+		this.agentType = agentType
+	}
+
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param spaceID the identifier of the space.
+	 * @deprecated since 1.0, use the other constructor.
+	 */
+	@Deprecated(since = "1.0", forRemoval = true)
+	new (source : Address, spaceID : SpaceID) {
+		this(source, spaceID, typeof(Agent).name)
 	}
 
 }

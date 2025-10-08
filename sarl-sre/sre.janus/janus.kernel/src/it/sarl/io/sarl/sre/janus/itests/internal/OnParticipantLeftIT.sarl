@@ -89,6 +89,7 @@ class OnParticipantLeftIT {
 
 		id2.assertEquals(evt0.source.ID)
 		spcid0.assertEquals(evt0.spaceID)
+		typeof(JoinerAgent1).name.assertEquals(evt0.agentType)
 	}
 
 	@Test
@@ -128,10 +129,12 @@ class OnParticipantLeftIT {
 		spcid0.assertEquals(evt0.source.spaceID)
 		id2.assertEquals(evt0.source.ID)
 		spcid1.assertEquals(evt0.spaceID)
+		typeof(JoinerAgent3).name.assertEquals(evt0.agentType)
 
 		spcid0.assertEquals(evt1.source.spaceID)
 		id1.assertEquals(evt1.source.ID)
 		spcid0.assertEquals(evt1.spaceID)
+		typeof(JoinerAgent3).name.assertEquals(evt0.agentType)
 	}
 
 }
