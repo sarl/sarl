@@ -22,8 +22,11 @@
 package io.sarl.eclipse.explorer;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+
+import io.sarl.lang.SARLConfig;
 
 /**
  * View filter for hidden files.
@@ -39,16 +42,29 @@ public class HiddenFileFilter extends ViewerFilter {
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (element instanceof IResource resource) {
-		if (resource.isHidden() || resource.isDerived() || resource.isPhantom()) {
+			final var path2 = resource.getRawLocation();
+			if ((resource.isHidden() || resource.isDerived() || resource.isPhantom()) && !isGenerationFolder(path2)) {
 				return false;
 			}
-			final var path2 = resource.getRawLocation();
 			if (path2 != null) {
 				final var rawFile = path2.toFile();
 				return rawFile != null && !rawFile.isHidden();
 			}
 		}
 		return true;
+	}
+
+	private static boolean isGenerationFolder(IPath path) {
+		if (path != null) {
+			final var max = path.segmentCount();
+			for (var i = 0; i < max; ++i) {
+				final var segment = path.segment(i);
+				if (SARLConfig.GENERATED_SOURCE_ROOT_FOLDER_SIMPLENAME.equals(segment)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
