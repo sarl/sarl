@@ -158,6 +158,27 @@ def build_module(args : dict, current_dir : str, module : dict):
 
 ##########################################
 ## args : the command-line arguments
+## execution_dir : the folder in which the Git command must be run
+## module : the description of the module to build
+def update_git_submodules(args : dict, execution_dir : str, modules : list):
+	info("")
+	info("------------------------------------------------------------------------")
+	info("Updating the Git submodules " + str(modules))
+	info("------------------------------------------------------------------------")
+	info("")
+	if modules:
+		execution_dir = os_execution_dir(args, execution_dir)
+		git_cmd = shutil.which('git')
+		cmd = [ git_cmd, 'submodule', 'update', '--remote', '--merge' ]
+		cmd = cmd + modules
+		completed = subprocess.run(cmd, cwd=execution_dir)
+		if completed and completed.returncode != 0:
+			error("Cannot run git for modules: " + modules)
+			sys.exit(completed.returncode)
+	sys.exit(0)
+
+##########################################
+## args : the command-line arguments
 ## current_dir : the path of this script
 ## RETURN : the dictionnary of defined modules without the ones that are ignored from the command-line arguments
 def read_module_configuration(args : dict, current_dir : str) -> dict:
@@ -196,6 +217,7 @@ parser.add_argument("--ignore", help="add a module in the list of modules to be 
 parser.add_argument("--mlist", help="list the defined modules", action="store_true")
 parser.add_argument("--notest", help="skip all the tests, equivalent to -Dmaven.test.skip=true", action="store_true")
 parser.add_argument("--nop2mirror", help="disable the mirroring to P2 repository, equivalent to -Declipse.p2.mirrors=false", action="store_true")
+parser.add_argument("--gitupdate", help="pull the submodules from their remote git repositories", action="store_true")
 class DefinitionAction(argparse.Action):
 	def __call__(action_self, parser, namespace, value, option_string=None):
 		if '=' in value:
@@ -232,6 +254,14 @@ args = parser.parse_args()
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 module_configuration = read_module_configuration(args, current_dir)
+
+if args.gitupdate:
+	if 'extensions' in module_configuration:
+		submodules = []
+		for module in module_configuration['extensions']:
+			if module['git-submodule']:
+				submodules = submodules + [ module['module'] ]
+		update_git_submodules(args, current_dir, submodules)
 
 for key in [ 'without-extension', 'extensions', 'with-extension' ]:
 	if key in module_configuration:

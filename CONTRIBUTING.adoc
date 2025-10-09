@@ -300,6 +300,7 @@ For adding an extension project in the `modules.json` file, add an entry in the 
 			"upgrade-mvn-plugins": true,
 			"in-maven-central": true,
 			"releasable": true
+			"git-submodule": true
 		}
 	],
 ...
@@ -322,6 +323,10 @@ The attributes to be set are:
 |`clean`
 |Indicates if the extension project is included in the cleaning process of SARL
 |`./clean-all.py`
+
+|`git-submodule`
+|Specifies that the extension is included in the SARL project with a Git Submodule.
+|`./build-all.py`
 
 |`in-maven-central`
 |Indicates if the extension project must be included in the bundles to be uploaded to Maven Central server

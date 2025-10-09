@@ -94,7 +94,8 @@
 			"apidoc": false,
 			"upgrade-mvn-plugins": true,
 			"in-maven-central": true,
-			"releasable": true
+			"releasable": true,
+			"git-submodule": true
 		}
 	],
 	"with-extension": [
