@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link href="https://www.sarl.io/favicon.ico" rel="icon" type="image/x-icon" />
+	<style>
+		/* <![CDATA[*/
+		@@@CSSCONTENT@@@	
+		/*]]>*/
+	</style>
+	<title>@@@TITLE@@@</title>
+	<style>
+		/* <![CDATA[*/
+		#product-logo {
+			max-width: 1.2em;
+			margin-bottom: -0.2em;
+		}
+
+		.ide-wg-member-logo {
+			vertical-align: bottom;
+			max-width: 4.5em;
+			max-height: 1.5em;
+		}
+
+		.ide-wg-member-logo-container {
+			border-radius: .2em;
+			height: 1.8em;
+			padding: .3em .4em;
+			margin: .15em .1em;
+		}
+		/*]]>*/
+	</style>
+</head>
+
+<body id="body" class="theme">
+	<div class="main">
+		<div id="content">
+			<table style="display: none;">
+				<tbody id="query">
+					<tr>
+						<th>Property</th>
+						<th>Value</th>
+					</tr>
+					<tr>
+						<td>property</td>
+						<td>value</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div id="general">
+				<div class="section">
+					The <span class="version">@@@VERSION@@@</span> for the <img id="product-logo" src="" alt="" />
+					<span class="product-name">@@@PRODUCTNAME@@@</span>
+					is available.
+				</div>
+				<div class="section">
+					It provides access to the latest and greatest features for your IDE.
+				</div>
+				<div class="button-section">
+					<label class="button">
+						<a id="download-link" href="eclipse+external:@@@DOWNLOADLINK@@@">Download</a>
+					</label>
+					&nbsp;
+					<label class="button">
+						<a href="eclipse+command:close">Ask Me Later</a>
+					</label>
+					&nbsp;
+					<label class="button">
+						<a href="eclipse+command:dismiss-installation">No Thank You</a>
+					</label>
+				</div>
+				<div class="section">
+					<details>
+						<summary>How to Report a Problem</summary>
+						By testing this version and reporting problems,
+						you will be providing a valuable service for the community,
+						helping to ensure a higher quality for the versions following the <span class="version">@@@VERSION@@@</span> release.
+						The IDE provides <code>SARL -> Report an issue</code> for your convenience.
+					</details>
+				</div>
+				<div id="ide-wg" class="section" @@@HIDESPONSORS@@@>
+					<hr />
+					Sponsored by <b>people like you</b> and by the <a href="eclipse+external:@@@SPONSORLINK@@@">SARL Supporters and Sponsors</a>.
+					<br />
+					@@@SPONSORS@@@
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

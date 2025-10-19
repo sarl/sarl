@@ -1,0 +1,101 @@
+.theme {
+	--background-color: #004064FF;
+	--color: #FFFFFFFF;
+}
+
+body {
+	color: var(--color);
+	background-color: var(--background-color);
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 10pt;
+	margin: 0.5em 0.5em;
+	line-height: 1.428;
+}
+
+th,
+td {
+	border: 1px solid var(--color);
+	text-align: left;
+	padding: 0.2ex 1em;
+}
+
+table {
+	border: 1px solid var(--color);
+	border-collapse: collapse;
+	margin-bottom: 2ex;
+	white-space: nowrap;
+}
+
+.button a {
+	text-decoration: none;
+}
+
+.button a,
+.button a:visited,
+.button a:hover,
+.button a:active {
+	color: inherit;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+	color: var(--color);
+}
+
+label {
+	white-space: nowrap;
+}
+
+.button {
+	padding: 0.3em 0.4em;
+	color: white;
+	background: #f06c00;
+}
+
+.section {
+	margin-bottom: 0.7em;
+}
+
+.button-section {
+	white-space: nowrap;
+	margin-bottom: 0.7em;
+}
+
+code {
+	font-size: 90%;
+	padding: 1px 4px;
+}
+
+code {
+	background-color: rgba(225, 225, 225, 0.75);
+	border-radius: 0;
+	color: #c7254e;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+}
+
+hr {
+	border: none;
+	height: 1px;
+	background-color: #333;
+}
+
+.ide-wg-member-logo-container {
+	border-radius: .2em;
+	height: 2em;
+	padding: .3em .4em;
+	background-color: rgba(255, 255, 255, 0.90);
+	display: inline-block;
+	vertical-align: bottom;
+	margin: .3em .1em;
+}
+
+.ide-wg-member-logo {
+	vertical-align: bottom;
+	max-width: 7em;
+	max-height: 2em;
+}

@@ -288,6 +288,27 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	}
 
 	/**
+	 * Logs an internal warning with the specified message.
+	 *
+	 * @param exception the exception to be logged.
+	 * @since 1.0
+	 */
+	public void logWarningMessage(Throwable exception) {
+		logWarningMessage(exception.getLocalizedMessage(), exception);
+	}
+
+	/**
+	 * Logs an internal warning with the specified message.
+	 *
+	 * @param message the message to print out.
+	 * @param exception the exception to be logged.
+	 * @since 1.0
+	 */
+	public void logWarningMessage(String message, Throwable exception) {
+		getILog().log(new Status(IStatus.WARNING, PLUGIN_ID, message, exception));
+	}
+
+	/**
 	 * Logs an internal debug message with the specified message.
 	 *
 	 * @param message the debug message to log

@@ -33,6 +33,13 @@
 		  <unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.39.0.v202508302230"/>
 		  <unit id="org.eclipse.xsd.feature.group" version="2.23.0.v20250812-0843"/>
 		  <unit id="org.eclipse.xtext.sdk.feature.group" version="2.40.0.v20250825-0355"/>
+		  <unit id="org.eclipse.oomph.setup.core.source.feature.group" version="1.35.0.v20250805-0709"/>
+		  <unit id="org.eclipse.oomph.setup.jdt.feature.group" version="1.25.0.v20250902-1334"/>
+		  <unit id="org.eclipse.oomph.setup.sdk.feature.group" version="1.36.0.v20250902-1334"/>
+		  <unit id="org.eclipse.oomph.setup.source.feature.group" version="1.37.0.v20250831-0649"/>
+		  <unit id="org.eclipse.oomph.setup.targlets.feature.group" version="1.21.0.v20250208-1315"/>
+		  <unit id="org.eclipse.oomph.setup.ui.ide.feature.group" version="1.22.0.v20250831-0649"/>
+		  <unit id="org.eclipse.oomph.setup.workbench.feature.group" version="1.18.0.v20230828-1517"/>
 	  </location>
 	  <location includeDependencyDepth="infinite" includeDependencyScopes="compile,provided,runtime,system,import" includeSource="true" missingManifest="ignore" type="Maven">
 		  <dependencies>

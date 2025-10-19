@@ -756,4 +756,40 @@
             content="intro/whatsnew.xml">
       </configExtension>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="io.sarl"
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.notifications.SARLNotificationViewPart"
+            icon="icons/notification.png"
+            id="io.sarl.eclipse.notifications.NotificationView"
+            name="%notification"
+            restorable="false">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="io.sarl.eclipse.notifications.category"
+            name="%notifications.category">
+      </category>
+      <command
+            defaultHandler="io.sarl.eclipse.notifications.SARLNotificationHandler"
+            description="%notifications.handler.description"
+            id="io.sarl.eclipse.notifications.Show"
+            name="%notifications.handler.name">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="io.sarl.eclipse.notifications.Show"
+            icon="icons/notification.png">
+      </image>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup class="io.sarl.eclipse.StandardEarlyStartup"/>
+   </extension>
 </plugin>
