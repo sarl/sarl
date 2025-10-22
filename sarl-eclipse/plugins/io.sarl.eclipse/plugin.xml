@@ -756,6 +756,8 @@
             content="intro/whatsnew.xml">
       </configExtension>
    </extension>
+
+  <!-- SARL Notification view -->
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -791,5 +793,23 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup class="io.sarl.eclipse.StandardEarlyStartup"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="menu:io.sarl.eclipse.mainMenu?after=endCommunity">
+       <command commandId="io.sarl.eclipse.notifications.forceUpdateCheck"
+                label="%action.force_update_check"
+                icon="icons/notification.png"
+                style="push" />
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command id="io.sarl.eclipse.notifications.forceUpdateCheck"
+            name="%action.force_update_check" />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+   		<handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.notifications.sarlupdate.SARLForceUpdateCheckHandler"
+            commandId="io.sarl.eclipse.notifications.forceUpdateCheck" />
    </extension>
 </plugin>
