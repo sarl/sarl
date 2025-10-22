@@ -77,6 +77,10 @@ public class SARLNotificationViewPart extends ViewPart {
 
 	private static final String DOWNLOAD_KEY = "@@@DOWNLOADLINK@@@"; //$NON-NLS-1$
 
+	private static final String DOWNLOADPAGE_KEY = "@@@DOWNLOADPAGE@@@"; //$NON-NLS-1$
+
+	private static final String CHANGES_KEY = "@@@CHANGES@@@"; //$NON-NLS-1$
+
 	private static final String SPONSORPAGE_KEY = "@@@SPONSORLINK@@@"; //$NON-NLS-1$
 
 	private static final String SPONSORS_KEY = "@@@SPONSORS@@@"; //$NON-NLS-1$
@@ -163,6 +167,12 @@ public class SARLNotificationViewPart extends ViewPart {
 		final var version = notification.getDetails().get(NotificationDetail.NEW_VERSION);
 		final var versionStr = version == null ? "" : version.toString(); //$NON-NLS-1$
 		output = output.replaceAll(Pattern.quote(VERSION_KEY), versionStr);
+
+		final var changePage = notification.getDetails().get(NotificationDetail.CHANGE_PAGE);
+		output = output.replaceAll(Pattern.quote(CHANGES_KEY), changePage == null ? "" : changePage.toString()); //$NON-NLS-1$
+
+		final var downloadPage = notification.getDetails().get(NotificationDetail.DOWNLOAD_PAGE);
+		output = output.replaceAll(Pattern.quote(DOWNLOADPAGE_KEY), downloadPage == null ? "" : downloadPage.toString()); //$NON-NLS-1$
 
 		final var download = notification.getDetails().get(NotificationDetail.DOWNLOAD);
 		output = output.replaceAll(Pattern.quote(DOWNLOAD_KEY), download == null ? "" : download.toString()); //$NON-NLS-1$

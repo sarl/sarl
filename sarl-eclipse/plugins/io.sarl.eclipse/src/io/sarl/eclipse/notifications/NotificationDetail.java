@@ -39,9 +39,17 @@ public enum NotificationDetail {
 	 */
 	NEW_VERSION,
 
-	/** URL to the download system.
+	/** URL to the download system directly.
 	 */
 	DOWNLOAD,
+
+	/** URL to the Internet page for downloading.
+	 */
+	DOWNLOAD_PAGE,
+
+	/** URL to the Internet page that describes the changes in the new version.
+	 */
+	CHANGE_PAGE,
 
 	/** Link to the donation system.
 	 */

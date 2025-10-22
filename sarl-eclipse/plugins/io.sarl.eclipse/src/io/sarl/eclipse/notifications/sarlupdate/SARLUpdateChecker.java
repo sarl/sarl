@@ -73,6 +73,10 @@ public class SARLUpdateChecker {
 
 	private static final String DOWNLOAD_KEY = "download"; //$NON-NLS-1$
 
+	private static final String DOWNLOADPAGE_KEY = "downloadPage"; //$NON-NLS-1$
+
+	private static final String CHANGES_KEY = "changes"; //$NON-NLS-1$
+
 	private static final String DONATE_KEY = "donate"; //$NON-NLS-1$
 
 	private static final String URL_KEY = "url"; //$NON-NLS-1$
@@ -155,6 +159,16 @@ public class SARLUpdateChecker {
 					}
 				}
 
+				final var downloadPageObject = candidate.get(DOWNLOADPAGE_KEY);
+				if (downloadPageObject instanceof URL url) {
+					details.put(NotificationDetail.DOWNLOAD_PAGE, url);
+				}
+
+				final var changesObject = candidate.get(CHANGES_KEY);
+				if (changesObject instanceof URL url) {
+					details.put(NotificationDetail.CHANGE_PAGE, url);
+				}
+
 				final var sponsorsObject = candidate.get(SPONSORS_KEY);
 				if (sponsorsObject instanceof List list) {
 					details.put(NotificationDetail.SPONSORS, list);
@@ -196,6 +210,8 @@ public class SARLUpdateChecker {
 				return null;
 			}
 
+			final var downloadPage = parseURL(dictionary, DOWNLOADPAGE_KEY);
+			final var changesPage = parseURL(dictionary, CHANGES_KEY);
 			final var donate = parseURL(dictionary, DONATE_KEY);
 			final var sponsorPage = parseURL(dictionary, SPONSORPAGE_KEY);
 
@@ -233,6 +249,12 @@ public class SARLUpdateChecker {
 					}
 				}
 				if (selectedCandidate != null) {
+					if (downloadPage != null) {
+						selectedCandidate.putIfAbsent(DOWNLOADPAGE_KEY, downloadPage);
+					}
+					if (changesPage != null) {
+						selectedCandidate.putIfAbsent(CHANGES_KEY, changesPage);
+					}
 					if (donate != null) {
 						selectedCandidate.putIfAbsent(DONATE_KEY, donate);
 					}
